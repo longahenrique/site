@@ -83,7 +83,8 @@ footer{padding:30px 0 34px;font-size:15px;font-weight:600}
 .a11y-btn svg{width:26px;height:26px;fill:currentColor}
 .a11y-panel{position:absolute;left:0;bottom:60px;width:min(300px,calc(100vw - 32px));background:var(--paper);color:var(--ink);border:2px solid var(--ink);border-radius:10px;padding:14px;box-shadow:0 8px 28px rgba(0,0,0,.25)}
 .a11y-panel h2{font-size:18px;margin:0 0 8px;letter-spacing:0}
-.a11y-panel button{display:block;width:100%;text-align:left;font:600 15px Archivo,Arial,sans-serif;color:inherit;background:transparent;border:0;border-radius:6px;padding:9px 10px;cursor:pointer}
+.a11y-panel svg{width:20px;height:20px;flex-shrink:0;fill:currentColor}
+.a11y-panel button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:600 15px Archivo,Arial,sans-serif;color:inherit;background:transparent;border:0;border-radius:6px;padding:9px 10px;cursor:pointer}
 .a11y-panel button:hover{background:var(--tint)}
 .a11y-panel button[aria-pressed="true"]{background:var(--sea)}
 html.a11y-hc{--paper:#000;--ink:#fff;--muted:#eee;--sea:#000;--on-sea:#ffd400;--tint:#000;--line:#fff;--accent:#ffd400}
@@ -173,15 +174,15 @@ html.a11y-zoom h1{white-space:normal}
 <button type="button" class="a11y-btn" id="a11yBtn" aria-expanded="false" aria-controls="a11yPanel" aria-label="Acessibilidade"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="4.6" r="2.2"/><path d="M4 8.4h16v2.2h-5.6V14l2.2 6.8h-2.4L12 15.6l-2.2 5.2H7.4L9.6 14v-3.4H4z"/></svg></button>
 <div class="a11y-panel" id="a11yPanel" role="group" aria-label="Acessibilidade" hidden>
 <h2>Acessibilidade</h2>
-<button type="button" data-a="inc">Aumentar texto</button>
-<button type="button" data-a="dec">Diminuir texto</button>
-<button type="button" data-a="gs">Escala de cinza</button>
-<button type="button" data-a="hc">Contraste</button>
-<button type="button" data-a="neg">Contraste negativo</button>
-<button type="button" data-a="lb">Fundo claro</button>
-<button type="button" data-a="ul">Link sublinhado</button>
-<button type="button" data-a="lf">Fonte legível</button>
-<button type="button" data-a="reset">Repor</button>
+<button type="button" data-a="inc"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 15.5L21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.5 7.5v6M7.5 10.5h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Aumentar texto</span></button>
+<button type="button" data-a="dec"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 15.5L21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M7.5 10.5h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Diminuir texto</span></button>
+<button type="button" data-a="gs"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="1.6" height="16"/><rect x="6" y="4" width="3" height="16"/><rect x="10.5" y="4" width="1.4" height="16"/><rect x="13.3" y="4" width="2.6" height="16"/><rect x="17.3" y="4" width="1.4" height="16"/><rect x="20" y="4" width="1.4" height="16"/></svg><span>Escala de cinza</span></button>
+<button type="button" data-a="hc"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z"/></svg><span>Contraste</span></button>
+<button type="button" data-a="neg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="12" r="3"/></svg><span>Contraste negativo</span></button>
+<button type="button" data-a="lb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6 6 0 0 0-3.5 10.9V17h7v-3.1A6 6 0 0 0 12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M9.5 20.5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Fundo claro</span></button>
+<button type="button" data-a="ul"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Link sublinhado</span></button>
+<button type="button" data-a="lf"><svg viewBox="0 0 24 24" aria-hidden="true"><text x="12" y="19" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="21">A</text></svg><span>Fonte legível</span></button>
+<button type="button" data-a="reset"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M4 4v5h5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Repor</span></button>
 </div>
 </div>
 <script>
