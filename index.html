@@ -86,7 +86,8 @@ footer{padding:30px 0 34px;font-size:15px;font-weight:600}
 .a11y-panel svg{width:20px;height:20px;flex-shrink:0;fill:currentColor}
 .a11y-panel button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:600 15px Archivo,Arial,sans-serif;color:inherit;background:transparent;border:0;border-radius:6px;padding:9px 10px;cursor:pointer}
 .a11y-panel button:hover{background:var(--tint)}
-.a11y-panel button[aria-pressed="true"]{background:var(--sea)}
+.a11y-panel button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.a11y-panel button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
 html.a11y-hc{--paper:#000;--ink:#fff;--muted:#eee;--sea:#000;--on-sea:#ffd400;--tint:#000;--line:#fff;--accent:#ffd400}
 html.a11y-lb{--sea:#fff;--paper:#fff;--tint:#fff;--on-sea:#141414;--ink:#000;--muted:#333;--line:#999}
 html.a11y-ul a{text-decoration:underline!important;text-underline-offset:4px}
