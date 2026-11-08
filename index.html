@@ -54,7 +54,7 @@ blockquote{margin:30px 0 0;padding-left:20px;border-left:4px solid var(--sea);fo
 .area ul{margin:0;padding-left:1.1em}
 .area li{margin-bottom:.45em}
 .who{display:grid;gap:0 44px;align-items:start}
-@media(min-width:780px){.who{grid-template-columns:7fr 5fr}.who .prose{grid-column:1;grid-row:2}.who .portrait{grid-column:2;grid-row:2;align-self:stretch;margin-top:6px}}
+@media(min-width:1000px){.who{grid-template-columns:7fr 5fr}.who .prose{grid-column:1;grid-row:2}.who .portrait{grid-column:2;grid-row:2;align-self:stretch;margin-top:6px}}
 #quem-sou{padding-bottom:0}
 #quem-sou .prose{padding-bottom:72px}
 .portrait{margin:0;background:var(--sea);border-radius:4px 4px 0 0;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
@@ -109,6 +109,7 @@ html.a11y-lf .hero p{font-weight:400}
 html.a11y-neg #page img{filter:invert(1) hue-rotate(180deg)}
 html.a11y-zoom h1{white-space:normal}
 html.a11y-zoom h1 br{display:none}
+@media(max-width:999px){.who{gap:0}#quem-sou .prose{padding-bottom:0}.portrait{margin:28px -24px 0;border-radius:0;padding-top:28px}.portrait img{width:min(86%,440px);-webkit-mask-image:linear-gradient(to bottom,#000 76%,transparent 100%);mask-image:linear-gradient(to bottom,#000 76%,transparent 100%)}}
 @media(max-width:700px){h1 br{display:none}}
 @media(max-width:600px){.hero{padding:40px 0 48px}h1{margin-bottom:22px}.hero p{margin-bottom:22px}section{padding:44px 0}h2{margin-bottom:18px}.who{gap:0}#quem-sou .prose{padding-bottom:0}.area{padding:0}.area h3{margin:0}.acc-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:14px 0;cursor:pointer}.acc-btn::after{display:inline-block;margin-right:6px}.acc-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.acc-body{padding-bottom:14px}.articles a{padding:16px 0}.contact{padding:44px 0 12px;gap:28px}footer{padding:20px 0 28px}.portrait{margin:28px -24px 0;border-radius:0;padding-top:28px}.portrait img{-webkit-mask-image:linear-gradient(to bottom,#000 76%,transparent 100%);mask-image:linear-gradient(to bottom,#000 76%,transparent 100%)}}
 .skip{position:fixed;left:-9999px;top:calc(env(safe-area-inset-top,0px) + 12px);z-index:100;background:var(--ink);color:var(--paper);padding:12px 18px;border-radius:6px;font:700 16px Archivo,"Helvetica Neue",Arial,sans-serif;text-decoration:none}
