@@ -53,11 +53,11 @@ blockquote{margin:30px 0 0;padding-left:20px;border-left:4px solid var(--sea);fo
 .area h3{margin:0;font-weight:800;font-size:22px;line-height:1.2}
 .area ul{margin:0;padding-left:1.1em}
 .area li{margin-bottom:.45em}
-.who{display:grid;gap:44px;align-items:end}
-@media(min-width:780px){.who{grid-template-columns:7fr 5fr}}
+.who{display:grid;gap:0 44px;align-items:start}
+@media(min-width:780px){.who{grid-template-columns:7fr 5fr}.who .prose{grid-column:1;grid-row:2}.who .portrait{grid-column:2;grid-row:2;align-self:stretch;margin-top:6px}}
 #quem-sou{padding-bottom:0}
 #quem-sou .prose{padding-bottom:72px}
-.portrait{margin:0;background:var(--sea);align-self:end;border-radius:4px 4px 0 0;overflow:hidden;aspect-ratio:680/1021;display:flex;align-items:flex-end;justify-content:center}
+.portrait{margin:0;background:var(--sea);border-radius:4px 4px 0 0;overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
 .portrait img{display:block;width:86%;height:auto}
 .area summary{cursor:pointer;list-style:none}
 .area summary::-webkit-details-marker{display:none}
@@ -110,7 +110,7 @@ html.a11y-neg #page img{filter:invert(1) hue-rotate(180deg)}
 html.a11y-zoom h1{white-space:normal}
 html.a11y-zoom h1 br{display:none}
 @media(max-width:700px){h1 br{display:none}}
-@media(max-width:600px){.hero{padding:40px 0 48px}h1{margin-bottom:22px}.hero p{margin-bottom:22px}section{padding:44px 0}h2{margin-bottom:18px}.who{gap:28px}#quem-sou .prose{padding-bottom:0}.area{padding:0}.area h3{margin:0}.acc-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:14px 0;cursor:pointer}.acc-btn::after{display:inline-block;margin-right:6px}.acc-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.acc-body{padding-bottom:14px}.articles a{padding:16px 0}.contact{padding:44px 0 12px;gap:28px}footer{padding:20px 0 28px}.portrait{margin:0 -24px;border-radius:0}}
+@media(max-width:600px){.hero{padding:40px 0 48px}h1{margin-bottom:22px}.hero p{margin-bottom:22px}section{padding:44px 0}h2{margin-bottom:18px}.who{gap:0}#quem-sou .prose{padding-bottom:0}.area{padding:0}.area h3{margin:0}.acc-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:14px 0;cursor:pointer}.acc-btn::after{display:inline-block;margin-right:6px}.acc-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.acc-body{padding-bottom:14px}.articles a{padding:16px 0}.contact{padding:44px 0 12px;gap:28px}footer{padding:20px 0 28px}.portrait{margin:28px -24px 0;border-radius:0}.portrait img{-webkit-mask-image:linear-gradient(to bottom,#000 76%,transparent 100%);mask-image:linear-gradient(to bottom,#000 76%,transparent 100%)}}
 </style>
 </head>
 <body>
@@ -134,8 +134,8 @@ html.a11y-zoom h1 br{display:none}
 <main>
 <section id="quem-sou">
 <div class="wrap who">
-<div class="prose">
 <h2>Quem sou</h2>
+<div class="prose">
 <p>Sou sesimbrense, estudante de Química Aplicada na NOVA FCT e envolvido no ativismo cívico e comunitário. Tenho um compromisso firme com o futuro de Sesimbra pela construção de comunidade para todos.</p>
 <p>Sou membro do Partido LIVRE desde janeiro de 2024 e, atualmente, integro o Grupo de Coordenação Local do Núcleo Territorial Distrital de Setúbal. Depois das autárquicas de 2025, onde fui cabeça-de-lista para a Assembleia Municipal de Sesimbra, continuo a trabalhar por uma Sesimbra mais justa, sustentável e participativa.</p>
 <blockquote>Com uma visão estratégica e inclusiva, Sesimbra tem tudo para afirmar-se como um município que valoriza as suas raízes, respeita o ambiente e prepara-se para os desafios do futuro.</blockquote>
