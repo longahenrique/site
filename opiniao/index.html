@@ -34,7 +34,7 @@ a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .sea{background:var(--sea);color:var(--on-sea)}
 nav{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:14px 0;font-size:16px}
 nav a{text-decoration:none;margin-left:22px;white-space:nowrap}
-nav a:hover{text-decoration:underline;text-underline-offset:5px}
+@media(hover:hover){nav a:hover{text-decoration:underline;text-underline-offset:5px}}
 nav .brand{margin:0;font-weight:800;font-size:18px}
 @media(max-width:600px){nav{flex-direction:column;align-items:flex-start;gap:4px;padding:10px 0 8px}nav>div{display:flex;flex-wrap:wrap;gap:6px 20px}nav a{margin:0}}
 .hero{padding:84px 0 110px}
@@ -76,7 +76,7 @@ blockquote{margin:30px 0 0;padding-left:20px;border-left:4px solid var(--sea);fo
 .articles li{border-top:1px solid var(--line)}
 .articles a{display:block;padding:22px 0;text-decoration:none}
 .articles .t{font:800 clamp(21px,3vw,27px)/1.2 Archivo,sans-serif;letter-spacing:-.01em}
-.articles a:hover .t{text-decoration:underline;text-decoration-color:var(--sea);text-decoration-thickness:3px;text-underline-offset:6px}
+@media(hover:hover){.articles a:hover .t{text-decoration:underline;text-decoration-color:var(--sea);text-decoration-thickness:3px;text-underline-offset:6px}}
 .articles .s{display:block;margin-top:6px;font-size:16px;color:var(--muted)}
 .contact{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:36px 28px;padding:84px 0 20px}
 .contact-text{flex:1 1 380px}
@@ -84,7 +84,7 @@ blockquote{margin:30px 0 0;padding-left:20px;border-left:4px solid var(--sea);fo
 .contact p{max-width:30em;margin:0 0 30px}
 .social{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:12px}
 .social a{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--on-sea);color:var(--paper)}
-.social a:hover{opacity:.85}
+@media(hover:hover){.social a:hover{opacity:.85}}
 .social svg{width:22px;height:22px;fill:currentColor}
 footer{padding:30px 0 34px;font-size:15px;font-weight:600}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;border-bottom:1px solid rgba(20,20,20,.14)}
@@ -95,7 +95,7 @@ footer{padding:30px 0 34px;font-size:15px;font-weight:600}
 .a11y-panel h2{font-size:18px;margin:0 0 8px;letter-spacing:0}
 .a11y-panel svg{width:20px;height:20px;flex-shrink:0;fill:currentColor}
 .a11y-panel button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:600 15px Archivo,Arial,sans-serif;color:inherit;background:transparent;border:0;border-radius:6px;padding:9px 10px;cursor:pointer}
-.a11y-panel button:hover{background:var(--tint)}
+@media(hover:hover){.a11y-panel button:hover{background:var(--tint)}}
 .a11y-panel button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .a11y-panel button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
 html.a11y-hc{--paper:#000;--ink:#fff;--muted:#eee;--sea:#000;--on-sea:#ffd400;--tint:#000;--line:#fff;--accent:#ffd400}
@@ -168,7 +168,7 @@ main:focus,.article:focus{outline:none}
 <li data-y="2025" data-o="Diário do Distrito" data-s="estamos exaustos costumo ouvir que “os jovens nao querem saber” ou “os jovens nao se interessam por politica”. mas quero, enquanto jovem deste distrito, contribuir para este debate de forma diferente. a crise da participacao dos jovens nao e uma crise de interesse ou de vontade. e uma crise de tempo e energia. estamos exaustos. no distrito de setubal, esta exaustao tem causas muito concretas que todos vivemos diariamente. nao podemos falar de participacao civica sem falar do tempo que perdemos para viver. como e que podemos pedir a um jovem de sesimbra que mora na quinta do conde para participar numa assembleia municipal a noite, quando demora uma hora e meia para voltar a casa de transportes publicos? como e que um estudante do barreiro ou da moita consegue propor solucoes para o seu concelho quando e obrigado a passar mais de tres horas por dia, entre comboios e autocarros para estudar em lisboa? no nosso distrito, muitos jovens trabalham em setores sazonais, como o turismo, muitas das vezes com vinculos laborais precarios. quando um salario nao chega para pagar um quarto em setubal ou em almada (obrigado, especulacao imobiliaria), a politica torna-se um luxo. a energia mental que gastamos a tentar sobreviver financeiramente e a energia que nao temos para nos indignarmos, organizarmos e propormos solucoes. como se pode pedir a um jovem para planear o futuro e contribuir para a sua construcao quando nao sabemos se temos emprego daqui a tres meses? por isso, precisamos parar de culpar os jovens pela sua apatia e falar de participacao. a apatia e a de um sistema politico que ve esta exaustao e nada faz. a participacao politica nao se exige, constroi-se. e comeca quando temos transportes publicos gratuitos e frequentes, quando temos habitacao publica acessivel, quando combatemos a precariedade e garantimos um salario que permite viver, nao sobreviver. nao estamos apaticos. estamos revoltados, estamos preocupados e, sim, estamos exaustos. mas tambem estamos disponiveis. aos decisores politicos do distrito de setubal, principalmente aos recentes eleitos locais, deixo um repto: em vez de nos pedirem para participar mais, criem as condicoes para que o consigamos fazer. e chamem-nos tambem na hora de tomar decisoes. o interesse jovem pela politica despertara no exato momento em que a politica se interessar genuinamente por nos. ate la, continuaremos a levantar as nossas vozes para que a politica nos oica."><a href="/opiniao/estamos-exaustos"><span class="t">Estamos exaustos</span><span class="s">Diário do Distrito, novembro de 2025</span><span class="x">Costumo ouvir que “os jovens não querem saber” ou “os jovens não se interessam por política”. Mas quero, enquanto jovem deste distrito, contribuir para este debate de forma diferente. A crise da…</span></a></li>
 <li data-y="2025" data-o="O Setubalense" data-s="discurso de odio: “nao e preconceito, e so uma opiniao…” “nao merecem direitos”, “sao todos criminosos”, “nem deveriam estar aqui”, “eu so estou a dizer a verdade, sao inferiores”, “nao e preconceito, mas eles so causam problemas” e “temos de os expulsar a todos do pais” nao sao opinioes, sao exemplos de discursos de odio. assistimos a um aumento alarmante da disseminacao do discurso de odio em todas as partes da nossa sociedade. espalhar ideias intolerantes e violentas e um problema real que ameaca os nossos valores democraticos. o discurso de odio nao e apenas a partilha de uma opiniao, destroi o sentimento de comunidade, legitima a discriminacao e, em alguns casos, incentiva a violencia. quando determinados grupos sao alvos de ataques constantes devido a sua origem, religiao, orientacao sexual ou qualquer outra caracteristica, abre-se caminho para a desumanizacao e marginalizacao. hoje, a extrema direita e outros movimentos populistas esforcam-se a explorar o descontentamento social para promover narrativas de odio, apontando imigrantes, a comunidade lgbt+ e ate jornalistas como responsaveis pelos problemas da sociedade. grupos minoritarios tornam-se alvos faceis para quem prefere espalhar medo em vez de procurar solucoes reais. e essencial reforcar a educacao e a literacia mediatica. os cidadaos precisam de ferramentas para identificar e rejeitar discursos manipuladores, compreender a diferenca entre liberdade de expressao e incitacao ao odio. e fundamental responsabilizar aqueles que espalham mensagens de odio, garantindo que nao haja impunidade para quem promove discriminacao e violencia. cada um de nos tem um papel a desempenhar. e urgente denunciar discursos perigosos, apoiar as vitimas e promover um dialogo baseado no respeito e na diversidade. a democracia e a convivencia pacifica dependem da nossa capacidade de contrariar a intolerancia e de defender uma sociedade onde todos possam viver com dignidade e seguranca. o discurso de odio nao pode ser normalizado. se queremos um futuro mais justo e inclusivo, temos de nos levantar contra ele. sempre."><a href="/opiniao/discurso-de-odio-nao-e-preconceito-e-so-uma-opiniao"><span class="t">Discurso de ódio: “Não é preconceito, é só uma opinião…”</span><span class="s">O Setubalense, março de 2025</span><span class="x">“Não merecem direitos”, “São todos criminosos”, “Nem deveriam estar aqui”, “Eu só estou a dizer a verdade, são inferiores”, “Não é preconceito, mas eles só causam problemas” e “Temos de os expulsar a…</span></a></li>
 </ul>
-<p id="none" hidden>Não encontrei artigos com estes critérios. Experimenta outra palavra ou limpa os filtros.</p>
+<p id="none" hidden>Não existem artigos com estes critérios</p>
 </div>
 </main>
 <div class="sea" id="contacto">
