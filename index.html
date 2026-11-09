@@ -33,7 +33,7 @@ a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .sea{background:var(--sea);color:var(--on-sea)}
 nav{display:flex;justify-content:space-between;align-items:baseline;gap:20px;padding:14px 0;font-size:16px}
 nav a{text-decoration:none;margin-left:22px;white-space:nowrap}
-nav a:hover{text-decoration:underline;text-underline-offset:5px}
+@media(hover:hover){nav a:hover{text-decoration:underline;text-underline-offset:5px}}
 nav .brand{margin:0;font-weight:800;font-size:18px}
 @media(max-width:600px){nav{flex-direction:column;align-items:flex-start;gap:4px;padding:10px 0 8px}nav>div{display:flex;flex-wrap:wrap;gap:6px 20px}nav a{margin:0}}
 .hero{padding:84px 0 110px}
@@ -75,7 +75,7 @@ blockquote{margin:30px 0 0;padding-left:20px;border-left:4px solid var(--sea);fo
 .articles li{border-top:1px solid var(--line)}
 .articles a{display:block;padding:22px 0;text-decoration:none}
 .articles .t{font:800 clamp(21px,3vw,27px)/1.2 Archivo,sans-serif;letter-spacing:-.01em}
-.articles a:hover .t{text-decoration:underline;text-decoration-color:var(--sea);text-decoration-thickness:3px;text-underline-offset:6px}
+@media(hover:hover){.articles a:hover .t{text-decoration:underline;text-decoration-color:var(--sea);text-decoration-thickness:3px;text-underline-offset:6px}}
 .articles .s{display:block;margin-top:6px;font-size:16px;color:var(--muted)}
 .contact{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:36px 28px;padding:84px 0 20px}
 .contact-text{flex:1 1 380px}
@@ -83,7 +83,7 @@ blockquote{margin:30px 0 0;padding-left:20px;border-left:4px solid var(--sea);fo
 .contact p{max-width:30em;margin:0 0 30px}
 .social{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:12px}
 .social a{display:flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:50%;background:var(--on-sea);color:var(--paper)}
-.social a:hover{opacity:.85}
+@media(hover:hover){.social a:hover{opacity:.85}}
 .social svg{width:22px;height:22px;fill:currentColor}
 footer{padding:30px 0 34px;font-size:15px;font-weight:600}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;border-bottom:1px solid rgba(20,20,20,.14)}
@@ -94,7 +94,7 @@ footer{padding:30px 0 34px;font-size:15px;font-weight:600}
 .a11y-panel h2{font-size:18px;margin:0 0 8px;letter-spacing:0}
 .a11y-panel svg{width:20px;height:20px;flex-shrink:0;fill:currentColor}
 .a11y-panel button{display:flex;align-items:center;gap:12px;width:100%;text-align:left;font:600 15px Archivo,Arial,sans-serif;color:inherit;background:transparent;border:0;border-radius:6px;padding:9px 10px;cursor:pointer}
-.a11y-panel button:hover{background:var(--tint)}
+@media(hover:hover){.a11y-panel button:hover{background:var(--tint)}}
 .a11y-panel button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
 .a11y-panel button:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
 html.a11y-hc{--paper:#000;--ink:#fff;--muted:#eee;--sea:#000;--on-sea:#ffd400;--tint:#000;--line:#fff;--accent:#ffd400}
