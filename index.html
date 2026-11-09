@@ -245,22 +245,6 @@ if(mq.addEventListener)mq.addEventListener("change",apply);else mq.addListener(a
 document.addEventListener("copy",function(e){
 var sel=window.getSelection();if(!sel||sel.isCollapsed||!e.clipboardData)return;
 var ae=document.activeElement;if(ae&&(ae.tagName==="INPUT"||ae.tagName==="TEXTAREA"))return;
-var box=document.createElement("div"),i,j,n;
-for(i=0;i<sel.rangeCount;i++)box.appendChild(sel.getRangeAt(i).cloneContents());
-n=box.querySelectorAll("script,style,svg,form,input,select,i[aria-hidden],.skip,.a11y,[hidden],details:not([open])>p");
-for(i=0;i<n.length;i++)if(n[i].parentNode)n[i].parentNode.removeChild(n[i]);
-n=box.querySelectorAll("button");
-for(i=0;i<n.length;i++){while(n[i].firstChild)n[i].parentNode.insertBefore(n[i].firstChild,n[i]);n[i].parentNode.removeChild(n[i])}
-n=box.querySelectorAll("details");
-for(i=0;i<n.length;i++){var d0=document.createElement("div");d0.innerHTML=n[i].innerHTML;n[i].parentNode.replaceChild(d0,n[i])}
-n=box.querySelectorAll("span.t,span.s,span.x,span.gt,span.gd,span.gm,span.gc,summary");
-for(i=0;i<n.length;i++){var d=document.createElement("div");d.innerHTML=n[i].innerHTML;n[i].parentNode.replaceChild(d,n[i])}
-n=box.querySelectorAll("*");
-for(i=0;i<n.length;i++){var el=n[i],at=el.attributes;
-for(j=at.length-1;j>=0;j--){var k=at[j].name;if(k!=="href"&&k!=="src"&&k!=="alt"&&k!=="datetime")el.removeAttribute(k)}
-if(el.tagName==="A"&&el.getAttribute("href"))el.setAttribute("href",el.href);
-if(el.tagName==="IMG"&&el.getAttribute("src"))el.setAttribute("src",el.src)}
-e.clipboardData.setData("text/html",box.innerHTML);
 e.clipboardData.setData("text/plain",sel.toString());
 e.preventDefault()});
 document.getElementById("year").textContent=new Date().getFullYear();
