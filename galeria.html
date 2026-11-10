@@ -206,7 +206,7 @@ main:focus,.article:focus{outline:none}
 </div></header>
 <main class="article" id="conteudo" tabindex="-1">
 <div class="wrap">
-<p class="crumb"><a href="/biografia">← Biografia</a></p>
+<p class="crumb"><a href="/biografia" id="gal-back">← Biografia</a></p>
 <h1>Galeria de fotos</h1>
 <p class="gal-all"><a class="btn" href="/fotos/henrique-longa-fotografias.zip" download>Descarregar todas (.zip)</a></p>
 <ul class="gal">
@@ -294,6 +294,9 @@ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.c
 function ok(){b.textContent="Copiado";setTimeout(function(){b.textContent=t},2000)}
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,function(){window.prompt("Copia o texto:",u)})}else{window.prompt("Copia o texto:",u)}});
 document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+<script>
+(function(){var a=document.getElementById("gal-back");if(!a)return;try{var r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname.replace(/\/$/,"")==="/imprensa"){a.href="/imprensa";a.textContent="← Imprensa"}}catch(e){}})();
 </script>
 <script>
 (function(){var n=document.getElementById("notice");if(!n)return;var K="hl-notice-alerta-charles-2026-11";
