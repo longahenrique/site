@@ -158,11 +158,39 @@ main:focus,.article:focus{outline:none}
 .rss a{text-underline-offset:5px}
 @media(max-width:600px){.article{padding:36px 0 52px}.article .text p{font-size:19px}}
 
+.notice{background:var(--ink);color:var(--paper);padding:14px 0;font:500 16px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+.notice[hidden]{display:none}
+.notice .wrap{display:flex;gap:20px;align-items:flex-start;justify-content:space-between}
+.notice-body{max-width:62em}
+.notice p{margin:0 0 6px}
+.notice .notice-t{font-weight:800;font-size:18px;line-height:1.3}
+.notice ul{margin:2px 0 8px;padding-left:1.2em}
+.notice a{color:inherit;text-underline-offset:4px}
+.notice-close{flex-shrink:0;padding:7px 13px;border:2px solid currentColor;border-radius:6px;background:transparent;color:inherit;font:700 14px Archivo,"Archivo Fallback",Arial,sans-serif;cursor:pointer}
+@media(max-width:700px){.notice .wrap{flex-direction:column-reverse;align-items:stretch}.notice-close{align-self:flex-end}}
+
 </style>
 </head>
 <body>
 <a class="skip" href="#conteudo">Saltar para o conteúdo principal</a>
 <div id="page">
+<div class="notice" id="notice" role="region" aria-label="Aviso de alerta meteorológico" hidden>
+<div class="wrap">
+<div class="notice-body">
+<p class="notice-t">Alerta meteorológico em Sesimbra: tempestade Charles</p>
+<p>O IPMA prevê precipitação severa, forte agitação marítima e rajadas de vento entre 120 e 140 km/h. A Câmara Municipal de Sesimbra declarou a Situação de Alerta para o concelho, com as escolas e os serviços públicos não essenciais encerrados a 11 de novembro.</p>
+<p>Estradas cortadas:</p>
+<ul>
+<li>Marginal de Sesimbra: encerrada ao público desde 10 de novembro</li>
+<li>Avenida dos Combatentes, em Sesimbra: corte de trânsito</li>
+<li>Avenida dos Aliados, na Quinta do Conde: corte de trânsito</li>
+<li>Acesso ao Porto de Abrigo: interdito a 11 de novembro, entre as 12h e as 24h</li>
+</ul>
+<p>Evita deslocações desnecessárias e as zonas costeiras. Mais informação no <a href="https://www.sesimbra.pt/noticia-74/municipio-em-situacao-de-alerta-devido-ao-mau-tempo" target="_blank" rel="noopener">site da Câmara Municipal de Sesimbra</a>, no <a href="https://www.ipma.pt/pt/index.html" target="_blank" rel="noopener">IPMA</a> e na <a href="https://prociv.gov.pt/pt/home/" target="_blank" rel="noopener">Proteção Civil</a>. Informação de 10 de novembro de 2026.</p>
+</div>
+<button type="button" class="notice-close">Fechar aviso</button>
+</div>
+</div>
 <header class="top sea"><div class="wrap">
 <nav>
 <a class="brand" href="https://henriquelonga.pt/">Henrique Longa</a>
@@ -281,6 +309,14 @@ document.addEventListener("click",function(e){var b=e.target.closest&&e.target.c
 function ok(){b.textContent="Ligação copiada";setTimeout(function(){b.textContent=t},2000)}
 if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(u).then(ok,function(){window.prompt("Copia a ligação:",u)})}else{window.prompt("Copia a ligação:",u)}});
 document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+<script>
+(function(){var n=document.getElementById("notice");if(!n)return;var K="hl-notice-alerta-charles-2026-11";
+try{if(localStorage.getItem(K)==="1"){n.parentNode.removeChild(n);return}}catch(e){}
+if(Date.now()>Date.parse("2026-11-11T23:59:59+00:00")){n.parentNode.removeChild(n);return}
+n.hidden=false;
+n.querySelector(".notice-close").addEventListener("click",function(){n.hidden=true;try{localStorage.setItem(K,"1")}catch(e){}});
+})();
 </script>
 </body>
 </html>
