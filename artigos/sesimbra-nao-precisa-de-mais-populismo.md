@@ -1,5 +1,5 @@
 ---
-titulo: Sesimbra não precisa de mais populismo!
+titulo: Sesimbra não precisa de mais populismo
 data: 2026-09-16
 meio: O Setubalense
 linha: Publicado n’O Setubalense em {data}.
