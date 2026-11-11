@@ -162,7 +162,7 @@ FONTFACE='''@font-face{font-family:Archivo;font-style:normal;font-weight:500;fon
 '''
 import json
 def extra_head(ld=None):
-    out='<link rel="alternate" type="application/rss+xml" title="Henrique Longa: artigos de opinião" href="/feed.xml">\n'
+    out='<link rel="preload" href="/fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n'+'<link rel="alternate" type="application/rss+xml" title="Henrique Longa: artigos de opinião" href="/feed.xml">\n'
     if GSC_META: out+='<meta name="google-site-verification" content="%s">\n'%GSC_META
     if ld: out+='<script type="application/ld+json">%s</script>\n'%json.dumps(ld,ensure_ascii=False,separators=(',',':'))
     if GOATCOUNTER: out+='<script data-goatcounter="https://%s.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>\n'%GOATCOUNTER
@@ -305,6 +305,8 @@ for slug,d in arts.items():
     orig=re.search(r'href="(https?://[^"]+)"',d['after'])
     ld={"@context":"https://schema.org","@type":"Article","headline":re.sub('<[^>]+>','',d['title']),"description":d['desc'],"inLanguage":"pt-PT","datePublished":iso,"url":SITE+'/opiniao/'+slug,"mainEntityOfPage":SITE+'/opiniao/'+slug,"image":ogimg,"author":PERSON,"publisher":{"@id":SITE+"/#pessoa"}}
     if orig: ld["sameAs"]=orig.group(1)
+    bc={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Opinião","item":SITE+"/opiniao/"},{"@type":"ListItem","position":3,"name":re.sub('<[^>]+>','',d['title'])}]}
+    ld=[ld,bc]
     open(f'_site/opiniao/{slug}.html','w',encoding='utf-8').write(head(f'/opiniao/{slug}',d['title'],d['desc'],css+'\n'+article_css,'article',ld,f'<meta property="article:published_time" content="{iso}">\n<meta property="article:author" content="{SITE}/biografia">\n<meta property="article:section" content="Opinião">\n<meta property="og:image:alt" content="{esc(tt)}, artigo de opinião de Henrique Longa">\n',ogimg)+body(header,main))
 # biography page
 bio_paras=['Henrique José Longa Correia, nascido a 1 de abril de 2005 em Lisboa e natural de Sesimbra, é um estudante e ativista cívico associado ao partido LIVRE.',
@@ -537,7 +539,7 @@ home=home.replace('</body>',NOTICE_JS+'</body>',1)
 home_lis=''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s</span></a></li>'%(k,arts[k]['title'],OUT[k]) for k in ORDER[:3])
 home=re.sub(r'<ul class="articles">.*?</ul>',lambda m:'<ul class="articles">'+home_lis+'</ul>',home,count=1,flags=re.S)
 home_ld={"@context":"https://schema.org","@graph":[PERSON,WEBSITE]}
-home=home.replace('</head>',extra_head(home_ld)+'</head>',1)
+home=home.replace('<style>',extra_head(home_ld)+'<style>',1)
 open('_site/index.html','w',encoding='utf-8').write(home)
 
 # ---------- press page ----------
@@ -588,8 +590,9 @@ press_main=f"""<main class="article" id="conteudo" tabindex="-1">
 open('_site/imprensa.html','w',encoding='utf-8').write(head('/imprensa','Imprensa','Contacto de imprensa, biografias curtas para copiar, fotografias e aparições na comunicação social de Henrique Longa.',css+'\n'+article_css+press_css,'website')+body(header,press_main))
 # ---------- robots, sitemap, rss ----------
 open('_site/robots.txt','w',encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: '+SITE+'/sitemap.xml\n')
+LASTMOD={'/opiniao/'+r[1]:r[0] for r in rows}   # data de publicação de cada artigo
 urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
-open('_site/sitemap.xml','w',encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('<url><loc>%s%s</loc></url>\n'%(SITE,u if u!='/' else '/') for u in urls)+'</urlset>\n')
+open('_site/sitemap.xml','w',encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('<url><loc>%s%s</loc>%s</url>\n'%(SITE,u,('<lastmod>%s</lastmod>'%LASTMOD[u]) if u in LASTMOD else '') for u in urls)+'</urlset>\n')
 import datetime
 def xesc(t): return t.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
 items=''
