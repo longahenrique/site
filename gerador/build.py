@@ -142,12 +142,13 @@ bio_css='''
 .res-m div:first-child{border-top:2px solid var(--ink)}
 .res-m dt{margin:0;font:500 16px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
 .res-m dd{margin:0;text-align:right;font:800 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
-@media(max-width:700px){.res-desk{display:none}.res-m{display:block}}
-table.res{width:100%;min-width:600px;border-collapse:collapse;font:500 17px Archivo,"Helvetica Neue",Arial,sans-serif}
+@media(max-width:860px){.res-desk{display:none}.res-m{display:block}}
+table.res{width:100%;min-width:800px;table-layout:fixed;border-collapse:collapse;font:500 17px Archivo,"Helvetica Neue",Arial,sans-serif}
 .res th,.res td{padding:13px 14px 13px 0;text-align:left;border-top:2px solid rgba(20,20,20,.3);white-space:nowrap}
 .res thead th{border-top:0;border-bottom:2px solid var(--ink);font-weight:800}
 .res .n{text-align:right;padding-right:24px}
 .res abbr{text-decoration:none}
+.res .c1{width:9%}.res .c2{width:12%}.res .c3{width:19%}.res .c4{width:16%}.res .c5{width:7%}.res .c6{width:11%}.res .c7{width:9%}.res .c8{width:17%}
 @media(max-width:600px){#bio h1{margin-bottom:18px}.results h3{font-size:21px}}
 '''
 SOCIAL_META='<meta property="og:site_name" content="Henrique Longa">\n<meta name="twitter:site" content="@henriquelonga">\n<meta name="twitter:creator" content="@henriquelonga">'
@@ -317,11 +318,12 @@ bio_paras=['Henrique José Longa Correia, nascido a 1 de abril de 2005 em Lisboa
 def table(tid,cols,rows):
     th=''.join('<th scope="col"%s>%s</th>'%(' class="n"' if c[1] else '',c[0]) for c in cols)
     tr=''.join('<tr>'+''.join(('<td class="n">%s</td>' if cols[i][1] else '<td>%s</td>')%v for i,v in enumerate(r))+'</tr>' for r in rows)
+    COLS=''.join('<col class="c%d">'%i for i in range(1,9))
     LAB={'%':'Percentagem de votos'}
     def lab(c):
         t=re.sub('<[^>]+>','',c[0]); return 'Classificação do partido' if t=='Cl.' else LAB.get(t,t)
     dl=''.join('<dl class="res-m" aria-labelledby="%s">'%tid+''.join('<div><dt>%s</dt><dd>%s</dd></div>'%(lab(cols[i]),v) for i,v in enumerate(r))+'</dl>' for r in rows)
-    return f'<div class="tbl res-desk" role="region" aria-labelledby="{tid}" tabindex="0"><table class="res"><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div>'+dl
+    return f'<div class="tbl res-desk" role="region" aria-labelledby="{tid}" tabindex="0"><table class="res"><colgroup>{COLS}</colgroup><thead><tr>{th}</tr></thead><tbody>{tr}</tbody></table></div>'+dl
 cl='<abbr title="Classificação do partido">Cl.</abbr>'
 t1=table('t1',[('Data',0),('Partido',0),('Círculo eleitoral',0),('Posição',0),(cl,1),('Votos',1),('%',1),('Resultado',0)],[['2025','Livre (L)','Setúbal','15.º (em 18)','5.º','28&nbsp;700','5,84','Não eleito']])
 t2=table('t2',[('Data',0),('Partido',0),('Concelho',0),('Posição',0),(cl,1),('Votos',1),('%',1),('Resultado',0)],[['2025','Livre (L)','Sesimbra','1.º (em 21)','6.º','797','3,27','Não eleito']])
