@@ -7,7 +7,7 @@ SITE='https://henriquelonga.pt'
 # ---- aviso no topo (None = sem aviso) ----
 NOTICE_ID='alerta-charles-2026-11'
 NOTICE_UNTIL='2026-11-11T23:59:59+00:00'   # Lisboa em novembro = UTC+0
-NOTICE_ON=True
+NOTICE_ON=False   # True liga o aviso no topo; False desliga-o
 NOTICE_HTML=''
 NOTICE_JS=''
 NOTICE_CSS=''
