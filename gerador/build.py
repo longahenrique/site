@@ -232,7 +232,7 @@ for f in sorted(glob.glob('artigos/*.md')):
     desc=meta.get('descricao') or re.sub(r'\s+',' ',paras[0])[:160]
     arts[slug]=dict(title=esc(meta['titulo']),desc=esc(desc).replace('"','&quot;'),meta=esc(meta['linha']).replace('{data}',time),text=''.join('<p>%s</p>\n'%inline(p) for p in paras),after=after,meio=meta['meio'])
 if not arts: raise SystemExit('ERRO: não há artigos na pasta artigos/')
-PERSON={"@type":"Person","@id":SITE+"/#pessoa","name":"Henrique Longa","alternateName":"Henrique José Longa Correia","url":SITE+"/","image":SITE+"/fotos/henrique-longa-retrato.jpg","description":"Estudante de Química Aplicada na NOVA FCT e ativista cívico, membro do LIVRE em Sesimbra.","jobTitle":"Estudante e ativista cívico","affiliation":[{"@type":"Organization","name":"LIVRE"},{"@type":"Organization","name":"Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa"},{"@type":"Organization","name":"Associação Nacional de Estudantes de Química"}],"sameAs":["https://www.instagram.com/henriquelonga","https://www.facebook.com/henriquelongacorreia","https://x.com/henriquelonga","https://www.linkedin.com/in/henriquelonga","https://linktr.ee/henriquelonga"]}
+PERSON={"@type":"Person","@id":SITE+"/#pessoa","name":"Henrique Longa","alternateName":"Henrique José Longa Correia","url":SITE+"/","image":SITE+"/fotos/henrique-longa-retrato.jpg","description":"Estudante de Química Aplicada na NOVA FCT e ativista cívico, membro do LIVRE em Sesimbra.","jobTitle":"Estudante e ativista cívico","affiliation":[{"@type":"Organization","name":"LIVRE"},{"@type":"Organization","name":"Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa"},{"@type":"Organization","name":"Associação Nacional de Estudantes de Química"}],"sameAs":["https://www.instagram.com/henriquelonga","https://www.facebook.com/henriquelongacorreia","https://x.com/henriquelonga","https://www.linkedin.com/in/henriquelonga"]}
 WEBSITE={"@type":"WebSite","@id":SITE+"/#site","url":SITE+"/","name":"Henrique Longa","inLanguage":"pt-PT","publisher":{"@id":SITE+"/#pessoa"}}
 # ---------- 4. write the site ----------
 shutil.rmtree('_site',ignore_errors=True); os.makedirs('_site/opiniao')
@@ -269,11 +269,12 @@ for slug,d in arts.items():
     _when=re.search(r'<time[^>]*>(.*?)</time>',d['meta']).group(1)
     og_image(slug,tt,OUT[slug]+', '+_when)
     ogimg=SITE+'/og/'+slug+'.jpg'
+    wa_text=tt+'\n\n'+url   # título, linha em branco, endereço
     share=f'''<div class="share">
 <h2>Partilhar</h2>
 <ul>
 <li><button type="button" data-copy>Copiar ligação</button></li>
-<li><a href="https://wa.me/?text={enc(tt+' '+url)}" target="_blank" rel="noopener">WhatsApp</a></li>
+<li><a href="https://wa.me/?text={enc(wa_text)}" target="_blank" rel="noopener">WhatsApp</a></li>
 <li><a href="https://x.com/intent/post?url={enc(url)}&amp;text={enc(tt)}" target="_blank" rel="noopener">X</a></li>
 <li><a href="https://www.facebook.com/sharer/sharer.php?u={enc(url)}" target="_blank" rel="noopener">Facebook</a></li>
 <li><a href="https://www.linkedin.com/sharing/share-offsite/?url={enc(url)}" target="_blank" rel="noopener">LinkedIn</a></li>
@@ -485,7 +486,7 @@ priv=f"""<p>Esta página explica que dados pessoais este site trata e porquê. E
 <p>Se usares o botão de email ou escreveres para o endereço indicado, uso o teu nome, o teu endereço de email e o conteúdo da mensagem apenas para te responder. As mensagens passam pelo serviço de email que aloja este endereço, que as trata segundo a sua própria política de privacidade.</p>
 <p>Uma mensagem dirigida a uma pessoa com atividade política pode revelar opiniões políticas, que são dados de categoria especial (artigo 9.º do RGPD). Se a tua mensagem os incluir, o seu tratamento baseia-se no consentimento que dás ao enviá-la, e podes retirá-lo a qualquer momento, pedindo-me para apagar a conversa. Não divulgo as mensagens a terceiros, salvo obrigação legal. Guardo-as pelo tempo necessário para tratar do assunto e apago-as quando deixarem de ser precisas.</p>
 <h2>Ligações para outros sites</h2>
-<p>O site tem ligações para as redes sociais (Instagram, Facebook, X e LinkedIn), para o Linktree e para os jornais onde publiquei artigos. Quando clicas numa ligação, passas a estar sujeito à política de privacidade desse serviço, que não controlo.</p>
+<p>O site tem ligações para as redes sociais (Instagram, Facebook, X e LinkedIn) e para os jornais onde publiquei artigos. Quando clicas numa ligação, passas a estar sujeito à política de privacidade desse serviço, que não controlo.</p>
 <h2>Os teus direitos</h2>
 <p>Tens o direito de pedir acesso aos teus dados pessoais, a sua retificação ou apagamento, a limitação ou oposição ao tratamento e a portabilidade, nos termos do Regulamento Geral sobre a Proteção de Dados (RGPD). Para exercer qualquer um destes direitos, escreve para <a href="mailto:{EMAIL}">{EMAIL}</a>. Tens ainda o direito de apresentar reclamação à Comissão Nacional de Proteção de Dados (CNPD), em <a href="https://www.cnpd.pt" target="_blank" rel="noopener">www.cnpd.pt</a>.</p>
 <h2>Alterações</h2>
@@ -508,7 +509,7 @@ acc=f"""<p>Quero que este site possa ser usado por todas as pessoas. A referênc
 <ul>
 <li>As tabelas de resultados eleitorais da página de biografia deslizam na horizontal em ecrãs pequenos.</li>
 <li>As descrições das fotografias são curtas e descrevem a cena de forma geral.</li>
-<li>As ligações para sites de terceiros (jornais, redes sociais, Linktree) levam a páginas cuja acessibilidade não controlo.</li>
+<li>As ligações para sites de terceiros (jornais e redes sociais) levam a páginas cuja acessibilidade não controlo.</li>
 </ul>
 <h2>Encontraste um problema?</h2>
 <p>Se alguma parte do site te for difícil de usar, ou se precisares do conteúdo noutro formato, escreve para <a href="mailto:{EMAIL}">{EMAIL}</a>. Respondo e, sempre que possível, corrijo.</p>
