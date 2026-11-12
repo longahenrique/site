@@ -237,7 +237,7 @@ for f in sorted(glob.glob('artigos/*.md')):
     if meta.get('link'): after+='<a href="%s" target="_blank" rel="noopener">%s</a>\n'%(esc(meta['link']),esc(meta.get('link-texto') or 'Ler o artigo original'))
     after+='<a href="/opiniao">Todos os artigos</a>\n'
     desc=meta.get('descricao') or re.sub(r'\s+',' ',paras[0])[:160]
-    arts[slug]=dict(title=esc(meta['titulo']),desc=esc(desc).replace('"','&quot;'),meta=esc(meta['linha']).replace('{data}',time),text=''.join('<p>%s</p>\n'%inline(p) for p in paras),after=after,meio=meta['meio'])
+    arts[slug]=dict(titulo_img=meta.get('titulo-imagem',''),title=esc(meta['titulo']),desc=esc(desc).replace('"','&quot;'),meta=esc(meta['linha']).replace('{data}',time),text=''.join('<p>%s</p>\n'%inline(p) for p in paras),after=after,meio=meta['meio'])
 if not arts: raise SystemExit('ERRO: não há artigos na pasta artigos/')
 PERSON={"@type":"Person","@id":SITE+"/#pessoa","name":"Henrique Longa","alternateName":"Henrique José Longa Correia","url":SITE+"/","image":SITE+"/fotos/henrique-longa-retrato.jpg","description":"Estudante de Química Aplicada na NOVA FCT e ativista cívico, membro do LIVRE em Sesimbra.","jobTitle":"Estudante e ativista cívico","affiliation":[{"@type":"Organization","name":"LIVRE"},{"@type":"Organization","name":"Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa"},{"@type":"Organization","name":"Associação Nacional de Estudantes de Química"}],"sameAs":["https://www.instagram.com/henriquelonga","https://www.facebook.com/henriquelongacorreia","https://x.com/henriquelonga","https://www.linkedin.com/in/henriquelonga"]}
 WEBSITE={"@type":"WebSite","@id":SITE+"/#site","url":SITE+"/","name":"Henrique Longa","inLanguage":"pt-PT","publisher":{"@id":SITE+"/#pessoa"}}
@@ -265,6 +265,12 @@ def og_image(slug,title,line):
     for size in range(76,35,-2):
         f=ImageFont.truetype(_FD+'InterDisplay-ExtraBold.otf',size); ls=wrap(title,f)
         if len(ls)<=6 and len(ls)*size*1.13<=330 and max(f.getlength(x) for x in ls)<=colw: break
+    else:   # não cabe nem no tamanho mínimo: encurta com "…" para não sair da imagem
+        f=ImageFont.truetype(_FD+'InterDisplay-ExtraBold.otf',36); size=36; words=title.split()
+        while len(words)>1:
+            ls=wrap(' '.join(words)+'…',f)
+            if len(ls)*size*1.13<=330 and max(f.getlength(x) for x in ls)<=colw: break
+            words.pop()
     d.text((70,60),'Artigo de opinião',font=ImageFont.truetype(_FD+'Inter-SemiBold.otf',30),fill=INK)
     y=125
     for x in ls: d.text((70,y),x,font=f,fill=INK); y+=int(size*1.13)
@@ -274,7 +280,7 @@ def og_image(slug,title,line):
 for slug,d in arts.items():
     url=SITE+'/opiniao/'+slug; tt=_h.unescape(re.sub('<[^>]+>','',d['title']))
     _when=re.search(r'<time[^>]*>(.*?)</time>',d['meta']).group(1)
-    og_image(slug,tt,OUT[slug]+', '+_when)
+    og_image(slug,(arts[slug].get('titulo_img') or tt),OUT[slug]+', '+_when)
     ogimg=SITE+'/og/'+slug+'.jpg'
     wa_text=tt+'\n\n'+url   # título, linha em branco, endereço
     share=f'''<div class="share">
