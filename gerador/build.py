@@ -5,6 +5,7 @@ GOATCOUNTER='henriquelonga'   # codigo da conta GoatCounter; None = sem estatist
 GSC_META=None      # valor do meta google-site-verification; None = nao usado
 SITE='https://henriquelonga.pt'
 # ---- aviso no topo (None = sem aviso) ----
+MOTION_CSS='\n@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto!important}*,*::before,*::after{transition:none!important;animation:none!important}}\n'
 NOTICE_ID='alerta-charles-2026-11'
 NOTICE_UNTIL='2026-11-11T23:59:59+00:00'   # Lisboa em novembro = UTC+0
 NOTICE_ON=False   # True liga o aviso no topo; False desliga-o
@@ -191,7 +192,7 @@ def head(path,title,desc,css_text,ogtype='article',ld=None,meta_extra='',image='
 <meta name="twitter:card" content="summary_large_image">
 {SOCIAL_META}
 {meta_extra}{extra_head(ld)}<style>
-{FONTFACE}{css_text.replace('Archivo,','Archivo,"Archivo Fallback",')}{NOTICE_CSS}
+{FONTFACE}{css_text.replace('Archivo,','Archivo,"Archivo Fallback",')}{NOTICE_CSS}{MOTION_CSS}
 </style>
 </head>
 '''
@@ -318,7 +319,7 @@ for slug,d in arts.items():
 # biography page
 bio_paras=['Henrique José Longa Correia, nascido a 1 de abril de 2005 em Lisboa e natural de Sesimbra, é um estudante e ativista cívico associado ao partido LIVRE.',
 'Henrique Longa é aluno na Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa, onde realiza a Licenciatura em Química Aplicada. No seu percurso académico, focou a sua investigação no âmbito da Síntese Orgânica.',
-'O seu percurso é fortemente marcado pelo associativismo e pelo envolvimento cívico, a começar por um percurso de cerca de doze anos no Escutismo. Integrou a Greve Climática Estudantil e o movimento internacional Fridays for Future, participando ativamente na organização de greves pelo clima e ações de sensibilização. Desta interseção entre sustentabilidade, juventude e bem-estar resultou a coautoria do <em>Teenager Climate Guide: Promover a comunicação e a saúde mental no contexto da crise climática</em>, um manual pioneiro publicado pela Ecopsi e Greve Climática Estudantil para apoiar jovens ativistas na comunicação e na preservação da saúde mental.',
+'O seu percurso é fortemente marcado pelo associativismo e pelo envolvimento cívico, a começar por um percurso de cerca de doze anos no Escutismo. Integrou a Greve Climática Estudantil e o movimento internacional <span lang="en">Fridays for Future</span>, participando ativamente na organização de greves pelo clima e ações de sensibilização. Desta interseção entre sustentabilidade, juventude e bem-estar resultou a coautoria do <em><span lang="en">Teenager Climate Guide</span>: Promover a comunicação e a saúde mental no contexto da crise climática</em>, um manual pioneiro publicado pela Ecopsi e Greve Climática Estudantil para apoiar jovens ativistas na comunicação e na preservação da saúde mental.',
 'Paralelamente, assumiu responsabilidades associativas como dirigente na Associação Nacional de Estudantes de Química, exercendo atualmente funções de Vice-Presidente para as Operações, colaborou com o Conselho Nacional da Juventude e integrou a comissão pedagógica do seu curso e a estrutura da Associação de Estudantes da NOVA FCT.',
 'Na política partidária, entrou para o Partido LIVRE em janeiro de 2024. Integra, desde agosto de 2024, o Grupo de Coordenação Local do Núcleo Territorial Distrital de Setúbal. Nas Eleições Legislativas de 2025 integrou a lista do partido pelo círculo eleitoral de Setúbal, e no mesmo ano assumiu o papel de cabeça-de-lista à Assembleia Municipal de Sesimbra nas Eleições Autárquicas, sendo um dos candidatos mais jovens.']
 def table(tid,cols,rows):
@@ -434,7 +435,7 @@ with zipfile.ZipFile('_site/fotos/henrique-longa-fotografias.zip','w',zipfile.ZI
         mb=('%.1f'%(os.path.getsize(ph['src'])/1e6)).replace('.',',')
         desc='<span class="gd">%s</span>'%esc(ph['desc']) if ph.get('desc') else ''
         cred='<span class="gc">Fotografia: %s</span>'%esc(ph['credit']) if ph['credit'] else ''
-        items+=f'<li><figure><a href="/fotos/{ph["file"]}" target="_blank" rel="noopener"><img src="/fotos/miniaturas/{ph["file"]}" width="{t.width}" height="{t.height}" alt="{esc(ph["alt"])}" loading="lazy"></a><figcaption><span class="gt">{ph["title"]}</span>{desc}<span class="gm">JPG, {full[0]} × {full[1]} px, {mb} MB</span>{cred}<a class="dl" href="/fotos/{ph["file"]}" download>Descarregar</a></figcaption></figure></li>\n'
+        items+=f'<li><figure><a href="/fotos/{ph["file"]}" target="_blank" rel="noopener"><img src="/fotos/miniaturas/{ph["file"]}" width="{t.width}" height="{t.height}" alt="{esc(ph["alt"])}" loading="lazy"></a><figcaption><span class="gt">{ph["title"]}</span>{desc}<span class="gm">JPG, {full[0]} × {full[1]} px, {mb} MB</span>{cred}<a class="dl" href="/fotos/{ph["file"]}" download aria-label="Descarregar: {esc(ph["title"])}">Descarregar</a></figcaption></figure></li>\n'
 gal_css="""
 .gal-all{margin:26px 0 8px}
 .gal{list-style:none;margin:28px 0 0;padding:0;columns:300px;column-gap:32px}
@@ -520,7 +521,7 @@ priv=f"""<p>Esta página explica que dados pessoais este site trata e porquê. E
 """
 acc=f"""<p>Quero que este site possa ser usado por todas as pessoas. A referência que sigo são as Diretrizes de Acessibilidade para o Conteúdo Web (WCAG) 2.1, nível AA.</p>
 <h2>Estado de conformidade</h2>
-<p>Esta declaração é voluntária. O site não foi sujeito a uma auditoria de acessibilidade independente. Foi verificado com ferramentas automáticas, como o AccessMonitor, e os problemas encontrados foram corrigidos. Por isso, não declaro conformidade total com as WCAG 2.1, só o objetivo de as cumprir.</p>
+<p>Esta declaração é voluntária. O site não foi sujeito a uma auditoria de acessibilidade independente. Foi verificado com ferramentas automáticas, como o AccessMonitor, e com testes próprios em vários tamanhos de ecrã, e os problemas encontrados foram corrigidos. Por isso, não declaro conformidade total com as WCAG 2.1, só o objetivo de as cumprir.</p>
 <h2>O que o site já tem</h2>
 <ul>
 <li>Uma ligação “Saltar para o conteúdo principal”, que aparece quando se navega com o teclado.</li>
@@ -528,12 +529,16 @@ acc=f"""<p>Quero que este site possa ser usado por todas as pessoas. A referênc
 <li>Texto alternativo nas imagens, e os ícones decorativos marcados para os leitores de ecrã os ignorarem.</li>
 <li>Navegação por teclado, com indicação visível do elemento selecionado.</li>
 <li>Um menu de acessibilidade, no canto inferior esquerdo, para aumentar e diminuir o texto, usar escala de cinza, aumentar o contraste, inverter as cores, usar fundo claro, sublinhar as ligações e mudar para uma letra mais legível. As escolhas ficam guardadas no teu navegador.</li>
-<li>Um desenho que se adapta ao telemóvel, ao tablet e ao computador, e que suporta ampliação.</li>
+<li>Um desenho que se adapta ao telemóvel, ao tablet e ao computador, e que suporta ampliação. As páginas não obrigam a deslizar para o lado em ecrãs com 320 píxeis de largura.</li>
+<li>No telemóvel, as tabelas de resultados eleitorais passam a listas, para não ser preciso deslizar para o lado.</li>
+<li>As ligações que abrem num separador novo avisam os leitores de ecrã disso. Os botões de descarregar fotografias dizem, para os leitores de ecrã, de que fotografia se trata, e as expressões em inglês estão marcadas com o idioma certo, para serem lidas com a pronúncia correta.</li>
+<li>Respeito pela definição do sistema “reduzir movimento”: quem a tiver ligada deixa de ver a página deslizar e as setas a rodar.</li>
 <li>O idioma da página indicado (português de Portugal).</li>
 </ul>
 <h2>Limitações conhecidas</h2>
 <ul>
 <li>As descrições das fotografias são curtas e descrevem a cena de forma geral.</li>
+<li>Em ecrãs de toque, as ligações do rodapé e do menu são pequenas, o que pode dificultar o toque.</li>
 <li>As ligações para sites de terceiros (jornais e redes sociais) levam a páginas cuja acessibilidade não controlo.</li>
 </ul>
 <h2>Encontraste um problema?</h2>
@@ -547,7 +552,7 @@ home=re.sub(r'<link rel="preconnect" href="https://fonts.googleapis.com">\n','',
 home=home.replace('<link rel="icon"','<link rel="canonical" href="https://henriquelonga.pt/">\n<link rel="icon"',1)
 home=home.replace('<meta name="twitter:card" content="summary_large_image">','<meta name="twitter:card" content="summary_large_image">\n'+SOCIAL_META,1)
 home=re.sub(r'<link rel="stylesheet" href="https://fonts.googleapis.com/css2[^>]*>\n','',home)
-home=re.sub(r'(<style>)(.*?)(</style>)',lambda m:m.group(1)+'\n'+FONTFACE+m.group(2).lstrip('\n').replace('Archivo,','Archivo,"Archivo Fallback",')+NOTICE_CSS+m.group(3),home,count=1,flags=re.S)
+home=re.sub(r'(<style>)(.*?)(</style>)',lambda m:m.group(1)+'\n'+FONTFACE+m.group(2).lstrip('\n').replace('Archivo,','Archivo,"Archivo Fallback",')+NOTICE_CSS+MOTION_CSS+m.group(3),home,count=1,flags=re.S)
 home=home.replace('<div id="page">\n','<div id="page">\n'+NOTICE_HTML,1)
 home=home.replace('</body>',NOTICE_JS+'</body>',1)
 home_lis=''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s</span></a></li>'%(k,arts[k]['title'],OUT[k]) for k in ORDER[:3])
@@ -560,6 +565,7 @@ open('_site/index.html','w',encoding='utf-8').write(home)
 BIO50='Henrique Longa, natural de Sesimbra, é estudante de Química Aplicada na NOVA FCT e ativista cívico. Integra o Grupo de Coordenação Local do LIVRE em Setúbal e foi cabeça-de-lista do partido à Assembleia Municipal de Sesimbra em 2025. Tem percurso no Escutismo e na Greve Climática Estudantil.'
 BIO100='Henrique José Longa Correia, natural de Sesimbra, é estudante de Química Aplicada na Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa, com investigação em Síntese Orgânica. Tem cerca de doze anos de Escutismo, integrou a Greve Climática Estudantil e o Fridays for Future e é coautor do Teenager Climate Guide. É Vice-Presidente para as Operações da Associação Nacional de Estudantes de Química e colaborou com o Conselho Nacional da Juventude. Membro do LIVRE desde 2024, integra o Grupo de Coordenação Local do Núcleo Territorial Distrital de Setúbal e foi cabeça-de-lista à Assembleia Municipal de Sesimbra em 2025.'
 print('words',len(BIO50.split()),len(BIO100.split()))
+def EN(t): return t.replace('Fridays for Future','<span lang="en">Fridays for Future</span>').replace('Teenager Climate Guide','<span lang="en">Teenager Climate Guide</span>')
 MEDIA=[
  ('Declarações na manifestação pela habitação','Canal NOW, 27 de outubro de 2026 (Instagram)','https://www.instagram.com/p/DfCm8RLIo3c'),
  ('Autárquicas 2025: debate para a Assembleia Municipal de Sesimbra','Vídeo no YouTube, 30 de setembro de 2025','https://youtu.be/upJXiGhW1j8'),
@@ -590,7 +596,7 @@ press_main=f"""<main class="article" id="conteudo" tabindex="-1">
 <div class="press-btns"><a class="btn" href="/galeria">Galeria de fotos</a></div>
 <h2 class="press-sec">Biografias para copiar</h2>
 <div class="bio-short"><h3>Versão de cerca de 50 palavras</h3><p id="bio50">{esc(BIO50)}</p><button type="button" class="copybtn" data-copy-target="bio50">Copiar</button></div>
-<div class="bio-short"><h3>Versão de cerca de 100 palavras</h3><p id="bio100">{esc(BIO100)}</p><button type="button" class="copybtn" data-copy-target="bio100">Copiar</button></div>
+<div class="bio-short"><h3>Versão de cerca de 100 palavras</h3><p id="bio100">{EN(esc(BIO100))}</p><button type="button" class="copybtn" data-copy-target="bio100">Copiar</button></div>
 <div class="press-btns"><a class="btn" href="/biografia">Biografia completa</a></div>
 <h2 class="press-sec">Na comunicação social</h2>
 <ul class="articles">
@@ -624,5 +630,8 @@ open('_site/feed.xml','w',encoding='utf-8').write(feed)
 
 for _f in glob.glob('_site/**/*.html',recursive=True):
     _t=open(_f,encoding='utf-8').read(); _n=_t.replace('href="/opiniao"','href="/opiniao/"')
+    _n=re.sub(r'<a\b([^>]*\btarget="_blank"[^>]*)>',lambda m: m.group(0) if 'aria-describedby' in m.group(1) else '<a'+m.group(1)+' aria-describedby="nt">',_n)
+    if 'aria-describedby="nt"' in _n and 'id="nt"' not in _n:
+        _n=_n.replace('<body>','<body>\n<span id="nt" hidden>Abre num novo separador</span>',1)
     if _n!=_t: open(_f,'w',encoding='utf-8').write(_n)
 print('Site gerado em _site/ com',sum(len(f) for _,_,f in os.walk('_site')),'ficheiros e',len(arts),'artigos.')
