@@ -136,15 +136,14 @@ bio_css='''
 @media(max-width:999px){#bio .btn-out{display:none}}
 .results h2{margin-bottom:6px}
 .results h3{margin:36px 0 12px;font:800 24px/1.2 Archivo,"Helvetica Neue",Arial,sans-serif}
-.res-dl{display:grid;grid-template-rows:auto auto;grid-auto-flow:column;grid-template-columns:9% 12% 19% 16% 7% 11% 9% 17%;margin:0 0 10px;padding:0;font:500 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
+.res-dl{display:grid;grid-template-rows:auto auto;grid-auto-flow:column;grid-template-columns:8% 11.5% 18% 14% 6.5% 10% 8% 24%;margin:0 0 10px;padding:0;font:500 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
 .res-dl div{display:contents}
 .res-dl dt{margin:0;padding:0 10px 12px 0;border-bottom:2px solid var(--ink);font-weight:800;white-space:nowrap}
 .res-dl dd{white-space:nowrap}
 .res-dl dt.ab .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 .res-dl dt.ab::before{content:attr(data-short);content:attr(data-short) / ""}
 .res-dl dd{margin:0;padding:13px 10px 0 0}
-.res-dl .n dt,.res-dl .n dd{text-align:right}
-@media(max-width:920px){.res-dl dt.ab .sr{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}.res-dl dt.ab::before{content:none}.res-dl dt,.res-dl dd{white-space:normal}.res-dl{display:block}.res-dl div{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-top:2px solid rgba(20,20,20,.3)}.res-dl div:first-child{border-top:2px solid var(--ink)}.res-dl dt,.res-dl .n dt{padding:0;border:0;font-weight:500;font-size:16px;text-align:left}.res-dl dd,.res-dl .n dd{padding:0;text-align:right;font-weight:800}}
+@media(max-width:980px){.res-dl dt.ab .sr{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}.res-dl dt.ab::before{content:none}.res-dl dt,.res-dl dd{white-space:normal}.res-dl{display:block}.res-dl div{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-top:2px solid rgba(20,20,20,.3)}.res-dl div:first-child{border-top:2px solid var(--ink)}.res-dl dt,.res-dl .n dt{padding:0;border:0;font-weight:500;font-size:16px;text-align:left}.res-dl dd,.res-dl .n dd{padding:0;text-align:right;font-weight:800}}
 @media(max-width:600px){#bio h1{margin-bottom:18px}.results h3{font-size:21px}}
 '''
 SOCIAL_META='<meta property="og:site_name" content="Henrique Longa">\n<meta name="twitter:site" content="@henriquelonga">\n<meta name="twitter:creator" content="@henriquelonga">'
