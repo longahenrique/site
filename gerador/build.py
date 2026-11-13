@@ -136,12 +136,15 @@ bio_css='''
 @media(max-width:999px){#bio .btn-out{display:none}}
 .results h2{margin-bottom:6px}
 .results h3{margin:36px 0 12px;font:800 24px/1.2 Archivo,"Helvetica Neue",Arial,sans-serif}
-.res-dl{display:grid;grid-template-rows:auto auto;grid-auto-flow:column;grid-template-columns:8% 10% 16% 13% 15% 9% 14% 15%;margin:0 0 10px;padding:0;font:500 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
+.res-dl{display:grid;grid-template-rows:auto auto;grid-auto-flow:column;grid-template-columns:9% 12% 19% 16% 7% 11% 9% 17%;margin:0 0 10px;padding:0;font:500 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
 .res-dl div{display:contents}
-.res-dl dt{margin:0;padding:0 10px 12px 0;border-bottom:2px solid var(--ink);font-weight:800}
+.res-dl dt{margin:0;padding:0 10px 12px 0;border-bottom:2px solid var(--ink);font-weight:800;white-space:nowrap}
+.res-dl dd{white-space:nowrap}
+.res-dl dt.ab .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.res-dl dt.ab::before{content:attr(data-short);content:attr(data-short) / ""}
 .res-dl dd{margin:0;padding:13px 10px 0 0}
 .res-dl .n dt,.res-dl .n dd{text-align:right}
-@media(max-width:920px){.res-dl{display:block}.res-dl div{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-top:2px solid rgba(20,20,20,.3)}.res-dl div:first-child{border-top:2px solid var(--ink)}.res-dl dt,.res-dl .n dt{padding:0;border:0;font-weight:500;font-size:16px;text-align:left}.res-dl dd,.res-dl .n dd{padding:0;text-align:right;font-weight:800}}
+@media(max-width:920px){.res-dl dt.ab .sr{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}.res-dl dt.ab::before{content:none}.res-dl dt,.res-dl dd{white-space:normal}.res-dl{display:block}.res-dl div{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-top:2px solid rgba(20,20,20,.3)}.res-dl div:first-child{border-top:2px solid var(--ink)}.res-dl dt,.res-dl .n dt{padding:0;border:0;font-weight:500;font-size:16px;text-align:left}.res-dl dd,.res-dl .n dd{padding:0;text-align:right;font-weight:800}}
 @media(max-width:600px){#bio h1{margin-bottom:18px}.results h3{font-size:21px}}
 '''
 SOCIAL_META='<meta property="og:site_name" content="Henrique Longa">\n<meta name="twitter:site" content="@henriquelonga">\n<meta name="twitter:creator" content="@henriquelonga">'
@@ -315,10 +318,12 @@ bio_paras=['Henrique José Longa Correia, nascido a 1 de abril de 2005 em Lisboa
 'Paralelamente, assumiu responsabilidades associativas como dirigente na Associação Nacional de Estudantes de Química, exercendo atualmente funções de Vice-Presidente para as Operações, colaborou com o Conselho Nacional de Juventude e integrou a comissão pedagógica do seu curso e a estrutura da Associação de Estudantes da NOVA FCT.',
 'Na política partidária, entrou para o Partido LIVRE em janeiro de 2024. Integra, desde agosto de 2024, o Grupo de Coordenação Local do Núcleo Territorial Distrital de Setúbal. Nas Eleições Legislativas de 2025 integrou a lista do partido pelo círculo eleitoral de Setúbal, e no mesmo ano assumiu o papel de cabeça-de-lista à Assembleia Municipal de Sesimbra nas Eleições Autárquicas, sendo um dos candidatos mais jovens.']
 def table(tid,cols,rows):
-    LAB={'%':'Percentagem de votos'}
-    def lab(c):
-        t=re.sub('<[^>]+>','',c[0]); return 'Classificação do partido' if t=='Cl.' else LAB.get(t,t)
-    return ''.join('<dl class="res-dl">'+''.join('<div%s><dt>%s</dt><dd>%s</dd></div>'%(' class="n"' if cols[k][1] else '',lab(cols[k]),v) for k,v in enumerate(r))+'</dl>' for r in rows)
+    FULL={'Cl.':'Classificação do partido','%':'Percentagem de votos'}
+    def dt(c):
+        t=re.sub('<[^>]+>','',c[0])
+        if t in FULL: return '<dt class="ab" data-short="%s"><span class="sr">%s</span></dt>'%(t,FULL[t])
+        return '<dt>%s</dt>'%t
+    return ''.join('<dl class="res-dl">'+''.join('<div%s>%s<dd>%s</dd></div>'%(' class="n"' if cols[k][1] else '',dt(cols[k]),v) for k,v in enumerate(r))+'</dl>' for r in rows)
 cl='<abbr title="Classificação do partido">Cl.</abbr>'
 t1=table('t1',[('Data',0),('Partido',0),('Círculo eleitoral',0),('Posição',0),(cl,1),('Votos',1),('%',1),('Resultado',0)],[['2025','Livre (L)','Setúbal','15.º (em 18)','5.º','28&nbsp;700','5,84','Não eleito']])
 t2=table('t2',[('Data',0),('Partido',0),('Concelho',0),('Posição',0),(cl,1),('Votos',1),('%',1),('Resultado',0)],[['2025','Livre (L)','Sesimbra','1.º (em 21)','6.º','797','3,27','Não eleito']])
