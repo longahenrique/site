@@ -422,10 +422,14 @@ GAL=json.load(open('gerador/galeria.json',encoding='utf-8'))
 PHOTOS=[dict(file=g['ficheiro'],src='fotos-originais/'+g['original'],title=g['titulo'],desc=g.get('legenda'),alt=g['alt'],credit=g.get('credito')) for g in GAL]
 os.makedirs('_site/fotos/miniaturas',exist_ok=True)
 items=''
+GAL_IMGS=[]
 with zipfile.ZipFile('_site/fotos/henrique-longa-fotografias.zip','w',zipfile.ZIP_STORED) as zf:
     for ph in PHOTOS:
         shutil.copy(ph['src'],'_site/fotos/'+ph['file']); zf.write(ph['src'],ph['file'])
-        im=Image.open(ph['src']); full=im.size
+        im=Image.open(ph['src']); full=im.size; real=ImageOps.exif_transpose(im).size
+        oi={"@type":"ImageObject","contentUrl":SITE+"/fotos/"+ph['file'],"thumbnailUrl":SITE+"/fotos/miniaturas/"+ph['file'],"name":ph['title'],"description":ph['alt'],"width":real[0],"height":real[1],"encodingFormat":"image/jpeg"}
+        if ph['credit']: oi["creator"]={"@type":"Person","name":ph['credit']}; oi["creditText"]=ph['credit']
+        GAL_IMGS.append(oi)
         t=ImageOps.exif_transpose(im).convert('RGB'); t.thumbnail((900,900)); t.save('_site/fotos/miniaturas/'+ph['file'],'JPEG',quality=84,optimize=True)
         mb=('%.1f'%(os.path.getsize(ph['src'])/1e6)).replace('.',',')
         desc='<span class="gd">%s</span>'%esc(ph['desc']) if ph.get('desc') else ''
@@ -457,7 +461,9 @@ gal_main=f"""<main class="article" id="conteudo" tabindex="-1">
 {items}</ul>
 </div>
 </main>"""
-open('_site/galeria.html','w',encoding='utf-8').write(head('/galeria','Galeria de fotos','Fotografias de Henrique Longa para descarregar.',css+'\n'+article_css+gal_css,'website')+body(header,gal_main,GAL_BACK_JS))
+gal_ld={"@context":"https://schema.org","@type":"ImageGallery","name":"Galeria de fotos de Henrique Longa","url":SITE+"/galeria","about":{"@id":SITE+"/#pessoa"},"image":GAL_IMGS}
+gal_desc='Fotografias de Henrique Longa, ativista cívico em Sesimbra, para descarregar: '+', '.join(g['titulo'] for g in GAL)+'.'
+open('_site/galeria.html','w',encoding='utf-8').write(head('/galeria','Galeria de fotos',gal_desc,css+'\n'+article_css+gal_css,'website',gal_ld)+body(header,gal_main,GAL_BACK_JS))
 # ---------- 404 (also turns /page/ into /page) ----------
 nf_main="""<main class="article" id="conteudo" tabindex="-1">
 <div class="wrap">
@@ -600,7 +606,11 @@ open('_site/imprensa.html','w',encoding='utf-8').write(head('/imprensa','Imprens
 open('_site/robots.txt','w',encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: '+SITE+'/sitemap.xml\n')
 LASTMOD={'/opiniao/'+r[1]:r[0] for r in rows}   # data de publicação de cada artigo
 urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
-open('_site/sitemap.xml','w',encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'+''.join('<url><loc>%s%s</loc>%s</url>\n'%(SITE,u,('<lastmod>%s</lastmod>'%LASTMOD[u]) if u in LASTMOD else '') for u in urls)+'</urlset>\n')
+def _sm(u):
+    img=''.join('<image:image><image:loc>%s/fotos/%s</image:loc></image:image>'%(SITE,ph['file']) for ph in PHOTOS) if u=='/galeria' else ''
+    lm=('<lastmod>%s</lastmod>'%LASTMOD[u]) if u in LASTMOD else ''
+    return '<url><loc>%s%s</loc>%s%s</url>\n'%(SITE,u,lm,img)
+open('_site/sitemap.xml','w',encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n'+''.join(_sm(u) for u in urls)+'</urlset>\n')
 import datetime
 def xesc(t): return t.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
 items=''
