@@ -136,7 +136,7 @@ bio_css='''
 @media(max-width:999px){#bio .btn-out{display:none}}
 .results h2{margin-bottom:6px}
 .results h3{margin:36px 0 12px;font:800 24px/1.2 Archivo,"Helvetica Neue",Arial,sans-serif}
-.res-dl{display:grid;grid-template-rows:auto auto;grid-auto-flow:column;grid-template-columns:8% 11.5% 18% 14% 6.5% 10% 8% 24%;margin:0 0 10px;padding:0;font:500 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
+.res-dl{display:grid;grid-template-rows:auto auto;grid-auto-flow:column;grid-template-columns:10% 13.5% 20% 16% 8.5% 12% 9.5% 10.5%;margin:0 0 10px;padding:0;font:500 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
 .res-dl div{display:contents}
 .res-dl dt{margin:0;padding:0 10px 12px 0;border-bottom:2px solid var(--ink);font-weight:800;white-space:nowrap}
 .res-dl dd{white-space:nowrap}
