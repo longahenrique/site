@@ -45,6 +45,7 @@ if NOTICE_ON:
 @media(max-width:700px){.notice .wrap{flex-direction:column-reverse;align-items:stretch}.notice-close{align-self:flex-end}}
 """
 s=open(src,encoding='utf-8').read()
+s,_n=re.subn(r'(\.contact\{display:flex[^}]*?)padding:\d+px 0 20px',r'\1padding:76px 0 20px',s); assert _n==1
 def sub1(old,new,cnt=1):
     global s
     if s.count(old)==0 and new in s: return
@@ -103,6 +104,8 @@ js=re.findall(r'<script>(.*?)</script>',s,flags=re.S)[-1].strip()
 img=re.search(r'<img src="(data:image/webp;base64,[^"]+)" width="(\d+)" height="(\d+)" alt="([^"]*)">',s)
 article_css='''
 .article{background:var(--paper);padding:56px 0 80px}
+.article .wrap :last-child{margin-bottom:0}
+.article:has(.more-articles){padding-bottom:58px}
 main:focus,.article:focus{outline:none}
 .article .crumb{margin:0 0 30px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}
 .article .crumb a{text-underline-offset:5px}
@@ -124,7 +127,7 @@ main:focus,.article:focus{outline:none}
 .more-articles .articles{max-width:44em}
 .rss{margin:28px 0 0;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}
 .rss a{text-underline-offset:5px}
-@media(max-width:600px){.article{padding:36px 0 52px}.article .text p{font-size:19px}}
+@media(max-width:600px){.article{padding:36px 0 52px}.article:has(.more-articles){padding-bottom:36px}.article .text p{font-size:19px}}
 '''
 bio_css='''
 #bio h1{font-size:clamp(36px,6vw,60px);line-height:1.05;margin:0 0 28px;text-wrap:balance}
@@ -135,6 +138,8 @@ bio_css='''
 @media(min-width:1000px){#bio .who{grid-template-rows:auto auto 1fr}#bio .who .prose{grid-row:2 / span 2}#bio .who .btn-out{grid-column:2;grid-row:3;align-self:start;margin:22px 0 0}#bio .portrait{padding-bottom:0}#bio .btn-in{display:none}}
 @media(max-width:999px){#bio .btn-out{display:none}}
 .results h2{margin-bottom:6px}
+.results{padding-bottom:0}
+.results .res-dl+h3{margin-top:64px}
 .results h3{margin:36px 0 12px;font:800 24px/1.2 Archivo,"Helvetica Neue",Arial,sans-serif}
 .res-dl{display:grid;grid-template-rows:auto auto;grid-auto-flow:column;grid-template-columns:10% 13.5% 20% 16% 8.5% 12% 9.5% 10.5%;margin:0 0 10px;padding:0;font:500 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
 .res-dl div{display:contents}
