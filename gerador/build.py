@@ -137,10 +137,10 @@ bio_css='''
 #bio .btn-in .btn,#bio .btn-out .btn{margin:0}
 @media(min-width:1000px){#bio .who{grid-template-rows:auto auto 1fr}#bio .who .prose{grid-row:2 / span 2}#bio .who .btn-out{grid-column:2;grid-row:3;align-self:start;margin:22px 0 0}#bio .portrait{padding-bottom:0}#bio .btn-in{display:none}}
 @media(max-width:999px){#bio .btn-out{display:none}}
-.results h2{margin-bottom:6px}
+.results h2{margin-bottom:6px;font-size:clamp(24px,3.4vw,30px);line-height:1.2}
 .results{padding-bottom:0}
 .results .res-dl+h3{margin-top:64px}
-.results h3{margin:36px 0 12px;font:800 24px/1.2 Archivo,"Helvetica Neue",Arial,sans-serif}
+.results h3{margin:36px 0 12px;font:800 21px/1.2 Archivo,"Helvetica Neue",Arial,sans-serif}
 .res-dl{display:grid;grid-template-rows:auto auto;grid-auto-flow:column;grid-template-columns:10% 13.5% 20% 16% 8.5% 12% 9.5% 10.5%;margin:0 0 10px;padding:0;font:500 17px/1.35 Archivo,"Helvetica Neue",Arial,sans-serif}
 .res-dl div{display:contents}
 .res-dl dt{margin:0;padding:0 10px 12px 0;border-bottom:2px solid var(--ink);font-weight:800;white-space:nowrap}
