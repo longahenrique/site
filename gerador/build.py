@@ -112,12 +112,6 @@ fav=re.search(r'<link rel="icon"[^>]*>',s).group(0)+'\n'+re.search(r'<link rel="
 js=re.findall(r'<script>(.*?)</script>',s,flags=re.S)[-1].strip()
 img=re.search(r'<img src="(data:image/webp;base64,[^"]+)" width="(\d+)" height="(\d+)" alt="([^"]*)">',s)
 article_css='''
-.rel-t{width:100%;border-collapse:collapse;margin:0 0 1.5em;font-size:17px;line-height:1.5}
-.rel-t caption{text-align:left;font-weight:800;padding:0 0 10px}
-.rel-t th,.rel-t td{padding:10px 12px 10px 0;border-top:2px solid rgba(20,20,20,.25);text-align:left;vertical-align:top;overflow-wrap:anywhere}
-.rel-t thead th{border-top:0;border-bottom:2px solid var(--ink)}
-.rel-t tbody th{font-weight:600;width:42%}
-@media(max-width:600px){.rel-t{font-size:16px}.rel-t tbody th{width:40%}}
 .article{background:var(--paper);padding:56px 0 80px}
 .article .wrap :last-child{margin-bottom:0}
 .article:has(.more-articles){padding-bottom:58px}
@@ -552,37 +546,9 @@ priv=f"""<p>Esta página explica que dados pessoais este site trata e porquê. E
 <h2>Alterações</h2>
 <p>Se esta política mudar, a data no topo da página é atualizada.</p>
 """
-REL_TRS='<tr><th scope="row">1.1. O menu de navegação está estruturado como uma lista de opções</th><td><strong>Cumpre.</strong> Menu principal em <code>&lt;nav aria-label="Principal"&gt;</code> com <code>&lt;ul&gt;</code> e <code>&lt;li&gt;</code>, nas 9 páginas.</td></tr>\n<tr><th scope="row">1.2. As opções do menu selecionam-se com rato e com teclado</th><td><strong>Cumpre.</strong> Com a tecla Tab, o foco chega a todas as opções do menu em todas as páginas, no computador e no telemóvel, e Enter ativa a ligação.</td></tr>\n<tr><th scope="row">1.3. Imagens-link no menu com equivalente em texto</th><td><strong>Não aplicável.</strong> O menu não tem imagens-link.</td></tr>\n<tr><th scope="row">2.1. Existe um título h1 na página</th><td><strong>Cumpre.</strong> Cada uma das 9 páginas tem exatamente um h1.</td></tr>\n<tr><th scope="row">2.2. Títulos e subtítulos hierarquizados (h1 a h6)</th><td><strong>Cumpre.</strong> Nenhuma página salta níveis de título.</td></tr>\n<tr><th scope="row">3.1. Células de cabeçalho de tabelas marcadas com th</th><td><strong>Não aplicável.</strong> O site não tem tabelas de dados. Os resultados eleitorais usam listas de descrição (dl).</td></tr>\n<tr><th scope="row">3.2. Legenda da tabela marcada com caption</th><td><strong>Não aplicável.</strong> Ver 3.1.</td></tr>\n<tr><th scope="row">4.1. Clicar na etiqueta coloca o cursor no campo</th><td><strong>Cumpre.</strong> O único conjunto de campos é a pesquisa de artigos (Pesquisar, Ano, Publicação). Ao clicar em cada etiqueta, o foco vai para o campo respetivo.</td></tr>\n<tr><th scope="row">4.2. Campos obrigatórios identificáveis com leitor de ecrã</th><td><strong>Não aplicável.</strong> Não há campos de preenchimento obrigatório.</td></tr>\n<tr><th scope="row">4.3. Mensagens de erro localizáveis com leitor de ecrã</th><td><strong>Não aplicável.</strong> Não há mensagens de erro de formulário.</td></tr>\n<tr><th scope="row">5.1. Imagens com equivalente em texto curto e correto</th><td><strong>Cumpre.</strong> Todas as imagens têm atributo alt, e as 3 fotografias da galeria têm descrições curtas da cena.</td></tr>\n<tr><th scope="row">5.2. Gráficos acompanhados de descrição longa</th><td><strong>Não aplicável.</strong> O site não tem gráficos.</td></tr>\n<tr><th scope="row">5.3. Imagens-link com equivalente correto</th><td><strong>Cumpre.</strong> As 3 fotografias da galeria são ligações para a imagem em tamanho original e têm alt. Os ícones das redes sociais têm nome acessível (Instagram, Facebook, X, LinkedIn).</td></tr>\n<tr><th scope="row">6.1. Contraste do texto normal com pelo menos 4,5:1</th><td><strong>Cumpre.</strong> Cálculo da razão de contraste de todo o texto visível das 9 páginas: nenhum texto normal abaixo de 4,5:1. Não foram avaliados textos sobre imagens.</td></tr>\n<tr><th scope="row">6.2. Contraste do texto grande com pelo menos 3:1</th><td><strong>Cumpre.</strong> Mesmo cálculo: nenhum texto grande abaixo de 3:1.</td></tr>\n<tr><th scope="row">7.1. Controlos dos players acionáveis com rato e teclado</th><td><strong>Não aplicável.</strong> O site não incorpora vídeo nem áudio. Os vídeos são ligações para o YouTube.</td></tr>\n<tr><th scope="row">7.2. Legendas ou transcrição em vídeo e áudio</th><td><strong>Não aplicável.</strong> Ver 7.1.</td></tr>\n<tr><th scope="row">8.1. Sem CSS, os elementos alinham à esquerda</th><td><strong>Cumpre.</strong> Sem CSS, não há elementos centrados ou alinhados à direita por atributos HTML. Só o recuo normal do navegador em figuras (figure) e listas.</td></tr>\n<tr><th scope="row">8.2. Sem CSS, a informação surge numa ordem lógica</th><td><strong>Cumpre.</strong> Ordem verificada nas 9 páginas: ligação de saltar, menu, título, conteúdo, contactos.</td></tr>\n<tr><th scope="row">8.3. Sem CSS, reconhece-se a semântica dos elementos</th><td><strong>Cumpre.</strong> Continuam a ver-se títulos, parágrafos, listas, listas de descrição, menu, conteúdo principal e rodapé.</td></tr>\n<tr><th scope="row">8.4. Sem CSS, a informação relevante continua visível</th><td><strong>Cumpre.</strong> Todo o texto relevante mantém-se visível.</td></tr>\n<tr><th scope="row">8.5. Maquetização sem o elemento table</th><td><strong>Cumpre.</strong> Nenhuma das 9 páginas usa table na maquetização.</td></tr>\n<tr><th scope="row">9.1. Foco passa para dentro da caixa de diálogo ao abrir</th><td><strong>Não aplicável.</strong> O site não tem caixas de diálogo modais. O menu de acessibilidade abre um painel que não bloqueia o resto da página.</td></tr>\n<tr><th scope="row">9.2. Navegação por teclado circunscrita à caixa de diálogo</th><td><strong>Não aplicável.</strong> Ver 9.1.</td></tr>\n<tr><th scope="row">9.3. Mecanismo para fechar a caixa de diálogo</th><td><strong>Não aplicável.</strong> Ver 9.1.</td></tr>\n<tr><th scope="row">9.4. Foco volta ao elemento que abriu a caixa ao fechar</th><td><strong>Não aplicável.</strong> Ver 9.1.</td></tr>\n<tr><th scope="row">10.1. Texto de ficheiros PDF extraível para TXT</th><td><strong>Não aplicável.</strong> O site não publica ficheiros PDF.</td></tr>\n'
-rel=f"""<p>Este relatório é o apoio da avaliação manual feita ao site <a href="https://henriquelonga.pt">henriquelonga.pt</a> com a lista de verificação «10 aspetos críticos de acessibilidade funcional para sítios Web», da ARTE (Agência para a Modernização Administrativa).</p>
-<h2>Resultado</h2>
-<p><strong>14 de 14</strong> critérios aplicáveis cumpridos. Dos 27 critérios da lista, 13 não se aplicam a este site, porque não tem tabelas de dados, gráficos, vídeo ou áudio incorporados, caixas de diálogo modais nem ficheiros PDF.</p>
-<h2>Como foi feita a avaliação</h2>
-<ul>
-<li><strong>Data:</strong> 15 de novembro de 2026.</li>
-<li><strong>Páginas avaliadas (9):</strong> Início, Biografia, Opinião, um artigo de opinião (Estamos exaustos), Galeria, Imprensa, Privacidade, Acessibilidade e a página de erro 404.</li>
-<li><strong>Método:</strong> testes em navegador, com o teclado, com a CSS removida e com o cálculo da razão de contraste, complementados por análise do código das páginas. Não foram feitos testes com leitores de ecrã, e os critérios 4.2 e 4.3 não se aplicam.</li>
-<li><strong>Quem avaliou:</strong> a avaliação foi feita com o apoio de Claude, um assistente de inteligência artificial, a pedido de Henrique Longa, autor do site. Não é uma avaliação independente.</li>
-<li><strong>Validador automático:</strong> a página inicial tem a nota 10 no AccessMonitor (15 de novembro de 2026).</li>
-</ul>
-<h2>Correções feitas durante a avaliação</h2>
-<ul>
-<li>O menu de navegação passou a ser uma lista (critério 1.1).</li>
-<li>Os resultados eleitorais na Biografia deixaram de usar elementos de grupo dentro das listas de descrição, o que o AccessMonitor assinalava.</li>
-<li>O conjunto de campos de pesquisa de artigos deixou de ser um formulário, porque filtra a lista na hora e não precisa de botão de submeter.</li>
-</ul>
-<h2>Resultado por critério</h2>
-<table class="rel-t">
-<caption>Resultado da avaliação manual, critério a critério</caption>
-<thead><tr><th scope="col">Critério</th><th scope="col">Resultado e verificação</th></tr></thead>
-<tbody>
-{REL_TRS}</tbody>
-</table>
-<p>Declaração de acessibilidade: <a href="/acessibilidade">henriquelonga.pt/acessibilidade</a>.</p>
-"""
 acc=f"""<p>Quero que este site possa ser usado por todas as pessoas. A referência que sigo são as Diretrizes de Acessibilidade para o Conteúdo Web (WCAG) 2.1, nível AA.</p>
 <h2>Estado de conformidade</h2>
 <p>Esta declaração é voluntária. O site não foi sujeito a uma auditoria de acessibilidade independente. Foi verificado com ferramentas automáticas, como o AccessMonitor, e com testes próprios em vários tamanhos de ecrã, e os problemas encontrados foram corrigidos. Por isso, não declaro conformidade total com as WCAG 2.1, só o objetivo de as cumprir.</p>
-<p>Avaliação manual com a lista dos «10 aspetos críticos de acessibilidade funcional para sítios Web» (ARTE): 14 de 14 critérios aplicáveis cumpridos. <a href="/avaliacao-acessibilidade">Ver o relatório de suporte</a>.</p>
 <h2>O que o site já tem</h2>
 <ul>
 <li>Uma ligação “Saltar para o conteúdo principal”, que aparece quando se navega com o teclado.</li>
@@ -605,7 +571,6 @@ acc=f"""<p>Quero que este site possa ser usado por todas as pessoas. A referênc
 <h2>Encontraste um problema?</h2>
 <p>Se alguma parte do site te for difícil de usar, ou se precisares do conteúdo noutro formato, escreve para <a href="mailto:{EMAIL}">{EMAIL}</a>. Respondo e, sempre que possível, corrijo.</p>
 """
-open('_site/avaliacao-acessibilidade.html','w',encoding='utf-8').write(legal_page('/avaliacao-acessibilidade','Relatório da avaliação manual de acessibilidade','Resultado da avaliação manual do site com os 10 aspetos críticos de acessibilidade funcional da ARTE.',rel))
 open('_site/privacidade.html','w',encoding='utf-8').write(legal_page('/privacidade','Política de privacidade','Que dados pessoais este site trata e porquê: sem cookies, sem publicidade e com estatísticas que respeitam a privacidade.',priv))
 open('_site/acessibilidade.html','w',encoding='utf-8').write(legal_page('/acessibilidade','Declaração de acessibilidade','O que este site faz para ser acessível, as limitações conhecidas e como reportar problemas.',acc))
 # ---------- home: fonts self-hosted, JSON-LD, extras ----------
@@ -674,7 +639,7 @@ open('_site/imprensa.html','w',encoding='utf-8').write(head('/imprensa','Imprens
 # ---------- robots, sitemap, rss ----------
 open('_site/robots.txt','w',encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: '+SITE+'/sitemap.xml\n')
 LASTMOD={'/opiniao/'+r[1]:r[0] for r in rows}   # data de publicação de cada artigo
-urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade','/avaliacao-acessibilidade']
+urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
 def _sm(u):
     img=''.join('<image:image><image:loc>%s/fotos/%s</image:loc></image:image>'%(SITE,ph['file']) for ph in PHOTOS) if u=='/galeria' else ''
     lm=('<lastmod>%s</lastmod>'%LASTMOD[u]) if u in LASTMOD else ''
