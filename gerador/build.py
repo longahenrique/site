@@ -589,7 +589,7 @@ MEDIA=[
  ('Declarações na manifestação pela habitação','Canal NOW, 27 de outubro de 2026 (Instagram)','https://www.instagram.com/p/DfCm8RLIo3c'),
  ('Autárquicas 2025: debate para a Assembleia Municipal de Sesimbra','Vídeo no YouTube, 30 de setembro de 2025','https://youtu.be/upJXiGhW1j8'),
  ('LIVRE avança com Carina Calisto à Câmara de Sesimbra e Henrique Longa para a Assembleia Municipal','O Setubalense, notícia, 31 de julho de 2025','https://osetubalense.com/local/sesimbra/livre-avanca-com-carina-calisto-a-camara-de-sesimbra-e-henrique-longa-para-a-assembleia-municipal'),
- ('Apresentação de Henrique Longa – Sesimbra | Primárias do LIVRE','Vídeo no YouTube','https://youtu.be/HQIG6Ry5ZEo'),
+ ('Apresentação de Henrique Longa – Sesimbra | Primárias do LIVRE','Vídeo no YouTube, 6 de julho de 2025','https://youtu.be/HQIG6Ry5ZEo'),
 ]
 media_li=''.join('<li><a href="%s" target="_blank" rel="noopener"><span class="t">%s</span><span class="s">%s</span></a></li>\n'%(u,esc(t),esc(m)) for t,m,u in MEDIA)
 op_li=''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s, %s</span></a></li>\n'%(k,arts[k]['title'],OUT[k],re.search(r'<time[^>]*>(.*?)</time>',arts[k]['meta']).group(1)) for k in ORDER[:3])
