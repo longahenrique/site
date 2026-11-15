@@ -155,15 +155,19 @@ SOCIAL_META='<meta property="og:site_name" content="Henrique Longa">\n<meta name
 PROFILE_META='<meta property="profile:first_name" content="Henrique">\n<meta property="profile:last_name" content="Longa">'
 FONTFACE='''@font-face{font-family:Archivo;font-style:normal;font-weight:500;font-display:swap;src:url(/fonts/archivo-latin-500-normal.woff2) format("woff2")}
 @font-face{font-family:Archivo;font-style:normal;font-weight:800;font-display:swap;src:url(/fonts/archivo-latin-800-normal.woff2) format("woff2")}
-@font-face{font-family:"Archivo Fallback";font-weight:500;src:local("Arial"),local("ArialMT"),local("Helvetica Neue"),local("Helvetica"),local("Liberation Sans")}
-@font-face{font-family:"Archivo Fallback";font-weight:800;src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold"),local("Helvetica Bold"),local("Liberation Sans Bold")}
+@font-face{font-family:"Archivo Fallback";font-weight:500;src:local("Arial"),local("ArialMT"),local("Helvetica Neue"),local("Helvetica"),local("Liberation Sans");size-adjust:100.3%;ascent-override:87.5%;descent-override:20.9%;line-gap-override:0%}
+@font-face{font-family:"Archivo Fallback";font-weight:800;src:local("Arial Bold"),local("Arial-BoldMT"),local("Helvetica Neue Bold"),local("Helvetica Bold"),local("Liberation Sans Bold");size-adjust:103.6%;ascent-override:84.8%;descent-override:20.3%;line-gap-override:0%}
+@font-face{font-family:"Source Serif Fallback";font-weight:400;src:local("Times New Roman"),local("TimesNewRomanPSMT"),local("Liberation Serif"),local("Times");size-adjust:117%;ascent-override:88.6%;descent-override:28.6%;line-gap-override:0%}
+@font-face{font-family:"Source Serif Fallback";font-weight:600;src:local("Times New Roman Bold"),local("TimesNewRomanPS-BoldMT"),local("Liberation Serif Bold"),local("Times-Bold");size-adjust:111.5%;ascent-override:92.9%;descent-override:30%;line-gap-override:0%}
+@font-face{font-family:"Source Serif Fallback";font-style:italic;font-weight:400;src:local("Times New Roman Italic"),local("TimesNewRomanPS-ItalicMT"),local("Liberation Serif Italic"),local("Times-Italic");size-adjust:106.4%;ascent-override:97.4%;descent-override:31.5%;line-gap-override:0%}
 @font-face{font-family:"Source Serif 4";font-style:normal;font-weight:400;font-display:swap;src:url(/fonts/source-serif-4-latin-400-normal.woff2) format("woff2")}
 @font-face{font-family:"Source Serif 4";font-style:normal;font-weight:600;font-display:swap;src:url(/fonts/source-serif-4-latin-600-normal.woff2) format("woff2")}
 @font-face{font-family:"Source Serif 4";font-style:italic;font-weight:400;font-display:swap;src:url(/fonts/source-serif-4-latin-400-italic.woff2) format("woff2")}
 '''
 import json
+def FX(c): return c.replace('Archivo,','Archivo,"Archivo Fallback",').replace('"Source Serif 4",Georgia','"Source Serif 4","Source Serif Fallback",Georgia')
 def extra_head(ld=None):
-    out='<link rel="preload" href="/fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n'+'<link rel="alternate" type="application/rss+xml" title="Henrique Longa: artigos de opinião" href="/feed.xml">\n'
+    out='<link rel="preload" href="/fonts/archivo-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n'+'<link rel="alternate" type="application/rss+xml" title="Henrique Longa: artigos de opinião" href="/feed.xml">\n'
     if GSC_META: out+='<meta name="google-site-verification" content="%s">\n'%GSC_META
     if ld: out+='<script type="application/ld+json">%s</script>\n'%json.dumps(ld,ensure_ascii=False,separators=(',',':'))
     if GOATCOUNTER: out+='<script data-goatcounter="https://%s.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>\n'%GOATCOUNTER
@@ -191,7 +195,7 @@ def head(path,title,desc,css_text,ogtype='article',ld=None,meta_extra='',image='
 <meta name="twitter:card" content="summary_large_image">
 {SOCIAL_META}
 {meta_extra}{extra_head(ld)}<style>
-{FONTFACE}{css_text.replace('Archivo,','Archivo,"Archivo Fallback",')}{NOTICE_CSS}{MOTION_CSS}
+{FONTFACE}{FX(css_text)}{NOTICE_CSS}{MOTION_CSS}
 </style>
 </head>
 '''
@@ -549,7 +553,7 @@ home=re.sub(r'<link rel="preconnect" href="https://fonts.googleapis.com">\n','',
 home=home.replace('<link rel="icon"','<link rel="canonical" href="https://henriquelonga.pt/">\n<link rel="icon"',1)
 home=home.replace('<meta name="twitter:card" content="summary_large_image">','<meta name="twitter:card" content="summary_large_image">\n'+SOCIAL_META,1)
 home=re.sub(r'<link rel="stylesheet" href="https://fonts.googleapis.com/css2[^>]*>\n','',home)
-home=re.sub(r'(<style>)(.*?)(</style>)',lambda m:m.group(1)+'\n'+FONTFACE+m.group(2).lstrip('\n').replace('Archivo,','Archivo,"Archivo Fallback",')+NOTICE_CSS+MOTION_CSS+m.group(3),home,count=1,flags=re.S)
+home=re.sub(r'(<style>)(.*?)(</style>)',lambda m:m.group(1)+'\n'+FONTFACE+FX(m.group(2).lstrip('\n'))+NOTICE_CSS+MOTION_CSS+m.group(3),home,count=1,flags=re.S)
 home=home.replace('<div id="page">\n','<div id="page">\n'+NOTICE_HTML,1)
 home=home.replace('</body>',NOTICE_JS+'</body>',1)
 home_lis=''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s</span></a></li>'%(k,arts[k]['title'],OUT[k]) for k in ORDER[:3])
