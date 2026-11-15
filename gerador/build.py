@@ -118,7 +118,7 @@ article_css='''
 .gl{margin:0}
 .gl dt{margin:1.4em 0 0;font-weight:800}
 .gl dd{margin:.3em 0 0;max-width:36em}
-abbr[title]{text-decoration:underline dotted;text-underline-offset:3px}
+abbr[title]{text-decoration:none}
 .article{background:var(--paper);padding:56px 0 80px}
 .article .wrap :last-child{margin-bottom:0}
 .article:has(.more-articles){padding-bottom:58px}
@@ -701,7 +701,7 @@ def _abbr(page):
         parts[n]=x
     return page[:i]+''.join(parts)+page[j:]
 _old='Henrique Longa. Todos os direitos reservados. <a href="/privacidade">Privacidade</a> | <a href="/acessibilidade">Acessibilidade</a></footer>'
-_new='<a href="mailto:'+EMAIL+'" aria-label="Henrique Longa, enviar email">Henrique Longa</a>. Todos os direitos reservados. <a href="/privacidade">Privacidade</a> | <a href="/acessibilidade">Acessibilidade</a> | <a href="/glossario">Glossário</a></footer>'
+_new='Henrique Longa. Todos os direitos reservados. <a href="/privacidade">Privacidade</a> | <a href="/acessibilidade">Acessibilidade</a></footer>'
 for _f in glob.glob('_site/*.html')+glob.glob('_site/opiniao/*.html'):
     _t=open(_f,encoding='utf-8').read()
     if _old in _t: _t=_t.replace(_old,_new)
