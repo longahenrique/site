@@ -100,7 +100,6 @@ def NAVFIX(s):
         return m.group(1).replace('<nav>','<nav aria-label="Principal">')+'<ul>'+''.join('<li>%s</li>'%l for l in links)+'</ul>'+m.group(3)
     s,_n=re.subn(r'(<nav>\s*<a class="brand"[^>]*>[^<]*</a>\s*)<div>(.*?)</div>(\s*</nav>)',_navlist,s,count=1,flags=re.S); assert _n==1
     s=s.replace('nav>div{','nav>ul{').replace('nav a{text-decoration:none;','nav ul{display:flex;align-items:baseline;list-style:none;margin:0;padding:0}\nnav li{margin:0;padding:0}\nnav a{text-decoration:none;',1)
-    s=s.replace('nav a:hover{','nav a[aria-current]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}\nnav a:hover{',1)
     return s
 s=NAVFIX(s)
 # ---------- 2. reusable pieces ----------
