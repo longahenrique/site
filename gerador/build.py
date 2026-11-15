@@ -100,11 +100,14 @@ def NAVFIX(s):
         return m.group(1).replace('<nav>','<nav aria-label="Principal">')+'<ul>'+''.join('<li>%s</li>'%l for l in links)+'</ul>'+m.group(3)
     s,_n=re.subn(r'(<nav>\s*<a class="brand"[^>]*>[^<]*</a>\s*)<div>(.*?)</div>(\s*</nav>)',_navlist,s,count=1,flags=re.S); assert _n==1
     s=s.replace('nav>div{','nav>ul{').replace('nav a{text-decoration:none;','nav ul{display:flex;align-items:baseline;list-style:none;margin:0;padding:0}\nnav li{margin:0;padding:0}\nnav a{text-decoration:none;',1)
+    s=s.replace('nav a:hover{','nav a[aria-current]{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px}\nnav a:hover{',1)
     return s
 s=NAVFIX(s)
 # ---------- 2. reusable pieces ----------
 css=re.search(r'<style>(.*?)</style>',s,flags=re.S).group(1).strip()
 header=re.search(r'<header class="top sea">.*?</header>',s,flags=re.S).group(0)
+art_header=header.replace('<a href="/opiniao/">','<a href="/opiniao/" aria-current="true">')
+gal_header=header.replace('<a href="/biografia">','<a href="/biografia" aria-current="true">')
 for a in ('programa',): header=header.replace('href="#%s"'%a,'href="/#%s"'%a)
 contact=re.search(r'<div class="sea" id="contacto">.*?</footer>\n</div>\n</div>',s,flags=re.S).group(0)
 a11y=re.search(r'<div class="a11y">.*?</div>\n</div>\n',s,flags=re.S).group(0)
@@ -338,7 +341,7 @@ for slug,d in arts.items():
     if orig: ld["sameAs"]=orig.group(1)
     bc={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Opinião","item":SITE+"/opiniao/"},{"@type":"ListItem","position":3,"name":re.sub('<[^>]+>','',d['title'])}]}
     ld=[ld,bc]
-    open(f'_site/opiniao/{slug}.html','w',encoding='utf-8').write(head(f'/opiniao/{slug}',d['title'],d['desc'],css+'\n'+article_css,'article',ld,f'<meta property="article:published_time" content="{iso}">\n<meta property="article:author" content="{SITE}/biografia">\n<meta property="article:section" content="Opinião">\n<meta property="og:image:alt" content="{esc(tt)}, artigo de opinião de Henrique Longa">\n',ogimg)+body(header,main))
+    open(f'_site/opiniao/{slug}.html','w',encoding='utf-8').write(head(f'/opiniao/{slug}',d['title'],d['desc'],css+'\n'+article_css,'article',ld,f'<meta property="article:published_time" content="{iso}">\n<meta property="article:author" content="{SITE}/biografia">\n<meta property="article:section" content="Opinião">\n<meta property="og:image:alt" content="{esc(tt)}, artigo de opinião de Henrique Longa">\n',ogimg)+body(art_header,main))
 # biography page
 bio_paras=['Henrique José Longa Correia, nascido a 1 de abril de 2005 em Lisboa e natural de Sesimbra, é um estudante e ativista cívico associado ao partido LIVRE.',
 'Henrique Longa é aluno na Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa, onde realiza a Licenciatura em Química Aplicada. No seu percurso académico, focou a sua investigação no âmbito da Síntese Orgânica.',
@@ -435,7 +438,7 @@ run();
 })();
 </script>
 """
-list_header=header.replace('<a href="/opiniao">','<a href="/opiniao" aria-current="page">')
+list_header=header.replace('<a href="/opiniao/">','<a href="/opiniao/" aria-current="page">')
 open('_site/opiniao/index.html','w',encoding='utf-8').write(head('/opiniao/','Artigos de opinião','Artigos de opinião de Henrique Longa sobre Sesimbra, habitação, regionalização, juventude e democracia.',css+'\n'+article_css+list_css,'website')+body(list_header,list_main,list_js))
 
 # ---------- gallery ----------
@@ -456,7 +459,7 @@ with zipfile.ZipFile('_site/fotos/henrique-longa-fotografias.zip','w',zipfile.ZI
         mb=('%.1f'%(os.path.getsize(ph['src'])/1e6)).replace('.',',')
         desc='<span class="gd">%s</span>'%esc(ph['desc']) if ph.get('desc') else ''
         cred='<span class="gc">Fotografia: %s</span>'%esc(ph['credit']) if ph['credit'] else ''
-        items+=f'<li><figure><a href="/fotos/{ph["file"]}" target="_blank" rel="noopener"><img src="/fotos/miniaturas/{ph["file"]}" width="{t.width}" height="{t.height}" alt="{esc(ph["alt"])}" loading="lazy"></a><figcaption><span class="gt">{ph["title"]}</span>{desc}<span class="gm">JPG, {full[0]} × {full[1]} px, {mb} MB</span>{cred}<a class="dl" href="/fotos/{ph["file"]}" download aria-label="Descarregar: {esc(ph["title"])}">Descarregar</a></figcaption></figure></li>\n'
+        items+=f'<li><figure><img src="/fotos/miniaturas/{ph["file"]}" width="{t.width}" height="{t.height}" alt="{esc(ph["alt"])}" loading="lazy"><figcaption><span class="gt">{ph["title"]}</span>{desc}<span class="gm">JPG, {full[0]} × {full[1]} px, {mb} MB</span>{cred}<a class="dl" href="/fotos/{ph["file"]}" download aria-label="Descarregar: {esc(ph["title"])}">Descarregar</a></figcaption></figure></li>\n'
 gal_css="""
 .gal-all{margin:26px 0 8px}
 .gal{list-style:none;margin:28px 0 0;padding:0;columns:300px;column-gap:32px}
@@ -485,7 +488,7 @@ gal_main=f"""<main class="article" id="conteudo" tabindex="-1">
 </main>"""
 gal_ld={"@context":"https://schema.org","@type":"ImageGallery","name":"Galeria de fotos de Henrique Longa","url":SITE+"/galeria","about":{"@id":SITE+"/#pessoa"},"image":GAL_IMGS}
 gal_desc='Fotografias de Henrique Longa, ativista cívico em Sesimbra, para descarregar: '+', '.join(g['titulo'] for g in GAL)+'.'
-open('_site/galeria.html','w',encoding='utf-8').write(head('/galeria','Galeria de fotos',gal_desc,css+'\n'+article_css+gal_css,'website',gal_ld)+body(header,gal_main,GAL_BACK_JS))
+open('_site/galeria.html','w',encoding='utf-8').write(head('/galeria','Galeria de fotos',gal_desc,css+'\n'+article_css+gal_css,'website',gal_ld)+body(gal_header,gal_main,GAL_BACK_JS))
 # ---------- 404 (also turns /page/ into /page) ----------
 nf_main="""<main class="article" id="conteudo" tabindex="-1">
 <div class="wrap">
