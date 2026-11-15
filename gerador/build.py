@@ -680,36 +680,9 @@ for _f in glob.glob('_site/**/*.html',recursive=True):
 print('Site gerado em _site/ com',sum(len(f) for _,_,f in os.walk('_site')),'ficheiros e',len(arts),'artigos.')
 
 # ---------- glossário, ligação no rodapé e siglas ----------
-GLOSS=[
- ('FCT','Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa.'),
- ('IMI','Imposto Municipal sobre Imóveis, pago todos os anos por quem tem casas ou terrenos.'),
- ('IP','Endereço IP: o número que identifica um dispositivo, como um telemóvel ou um computador, na internet.'),
- ('LGBT+','Lésbicas, gays, bissexuais e transgénero, e outras identidades de orientação sexual e de género.'),
- ('RSS','Formato que permite receber os novos artigos de um site num leitor de notícias, sem ter de o visitar.'),
-]
-def _abbr(page):
-    i=page.find('</header>'); j=page.rfind('<footer')
-    if i<0 or j<0: return page
-    mid=page[i:j]
-    parts=re.split(r'(<[^>]+>)',mid)
-    skip=0; done=set()
-    for n,x in enumerate(parts):
-        if n%2:
-            m=re.match(r'<(/?)(script|style|abbr|svg|title)\b',x,re.I)
-            if m: skip+= -1 if m.group(1) else 1
-            continue
-        if skip>0 or not x.strip(): continue
-        for k,v in GLOSS:
-            if k in done: continue
-            pat=re.compile(r'(?<![\w/@.+-])'+re.escape(k)+r'(?![\w-])')
-            if pat.search(x):
-                x=pat.sub(lambda m:'<abbr title="%s">%s</abbr>'%(v.replace('"','&quot;'),k),x,count=1); done.add(k)
-        parts[n]=x
-    return page[:i]+''.join(parts)+page[j:]
 _old='Henrique Longa. Todos os direitos reservados. <a href="/privacidade">Privacidade</a> | <a href="/acessibilidade">Acessibilidade</a></footer>'
 _new='Henrique Longa. Todos os direitos reservados. <a href="/privacidade">Privacidade</a> | <a href="/acessibilidade">Acessibilidade</a></footer>'
 for _f in glob.glob('_site/*.html')+glob.glob('_site/opiniao/*.html'):
     _t=open(_f,encoding='utf-8').read()
     if _old in _t: _t=_t.replace(_old,_new)
-    _t=_abbr(_t)
     open(_f,'w',encoding='utf-8').write(_t)
