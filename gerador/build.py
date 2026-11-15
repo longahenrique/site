@@ -115,6 +115,10 @@ fav=re.search(r'<link rel="icon"[^>]*>',s).group(0)+'\n'+re.search(r'<link rel="
 js=re.findall(r'<script>(.*?)</script>',s,flags=re.S)[-1].strip()
 img=re.search(r'<img src="(data:image/webp;base64,[^"]+)" width="(\d+)" height="(\d+)" alt="([^"]*)">',s)
 article_css='''
+.gl{margin:0}
+.gl dt{margin:1.4em 0 0;font-weight:800}
+.gl dd{margin:.3em 0 0;max-width:36em}
+abbr[title]{text-decoration:underline dotted;text-underline-offset:3px}
 .article{background:var(--paper);padding:56px 0 80px}
 .article .wrap :last-child{margin-bottom:0}
 .article:has(.more-articles){padding-bottom:58px}
@@ -642,7 +646,7 @@ open('_site/imprensa.html','w',encoding='utf-8').write(head('/imprensa','Imprens
 # ---------- robots, sitemap, rss ----------
 open('_site/robots.txt','w',encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: '+SITE+'/sitemap.xml\n')
 LASTMOD={'/opiniao/'+r[1]:r[0] for r in rows}   # data de publicação de cada artigo
-urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
+urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade','/glossario']
 def _sm(u):
     img=''.join('<image:image><image:loc>%s/fotos/%s</image:loc></image:image>'%(SITE,ph['file']) for ph in PHOTOS) if u=='/galeria' else ''
     lm=('<lastmod>%s</lastmod>'%LASTMOD[u]) if u in LASTMOD else ''
@@ -666,3 +670,40 @@ for _f in glob.glob('_site/**/*.html',recursive=True):
         _n=_n.replace('<body>','<body>\n<span id="nt" hidden>Abre num novo separador</span>',1)
     if _n!=_t: open(_f,'w',encoding='utf-8').write(_n)
 print('Site gerado em _site/ com',sum(len(f) for _,_,f in os.walk('_site')),'ficheiros e',len(arts),'artigos.')
+
+# ---------- glossário, ligação no rodapé e siglas ----------
+GLOSS=[
+ ('FCT','Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa.'),
+ ('IMI','Imposto Municipal sobre Imóveis, pago todos os anos por quem tem casas ou terrenos.'),
+ ('IP','Endereço IP: o número que identifica um dispositivo, como um telemóvel ou um computador, na internet.'),
+ ('LGBT+','Lésbicas, gays, bissexuais e transgénero, e outras identidades de orientação sexual e de género.'),
+ ('RSS','Formato que permite receber os novos artigos de um site num leitor de notícias, sem ter de o visitar.'),
+]
+gl_html='<p>Explicação das siglas usadas neste site.</p>\n<dl class="gl">\n'+''.join('<dt id="%s">%s</dt>\n<dd>%s</dd>\n'%(re.sub(r'[^a-z]','',k.lower()),k,v) for k,v in GLOSS)+'</dl>\n'
+open('_site/glossario.html','w',encoding='utf-8').write(legal_page('/glossario','Glossário','Explicação das siglas usadas neste site.',gl_html))
+def _abbr(page):
+    i=page.find('</header>'); j=page.rfind('<footer')
+    if i<0 or j<0: return page
+    mid=page[i:j]
+    parts=re.split(r'(<[^>]+>)',mid)
+    skip=0; done=set()
+    for n,x in enumerate(parts):
+        if n%2:
+            m=re.match(r'<(/?)(script|style|abbr|svg|title)\b',x,re.I)
+            if m: skip+= -1 if m.group(1) else 1
+            continue
+        if skip>0 or not x.strip(): continue
+        for k,v in GLOSS:
+            if k in done: continue
+            pat=re.compile(r'(?<![\w/@.+-])'+re.escape(k)+r'(?![\w-])')
+            if pat.search(x):
+                x=pat.sub(lambda m:'<abbr title="%s">%s</abbr>'%(v.replace('"','&quot;'),k),x,count=1); done.add(k)
+        parts[n]=x
+    return page[:i]+''.join(parts)+page[j:]
+_old='Henrique Longa. Todos os direitos reservados. <a href="/privacidade">Privacidade</a> | <a href="/acessibilidade">Acessibilidade</a></footer>'
+_new='<a href="mailto:'+EMAIL+'" aria-label="Henrique Longa, enviar email">Henrique Longa</a>. Todos os direitos reservados. <a href="/privacidade">Privacidade</a> | <a href="/acessibilidade">Acessibilidade</a> | <a href="/glossario">Glossário</a></footer>'
+for _f in glob.glob('_site/*.html')+glob.glob('_site/opiniao/*.html'):
+    _t=open(_f,encoding='utf-8').read()
+    if _old in _t: _t=_t.replace(_old,_new)
+    if not _f.endswith('glossario.html'): _t=_abbr(_t)
+    open(_f,'w',encoding='utf-8').write(_t)
