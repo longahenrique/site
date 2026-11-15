@@ -106,6 +106,7 @@ article_css='''
 .article{background:var(--paper);padding:56px 0 80px}
 .article .wrap :last-child{margin-bottom:0}
 .article:has(.more-articles){padding-bottom:58px}
+.article .nf-more{margin-top:76px}
 main:focus,.article:focus{outline:none}
 .article .crumb{margin:0 0 30px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}
 .article .crumb a{text-underline-offset:5px}
@@ -127,7 +128,7 @@ main:focus,.article:focus{outline:none}
 .more-articles .articles{max-width:44em}
 .rss{margin:28px 0 0;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}
 .rss a{text-underline-offset:5px}
-@media(max-width:600px){.article{padding:36px 0 52px}.article:has(.more-articles){padding-bottom:36px}.article .text p{font-size:19px}}
+@media(max-width:600px){.article{padding:36px 0 52px}.article:has(.more-articles){padding-bottom:36px}.article .nf-more{margin-top:56px}.article .text p{font-size:19px}}
 '''
 bio_css='''
 #bio h1{font-size:clamp(36px,6vw,60px);line-height:1.05;margin:0 0 28px;text-wrap:balance}
@@ -207,12 +208,6 @@ function pf(e){if(!c)return;var a=e.target.closest&&e.target.closest("a[href]");
 if(a.origin!==location.origin||a.pathname===location.pathname||/^\/(feed|sitemap|robots)/.test(a.pathname)||/\.(jpe?g|png|webp|pdf|xml|txt)$/i.test(a.pathname))return;
 if(done[a.pathname])return;done[a.pathname]=1;var l=document.createElement("link");l.rel="prefetch";l.href=a.pathname;document.head.appendChild(l)}
 document.addEventListener("mouseover",pf,{passive:true});document.addEventListener("touchstart",pf,{passive:true});
-var d=document;if(d.documentElement.scrollHeight<innerHeight*3.2)return;
-var s=d.createElement("style");s.textContent=".totop{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;min-height:44px;padding:10px 16px;border:2px solid #141414;border-radius:8px;background:#faf6ea;color:#141414;font:700 15px Archivo,'Archivo Fallback','Helvetica Neue',Arial,sans-serif;cursor:pointer;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}.totop.on{opacity:1;visibility:visible}@media print{.totop{display:none}}";d.head.appendChild(s);
-var b=d.createElement("button");b.type="button";b.className="totop";b.textContent="Voltar ao topo";d.body.appendChild(b);
-var t=0;function sh(){t=0;b.classList.toggle("on",scrollY>innerHeight*1.5)}
-addEventListener("scroll",function(){if(!t)t=requestAnimationFrame(sh)},{passive:true});sh();
-b.addEventListener("click",function(){var r=matchMedia("(prefers-reduced-motion: reduce)").matches;scrollTo({top:0,behavior:r?"auto":"smooth"});var m=d.getElementById("conteudo");if(m)m.focus({preventScroll:true})})
 })();
 </script>
 """
@@ -494,7 +489,7 @@ nf_main="""<main class="article" id="conteudo" tabindex="-1">
 <a href="/biografia">Biografia</a>
 <a href="/imprensa">Imprensa</a>
 </div>
-<div class="more-articles">
+<div class="more-articles nf-more">
 <h2>Últimos artigos</h2>
 <ul class="articles">
 """+''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s</span></a></li>\n'%(k,arts[k]['title'],OUT[k]) for k in ORDER[:3])+"""</ul>
