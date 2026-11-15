@@ -199,6 +199,23 @@ def head(path,title,desc,css_text,ogtype='article',ld=None,meta_extra='',image='
 </style>
 </head>
 '''
+UX_JS=r"""<script>
+(function(){
+var c=navigator.connection;if(c&&(c.saveData||/2g/.test(c.effectiveType||"")))c=null;else c=1;
+var done={};
+function pf(e){if(!c)return;var a=e.target.closest&&e.target.closest("a[href]");if(!a||a.target==="_blank"||a.hasAttribute("download"))return;
+if(a.origin!==location.origin||a.pathname===location.pathname||/^\/(feed|sitemap|robots)/.test(a.pathname)||/\.(jpe?g|png|webp|pdf|xml|txt)$/i.test(a.pathname))return;
+if(done[a.pathname])return;done[a.pathname]=1;var l=document.createElement("link");l.rel="prefetch";l.href=a.pathname;document.head.appendChild(l)}
+document.addEventListener("mouseover",pf,{passive:true});document.addEventListener("touchstart",pf,{passive:true});
+var d=document;if(d.documentElement.scrollHeight<innerHeight*3.2)return;
+var s=d.createElement("style");s.textContent=".totop{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:30;min-height:44px;padding:10px 16px;border:2px solid #141414;border-radius:8px;background:#faf6ea;color:#141414;font:700 15px Archivo,'Archivo Fallback','Helvetica Neue',Arial,sans-serif;cursor:pointer;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}.totop.on{opacity:1;visibility:visible}@media print{.totop{display:none}}";d.head.appendChild(s);
+var b=d.createElement("button");b.type="button";b.className="totop";b.textContent="Voltar ao topo";d.body.appendChild(b);
+var t=0;function sh(){t=0;b.classList.toggle("on",scrollY>innerHeight*1.5)}
+addEventListener("scroll",function(){if(!t)t=requestAnimationFrame(sh)},{passive:true});sh();
+b.addEventListener("click",function(){var r=matchMedia("(prefers-reduced-motion: reduce)").matches;scrollTo({top:0,behavior:r?"auto":"smooth"});var m=d.getElementById("conteudo");if(m)m.focus({preventScroll:true})})
+})();
+</script>
+"""
 def body(hdr,main,extra=''):
     return f'''<body>
 <a class="skip" href="#conteudo">Saltar para o conteúdo principal</a>
@@ -210,7 +227,7 @@ def body(hdr,main,extra=''):
 {a11y}<script>
 {js}
 </script>
-{extra}{NOTICE_JS}</body>
+{extra}{UX_JS}{NOTICE_JS}</body>
 </html>
 '''
 def esc(t): return t.replace('&','&amp;').replace('<','&lt;').replace('>','&gt;')
@@ -475,6 +492,12 @@ nf_main="""<main class="article" id="conteudo" tabindex="-1">
 <a href="/">Página inicial</a>
 <a href="/opiniao">Artigos de opinião</a>
 <a href="/biografia">Biografia</a>
+<a href="/imprensa">Imprensa</a>
+</div>
+<div class="more-articles">
+<h2>Últimos artigos</h2>
+<ul class="articles">
+"""+''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s</span></a></li>\n'%(k,arts[k]['title'],OUT[k]) for k in ORDER[:3])+"""</ul>
 </div>
 </div>
 </main>"""
@@ -555,7 +578,7 @@ home=home.replace('<meta name="twitter:card" content="summary_large_image">','<m
 home=re.sub(r'<link rel="stylesheet" href="https://fonts.googleapis.com/css2[^>]*>\n','',home)
 home=re.sub(r'(<style>)(.*?)(</style>)',lambda m:m.group(1)+'\n'+FONTFACE+FX(m.group(2).lstrip('\n'))+NOTICE_CSS+MOTION_CSS+m.group(3),home,count=1,flags=re.S)
 home=home.replace('<div id="page">\n','<div id="page">\n'+NOTICE_HTML,1)
-home=home.replace('</body>',NOTICE_JS+'</body>',1)
+home=home.replace('</body>',UX_JS+NOTICE_JS+'</body>',1)
 home_lis=''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s</span></a></li>'%(k,arts[k]['title'],OUT[k]) for k in ORDER[:3])
 home=re.sub(r'<ul class="articles">.*?</ul>',lambda m:'<ul class="articles">'+home_lis+'</ul>',home,count=1,flags=re.S)
 home_ld={"@context":"https://schema.org","@graph":[PERSON,WEBSITE]}
