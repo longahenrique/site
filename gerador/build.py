@@ -654,7 +654,7 @@ open('_site/imprensa.html','w',encoding='utf-8').write(head('/imprensa','Imprens
 # ---------- robots, sitemap, rss ----------
 open('_site/robots.txt','w',encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: '+SITE+'/sitemap.xml\n')
 LASTMOD={'/opiniao/'+r[1]:r[0] for r in rows}   # data de publicação de cada artigo
-urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade','/glossario']
+urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
 def _sm(u):
     img=''.join('<image:image><image:loc>%s/fotos/%s</image:loc></image:image>'%(SITE,ph['file']) for ph in PHOTOS) if u=='/galeria' else ''
     lm=('<lastmod>%s</lastmod>'%LASTMOD[u]) if u in LASTMOD else ''
@@ -687,8 +687,6 @@ GLOSS=[
  ('LGBT+','Lésbicas, gays, bissexuais e transgénero, e outras identidades de orientação sexual e de género.'),
  ('RSS','Formato que permite receber os novos artigos de um site num leitor de notícias, sem ter de o visitar.'),
 ]
-gl_html='<p>Explicação das siglas usadas neste site.</p>\n<dl class="gl">\n'+''.join('<dt id="%s">%s</dt>\n<dd>%s</dd>\n'%(re.sub(r'[^a-z]','',k.lower()),k,v) for k,v in GLOSS)+'</dl>\n'
-open('_site/glossario.html','w',encoding='utf-8').write(legal_page('/glossario','Glossário','Explicação das siglas usadas neste site.',gl_html))
 def _abbr(page):
     i=page.find('</header>'); j=page.rfind('<footer')
     if i<0 or j<0: return page
@@ -713,5 +711,5 @@ _new='Henrique Longa. Todos os direitos reservados. <a href="/privacidade">Priva
 for _f in glob.glob('_site/*.html')+glob.glob('_site/opiniao/*.html'):
     _t=open(_f,encoding='utf-8').read()
     if _old in _t: _t=_t.replace(_old,_new)
-    if not _f.endswith('glossario.html'): _t=_abbr(_t)
+    _t=_abbr(_t)
     open(_f,'w',encoding='utf-8').write(_t)
