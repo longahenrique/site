@@ -110,7 +110,7 @@ gal_header=header.replace('<a href="/biografia">','<a href="/biografia" aria-cur
 for a in ('programa',): header=header.replace('href="#%s"'%a,'href="/#%s"'%a)
 contact=re.search(r'<div class="sea" id="contacto">.*?</footer>\n</div>\n</div>',s,flags=re.S).group(0)
 a11y=re.search(r'<div class="a11y">.*?</div>\n</div>\n',s,flags=re.S).group(0)
-fav=re.search(r'<link rel="icon"[^>]*>',s).group(0)+'\n'+re.search(r'<link rel="apple-touch-icon"[^>]*>',s).group(0)
+fav='<link rel="icon" href="/favicon.ico" sizes="any">\n<link rel="icon" type="image/png" sizes="48x48" href="/icon-48.png">\n<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">\n<link rel="apple-touch-icon" href="/apple-touch-icon.png">'
 js=re.findall(r'<script>(.*?)</script>',s,flags=re.S)[-1].strip()
 img=re.search(r'<img src="(data:image/webp;base64,[^"]+)" width="(\d+)" height="(\d+)" alt="([^"]*)">',s)
 article_css='''
@@ -517,6 +517,13 @@ open('_site/404.html','w',encoding='utf-8').write(nf)
 shutil.copy('og-image.jpg','_site/og-image.jpg')
 if os.path.isdir('fonts'): shutil.copytree('fonts','_site/fonts')
 if os.path.exists('CNAME'): shutil.copy('CNAME','_site/CNAME')
+
+from PIL import Image, ImageDraw
+def _circ(n):
+    k=8; big=Image.new('RGBA',(n*k,n*k),(0,0,0,0)); ImageDraw.Draw(big).ellipse((0,0,n*k-1,n*k-1),fill=(180,202,173,255)); return big.resize((n,n),Image.LANCZOS)
+for _n in (48,96,192): _circ(_n).save('_site/icon-%d.png'%_n)
+_circ(256).save('_site/favicon.ico',sizes=[(16,16),(32,32),(48,48)])
+Image.new('RGB',(180,180),(180,202,173)).save('_site/apple-touch-icon.png')
 open('_site/.nojekyll','w').close()
 
 # ---------- legal pages ----------
@@ -582,6 +589,8 @@ open('_site/acessibilidade.html','w',encoding='utf-8').write(legal_page('/acessi
 # ---------- home: fonts self-hosted, JSON-LD, extras ----------
 home=open(src,encoding='utf-8').read()
 home=NAVFIX(home)
+home=re.sub(r'<link rel="icon"[^>]*>\s*<link rel="apple-touch-icon"[^>]*>',lambda m:fav,home,count=1)
+assert 'data:image/png' not in home
 home=re.sub(r'<link rel="preconnect" href="https://fonts.googleapis.com">\n','',home)
 home=home.replace('<link rel="icon"','<link rel="canonical" href="https://henriquelonga.pt/">\n<link rel="icon"',1)
 home=home.replace('<meta name="twitter:card" content="summary_large_image">','<meta name="twitter:card" content="summary_large_image">\n'+SOCIAL_META,1)
