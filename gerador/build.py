@@ -387,7 +387,7 @@ open('_site/biografia.html','w',encoding='utf-8').write(head('/biografia','Biogr
 _bt=open('_site/biografia.html',encoding='utf-8').read()
 _bt=_bt.replace('<div class="wrap who">\n<h1>Biografia</h1>','<div class="wrap"><p class="bio-back" id="bio-back" hidden><a href="/imprensa">← Imprensa</a></p></div>\n<div class="wrap who">\n<h1>Biografia</h1>',1)
 assert 'id="bio-back"' in _bt
-_bt=_bt.replace('</head>','<style>#bio h1{font-size:clamp(34px,6.2vw,66px);line-height:1.06}.bio-back{margin:-16px 0 30px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}.bio-back a{text-underline-offset:5px}@media(max-width:600px){.bio-back{margin-top:-8px}}</style>\n</head>',1)
+_bt=_bt.replace('</head>','<style>#bio{padding-top:56px}#bio h1{font-size:clamp(34px,6.2vw,66px);line-height:1.06;margin-bottom:18px}#bio .prose p{font-size:20px;line-height:1.75;margin:0 0 1.25em}@media(max-width:600px){#bio{padding-top:36px}}.bio-back{margin:0 0 30px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}.bio-back a{text-underline-offset:5px}</style>\n</head>',1)
 _bt=_bt.replace('</body>','<script>(function(){var a=document.getElementById("bio-back");if(!a)return;try{var r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname.replace(/\\/$/,"")==="/imprensa")a.hidden=false}catch(e){}})();</script>\n</body>',1)
 open('_site/biografia.html','w',encoding='utf-8').write(_bt)
 
@@ -638,6 +638,7 @@ media_li=''.join('<li><a href="%s" target="_blank" rel="noopener"><span class="t
 op_li=''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s, %s</span></a></li>\n'%(k,arts[k]['title'],OUT[k],re.search(r'<time[^>]*>(.*?)</time>',arts[k]['meta']).group(1)) for k in ORDER[:3])
 press_css="""
 .press-sec{margin:2em 0 .5em;font:800 clamp(24px,3.4vw,30px)/1.2 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+h1+.press-sec{margin-top:0}
 .press-text{max-width:36em;font-size:20px;line-height:1.7}
 .press-text p{margin:0 0 1em}
 .bio-short{margin:0 0 30px;max-width:36em}
