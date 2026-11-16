@@ -385,7 +385,7 @@ bio_header=header.replace('<a href="/biografia">','<a href="/biografia" aria-cur
 bio_desc='Henrique José Longa Correia, nascido a 1 de abril de 2005 em Lisboa e natural de Sesimbra, é um estudante e ativista cívico associado ao partido LIVRE.'
 open('_site/biografia.html','w',encoding='utf-8').write(head('/biografia','Biografia',bio_desc,css.replace('#sobre-mim','#bio')+'\n'+bio_css,'profile',{"@context":"https://schema.org","@type":"ProfilePage","url":SITE+"/biografia","name":"Biografia | Henrique Longa","inLanguage":"pt-PT","mainEntity":PERSON},PROFILE_META+'\n')+body(bio_header,bio_main))
 _bt=open('_site/biografia.html',encoding='utf-8').read()
-_bt=_bt.replace('<div class="wrap who">\n<h1>Biografia</h1>','<div class="wrap who">\n<p class="bio-back" id="bio-back" hidden><a href="/imprensa">← Imprensa</a></p>\n<h1>Biografia</h1>',1)
+_bt=_bt.replace('<div class="wrap who">\n<h1>Biografia</h1>','<div class="wrap"><p class="bio-back" id="bio-back" hidden><a href="/imprensa">← Imprensa</a></p></div>\n<div class="wrap who">\n<h1>Biografia</h1>',1)
 assert 'id="bio-back"' in _bt
 _bt=_bt.replace('</head>','<style>.bio-back{margin:0 0 22px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}.bio-back a{text-underline-offset:5px}</style>\n</head>',1)
 _bt=_bt.replace('</body>','<script>(function(){var a=document.getElementById("bio-back");if(!a)return;try{var r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname.replace(/\\/$/,"")==="/imprensa")a.hidden=false}catch(e){}})();</script>\n</body>',1)
