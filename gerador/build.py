@@ -384,6 +384,12 @@ bio_main=f'''<main id="conteudo" tabindex="-1">
 bio_header=header.replace('<a href="/biografia">','<a href="/biografia" aria-current="page">')
 bio_desc='Henrique José Longa Correia, nascido a 1 de abril de 2005 em Lisboa e natural de Sesimbra, é um estudante e ativista cívico associado ao partido LIVRE.'
 open('_site/biografia.html','w',encoding='utf-8').write(head('/biografia','Biografia',bio_desc,css.replace('#sobre-mim','#bio')+'\n'+bio_css,'profile',{"@context":"https://schema.org","@type":"ProfilePage","url":SITE+"/biografia","name":"Biografia | Henrique Longa","inLanguage":"pt-PT","mainEntity":PERSON},PROFILE_META+'\n')+body(bio_header,bio_main))
+_bt=open('_site/biografia.html',encoding='utf-8').read()
+_bt=_bt.replace('<div class="wrap who">\n<h1>Biografia</h1>','<div class="wrap who">\n<p class="bio-back" id="bio-back" hidden><a href="/imprensa">← Imprensa</a></p>\n<h1>Biografia</h1>',1)
+assert 'id="bio-back"' in _bt
+_bt=_bt.replace('</head>','<style>.bio-back{margin:0 0 22px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}.bio-back a{text-underline-offset:5px}</style>\n</head>',1)
+_bt=_bt.replace('</body>','<script>(function(){var a=document.getElementById("bio-back");if(!a)return;try{var r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname.replace(/\\/$/,"")==="/imprensa")a.hidden=false}catch(e){}})();</script>\n</body>',1)
+open('_site/biografia.html','w',encoding='utf-8').write(_bt)
 
 import unicodedata, html as _h
 def norm(t): return ''.join(c for c in unicodedata.normalize('NFD',t.lower()) if unicodedata.category(c)!='Mn')
@@ -394,20 +400,22 @@ for slug,d in arts.items():
     paras=[_h.unescape(re.sub('<[^>]+>','',x)) for x in re.findall(r'<p>(.*?)</p>',d['text'],flags=re.S)]
     ex=paras[0]
     if len(ex)>200: ex=ex[:200].rsplit(' ',1)[0].rstrip(' ,;:.')+'…'
-    rows.append((iso,slug,d,OUT[slug],when,ex,norm(_h.unescape(re.sub('<[^>]+>','',d['title']))+' '+' '.join(paras))))
+    rows.append((iso,slug,d,OUT[slug],when,ex,' '.join(paras)))
 rows.sort(reverse=True)
 q=lambda t:esc(t).replace('"','&quot;')
-lis=''.join(f'<li data-y="{iso[:4]}" data-o="{q(o)}" data-s="{q(sx)}"><a href="/opiniao/{slug}"><span class="t">{d["title"]}</span><span class="s">{esc(o)}, {when}</span><span class="x">{esc(ex)}</span></a></li>\n' for iso,slug,d,o,when,ex,sx in rows)
+lis=''.join(f'<li data-y="{iso[:4]}" data-o="{q(o)}" data-t="{q(sx)}"><a href="/opiniao/{slug}"><span class="t">{d["title"]}</span><span class="s">{esc(o)}, {when}</span><span class="x">{esc(ex)}</span></a></li>\n' for iso,slug,d,o,when,ex,sx in rows)
 years=sorted({r[0][:4] for r in rows},reverse=True); outs=sorted({r[3] for r in rows})
 opts=lambda L:''.join(f'<option value="{esc(v)}">{esc(v)}</option>' for v in L)
 list_css=r"""
 .articles .x{display:block;margin-top:10px;font-size:17px;line-height:1.6}
 .articles li[hidden]{display:none}
+.articles mark{background:none;color:var(--accent);font-weight:800}
 .ctl{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 20px;max-width:44em}
 .ctl .f{display:flex;flex-direction:column;gap:6px;font:600 15px Archivo,"Helvetica Neue",Arial,sans-serif}
 .ctl .grow{flex:1 1 280px}
 .ctl input,.ctl select{min-width:0;padding:12px 14px;font:500 17px Archivo,"Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:6px}
 .ctl input:focus-visible,.ctl select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;width:20px;height:20px;cursor:pointer;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 4l12 12M16 4L4 16' stroke='%234a6a45' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat}
 .count{margin:0 0 8px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif;color:var(--muted)}
 #none{margin:24px 0;font-size:19px}
 """
@@ -429,11 +437,21 @@ list_main=f"""<main class="article" id="conteudo" tabindex="-1">
 list_js=r"""<script>
 (function(){
 var q=document.getElementById("q"),y=document.getElementById("y"),o=document.getElementById("o"),items=[].slice.call(document.querySelectorAll("#list li")),c=document.getElementById("count"),n=document.getElementById("none");
-function norm(t){return t.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function nc(s){var r="";for(var i=0;i<s.length;i++){var c=s.charAt(i),d=c.normalize("NFD").replace(/[̀-ͯ]/g,"");r+=(d?d.charAt(0):c).toLowerCase().charAt(0)}return r}
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
+function w1(a,b){var la=a.length,lb=b.length;if(Math.abs(la-lb)>1)return false;var i=0;while(i<la&&i<lb&&a.charAt(i)===b.charAt(i))i++;if(i===la&&i===lb)return true;if(la===lb)return a.slice(i+1)===b.slice(i+1)||(a.charAt(i)===b.charAt(i+1)&&a.charAt(i+1)===b.charAt(i)&&a.slice(i+2)===b.slice(i+2));if(la>lb)return a.slice(i+1)===b.slice(i);return a.slice(i)===b.slice(i+1)}
+function exact(n,t){var r=[],i=n.indexOf(t);while(i>-1){r.push([i,i+t.length]);i=n.indexOf(t,i+t.length)}return r}
+function fuzzy(n,toks){var r=[];for(var k=0;k<toks.length;k++){var tk=toks[k],hit=null;if(tk.length<4){var i=n.indexOf(tk);if(i>-1)hit=[i,i+tk.length]}else{var re=/[^\s.,;:!?()"“”«»…\-–—]+/g,m;while((m=re.exec(n))){var w=m[0];if(w1(tk,w)||w1(tk,w.slice(0,tk.length))){hit=[m.index,m.index+w.length];break}}}if(!hit)return null;r.push(hit)}return r.sort(function(a,b){return a[0]-b[0]})}
+function mark(s,rs,a,b){var h="",p=a;rs.forEach(function(r){var x=Math.max(r[0],p),z=Math.min(r[1],b);if(z>x){h+=esc(s.slice(p,x))+"<mark>"+esc(s.slice(x,z))+"</mark>";p=z}});return h+esc(s.slice(p,b))}
+function snip(s,rs){var f=rs[0][0],a=Math.max(0,f-70),b=Math.min(s.length,f+130);if(a>0){var u=s.indexOf(" ",a);if(u>-1&&u<f)a=u+1}if(b<s.length){var v=s.lastIndexOf(" ",b);if(v>f)b=v}return(a>0?"…":"")+mark(s,rs,a,b)+(b<s.length?"…":"")}
+items.forEach(function(li){var t=li.querySelector(".t"),x=li.querySelector(".x");li._t=t;li._x=x;li._th=t.innerHTML;li._xh=x.innerHTML;li._h=t.textContent;li._b=li.getAttribute("data-t");li._nh=nc(li._h);li._nb=nc(li._b)})
+function sh(li,rt,rb){li._t.innerHTML=rt.length?mark(li._h,rt,0,li._h.length):li._th;li._x.innerHTML=rb.length?snip(li._b,rb):li._xh}
 function sync(){var p=new URLSearchParams();if(q.value.trim())p.set("q",q.value.trim());if(y.value)p.set("ano",y.value);if(o.value)p.set("publicacao",o.value);var s=p.toString(),path=location.pathname.replace(/\/$/,"");history.replaceState(null,"",path+(s?"?"+s:"")+location.hash)}
-function run(){var t=norm(q.value.trim()),k=0;
-items.forEach(function(li){var ok=(!y.value||li.getAttribute("data-y")===y.value)&&(!o.value||li.getAttribute("data-o")===o.value)&&(!t||li.getAttribute("data-s").indexOf(t)>-1);li.hidden=!ok;if(ok)k++});
-c.textContent=k===1?"1 artigo":k+" artigos";n.hidden=k>0;sync()}
+function run(){var s=nc(q.value.trim()),k=0,fz=false,pool=items.filter(function(li){return(!y.value||li.getAttribute("data-y")===y.value)&&(!o.value||li.getAttribute("data-o")===o.value)}),res=new Map();
+if(s){pool.forEach(function(li){var rt=exact(li._nh,s),rb=exact(li._nb,s);if(rt.length||rb.length)res.set(li,[rt,rb])});
+if(!res.size){var tk=s.split(/\s+/).filter(Boolean);pool.forEach(function(li){var rt=fuzzy(li._nh,tk),rb=fuzzy(li._nb,tk);if(rt||rb)res.set(li,[rt||[],rb||[]])});fz=res.size>0}}
+items.forEach(function(li){var ok=pool.indexOf(li)>-1&&(!s||res.has(li));li.hidden=!ok;if(ok){k++;var r=res.get(li)||[[],[]];sh(li,r[0],r[1])}});
+c.textContent=fz?"Sem resultados exatos. Resultados parecidos:":(k===1?"1 artigo":k+" artigos");n.hidden=k>0;sync()}
 function setv(el,v){if(!v)return;for(var i=0;i<el.options.length;i++)if(el.options[i].value===v){el.value=v;return}}
 var sp=new URLSearchParams(location.search);q.value=sp.get("q")||"";setv(y,sp.get("ano"));setv(o,sp.get("publicacao"));
 [q,y,o].forEach(function(e){e.addEventListener("input",run);e.addEventListener("change",run)});
@@ -465,8 +483,8 @@ with zipfile.ZipFile('_site/fotos/henrique-longa-fotografias.zip','w',zipfile.ZI
         items+=f'<li><figure><img src="/fotos/miniaturas/{ph["file"]}" width="{t.width}" height="{t.height}" alt="{esc(ph["alt"])}" loading="lazy"><figcaption><span class="gt">{ph["title"]}</span>{desc}<span class="gm">JPG, {full[0]} × {full[1]} px, {mb} MB</span>{cred}<a class="dl" href="/fotos/{ph["file"]}" download aria-label="Descarregar: {esc(ph["title"])}">Descarregar</a></figcaption></figure></li>\n'
 gal_css="""
 .gal-all{margin:26px 0 8px}
-.gal{list-style:none;margin:28px 0 0;padding:0;columns:300px;column-gap:32px}
-.gal li{break-inside:avoid;margin:0 0 36px}
+.gal{list-style:none;margin:28px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(min(300px,100%),1fr));gap:0 32px;align-items:start}
+.gal li{margin:0 0 36px}
 .gal figure{margin:0}
 .gal img{display:block;width:100%;height:auto;border-radius:4px;background:var(--sea)}
 .gal figcaption{display:flex;flex-direction:column;gap:3px;padding-top:12px;font:500 15px Archivo,"Helvetica Neue",Arial,sans-serif}
