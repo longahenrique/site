@@ -451,6 +451,10 @@ function run(){var s=nc(q.value.trim()),k=0,fz=false,pool=items.filter(function(
 if(s){pool.forEach(function(li){var rt=exact(li._nh,s),rb=exact(li._nb,s);if(rt.length||rb.length)res.set(li,[rt,rb])});
 if(!res.size){var tk=s.split(/\s+/).filter(Boolean);pool.forEach(function(li){var rt=fuzzy(li._nh,tk),rb=fuzzy(li._nb,tk);if(rt||rb)res.set(li,[rt||[],rb||[]])});fz=res.size>0}}
 items.forEach(function(li){var ok=pool.indexOf(li)>-1&&(!s||res.has(li));li.hidden=!ok;if(ok){k++;var r=res.get(li)||[[],[]];sh(li,r[0],r[1])}});
+var ul=document.getElementById("list");function wl(n,r){return!/[a-z0-9]/.test(n.charAt(r[0]-1)||" ")&&!/[a-z0-9]/.test(n.charAt(r[1])||" ")}
+function sc(li){var r=res.get(li);if(!r)return[0,0,0];var w=r[0].some(function(x){return wl(li._nh,x)})||r[1].some(function(x){return wl(li._nb,x)});return[w?1:0,r[0].length?1:0,r[0].length+r[1].length]}
+var ord=items.slice();if(s)ord.sort(function(a,b){var x=sc(a),z=sc(b);for(var i=0;i<3;i++)if(x[i]!==z[i])return z[i]-x[i];return items.indexOf(a)-items.indexOf(b)});
+ord.forEach(function(li){ul.appendChild(li)});
 c.textContent=fz?"Sem resultados exatos. Resultados parecidos:":(k===1?"1 artigo":k+" artigos");n.hidden=k>0;sync()}
 function setv(el,v){if(!v)return;for(var i=0;i<el.options.length;i++)if(el.options[i].value===v){el.value=v;return}}
 var sp=new URLSearchParams(location.search);q.value=sp.get("q")||"";setv(y,sp.get("ano"));setv(o,sp.get("publicacao"));
