@@ -517,6 +517,7 @@ open('_site/404.html','w',encoding='utf-8').write(nf)
 shutil.copy('og-image.jpg','_site/og-image.jpg')
 if os.path.isdir('fonts'): shutil.copytree('fonts','_site/fonts')
 if os.path.exists('CNAME'): shutil.copy('CNAME','_site/CNAME')
+open('_site/ff36041429c8421a1bf64647f7ac8dbb.txt','w').write('ff36041429c8421a1bf64647f7ac8dbb')  # chave IndexNow (pública por desenho)
 
 from PIL import Image, ImageDraw
 def _circ(n):
