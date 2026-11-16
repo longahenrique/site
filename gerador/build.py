@@ -387,7 +387,7 @@ open('_site/biografia.html','w',encoding='utf-8').write(head('/biografia','Biogr
 _bt=open('_site/biografia.html',encoding='utf-8').read()
 _bt=_bt.replace('<div class="wrap who">\n<h1>Biografia</h1>','<div class="wrap"><p class="bio-back" id="bio-back" hidden><a href="/imprensa">← Imprensa</a></p></div>\n<div class="wrap who">\n<h1>Biografia</h1>',1)
 assert 'id="bio-back"' in _bt
-_bt=_bt.replace('</head>','<style>.bio-back{margin:0 0 22px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}.bio-back a{text-underline-offset:5px}</style>\n</head>',1)
+_bt=_bt.replace('</head>','<style>.bio-back{margin:-16px 0 30px;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}.bio-back a{text-underline-offset:5px}@media(max-width:600px){.bio-back{margin-top:-8px}}</style>\n</head>',1)
 _bt=_bt.replace('</body>','<script>(function(){var a=document.getElementById("bio-back");if(!a)return;try{var r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname.replace(/\\/$/,"")==="/imprensa")a.hidden=false}catch(e){}})();</script>\n</body>',1)
 open('_site/biografia.html','w',encoding='utf-8').write(_bt)
 
@@ -409,7 +409,7 @@ opts=lambda L:''.join(f'<option value="{esc(v)}">{esc(v)}</option>' for v in L)
 list_css=r"""
 .articles .x{display:block;margin-top:10px;font-size:17px;line-height:1.6}
 .articles li[hidden]{display:none}
-.articles mark{background:none;color:var(--accent);font-weight:600;-webkit-text-stroke:.55px currentColor;paint-order:stroke fill}
+.articles mark{background:rgba(180,202,173,.55);color:#2f4a2b;font-weight:600;-webkit-text-stroke:.7px currentColor;paint-order:stroke fill;padding:0 .12em;margin:0 -.04em;border-radius:3px}
 .ctl{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 20px;max-width:44em}
 .ctl .f{display:flex;flex-direction:column;gap:6px;font:600 15px Archivo,"Helvetica Neue",Arial,sans-serif}
 .ctl .grow{flex:1 1 280px}
