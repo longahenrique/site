@@ -409,7 +409,7 @@ opts=lambda L:''.join(f'<option value="{esc(v)}">{esc(v)}</option>' for v in L)
 list_css=r"""
 .articles .x{display:block;margin-top:10px;font-size:17px;line-height:1.6}
 .articles li[hidden]{display:none}
-.articles mark{background:rgba(180,202,173,.55);color:#2f4a2b;font-weight:600;-webkit-text-stroke:.7px currentColor;paint-order:stroke fill;padding:0 .12em;margin:0 -.04em;border-radius:3px}
+.articles mark{background:rgba(180,202,173,.55);color:var(--ink);font-weight:600;-webkit-text-stroke:.7px currentColor;paint-order:stroke fill;padding:0 .12em;margin:0 -.04em;border-radius:3px}
 .ctl{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 20px;max-width:44em}
 .ctl .f{display:flex;flex-direction:column;gap:6px;font:600 15px Archivo,"Helvetica Neue",Arial,sans-serif}
 .ctl .grow{flex:1 1 280px}
