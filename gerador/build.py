@@ -399,7 +399,10 @@ for slug,d in arts.items():
     iso=re.search(r'datetime="(\d{4}-\d{2}(?:-\d{2})?)"',d['meta']).group(1); when=re.search(r'<time[^>]*>(.*?)</time>',d['meta']).group(1)
     paras=[_h.unescape(re.sub('<[^>]+>','',x)) for x in re.findall(r'<p>(.*?)</p>',d['text'],flags=re.S)]
     ex=paras[0]
-    if len(ex)>200: ex=ex[:200].rsplit(' ',1)[0].rstrip(' ,;:.')+'…'
+    if len(ex)>200:
+        ex=ex[:200].rsplit(' ',1)[0]
+        while ' ' in ex and len(re.sub(r'\W','',ex.rsplit(' ',1)[1]))<=3: ex=ex.rsplit(' ',1)[0]
+        ex=ex.rstrip(' ,;:.')+'…'
     rows.append((iso,slug,d,OUT[slug],when,ex,' '.join(paras)))
 rows.sort(reverse=True)
 q=lambda t:esc(t).replace('"','&quot;')
@@ -407,7 +410,7 @@ lis=''.join(f'<li data-y="{iso[:4]}" data-o="{q(o)}" data-t="{q(sx)}"><a href="/
 years=sorted({r[0][:4] for r in rows},reverse=True); outs=sorted({r[3] for r in rows})
 opts=lambda L:''.join(f'<option value="{esc(v)}">{esc(v)}</option>' for v in L)
 list_css=r"""
-.articles .x{display:block;margin-top:10px;font-size:17px;line-height:1.6}
+.articles .x{display:block;margin-top:10px;font-size:17px;line-height:1.6;text-wrap:pretty}
 .articles li[hidden]{display:none}
 .articles mark{background:rgba(180,202,173,.55);color:var(--ink);font-weight:600;-webkit-text-stroke:.35px currentColor;paint-order:stroke fill;padding:0 .12em;margin:0 -.04em;border-radius:3px}
 .ctl{display:flex;flex-wrap:wrap;gap:16px;margin:0 0 20px;max-width:44em}
