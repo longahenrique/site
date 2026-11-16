@@ -43,3 +43,16 @@ jobs:
       - name: Publicar
         id: deployment
         uses: actions/deploy-pages@v4
+      - name: Avisar o Bing e outros motores (IndexNow)
+        continue-on-error: true
+        run: |
+          python3 - <<'PY'
+          import re, json, urllib.request
+          KEY='ff36041429c8421a1bf64647f7ac8dbb'
+          S='https://henriquelonga.pt'
+          x=urllib.request.urlopen(S+'/sitemap.xml',timeout=30).read().decode()
+          urls=re.findall(r'<loc>([^<]+)</loc>',x)
+          d=json.dumps({'host':'henriquelonga.pt','key':KEY,'keyLocation':S+'/'+KEY+'.txt','urlList':urls}).encode()
+          r=urllib.request.Request('https://api.indexnow.org/indexnow',d,{'Content-Type':'application/json; charset=utf-8'})
+          print(urllib.request.urlopen(r,timeout=30).status)
+          PY
