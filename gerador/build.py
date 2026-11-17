@@ -182,7 +182,7 @@ FONTFACE='''@font-face{font-family:Archivo;font-style:normal;font-weight:500;fon
 import json
 def FX(c): return c.replace('Archivo,','Archivo,"Archivo Fallback",').replace('"Source Serif 4",Georgia','"Source Serif 4","Source Serif Fallback",Georgia')
 def extra_head(ld=None):
-    out='<link rel="preload" href="/fonts/archivo-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n'+'<link rel="alternate" type="application/rss+xml" title="Henrique Longa: artigos de opinião" href="/feed.xml">\n'
+    out='<link rel="preload" href="/fonts/archivo-latin-500-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/archivo-latin-800-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/source-serif-4-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>\n<link rel="preload" href="/fonts/source-serif-4-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>\n'+'<link rel="alternate" type="application/rss+xml" title="Henrique Longa: artigos de opinião" href="/feed.xml">\n'
     if GSC_META: out+='<meta name="google-site-verification" content="%s">\n'%GSC_META
     if ld: out+='<script type="application/ld+json">%s</script>\n'%json.dumps(ld,ensure_ascii=False,separators=(',',':'))
     if GOATCOUNTER: out+='<script data-goatcounter="https://%s.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>\n'%GOATCOUNTER
