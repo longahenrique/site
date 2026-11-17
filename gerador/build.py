@@ -703,6 +703,7 @@ for _f in glob.glob('_site/**/*.html',recursive=True):
     _n=re.sub(r'<a\b([^>]*\btarget="_blank"[^>]*)>',lambda m: m.group(0) if 'aria-describedby' in m.group(1) else '<a'+m.group(1)+' aria-describedby="nt">',_n)
     if 'aria-describedby="nt"' in _n and 'id="nt"' not in _n:
         _n=_n.replace('<body>','<body>\n<span id="nt" hidden>Abre num novo separador</span>',1)
+    _n=_n.replace('a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}','a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,summary:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}',1)
     if _n!=_t: open(_f,'w',encoding='utf-8').write(_n)
 print('Site gerado em _site/ com',sum(len(f) for _,_,f in os.walk('_site')),'ficheiros e',len(arts),'artigos.')
 
