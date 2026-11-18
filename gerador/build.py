@@ -682,6 +682,61 @@ open('_site/imprensa.html','w',encoding='utf-8').write(head('/imprensa','Imprens
 # ---------- robots, sitemap, rss ----------
 open('_site/robots.txt','w',encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: '+SITE+'/sitemap.xml\n')
 LASTMOD={'/opiniao/'+r[1]:r[0] for r in rows}   # data de publicação de cada artigo
+
+# ---------- página de teste: Programa para Sesimbra (escondida: sem menu, sem sitemap, noindex) ----------
+def prog_page():
+    import json as _j
+    comp=_j.load(open('gerador/programa/programa_completo.json',encoding='utf-8'))
+    areas=''
+    for a in comp:
+        li=''
+        for m in a['medidas']:
+            w=m['t'].rsplit(' ',1)
+            tt=(esc(w[0])+' ' if len(w)>1 else '')+'<span class="lw">'+esc(w[-1])+'<i class="chv" aria-hidden="true"></i></span>'
+            onde='<span class="sq-onde" data-zonas="%s"></span>'%','.join(m['mapa']) if m.get('mapa') else ''
+            li+='<li><details><summary>%s</summary><p>%s</p>%s</details></li>'%(tt,esc(m['d']),onde)
+        areas+='<div class="area"><h3>%s</h3><div class="acc-body"><ul>%s</ul></div></div>\n'%(esc(a['area']),li)
+    main=f"""<main id="conteudo" tabindex="-1" class="prog">
+<section class="sq" style="padding-top:56px">
+<div class="wrap">
+<p class="sq-kicker">Programa · <span id="sq-data"></span></p>
+<h1>Programa para Sesimbra</h1>
+<p class="sq-lead">Mar, mata, serra e bairros onde dá gosto viver. Escolhe um lugar no mapa para ver o que muda, como é hoje e como pode ficar.</p>
+<p class="sq-aviso">Página de teste: ainda não está publicada e não aparece no menu nem nos motores de pesquisa.</p>
+<h2 class="sr">Mapa do programa</h2>
+<fieldset class="sq-camadas" id="sq-camadas"><legend>Camadas do mapa</legend></fieldset>
+<div class="sq-corpo">
+<div>
+<div class="sq-mapa" id="sq-mapa" role="region" aria-label="Mapa do programa para o concelho de Sesimbra"></div>
+<div class="sq-lugares" id="sq-lugares" role="group" aria-label="Lugares"></div>
+</div>
+<article class="sq-postal" id="sq-postal" aria-live="polite"></article>
+</div>
+<noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
+<div class="sq-bairros">
+<h2>Em todos os bairros</h2>
+<p>O que não cabe num ponto do mapa, porque é para todo o concelho.</p>
+<ul class="sq-grelha" id="sq-grelha"></ul>
+</div>
+<p class="sq-legenda" id="sq-legenda"></p>
+<p class="sq-nota" id="sq-nota"></p>
+</div>
+</section>
+<section id="programa-completo" class="tint sq-completo">
+<div class="wrap">
+<h2>Programa completo</h2>
+<p class="intro">Todas as medidas do programa, por área. Algumas têm lugar no mapa.</p>
+{areas}</div>
+</section>
+</main>"""
+    ex='<script src="/programa-mapa/leaflet.js"></script>\n<script src="/programa-mapa/programa-dados.js"></script>\n<script src="/programa-mapa/programa.js"></script>\n'
+    h=head('/teste-programa','Programa para Sesimbra (página de teste)','Programa para Sesimbra: mapa e medidas por área. Página de teste.',css+'\n'+article_css,'website',None,'<meta name="robots" content="noindex, nofollow">\n<link rel="stylesheet" href="/programa-mapa/leaflet.css">\n<link rel="stylesheet" href="/programa-mapa/programa.css">')
+    return h+body(header,main,ex)
+if os.path.isdir('gerador/programa'):
+    os.makedirs('_site/programa-mapa',exist_ok=True)
+    for _f in ('leaflet.css','leaflet.js','programa.css','programa-dados.js','programa.js'):
+        shutil.copy('gerador/programa/'+_f,'_site/programa-mapa/'+_f)
+    open('_site/teste-programa.html','w',encoding='utf-8').write(prog_page())
 urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
 def _sm(u):
     img=''.join('<image:image><image:loc>%s/fotos/%s</image:loc></image:image>'%(SITE,ph['file']) for ph in PHOTOS) if u=='/galeria' else ''
