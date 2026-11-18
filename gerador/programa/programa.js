@@ -117,7 +117,7 @@ var ILU = (function () {
   if (L.Browser.mobile) map.dragging.disable();   // no telemóvel o mapa só se arrasta em ecrã inteiro; com um dedo a página desliza
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
-  el.addEventListener('wheel', function (e) { if (!(e.ctrlKey || e.metaKey) && !el.classList.contains('sq-cheio')) e.stopImmediatePropagation(); }, true);
+  // a roda do rato aproxima e afasta o mapa quando o cursor está sobre ele (a página rola fora do mapa)
 
   map.createPane('pZonas').style.zIndex = 410; map.createPane('pLinhas').style.zIndex = 430;
   var rZonas = L.canvas({ pane: 'pZonas', padding: 0.5, tolerance: 4 }), rLinhas = L.canvas({ pane: 'pLinhas', padding: 0.5, tolerance: 10 });
