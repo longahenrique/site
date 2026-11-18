@@ -207,3 +207,6 @@
 #sq-res .vazio{color:#4b5347}
 @media(max-width:640px){#sq-res [role=option]{flex-direction:column;align-items:flex-start;gap:2px}}
 @media(prefers-reduced-motion:reduce){#sq-res{box-shadow:none}}
+
+@media(min-width:980px){.sq-col-cartao .sq-busca{margin:0 0 12px;max-width:none}.sq-col-cartao .sq-busca label{font-size:14px;margin-bottom:4px}.sq-col-cartao .sq-busca input{font-size:16px;padding:10px 12px;min-height:44px}.sq-col-cartao .sq-busca #sq-res li{font-size:15px}}
+@media(min-width:980px){.sq-col-cartao .sq-busca #sq-res .grp{font-size:12px}}

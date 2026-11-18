@@ -433,6 +433,14 @@ var ILU = (function () {
     inp.addEventListener('blur', function () { setTimeout(fechar, 120); });
   })();
 
+
+  // A pesquisa fica no topo da coluna dos cartões no computador e por cima do menu no telemóvel
+  (function () {
+    var bx = document.querySelector('.sq-busca'), col = document.querySelector('.sq-col-cartao'), menu = document.getElementById('sq-camadas'); if (!bx || !col || !menu || !window.matchMedia) return;
+    var mq = window.matchMedia('(min-width: 980px)');
+    function pos() { if (mq.matches) { if (bx.parentNode !== col) col.insertBefore(bx, col.firstChild); } else if (bx.nextSibling !== menu) menu.parentNode.insertBefore(bx, menu); }
+    pos(); if (mq.addEventListener) mq.addEventListener('change', pos); else mq.addListener(pos);
+  })();
   // Lista de locais (alternativa ao mapa)
   (function () {
     var cont = document.getElementById('sq-lista'); if (!cont) return;
