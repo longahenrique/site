@@ -66,6 +66,11 @@ var ILU = (function () {
     variante: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 120 Q120 100 220 118 T400 96 T640 84 V250 H0Z" fill="#b9d7a0"/><path d="M0 205 Q320 192 640 200 V250 H0Z" fill="#9cc58a"/><rect x="0" y="158" width="150" height="92" fill="#8fc0dc"/><path d="M20 190 q18 -6 36 0 M80 214 q18 -6 36 0" stroke="#e8f4fb" stroke-width="3" fill="none"/><path d="M60 170 l22 0 l-4 12 h-14z" fill="#b8693f"/><rect x="68" y="150" width="3" height="20" fill="#555"/>' +
       '<path d="M150 214 C240 200 300 160 380 150 S520 120 650 96" stroke="#7b7f86" stroke-width="26" fill="none" stroke-linecap="round"/><path d="M150 214 C240 200 300 160 380 150 S520 120 650 96" stroke="#fff" stroke-width="2" stroke-dasharray="10 9" fill="none"/>' +
       '<rect x="330" y="108" width="62" height="30" rx="3" fill="#e8e2d2" stroke="#8f8a7a"/><rect x="392" y="116" width="24" height="22" rx="3" fill="#c4473a"/><circle cx="346" cy="141" r="6" fill="#222"/><circle cx="372" cy="141" r="6" fill="#222"/><circle cx="404" cy="141" r="6" fill="#222"/>' + pinheiro(250, 128, 0.9) + pinheiro(560, 70, 0.8) + pinheiro(600, 78, 0.7) + casa(190, 150, 50, 36, '#f7f2e6', '#b8693f'),
+    acessocoina: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 130 Q160 105 330 124 T640 110 V250 H0Z" fill="#b9d7a0"/><path d="M0 214 Q320 200 640 210 V250 H0Z" fill="#9cc58a"/>' +
+      '<path d="M0 196 C160 186 300 160 640 128" stroke="#7b7f86" stroke-width="22" fill="none" stroke-linecap="round"/><path d="M0 196 C160 186 300 160 640 128" stroke="#fff" stroke-width="2" stroke-dasharray="10 9" fill="none"/>' +
+      casa(60, 150, 48, 34, '#f7f2e6', '#b8693f') + casa(130, 156, 44, 32, '#f3ead6', '#a85a3a') + pinheiro(540, 112, 0.9) + pinheiro(590, 118, 0.75) +
+      '<rect x="470" y="96" width="70" height="28" rx="3" fill="#e8e2d2" stroke="#8f8a7a"/><rect x="478" y="104" width="12" height="12" fill="#8fc0dc"/><rect x="498" y="104" width="12" height="12" fill="#8fc0dc"/><rect x="518" y="104" width="12" height="12" fill="#8fc0dc"/>' +
+      autocarro(310, 172, 15) + bicicleta(420, 150, 15),
     santana: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 160 Q200 130 420 150 T640 140 V250 H0Z" fill="#b9d7a0"/><path d="M0 208 Q320 194 640 205 V250 H0Z" fill="#9cc58a"/>' +
       '<rect x="60" y="80" width="150" height="112" fill="#e9d6b0"/><path d="M52 80 L135 46 L218 80Z" fill="#b8693f"/>' + janelas(60, 84, 150, 80, 5, 2) + '<rect x="115" y="150" width="40" height="42" fill="#8a6a4a"/><rect x="218" y="40" width="22" height="152" fill="#d9c49a"/><rect x="214" y="34" width="30" height="10" fill="#b8693f"/><path d="M229 34 q10 -14 -2 -26" stroke="#9aa3ad" stroke-width="5" fill="none" stroke-linecap="round"/>' +
       '<rect x="300" y="170" width="190" height="34" fill="#cfcabb"/><path d="M310 187 H480" stroke="#fff" stroke-width="2" stroke-dasharray="10 8"/><rect x="420" y="110" width="4" height="62" fill="#555"/><rect x="404" y="92" width="36" height="22" rx="3" fill="#1857d6"/><text x="422" y="108" font-size="14" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">P</text>' + autocarro(350, 204, 12) +
@@ -225,7 +230,7 @@ var ILU = (function () {
     m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : '') + (p.cat === 'obra' ? ligNota('obra') : ''), { maxWidth: 240 });
     rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto });
   });
-  var MINZ = { obra: 0, saude: 14.5, bombeiros: 14.5, policia: 14.5, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
+  var MINZ = { obra: 0, saude: 14.5, bombeiros: 14.5, policia: 16, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
   var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'igreja', 'mercado', 'desporto'], DIST = 38;
   var filtro = null;   // com um cartão escolhido, só se mostra o que é dessa zona: {b: limites} ou {solo: nome da linha}
   function nofiltro(r) { return !filtro || (!filtro.solo && !filtro.semObra && filtro.b.contains(r.p)); }
@@ -327,7 +332,7 @@ var ILU = (function () {
   // Três grupos de cartões: localidades, estradas, espaços verdes
   var GRUPOS_C = [
     { id: 'loc', nome: 'Localidades', ids: ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'qconde'] },
-    { id: 'est', nome: 'Estradas', ids: ['marginal', 'variante', 'en10', 'almocreves', 'acessocoina'] },
+    { id: 'est', nome: 'Estradas', ids: ['marginal', 'variante', 'en10', 'acessocoina', 'almocreves'] },
     { id: 'ver', nome: 'Espaços verdes', ids: ['arrabida', 'mata', 'espichel', 'varzea'] }
   ];
   GRUPOS_C.forEach(function (g) { g.ids = g.ids.filter(function (id) { return camadasZona[id]; }); });

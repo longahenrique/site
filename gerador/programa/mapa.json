@@ -49943,7 +49943,7 @@
   },
   {
    "id": "acessocoina",
-   "nome": "Acesso Coina–Quinta do Conde (Rua Luís de Camões)",
+   "nome": "Acesso Coina–Quinta do Conde",
    "camada": "mobilidade",
    "etiqueta": "Estrada",
    "cor": "#6d4bc2",
@@ -49973,53 +49973,17 @@
    ],
    "direcao": "right",
    "minZoom": 13,
-   "perfilNome": "ligação a Coina",
    "frase": "Um acesso novo liga o topo da Rua Luís de Camões à rotunda de Coina, para o bairro chegar à estação sem passar pela EN10.",
    "ilustracao": {
-    "tipo": "perfil",
-    "hoje": [
-     [
-      "bermaerva",
-      3
-     ],
-     [
-      "terra",
-      3
-     ],
-     [
-      "bermaerva",
-      3
-     ]
-    ],
-    "amanha": [
-     [
-      "passeio",
-      2
-     ],
-     [
-      "ciclovia",
-      2.5
-     ],
-     [
-      "carro",
-      3.3
-     ],
-     [
-      "carro",
-      3.3
-     ],
-     [
-      "passeio",
-      2
-     ]
-    ]
+    "tipo": "paisagem",
+    "variante": "acessocoina"
    },
    "medidas": [
     {
-     "t": "Cerca de 0,6 km, da Rua Luís de Camões, na Quinta do Conde, à rotunda a seguir à estação de Coina."
+     "t": "Liga o topo da Rua Luís de Camões, na Quinta do Conde, à rotunda a seguir à estação de Coina (cerca de 0,6 km)."
     },
     {
-     "t": "Estrada de duas faixas com passeio nos dois lados e ciclovia, para ir a pé, de bicicleta ou de autocarro até ao comboio."
+     "t": "Dá ao bairro uma entrada direta para a estação de Coina, sem passar pela EN10."
     },
     {
      "t": "O traçado tem de atravessar a A2, o que exige uma passagem a estudar."
@@ -52157,18 +52121,6 @@
      -9.10684
     ],
     [
-     38.59207,
-     -9.10671
-    ],
-    [
-     38.59112,
-     -9.10608
-    ],
-    [
-     38.59207,
-     -9.10671
-    ],
-    [
      38.59202,
      -9.10684
     ],
@@ -52225,127 +52177,39 @@
      -9.10444
     ],
     [
-     38.60552,
-     -9.10605
+     38.6059,
+     -9.10624
     ],
     [
-     38.6058,
-     -9.10616
+     38.60728,
+     -9.10646
     ],
     [
-     38.60637,
-     -9.10627
-    ],
-    [
-     38.60817,
-     -9.10641
-    ],
-    [
-     38.60973,
-     -9.10666
-    ],
-    [
-     38.61081,
-     -9.10674
+     38.61054,
+     -9.10681
     ],
     [
      38.61148,
      -9.10697
     ],
     [
-     38.61213,
-     -9.10741
+     38.61189,
+     -9.10686
     ],
     [
-     38.61232,
-     -9.10749
+     38.612,
+     -9.10675
     ],
     [
-     38.61249,
-     -9.10751
+     38.61203,
+     -9.10652
     ],
     [
-     38.61265,
-     -9.10741
+     38.612,
+     -9.1061
     ],
     [
-     38.61334,
-     -9.10619
-    ],
-    [
-     38.61338,
-     -9.10599
-    ],
-    [
-     38.61338,
-     -9.10575
-    ],
-    [
-     38.6133,
-     -9.10556
-    ],
-    [
-     38.61316,
-     -9.1054
-    ],
-    [
-     38.61295,
-     -9.10533
-    ],
-    [
-     38.61256,
-     -9.10538
-    ],
-    [
-     38.61223,
-     -9.10569
-    ],
-    [
-     38.61211,
-     -9.10573
-    ],
-    [
-     38.61193,
-     -9.10564
-    ],
-    [
-     38.61178,
-     -9.10533
-    ],
-    [
-     38.61166,
-     -9.1048
-    ],
-    [
-     38.61146,
-     -9.10389
-    ],
-    [
-     38.61143,
-     -9.10344
-    ],
-    [
-     38.61146,
-     -9.10389
-    ],
-    [
-     38.61178,
-     -9.10533
-    ],
-    [
-     38.61176,
-     -9.10564
-    ],
-    [
-     38.61171,
-     -9.1058
-    ],
-    [
-     38.61162,
-     -9.10591
-    ],
-    [
-     38.61143,
+     38.61184,
      -9.10598
     ],
     [
@@ -52499,18 +52363,11 @@
      -9.10483
     ],
     [
-     38.61229,
-     -9.1057
-    ],
-    [
-     38.61145,
-     -9.1026
-    ],
-    [
      38.60959,
      -9.10023
     ]
-   ]
+   ],
+   "semSnap": true
   },
   {
    "camada": "ativos",
@@ -54187,7 +54044,7 @@
   },
   {
    "camada": "vias",
-   "nome": "Acesso Coina–Quinta do Conde (Rua Luís de Camões)",
+   "nome": "Acesso Coina–Quinta do Conde",
    "estado": "proposta",
    "cor": "#6d4bc2",
    "peso": 5,
