@@ -1,6 +1,6 @@
 /* ===== Ilustrações ===== */
 var ILU = (function () {
-  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', arvores: 'árvores', peoes: 'a pé', ciclovia: 'ciclovia', bus: 'autocarro', berma: 'berma' };
+  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', berma: 'berma' };
   var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', berma: '#cbbf9d' };
   function pessoa(x, y, s, c) { return '<circle cx="' + x + '" cy="' + (y - 1.55 * s) + '" r="' + (0.13 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.16 * s) + '" y="' + (y - 1.4 * s) + '" width="' + (0.32 * s) + '" height="' + (1.4 * s) + '" rx="' + (0.12 * s) + '" fill="' + c + '"/>'; }
   function arvore(x, y, s) { return '<rect x="' + (x - 0.12 * s) + '" y="' + (y - 2.6 * s) + '" width="' + (0.24 * s) + '" height="' + (2.6 * s) + '" fill="#6d5a43"/><circle cx="' + x + '" cy="' + (y - 3.6 * s) + '" r="' + (1.5 * s) + '" fill="#4f9a5a"/><circle cx="' + (x - 0.8 * s) + '" cy="' + (y - 3.1 * s) + '" r="' + (1 * s) + '" fill="#5daa66"/><circle cx="' + (x + 0.8 * s) + '" cy="' + (y - 3.2 * s) + '" r="' + (1 * s) + '" fill="#468d50"/>'; }
@@ -11,7 +11,7 @@ var ILU = (function () {
   var CORES_P = ['#3a6ea5', '#c0504d', '#7a5ca8', '#2e8b57', '#d98a1c', '#4a4f57'];
   function perfil(bandas, nome) {
     var W = 640, H = 250, chao = 205, total = bandas.reduce(function (a, b) { return a + b[1]; }, 0);
-    var s = (W - 20) / total, x = 10, svg = '', etiquetas = '', n = 0, nomesUs = [];
+    var s = (W - 20) / total, x = 10, svg = '', etiquetas = '', n = 0, nomesUs = [], runs = [];
     svg += '<rect x="0" y="' + chao + '" width="' + W + '" height="' + (H - chao) + '" fill="#f3efe6"/>';
     bandas.forEach(function (b) {
       var tipo = b[0], w = b[1] * s, cx = x + w / 2;
@@ -25,9 +25,11 @@ var ILU = (function () {
       else if (tipo === 'peoes') { for (var k = 0; k < 3; k++) svg += pessoa(x + w * (0.2 + k * 0.3), chao, s * (0.95 - k * 0.1), CORES_P[n++ % 6]); }
       else if (tipo === 'passeio') svg += pessoa(cx, chao, s, CORES_P[n++ % 6]);
       if (w > 22 && nomesUs.indexOf(NOMES[tipo]) < 0) nomesUs.push(NOMES[tipo]);
+      if (runs.length && runs[runs.length - 1].t === NOMES[tipo]) runs[runs.length - 1].w += w; else runs.push({ t: NOMES[tipo], x: x, w: w });
       x += w;
     });
-    return '<svg viewBox="0 0 ' + W + ' ' + (chao + 14) + '" role="img" aria-label="' + (nome || 'Perfil da rua') + '">' + svg + '</svg><p class="sq-leg-perfil">' + nomesUs.join(' · ') + '</p>';
+    runs.forEach(function (r) { if (r.w >= 46) etiquetas += '<text x="' + (r.x + r.w / 2) + '" y="' + (chao + 34) + '" text-anchor="middle" font-size="17" font-weight="700" fill="#2b3128" font-family="Archivo,Arial,sans-serif">' + r.t + '</text>'; });
+    return '<svg viewBox="0 0 ' + W + ' ' + (chao + 46) + '" role="img" aria-label="' + (nome || 'Perfil da rua') + ': ' + nomesUs.join(', ') + '">' + svg + etiquetas + '</svg>';
   }
   var P = {
     mata: '<rect width="640" height="250" fill="#e6f1f4"/><path d="M0 170 Q160 140 320 160 T640 150 V250 H0Z" fill="#d7c48f"/><path d="M0 205 Q200 190 640 200 V250 H0Z" fill="#efe1b8"/>' + [60, 140, 230, 330, 420, 520, 590].map(function (x, i) { var h = 70 + (i % 3) * 18; return '<rect x="' + (x - 3) + '" y="' + (175 - h * 0.55) + '" width="6" height="' + (h * 0.55) + '" fill="#6d5a43"/><ellipse cx="' + x + '" cy="' + (175 - h * 0.6) + '" rx="' + (38 - i % 2 * 8) + '" ry="16" fill="' + (i % 2 ? '#3f7f4c' : '#4c9159') + '"/>'; }).join('') + '<circle cx="300" cy="196" r="5" fill="#c0504d"/><rect x="296" y="200" width="8" height="18" rx="3" fill="#c0504d"/><circle cx="330" cy="198" r="5" fill="#3a6ea5"/><rect x="326" y="202" width="8" height="16" rx="3" fill="#3a6ea5"/>',
@@ -42,6 +44,9 @@ var ILU = (function () {
   function pinheiro(x, y, k) { return '<rect x="' + (x - 2) + '" y="' + y + '" width="4" height="' + (38 * k) + '" fill="#6d5a43"/><ellipse cx="' + x + '" cy="' + (y - 2) + '" rx="' + (24 * k) + '" ry="' + (12 * k) + '" fill="#4f8a55"/>'; }
   function janelas(x, y, w, h, c, l) { var o = ''; for (var i = 0; i < c; i++) for (var j = 0; j < l; j++) o += '<rect x="' + (x + 6 + i * (w - 12) / c) + '" y="' + (y + 8 + j * (h - 14) / l) + '" width="' + ((w - 12) / c - 5) + '" height="' + ((h - 14) / l - 6) + '" fill="#9cc3dc"/>'; return o; }
   var P2 = {
+    variante: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 120 Q120 100 220 118 T400 96 T640 84 V250 H0Z" fill="#b9d7a0"/><path d="M0 205 Q320 192 640 200 V250 H0Z" fill="#9cc58a"/><rect x="0" y="158" width="150" height="92" fill="#8fc0dc"/><path d="M20 190 q18 -6 36 0 M80 214 q18 -6 36 0" stroke="#e8f4fb" stroke-width="3" fill="none"/><path d="M60 170 l22 0 l-4 12 h-14z" fill="#b8693f"/><rect x="68" y="150" width="3" height="20" fill="#555"/>' +
+      '<path d="M150 214 C240 200 300 160 380 150 S520 120 650 96" stroke="#7b7f86" stroke-width="26" fill="none" stroke-linecap="round"/><path d="M150 214 C240 200 300 160 380 150 S520 120 650 96" stroke="#fff" stroke-width="2" stroke-dasharray="10 9" fill="none"/>' +
+      '<rect x="330" y="108" width="62" height="30" rx="3" fill="#e8e2d2" stroke="#8f8a7a"/><rect x="392" y="116" width="24" height="22" rx="3" fill="#c4473a"/><circle cx="346" cy="141" r="6" fill="#222"/><circle cx="372" cy="141" r="6" fill="#222"/><circle cx="404" cy="141" r="6" fill="#222"/>' + pinheiro(250, 128, 0.9) + pinheiro(560, 70, 0.8) + pinheiro(600, 78, 0.7) + casa(190, 150, 50, 36, '#f7f2e6', '#b8693f'),
     santana: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 160 Q200 130 420 150 T640 140 V250 H0Z" fill="#b9d7a0"/><path d="M0 208 Q320 194 640 205 V250 H0Z" fill="#9cc58a"/>' +
       '<rect x="60" y="80" width="150" height="112" fill="#e9d6b0"/><path d="M52 80 L135 46 L218 80Z" fill="#b8693f"/>' + janelas(60, 84, 150, 80, 5, 2) + '<rect x="115" y="150" width="40" height="42" fill="#8a6a4a"/><rect x="218" y="40" width="22" height="152" fill="#d9c49a"/><rect x="214" y="34" width="30" height="10" fill="#b8693f"/><path d="M229 34 q10 -14 -2 -26" stroke="#9aa3ad" stroke-width="5" fill="none" stroke-linecap="round"/>' +
       '<rect x="300" y="170" width="190" height="34" fill="#cfcabb"/><path d="M310 187 H480" stroke="#fff" stroke-width="2" stroke-dasharray="10 8"/><rect x="420" y="110" width="4" height="62" fill="#555"/><rect x="404" y="92" width="36" height="22" rx="3" fill="#1857d6"/><text x="422" y="108" font-size="14" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">P</text>' + autocarro(350, 204, 12) +
@@ -174,13 +179,14 @@ var ILU = (function () {
     m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : '') + (p.cat === 'obra' ? ligNota('obra') : ''), { maxWidth: 240 });
     rotPontos.push({ m: m, cat: p.cat });
   });
-  var MINZ = { obra: 12.5, saude: 14.5, bombeiros: 14.5, policia: 14.5, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
+  var MINZ = { obra: 0, saude: 14.5, bombeiros: 14.5, policia: 14.5, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
   var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'igreja', 'mercado', 'desporto'], DIST = 38;
   function nomesParques() {
     var z = map.getZoom(), ocupados = [];
     rotPontos.slice().sort(function (a, b) { return PRIO.indexOf(a.cat) - PRIO.indexOf(b.cat); }).forEach(function (r) {
-      var g = gPontos[r.cat], ver = z >= (MINZ[r.cat] || 13);
-      if (ver) { var q = map.latLngToContainerPoint(r.m.getLatLng()); ver = !ocupados.some(function (o) { return Math.abs(o.x - q.x) < DIST && Math.abs(o.y - q.y) < DIST; }); if (ver) ocupados.push(q); }
+      var g = gPontos[r.cat], ver = z >= (MINZ[r.cat] != null ? MINZ[r.cat] : 13);
+      if (ver && r.cat === 'obra') ocupados.push(map.latLngToContainerPoint(r.m.getLatLng()));
+      else if (ver) { var q = map.latLngToContainerPoint(r.m.getLatLng()); ver = !ocupados.some(function (o) { return Math.abs(o.x - q.x) < DIST && Math.abs(o.y - q.y) < DIST; }); if (ver) ocupados.push(q); }
       if (ver && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!ver && g.hasLayer(r.m)) g.removeLayer(r.m);
     });
   }
@@ -253,13 +259,18 @@ var ILU = (function () {
   var mini = L.DomUtil.create('div', 'sq-mini', el); mini.hidden = true; L.DomEvent.disableClickPropagation(mini); L.DomEvent.disableScrollPropagation(mini);
   function miniAtualizar(z, il) {
     var ilu = il.tipo === 'perfil' ? ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com a proposta') : ILU.paisagem(il.variante, z.nome);
-    mini.innerHTML = '<button type="button" class="sq-mini-x" aria-label="Fechar o resumo">×</button><div class="sq-mini-ilu">' + ilu + '</div><h3>' + esc(z.nome) + '</h3><ul>' + z.medidas.slice(0, 3).map(function (m) { return '<li>' + esc(m.t) + '</li>'; }).join('') + '</ul>';
+    mini.innerHTML = '<button type="button" class="sq-mini-x" aria-label="Fechar e limpar a localidade do mapa">×</button><div class="sq-mini-ilu">' + ilu + '</div><div class="sq-mini-nav"><button type="button" data-d="-1" aria-label="Localidade anterior">‹</button><h3>' + esc(z.nome) + '</h3><button type="button" data-d="1" aria-label="Localidade seguinte">›</button></div><ul>' + z.medidas.slice(0, 3).map(function (m) { return '<li>' + esc(m.t) + '</li>'; }).join('') + '</ul>';
     mini.hidden = false; mini.setAttribute('data-fechado', 'n');
-    mini.querySelector('.sq-mini-x').addEventListener('click', function () { mini.hidden = true; });
   }
+  mini.addEventListener('click', function (e) {
+    if (e.target.closest('.sq-mini-x')) { escolher(null, false); return; }
+    var sb = e.target.closest('.sq-mini-nav button'); if (!sb) return;
+    escolher(SEQ[(idx + (+sb.getAttribute('data-d')) + SEQ.length) % SEQ.length], true);
+    var n = mini.querySelector('.sq-mini-nav button[data-d="' + sb.getAttribute('data-d') + '"]'); if (n) n.focus();
+  });
   // Cartões das localidades: setas dentro do cartão; o primeiro estado é "nada escolhido"
   var postal = document.getElementById('sq-postal');
-  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'azoia', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'en10', 'marginal'].filter(function (id) { return camadasZona[id]; });
+  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'azoia', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'en10', 'variante', 'marginal'].filter(function (id) { return camadasZona[id]; });
   DADOS.zonas.forEach(function (z) { if (ORDEM.indexOf(z.id) < 0) ORDEM.push(z.id); });
   var SEQ = [null].concat(ORDEM), idx = 0;
   var live = document.createElement('p'); live.className = 'sr'; live.setAttribute('aria-live', 'polite'); postal.parentNode.insertBefore(live, postal);

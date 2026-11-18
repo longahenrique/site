@@ -161,7 +161,7 @@ def so_terra(aneis, costa):
         out.append([[round(la1-(y-1)*px/ky, 5), round(lo0+(x-1)*px/kx, 5)] for x, y in c])
     return out
 URB = {'zambujal': ((38.446, 38.464, -9.134, -9.112), 45), 'vila': ((38.435, 38.456, -9.118, -9.088), 60), 'lagoa': ((38.497, 38.514, -9.174, -9.154), 40),
-       'santana': ((38.452, 38.4685, -9.113, -9.0945), 45), 'cotovia': ((38.466, 38.478, -9.109, -9.094), 45), 'sampaio': ((38.4668, 38.477, -9.0985, -9.081), 80),
+       'santana': ((38.452, 38.4640, -9.113, -9.0945), 90), 'cotovia': ((38.466, 38.478, -9.109, -9.094), 45), 'sampaio': ((38.4640, 38.477, -9.0990, -9.081), 100),
        'meco': ((38.465, 38.479, -9.181, -9.161), 45), 'azoia': ((38.420, 38.445, -9.200, -9.160), 50)}
 def contorno_urbano(A, caixa, fecho_m):
     """Junta as zonas residenciais da caixa (lat0, lat1, lon0, lon1) num contorno único (fecho morfológico)."""

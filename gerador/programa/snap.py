@@ -61,13 +61,22 @@ def dist_seg(p, a, b):
     k = math.cos(a[0]*math.pi/180); ax, ay, bx, by, px, py = a[1]*k, a[0], b[1]*k, b[0], p[1]*k, p[0]
     dx, dy = bx-ax, by-ay; t = 0 if dx == dy == 0 else max(0, min(1, ((px-ax)*dx+(py-ay)*dy)/(dx*dx+dy*dy)))
     return math.hypot(px-(ax+t*dx), py-(ay+t*dy))*111320
+def sem_desvios(c):
+    """Tira as idas e voltas (ponto de passagem fora do caminho que obriga a entrar numa rua e sair pelo mesmo sítio)."""
+    i = 0
+    while i < len(c)-2:
+        for j in range(i+2, min(i+8, len(c))):
+            if dist(c[i], c[j]) < 20 and sum(dist(c[k], c[k+1]) for k in range(i, j)) < 200:
+                c = c[:i+1] + c[j+1:]; break
+        else: i += 1
+    return c
 ways = [e for e in json.load(open(src, encoding='utf-8'))['elements'] if e.get('type') == 'way' and 'geometry' in e]
 print(len(ways), 'ruas lidas')
 G_rua = construir(ways, CUSTO_RUA, lambda w: w['tags'].get('access') not in ('no', 'private'))
 G_ativo = construir(ways, CUSTO_ATIVO, lambda w: w['tags'].get('access') not in ('no', 'private'))
 D = json.load(open(MAPA, encoding='utf-8'))
 for l in D['linhas']:
-    if l['nome'] == 'Marginal de Sesimbra': continue
+    if l['nome'] == 'Marginal de Sesimbra' or l.get('semSnap'): continue
     pts = l.setdefault('pontos', l['coords'])
     pos, adj = G_ativo if l['camada'] == 'ativos' else G_rua
     ns = []
@@ -82,6 +91,6 @@ for l in D['linhas']:
         seg = [pos[x] for x in c]
         if sum(dist(seg[i], seg[i+1]) for i in range(len(seg)-1)) > 3*max(dist(seg[0], seg[-1]), 50): print('AVISO', l['nome'], 'desvio grande entre', seg[0], 'e', seg[-1])
         out += seg if not out else seg[1:]
-    l['coords'] = [[round(a, 5), round(b, 5)] for a, b in simplificar(out)] if out else pts
+    l['coords'] = [[round(a, 5), round(b, 5)] for a, b in simplificar(sem_desvios(out))] if out else pts
     print(l['nome'], len(pts), '->', len(l['coords']), 'pontos')
 json.dump(D, open(MAPA, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
