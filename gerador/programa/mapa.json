@@ -49940,6 +49940,94 @@
      "t": "A confirmar se o traçado passa por áreas protegidas (Parque Natural da Arrábida, Rede Natura 2000), o que exige parecer prévio."
     }
    ]
+  },
+  {
+   "id": "acessocoina",
+   "nome": "Acesso Coina–Quinta do Conde (Rua Luís de Camões)",
+   "camada": "mobilidade",
+   "etiqueta": "Estrada",
+   "cor": "#6d4bc2",
+   "geo": {
+    "linha": [
+     [
+      38.58355,
+      -9.0485
+     ],
+     [
+      38.5822,
+      -9.0482
+     ],
+     [
+      38.5805,
+      -9.0476
+     ],
+     [
+      38.5781,
+      -9.047
+     ]
+    ]
+   },
+   "rotulo": [
+    38.5805,
+    -9.0476
+   ],
+   "direcao": "right",
+   "minZoom": 13,
+   "perfilNome": "ligação a Coina",
+   "frase": "Um acesso novo liga o topo da Rua Luís de Camões à rotunda de Coina, para o bairro chegar à estação sem passar pela EN10.",
+   "ilustracao": {
+    "tipo": "perfil",
+    "hoje": [
+     [
+      "bermaerva",
+      3
+     ],
+     [
+      "terra",
+      3
+     ],
+     [
+      "bermaerva",
+      3
+     ]
+    ],
+    "amanha": [
+     [
+      "passeio",
+      2
+     ],
+     [
+      "ciclovia",
+      2.5
+     ],
+     [
+      "carro",
+      3.3
+     ],
+     [
+      "carro",
+      3.3
+     ],
+     [
+      "passeio",
+      2
+     ]
+    ]
+   },
+   "medidas": [
+    {
+     "t": "Cerca de 0,6 km, da Rua Luís de Camões, na Quinta do Conde, à rotunda a seguir à estação de Coina."
+    },
+    {
+     "t": "Estrada de duas faixas com passeio nos dois lados e ciclovia, para ir a pé, de bicicleta ou de autocarro até ao comboio."
+    },
+    {
+     "t": "O traçado tem de atravessar a A2, o que exige uma passagem a estudar."
+    },
+    {
+     "t": "Traçado indicativo, sem projeto aprovado."
+    }
+   ]
   }
  ],
  "interfaces": [

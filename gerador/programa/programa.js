@@ -257,7 +257,8 @@ var ILU = (function () {
       if (uiOn.existe) h += '<p class="sq-leg-t">Já existe</p><ul class="sq-leg-l">' + CATS.filter(function (c) { return c.id !== 'obra'; }).map(function (c) { return '<li><label><input type="checkbox" data-cat="' + c.id + '"' + (catOn[c.id] ? ' checked' : '') + '><span class="sq-ico-l" style="background:' + c.cor + '">' + c.svg + '</span>' + esc(c.nome) + '</label></li>'; }).join('') + '</ul>';
       p.innerHTML = h;
     };
-    L.DomEvent.on(p, 'change', function (e) { var t = e.target; if (!t.getAttribute) return; var u = t.getAttribute('data-ui'); if (u) { definir(u, t.checked); return; } var id = t.getAttribute('data-cat'); if (!id) return; catOn[id] = t.checked; visibilidade(); });
+    L.DomEvent.on(p, 'change', function (e) { var t = e.target; if (!t.getAttribute) return; filtro = null;   // ao mexer na legenda, as camadas aparecem no mapa todo, mesmo com um cartão aberto
+      var u = t.getAttribute('data-ui'); if (u) { definir(u, t.checked); return; } var id = t.getAttribute('data-cat'); if (!id) return; catOn[id] = t.checked; visibilidade(); });
     if (el.clientWidth < 600) setTimeout(function () { b.click(); }, 0);
     return d;
   } });
@@ -326,7 +327,7 @@ var ILU = (function () {
   // Três grupos de cartões: localidades, estradas, espaços verdes
   var GRUPOS_C = [
     { id: 'loc', nome: 'Localidades', ids: ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'qconde'] },
-    { id: 'est', nome: 'Estradas', ids: ['marginal', 'variante', 'en10', 'almocreves'] },
+    { id: 'est', nome: 'Estradas', ids: ['marginal', 'variante', 'en10', 'almocreves', 'acessocoina'] },
     { id: 'ver', nome: 'Espaços verdes', ids: ['arrabida', 'mata', 'espichel', 'varzea'] }
   ];
   GRUPOS_C.forEach(function (g) { g.ids = g.ids.filter(function (id) { return camadasZona[id]; }); });
@@ -377,7 +378,7 @@ var ILU = (function () {
     function lig(id) { uiOn[id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + id + '"]'); if (cx) cx.checked = true; }
     UI.forEach(function (u) { uiOn[u.id] = false; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = false; });
     if (z.camada === 'natureza') { filtro = null; return; }   // áreas naturais: nada de camadas
-    var solo = z.id === 'variante' ? [z.nome] : z.id === 'almocreves' ? ['Estrada dos Almocreves', 'Ciclovia da Estrada dos Almocreves'] : null;   // mostram-se sozinhas
+    var solo = z.id === 'variante' ? [z.nome] : z.id === 'almocreves' ? ['Estrada dos Almocreves', 'Ciclovia da Estrada dos Almocreves'] : z.id === 'acessocoina' ? [z.nome] : null;   // mostram-se sozinhas
     if (solo) { filtro = { solo: solo }; lig('vias'); if (z.id === 'almocreves') lig('ciclo'); return; }
     var b = (c instanceof L.Circle ? c.getLatLng().toBounds(c.getRadius() * 2) : c.getBounds()).pad(0.1);
     filtro = { b: b, semObra: !!(z.geo && z.geo.linha) };   // nos cartões de estradas não aparecem os serviços propostos à volta
