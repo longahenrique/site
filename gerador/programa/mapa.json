@@ -56157,6 +56157,52 @@
      -9.051
     ]
    ]
+  },
+  {
+   "camada": "vias",
+   "nome": "Acesso Coina–Quinta do Conde (Rua Luís de Camões)",
+   "estado": "proposta",
+   "cor": "#6d4bc2",
+   "peso": 5,
+   "tracejado": "10 8",
+   "texto": "Novo acesso da rotunda a seguir à estação de Coina até à Rua Luís de Camões, na Quinta do Conde, para ligar o bairro à estação sem passar pela EN10. Traçado indicativo, a estudar: ainda não há projeto nem traçado aprovados.",
+   "pontos": [
+    [
+     38.58355,
+     -9.0485
+    ],
+    [
+     38.5822,
+     -9.0482
+    ],
+    [
+     38.5805,
+     -9.0476
+    ],
+    [
+     38.5781,
+     -9.047
+    ]
+   ],
+   "coords": [
+    [
+     38.58355,
+     -9.0485
+    ],
+    [
+     38.5822,
+     -9.0482
+    ],
+    [
+     38.5805,
+     -9.0476
+    ],
+    [
+     38.5781,
+     -9.047
+    ]
+   ],
+   "semSnap": true
   }
  ],
  "pontos": [
