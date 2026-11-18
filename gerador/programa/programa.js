@@ -1,7 +1,7 @@
 /* ===== Ilustrações ===== */
 var ILU = (function () {
-  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', berma: 'berma' };
-  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', berma: '#cbbf9d' };
+  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma' };
+  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d' };
   function espinha(x, y, s, c) { return '<g transform="translate(' + x + ' ' + y + ') skewX(-22) scale(.8 1) translate(' + (-x) + ' ' + (-y) + ')">' + carro(x, y, s, c) + '</g>'; }
   function pessoa(x, y, s, c) { return '<circle cx="' + x + '" cy="' + (y - 1.55 * s) + '" r="' + (0.13 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.16 * s) + '" y="' + (y - 1.4 * s) + '" width="' + (0.32 * s) + '" height="' + (1.4 * s) + '" rx="' + (0.12 * s) + '" fill="' + c + '"/>'; }
   function arvore(x, y, s) { return '<rect x="' + (x - 0.12 * s) + '" y="' + (y - 2.6 * s) + '" width="' + (0.24 * s) + '" height="' + (2.6 * s) + '" fill="#6d5a43"/><circle cx="' + x + '" cy="' + (y - 3.6 * s) + '" r="' + (1.5 * s) + '" fill="#4f9a5a"/><circle cx="' + (x - 0.8 * s) + '" cy="' + (y - 3.1 * s) + '" r="' + (1 * s) + '" fill="#5daa66"/><circle cx="' + (x + 0.8 * s) + '" cy="' + (y - 3.2 * s) + '" r="' + (1 * s) + '" fill="#468d50"/>'; }
@@ -20,6 +20,7 @@ var ILU = (function () {
       if (tipo === 'carro') svg += carro(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
       else if (tipo === 'estac') svg += espinha(x + w * 0.3, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]) + espinha(x + w * 0.72, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
       else if (tipo === 'bus') svg += autocarro(cx, chao, s);
+      else if (tipo === 'busciclo') svg += autocarro(x + w * 0.32, chao, s * 0.85) + bicicleta(x + w * 0.78, chao, s);
       else if (tipo === 'ciclovia') svg += bicicleta(cx, chao, s);
       else if (tipo === 'arvores') svg += arvore(cx, chao, s);
       else if (tipo === 'areia') { svg += guarda(x + w * 0.3, chao, s) + pessoa(x + w * 0.65, chao, s * 0.9, CORES_P[n++ % 6]); }
@@ -31,7 +32,7 @@ var ILU = (function () {
       if (runs.length && runs[runs.length - 1].t === NOMES[tipo]) runs[runs.length - 1].w += w; else runs.push({ t: NOMES[tipo], x: x, w: w });
       x += w;
     });
-    var CURTO = { estacionamento: 'estac.' }, FS = 16, larg = function (t, f) { return t.length * 0.56 * f; };
+    var CURTO = { estacionamento: 'estac.', 'autocarro e bicicletas': 'autocarro/bici' }, FS = 16, larg = function (t, f) { return t.length * 0.56 * f; };
     runs.forEach(function (r) { r.e = r.t; if (larg(r.e, FS) > r.w * 0.96 && CURTO[r.e]) r.e = CURTO[r.e]; });
     runs.forEach(function (r) { var f = Math.min(FS, r.w * 0.96 / (r.e.length * 0.56)); if (f >= 12 && f < FS) FS = f; });   // um só tamanho de letra em todo o perfil
     runs.forEach(function (r) {
@@ -163,7 +164,7 @@ var ILU = (function () {
     { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'As ' + ciclos.length + ' ligações desenhadas somam cerca de ' + kmCiclo + ' km (valor aproximado, medido sobre o traçado do mapa) e fazem parte da rede ciclável de 40 km da proposta, com bicicletas e trotinetes partilhadas.' },
     { id: 'faixa', nome: 'Faixa BUS', cor: '#b87a00', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10 entre a estação de Coina e o Posto da EN10, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
     { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais as circulares do Castelo e da Quinta do Conde, a cada 30 min, o eixo Quinta do Conde–Coina, a cada 10 min na hora de ponta, e a ligação Casal do Sapo–Coina, prevista no Plano de Mobilidade Urbana Sustentável (PMUS).' },
-    { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, ciclovia e paragens) a variante dos Negreiros à A2/A33, por fora da EN10 (traçado indicativo, sem projeto aprovado) e a variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
+    { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, faixas de autocarro e bicicletas, e paragens) a variante dos Negreiros à A2/A33, por fora da EN10 (traçado indicativo, sem projeto aprovado) e a variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
     { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Os novos hubs onde o autocarro se liga ao parque de estacionamento: Moagem, em Santana, e Alfarim. As estações de Coina e do Fogueteiro já existem e estão sempre marcadas.' },
     { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, o Spot Jovem no Parque da Vila, o nó de ligação da variante nos Negreiros, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' }
@@ -319,6 +320,19 @@ var ILU = (function () {
     });
     return z;
   }
+  // Ao escolher uma localidade, ligam-se as camadas que têm algo dentro dela (autocarros, ciclovias, serviços…); a pessoa pode desligar
+  function ligarDaZona(c, z) {
+    if (z.camada === 'natureza') return;
+    var b = (c instanceof L.Circle ? c.getLatLng().toBounds(c.getRadius() * 2) : c.getBounds()).pad(0.1);
+    function lig(id) { uiOn[id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + id + '"]'); if (cx) cx.checked = true; }
+    linhasObj.forEach(function (o) {
+      var uiId = o.l.camada === 'ativos' ? 'ciclo' : o.l.nome === 'Faixa BUS' ? 'faixa' : (o.l.camada === 'autocarro' || o.l.nome === 'Linha Azul') ? 'bus' : 'vias';
+      if (o.l.coords.some(function (q) { return b.contains(q); })) lig(uiId);
+    });
+    ifaceObj.forEach(function (o) { if (!o.i.existe && b.contains(o.i.p)) lig('hubs'); });
+    rotPontos.forEach(function (r) { if (r.cat === 'obra' && b.contains(r.p)) lig('obra'); });
+    if (camadasZona.marginal && camadasZona.marginal.getBounds && b.intersects(camadasZona.marginal.getBounds())) lig('marginal');
+  }
   function escolher(id, voar) {
     var z = cartao(id);
     if (atual && camadasZona[atual] && gZona.hasLayer(camadasZona[atual])) gZona.removeLayer(camadasZona[atual]);
@@ -326,6 +340,7 @@ var ILU = (function () {
     if (!z) { mini.hidden = true; visibilidade(); if (voar) verTudo(); return; }
     var c = camadasZona[id];
     if (CONTORNO || (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
+    ligarDaZona(c, z);
     visibilidade(); miniAtualizar(z, z.ilustracao);
     if (voar) { if (RM) map.fitBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, duration: 0.6 }); }
   }

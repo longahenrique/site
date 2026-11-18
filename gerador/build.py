@@ -695,7 +695,7 @@ def prog_page():
         for m in a['medidas']:
             w=m['t'].rsplit(' ',1)
             tt=(esc(w[0])+' ' if len(w)>1 else '')+'<span class="lw">'+esc(w[-1])+'<i class="chv" aria-hidden="true"></i></span>'
-            onde='<span class="sq-onde" data-zonas="%s"></span>'%','.join(m['mapa']) if m.get('mapa') else ''
+            onde=''   # o programa completo não leva ligações para o mapa
             li+='<li><details><summary>%s</summary><p>%s</p>%s</details></li>'%(tt,esc(m['d']),onde)
         areas+='<div class="area"><h3 data-c="p%d"><span class="acc-t">%s</span></h3><div class="acc-body" id="p%d"><ul>%s</ul></div></div>\n'%(n,esc(a['area']),n,li)
     main=f"""<main id="conteudo" tabindex="-1" class="prog">
