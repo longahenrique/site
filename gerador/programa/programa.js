@@ -2,7 +2,13 @@
 var ILU = (function () {
   var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma' };
   var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d' };
-  function espinha(x, y, s, c) { return '<g transform="translate(' + x + ' ' + y + ') skewX(-22) scale(.8 1) translate(' + (-x) + ' ' + (-y) + ')">' + carro(x, y, s, c) + '</g>'; }
+  function espinha(x, y, s, c) {   // carro estacionado de lado (visto de perfil), a entrar na espinha
+    var L = 2.1 * s;
+    return '<path d="M' + (x - L) + ' ' + (y - 0.35 * s) + ' L' + (x - L) + ' ' + (y - 0.85 * s) + ' Q' + (x - L) + ' ' + (y - 1.05 * s) + ' ' + (x - 1.7 * s) + ' ' + (y - 1.05 * s) + ' L' + (x - 1.05 * s) + ' ' + (y - 1.1 * s) + ' L' + (x - 0.55 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 0.7 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 1.3 * s) + ' ' + (y - 1.1 * s) + ' L' + (x + 1.8 * s) + ' ' + (y - 1.02 * s) + ' Q' + (x + L) + ' ' + (y - 0.95 * s) + ' ' + (x + L) + ' ' + (y - 0.7 * s) + ' L' + (x + L) + ' ' + (y - 0.35 * s) + ' Z" fill="' + c + '"/>' +
+      '<path d="M' + (x - 0.4 * s) + ' ' + (y - 1.1 * s) + ' L' + (x - 0.05 * s) + ' ' + (y - 1.5 * s) + ' L' + (x + 0.6 * s) + ' ' + (y - 1.5 * s) + ' L' + (x + 1.05 * s) + ' ' + (y - 1.1 * s) + ' Z" fill="#dfeaf2" opacity=".85"/>' +
+      '<circle cx="' + (x - 1.3 * s) + '" cy="' + (y - 0.35 * s) + '" r="' + (0.38 * s) + '" fill="#2b2f36"/><circle cx="' + (x + 1.3 * s) + '" cy="' + (y - 0.35 * s) + '" r="' + (0.38 * s) + '" fill="#2b2f36"/>' +
+      '<circle cx="' + (x - 1.3 * s) + '" cy="' + (y - 0.35 * s) + '" r="' + (0.16 * s) + '" fill="#aab1ba"/><circle cx="' + (x + 1.3 * s) + '" cy="' + (y - 0.35 * s) + '" r="' + (0.16 * s) + '" fill="#aab1ba"/>';
+  }
   function pessoa(x, y, s, c) { return '<circle cx="' + x + '" cy="' + (y - 1.55 * s) + '" r="' + (0.13 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.16 * s) + '" y="' + (y - 1.4 * s) + '" width="' + (0.32 * s) + '" height="' + (1.4 * s) + '" rx="' + (0.12 * s) + '" fill="' + c + '"/>'; }
   function arvore(x, y, s) { return '<rect x="' + (x - 0.12 * s) + '" y="' + (y - 2.6 * s) + '" width="' + (0.24 * s) + '" height="' + (2.6 * s) + '" fill="#6d5a43"/><circle cx="' + x + '" cy="' + (y - 3.6 * s) + '" r="' + (1.5 * s) + '" fill="#4f9a5a"/><circle cx="' + (x - 0.8 * s) + '" cy="' + (y - 3.1 * s) + '" r="' + (1 * s) + '" fill="#5daa66"/><circle cx="' + (x + 0.8 * s) + '" cy="' + (y - 3.2 * s) + '" r="' + (1 * s) + '" fill="#468d50"/>'; }
   function carro(x, y, s, c) { return '<rect x="' + (x - 0.9 * s) + '" y="' + (y - 1.15 * s) + '" width="' + (1.8 * s) + '" height="' + (0.75 * s) + '" rx="' + (0.2 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.65 * s) + '" y="' + (y - 1.5 * s) + '" width="' + (1.3 * s) + '" height="' + (0.45 * s) + '" rx="' + (0.15 * s) + '" fill="' + c + '" opacity=".8"/><rect x="' + (x - 0.8 * s) + '" y="' + (y - 0.42 * s) + '" width="' + (0.3 * s) + '" height="' + (0.42 * s) + '" fill="#2a2d33"/><rect x="' + (x + 0.5 * s) + '" y="' + (y - 0.42 * s) + '" width="' + (0.3 * s) + '" height="' + (0.42 * s) + '" fill="#2a2d33"/>'; }
@@ -18,7 +24,7 @@ var ILU = (function () {
       var tipo = b[0], w = b[1] * s, cx = x + w / 2;
       svg += '<rect x="' + x + '" y="' + chao + '" width="' + w + '" height="12" fill="' + CHAO[tipo] + '"/>';
       if (tipo === 'carro') svg += carro(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
-      else if (tipo === 'estac') svg += espinha(x + w * 0.3, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]) + espinha(x + w * 0.72, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
+      else if (tipo === 'estac') svg += espinha(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
       else if (tipo === 'bus') svg += autocarro(cx, chao, s);
       else if (tipo === 'busciclo') svg += autocarro(x + w * 0.32, chao, s * 0.85) + bicicleta(x + w * 0.78, chao, s);
       else if (tipo === 'ciclovia') svg += bicicleta(cx, chao, s);
@@ -99,6 +105,7 @@ var ILU = (function () {
   function fontes(f) { return '<span class="sq-fontes">' + f.map(function (k) { return '<span class="sq-fonte ' + k + '">' + esc(DADOS.fontes[k]) + '</span>'; }).join('') + '</span>'; }
 
   var el = document.getElementById('sq-mapa');
+  var posBusca = function () {}, corpo = document.querySelector('.sq-corpo');
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   var map = L.map(el, { zoomAnimation: !RM, fadeAnimation: !RM, markerZoomAnimation: !RM, scrollWheelZoom: true, zoomControl: false, zoomSnap: 0.5, minZoom: 10, maxZoom: 18, renderer: L.canvas({ padding: 0.5, tolerance: 8 }) });
   L.control.zoom({ zoomInTitle: 'Aproximar o mapa', zoomOutTitle: 'Afastar o mapa' }).addTo(map);
@@ -143,7 +150,7 @@ var ILU = (function () {
     { id: 'escola', nome: 'Escola', cor: '#8a3fb0', svg: P24('<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/>') },
     { id: 'saude', nome: 'Saúde', cor: '#c2362f', svg: P24('<path d="M12 5v14M5 12h14" stroke-width="3.5"/>') },
     { id: 'bombeiros', nome: 'Bombeiros', cor: '#d9531c', svg: P24('<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z" fill="currentColor"/>') },
-    { id: 'policia', nome: 'Polícia (GNR, PSP)', cor: '#1b3a8c', svg: P24('<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/>') },
+    { id: 'policia', nome: 'Polícia (GNR, Polícia Marítima)', cor: '#1b3a8c', svg: P24('<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/>') },
     { id: 'igreja', nome: 'Igreja ou capela', cor: '#6b5a3a', svg: P24('<path d="M12 2v6M9.5 4.5h5"/><path d="M5 21V12l7-4 7 4v9z"/><path d="M10 21v-5h4v5"/>') },
     { id: 'cultura', nome: 'Biblioteca, auditório, cultura', cor: '#b0306f', svg: P24('<path d="M4 5a2 2 0 0 1 2-1h13v16H6a2 2 0 0 0-2 1z"/><path d="M4 5v16"/>') },
     { id: 'servicos', nome: 'Serviços públicos (junta, loja do cidadão)', cor: '#4a5560', svg: P24('<path d="M3 10l9-6 9 6M5 10v9M9.5 10v9M14.5 10v9M19 10v9M3 21h18"/>') },
@@ -163,11 +170,11 @@ var ILU = (function () {
   var UI = [
     { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'As ' + ciclos.length + ' ligações desenhadas somam cerca de ' + kmCiclo + ' km (valor aproximado, medido sobre o traçado do mapa) e fazem parte da rede ciclável de 40 km da proposta, com bicicletas e trotinetes partilhadas.' },
     { id: 'faixa', nome: 'Faixa BUS', cor: '#b87a00', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10 entre a estação de Coina e o Posto da EN10, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
-    { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais as circulares do Castelo e da Quinta do Conde, a cada 30 min, o eixo Quinta do Conde–Coina, a cada 10 min na hora de ponta, e a ligação Casal do Sapo–Coina, prevista no Plano de Mobilidade Urbana Sustentável (PMUS).' },
-    { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, faixas de autocarro e bicicletas, e paragens) a variante dos Negreiros à A2/A33, por fora da EN10 (traçado indicativo, sem projeto aprovado), o acesso da rotunda de Coina à Rua Luís de Camões (também indicativo) e a variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
+    { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais a circular do Castelo, a cada 30 min, e a ligação Casal do Sapo–Coina, prevista no Plano de Mobilidade Urbana Sustentável (PMUS). As linhas que já existem, como a circular da Quinta do Conde e o eixo Quinta do Conde–Coina, não estão desenhadas.' },
+    { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, faixas de autocarro e bicicletas, e paragens), o acesso da rotunda de Coina à Rua Luís de Camões (traçado indicativo, sem projeto aprovado), a Estrada dos Almocreves, com ciclovia, e a variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
     { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Os novos hubs onde o autocarro se liga ao parque de estacionamento: Moagem, em Santana, e Alfarim. As estações de Coina e do Fogueteiro já existem e estão sempre marcadas.' },
-    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, o Spot Jovem no Parque da Vila, o nó de ligação da variante nos Negreiros, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' }
+    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, o Spot Jovem no Parque da Vila, a nova biblioteca e o palácio da justiça de Sampaio.' }
   ];
   UI.forEach(function (u) { uiOn[u.id] = false; }); uiOn.existe = true;   // o que já existe está sempre no mapa
   function irNota(id) {   // só quando a pessoa pede (ligação no balão): leva até à frase explicativa
@@ -282,13 +289,13 @@ var ILU = (function () {
     b.type = 'button'; b.textContent = 'Ver tudo'; f.type = 'button'; f.textContent = 'Ecrã inteiro'; f.setAttribute('aria-pressed', 'false');
     L.DomEvent.disableClickPropagation(d); L.DomEvent.on(b, 'click', function () { map.closePopup(); verTudo(); });
     function cheio(on) {
-      el.classList.toggle('sq-cheio', on); document.documentElement.classList.toggle('sq-trava', on);
+      el.classList.toggle('sq-cheio', on); corpo.classList.toggle('sq-cheio-corpo', on); document.documentElement.classList.toggle('sq-trava', on); posBusca();
       f.textContent = on ? 'Sair do ecrã inteiro' : 'Ecrã inteiro'; f.setAttribute('aria-pressed', on ? 'true' : 'false');
-      if (on) el.setAttribute('aria-modal', 'true'); else el.removeAttribute('aria-modal');
+      if (on) { corpo.setAttribute('role', 'dialog'); corpo.setAttribute('aria-modal', 'true'); corpo.setAttribute('aria-label', 'Mapa e cartões em ecrã inteiro'); } else { corpo.removeAttribute('role'); corpo.removeAttribute('aria-modal'); corpo.removeAttribute('aria-label'); }
       // o resto da página fica inerte (leitores de ecrã e teclado ficam só no mapa)
-      var no = el; while (no && no !== document.body) { var pai = no.parentElement; if (pai) [].forEach.call(pai.children, function (irmao) { if (irmao !== no) { if (on) irmao.setAttribute('inert', ''); else irmao.removeAttribute('inert'); } }); no = pai; }
+      var no = corpo; while (no && no !== document.body) { var pai = no.parentElement; if (pai) [].forEach.call(pai.children, function (irmao) { if (irmao !== no) { if (on) irmao.setAttribute('inert', ''); else irmao.removeAttribute('inert'); } }); no = pai; }
       if (L.Browser.mobile) { if (on) map.dragging.enable(); else map.dragging.disable(); }
-      legRender(); setTimeout(function () { map.invalidateSize(); if (on) verTudo(); }, 60); f.focus();
+      legRender(); setTimeout(function () { map.invalidateSize(); if (atual) escolher(atual, true); else verTudo(); }, 60); f.focus();
     }
     L.DomEvent.on(f, 'click', function () { cheio(!el.classList.contains('sq-cheio')); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('sq-cheio')) cheio(false); });
@@ -306,30 +313,47 @@ var ILU = (function () {
   mini.addEventListener('click', function (e) {
     if (e.target.closest('.sq-mini-x')) { escolher(null, false); return; }
     var sb = e.target.closest('.sq-mini-nav button'); if (!sb) return;
-    escolher(SEQ[(idx + (+sb.getAttribute('data-d')) + SEQ.length) % SEQ.length], true);
+    escolher(vizinho(+sb.getAttribute('data-d')), true);
     var n = mini.querySelector('.sq-mini-nav button[data-d="' + sb.getAttribute('data-d') + '"]'); if (n) n.focus();
   });
   // Cartões das localidades: setas dentro do cartão; o primeiro estado é "nada escolhido"
   var postal = document.getElementById('sq-postal');
-  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'azoia', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'en10', 'variante', 'marginal'].filter(function (id) { return camadasZona[id]; });
+  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'en10', 'variante', 'almocreves', 'marginal'].filter(function (id) { return camadasZona[id]; });
   DADOS.zonas.forEach(function (z) { if (ORDEM.indexOf(z.id) < 0) ORDEM.push(z.id); });
-  var SEQ = [null].concat(ORDEM), idx = 0;
+  // Três grupos de cartões: localidades, estradas, espaços verdes
+  var GRUPOS_C = [
+    { id: 'loc', nome: 'Localidades', ids: ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'qconde'] },
+    { id: 'est', nome: 'Estradas', ids: ['marginal', 'variante', 'en10', 'almocreves'] },
+    { id: 'ver', nome: 'Espaços verdes', ids: ['arrabida', 'mata', 'espichel', 'varzea'] }
+  ];
+  GRUPOS_C.forEach(function (g) { g.ids = g.ids.filter(function (id) { return camadasZona[id]; }); });
+  ORDEM.forEach(function (id) { if (!GRUPOS_C.some(function (g) { return g.ids.indexOf(id) >= 0; })) GRUPOS_C[0].ids.push(id); });
+  var grupoAtual = GRUPOS_C[0], idx = -1;
+  function grupoDe(id) { return GRUPOS_C.filter(function (g) { return g.ids.indexOf(id) >= 0; })[0] || GRUPOS_C[0]; }
+  function vizinho(d) {   // cartão seguinte ou anterior, dentro do grupo
+    var g = grupoAtual.ids, n = g.length; if (!n) return null;
+    if (idx < 0) return d > 0 ? g[0] : g[n - 1];
+    return g[(idx + d + n) % n];
+  }
   var live = document.createElement('p'); live.className = 'sr'; live.setAttribute('aria-live', 'polite'); postal.parentNode.insertBefore(live, postal);
   function zonaDe(id) { return DADOS.zonas.filter(function (x) { return x.id === id; })[0]; }
-  function barra() {
+  function barra(aberto) {
     var chev = function (d) { return '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="' + (d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>'; };
-    var pontos = SEQ.map(function (_, k) { return '<i class="' + (k === idx ? 'on' : '') + '"></i>'; }).join('');
-    return '<div class="sq-cnav"><button type="button" class="sq-seta" data-d="-1" aria-label="Localidade anterior">' + chev(-1) + '</button><span class="sq-dots" aria-hidden="true">' + pontos + '</span><button type="button" class="sq-seta" data-d="1" aria-label="Localidade seguinte">' + chev(1) + '</button></div>';
+    var pontos = grupoAtual.ids.map(function (_, k) { return '<i class="' + (k === idx ? 'on' : '') + '"></i>'; }).join('');
+    var tabs = '<div class="sq-grupos" role="group" aria-label="Tipo de cartão">' + GRUPOS_C.filter(function (g) { return g.ids.length; }).map(function (g) { return '<button type="button" data-g="' + g.id + '" aria-pressed="' + (g === grupoAtual ? 'true' : 'false') + '">' + g.nome + '</button>'; }).join('') + '</div>';
+    var chips = aberto ? '<div class="sq-escolhas sq-chips" role="group" aria-label="' + grupoAtual.nome + '">' + grupoAtual.ids.map(function (k) { return '<button type="button" data-zona="' + k + '"' + (k === aberto ? ' aria-current="true"' : '') + '>' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div>' : '';
+    return (aberto ? tabs : '') + '<div class="sq-cnav"><button type="button" class="sq-seta" data-d="-1" aria-label="Cartão anterior">' + chev(-1) + '</button><span class="sq-dots" aria-hidden="true">' + pontos + '</span><button type="button" class="sq-seta" data-d="1" aria-label="Cartão seguinte">' + chev(1) + '</button></div>' + chips;
   }
   function cartao(id) {
-    idx = SEQ.indexOf(id); var z = id ? zonaDe(id) : null;
+    if (id) grupoAtual = grupoDe(id);
+    idx = id ? grupoAtual.ids.indexOf(id) : -1; var z = id ? zonaDe(id) : null;
     if (!z) {
-      live.textContent = 'Nenhuma localidade escolhida';
-      postal.innerHTML = barra() + '<div class="conteudo sq-intro"><h3 class="sr">Localidades</h3><div class="sq-escolhas">' + ORDEM.filter(function (k) { return zonaDe(k).camada === 'bairros'; }).map(function (k) { return '<button type="button" data-zona="' + k + '">' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div></div>';
+      live.textContent = 'Nenhum cartão escolhido';
+      postal.innerHTML = barra(null) + '<div class="conteudo sq-intro">' + GRUPOS_C.filter(function (g) { return g.ids.length; }).map(function (g) { return '<h3 class="sq-intro-t">' + g.nome + '</h3><div class="sq-escolhas">' + g.ids.map(function (k) { return '<button type="button" data-zona="' + k + '">' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div>'; }).join('') + '</div>';
       return null;
     }
-    live.textContent = z.nome + ', ' + idx + ' de ' + ORDEM.length;
-    var il = z.ilustracao, html = barra() + '<div class="ilustra">';
+    live.textContent = z.nome + ', ' + (idx + 1) + ' de ' + grupoAtual.ids.length;
+    var il = z.ilustracao, html = barra(id) + '<div class="ilustra">';
     if (il.tipo === 'perfil') {
       html += '<div class="sq-alternar" role="group" aria-label="Hoje ou proposta"><button type="button" data-v="hoje" aria-pressed="false">Hoje</button><button type="button" data-v="amanha" aria-pressed="true">Proposta</button></div><div class="desenho">' + ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com a proposta') + '</div><p class="nota-ilu">' + esc(z.perfilNome ? 'Perfil da ' + z.perfilNome + ', ilustrativo.' : 'Perfil da rua, ilustrativo.') + '</p>';
     } else html += ILU.paisagem(il.variante, z.nome);
@@ -373,9 +397,10 @@ var ILU = (function () {
     if (voar) { if (RM) map.fitBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, duration: 0.6 }); }
   }
   postal.addEventListener('click', function (e) {
-    var sb = e.target.closest('.sq-seta'), eb = e.target.closest('.sq-escolhas button');
-    if (sb) { var d = +sb.getAttribute('data-d'); escolher(SEQ[(idx + d + SEQ.length) % SEQ.length], true); var n = postal.querySelector('.sq-seta[data-d="' + d + '"]'); if (n) n.focus(); }
-    else if (eb) { escolher(eb.getAttribute('data-zona'), true); var f = postal.querySelector('.sq-seta[data-d="1"]'); if (f) f.focus(); }
+    var sb = e.target.closest('.sq-seta'), eb = e.target.closest('.sq-escolhas button'), gb = e.target.closest('.sq-grupos button');
+    if (gb) { grupoAtual = GRUPOS_C.filter(function (g) { return g.id === gb.getAttribute('data-g'); })[0]; escolher(null, true); var t = postal.querySelector('.sq-grupos button[data-g="' + grupoAtual.id + '"]'); if (t) t.focus(); }
+    else if (sb) { var d = +sb.getAttribute('data-d'); escolher(vizinho(d), true); var n = postal.querySelector('.sq-seta[data-d="' + d + '"]'); if (n) n.focus(); }
+    else if (eb) { escolher(eb.getAttribute('data-zona'), true); var f = postal.querySelector('.sq-chips button[aria-current]') || postal.querySelector('.sq-seta[data-d="1"]'); if (f) f.focus(); }
   });
 
   // Menu de camadas (por cima do mapa)
@@ -485,8 +510,9 @@ var ILU = (function () {
   (function () {
     var bx = document.querySelector('.sq-busca'), col = document.querySelector('.sq-col-cartao'), menu = document.getElementById('sq-camadas'); if (!bx || !col || !menu || !window.matchMedia) return;
     var mq = window.matchMedia('(min-width: 980px)');
-    function pos() { if (mq.matches) { if (bx.parentNode !== col) col.insertBefore(bx, col.firstChild); } else if (bx.nextSibling !== menu) menu.parentNode.insertBefore(bx, menu); }
-    pos(); if (mq.addEventListener) mq.addEventListener('change', pos); else mq.addListener(pos);
+    var cp = col.parentNode;
+    function pos() { if (mq.matches || (corpo && corpo.classList.contains('sq-cheio-corpo'))) { if (bx.parentNode !== col) col.insertBefore(bx, col.firstChild); } else if (bx.nextElementSibling !== cp) cp.parentNode.insertBefore(bx, cp); }
+    posBusca = pos; pos(); if (mq.addEventListener) mq.addEventListener('change', pos); else mq.addListener(pos);
   })();
   // Lista de locais (alternativa ao mapa)
   (function () {

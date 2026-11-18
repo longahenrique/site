@@ -702,10 +702,9 @@ def prog_page():
 <section class="sq">
 <div class="wrap">
 <h1>Programa para Sesimbra</h1>
-<p class="sq-lead">Mar, mata, serra e bairros onde dá gosto viver. Escolhe em cima o que queres ver no mapa e, mais abaixo, passa pelas localidades para ver o que muda, como é hoje e como pode ficar.</p>
+<p class="sq-lead">Mar, mata, serra e bairros onde dá gosto viver. Escolhe uma localidade, uma estrada ou um espaço verde para ver o que muda, como é hoje e como pode ficar. Mais abaixo, podes explorar o mapa todo.</p>
 <h2 class="sr">Mapa do programa</h2>
 <div class="sq-busca" role="search"><label for="sq-q">Procurar no mapa</label><div class="sq-busca-c"><input type="search" id="sq-q" role="combobox" aria-expanded="false" aria-controls="sq-res" aria-autocomplete="list" autocomplete="off" placeholder="Localidade, serviço, linha de autocarro…"><ul id="sq-res" role="listbox" aria-label="Resultados da pesquisa" hidden></ul></div><p class="sr" id="sq-res-n" aria-live="polite"></p></div>
-<fieldset class="sq-camadas" id="sq-camadas"><legend>O que queres ver no mapa</legend></fieldset>
 <div class="sq-corpo">
 <div class="sq-col-mapa">
 <div class="sq-mapa" id="sq-mapa" role="region" aria-label="Mapa do programa para o concelho de Sesimbra"></div>
@@ -716,6 +715,7 @@ def prog_page():
 <article class="sq-postal" id="sq-postal" aria-label="Cartão da localidade"></article>
 </div>
 </div>
+<fieldset class="sq-camadas" id="sq-camadas"><legend>Explorar o mapa todo: escolhe o que queres ver</legend></fieldset>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
 </div>
 </section>
