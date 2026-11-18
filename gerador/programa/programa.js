@@ -341,15 +341,16 @@ var ILU = (function () {
     var chev = function (d) { return '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="' + (d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>'; };
     var pontos = grupoAtual.ids.map(function (_, k) { return '<i class="' + (k === idx ? 'on' : '') + '"></i>'; }).join('');
     var tabs = '<div class="sq-grupos" role="group" aria-label="Tipo de cartão">' + GRUPOS_C.filter(function (g) { return g.ids.length; }).map(function (g) { return '<button type="button" data-g="' + g.id + '" aria-pressed="' + (g === grupoAtual ? 'true' : 'false') + '">' + g.nome + '</button>'; }).join('') + '</div>';
-    var chips = aberto ? '<div class="sq-escolhas sq-chips" role="group" aria-label="' + grupoAtual.nome + '">' + grupoAtual.ids.map(function (k) { return '<button type="button" data-zona="' + k + '"' + (k === aberto ? ' aria-current="true"' : '') + '>' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div>' : '';
-    return (aberto ? tabs : '') + '<div class="sq-cnav"><button type="button" class="sq-seta" data-d="-1" aria-label="Cartão anterior">' + chev(-1) + '</button><span class="sq-dots" aria-hidden="true">' + pontos + '</span><button type="button" class="sq-seta" data-d="1" aria-label="Cartão seguinte">' + chev(1) + '</button></div>' + chips;
+    var chips = false ? '<div class="sq-escolhas sq-chips" role="group" aria-label="' + grupoAtual.nome + '">' + grupoAtual.ids.map(function (k) { return '<button type="button" data-zona="' + k + '"' + (k === aberto ? ' aria-current="true"' : '') + '>' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div>' : '';
+    if (!aberto) return '';   // cartão inicial: só os três botões, sem setas
+    return tabs + '<div class="sq-cnav"><button type="button" class="sq-seta" data-d="-1" aria-label="Cartão anterior">' + chev(-1) + '</button><span class="sq-dots" aria-hidden="true">' + pontos + '</span><button type="button" class="sq-seta" data-d="1" aria-label="Cartão seguinte">' + chev(1) + '</button></div>' + chips;
   }
   function cartao(id) {
     if (id) grupoAtual = grupoDe(id);
     idx = id ? grupoAtual.ids.indexOf(id) : -1; var z = id ? zonaDe(id) : null;
     if (!z) {
       live.textContent = 'Nenhum cartão escolhido';
-      postal.innerHTML = barra(null) + '<div class="conteudo sq-intro">' + GRUPOS_C.filter(function (g) { return g.ids.length; }).map(function (g) { return '<h3 class="sq-intro-t">' + g.nome + '</h3><div class="sq-escolhas">' + g.ids.map(function (k) { return '<button type="button" data-zona="' + k + '">' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div>'; }).join('') + '</div>';
+      postal.innerHTML = '<div class="conteudo sq-intro"><h3 class="sr">Escolhe o que queres ver</h3><div class="sq-grupos sq-grupos-intro" role="group" aria-label="Tipo de cartão">' + GRUPOS_C.filter(function (g) { return g.ids.length; }).map(function (g) { return '<button type="button" data-g="' + g.id + '">' + g.nome + '</button>'; }).join('') + '</div></div>';
       return null;
     }
     live.textContent = z.nome + ', ' + (idx + 1) + ' de ' + grupoAtual.ids.length;
@@ -398,7 +399,7 @@ var ILU = (function () {
   }
   postal.addEventListener('click', function (e) {
     var sb = e.target.closest('.sq-seta'), eb = e.target.closest('.sq-escolhas button'), gb = e.target.closest('.sq-grupos button');
-    if (gb) { grupoAtual = GRUPOS_C.filter(function (g) { return g.id === gb.getAttribute('data-g'); })[0]; escolher(null, true); var t = postal.querySelector('.sq-grupos button[data-g="' + grupoAtual.id + '"]'); if (t) t.focus(); }
+    if (gb) { grupoAtual = GRUPOS_C.filter(function (g) { return g.id === gb.getAttribute('data-g'); })[0]; escolher(grupoAtual.ids[0], true); var t = postal.querySelector('.sq-grupos button[data-g="' + grupoAtual.id + '"]'); if (t) t.focus(); }
     else if (sb) { var d = +sb.getAttribute('data-d'); escolher(vizinho(d), true); var n = postal.querySelector('.sq-seta[data-d="' + d + '"]'); if (n) n.focus(); }
     else if (eb) { escolher(eb.getAttribute('data-zona'), true); var f = postal.querySelector('.sq-chips button[aria-current]') || postal.querySelector('.sq-seta[data-d="1"]'); if (f) f.focus(); }
   });
@@ -414,7 +415,12 @@ var ILU = (function () {
   });
   [['Marcar tudo', true], ['Limpar', false]].forEach(function (x) {
     var b = document.createElement('button'); b.type = 'button'; b.className = 'sq-todos'; b.textContent = x[0];
-    b.addEventListener('click', function () { UI.forEach(function (u) { uiOn[u.id] = x[1]; var cx = fs.querySelector('input[data-ui="' + u.id + '"]'); if (cx) cx.checked = x[1]; }); visibilidade(); });
+    b.addEventListener('click', function () {
+      if (atual) escolher(null, false);   // sem cartão: mostra-se o mapa todo, sem filtro de zona
+      UI.forEach(function (u) { uiOn[u.id] = x[1]; var cx = fs.querySelector('input[data-ui="' + u.id + '"]'); if (cx) cx.checked = x[1]; }); visibilidade(); verTudo();
+      el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });   // o menu fica por baixo do mapa: leva-se a pessoa ao resultado
+      live.textContent = x[1] ? 'Todas as camadas ligadas.' : 'Todas as camadas desligadas.';
+    });
     fs.appendChild(b);
   });
   var notas = document.getElementById('sq-notas');

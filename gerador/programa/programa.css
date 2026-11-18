@@ -229,5 +229,8 @@
 .sq-postal .sq-intro h3.sq-intro-t{margin:18px 0 6px;font:700 13px/1.2 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#4a4a42}
 .sq-postal .sq-intro h3.sq-intro-t:first-child{margin-top:4px}
 
-.sq-lead{margin-bottom:28px}
+.prog .sq-lead{margin:0 0 32px}
 .sq-corpo + .sq-camadas{margin-top:28px}
+
+.sq-grupos-intro{flex-direction:column;padding:0;gap:10px;background:none}
+.sq-grupos-intro button{flex:none;min-height:56px;font-size:17px}
