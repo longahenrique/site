@@ -100,3 +100,12 @@
 .prog .sq{padding-top:56px}
 .prog h1{text-wrap:balance}
 @media(max-width:600px){.prog .sq{padding-top:36px}}
+.sq-completo{padding-bottom:0!important}
+.sq-completo .area:last-child{margin-bottom:10px}
+
+/* Mapa em ecrã inteiro */
+.sq-cheio-btn{margin-top:6px}
+.sq-mapa.sq-cheio{position:fixed!important;inset:0;z-index:10000;height:100vh!important;height:100dvh!important;min-height:0!important;width:auto;border:0;border-radius:0}
+.sq-trava{overflow:hidden}
+.sq-ctl{display:flex;flex-direction:column;gap:6px;border:0!important;box-shadow:none!important;background:none!important}
+.sq-ctl .sq-cheio-btn{margin-top:0}

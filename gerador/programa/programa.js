@@ -54,7 +54,7 @@ var ILU = (function () {
   map.setView([38.51, -9.11], 11);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
-  el.addEventListener('wheel', function (e) { if (!(e.ctrlKey || e.metaKey)) e.stopImmediatePropagation(); }, true);
+  el.addEventListener('wheel', function (e) { if (!(e.ctrlKey || e.metaKey) && !el.classList.contains('sq-cheio')) e.stopImmediatePropagation(); }, true);
 
   map.createPane('pZonas').style.zIndex = 410; map.createPane('pLinhas').style.zIndex = 430;
   var rZonas = L.canvas({ pane: 'pZonas', padding: 0.5, tolerance: 4 }), rLinhas = L.canvas({ pane: 'pLinhas', padding: 0.5, tolerance: 10 });
@@ -98,9 +98,11 @@ var ILU = (function () {
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true });
     m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, -12], permanent: p.cat === 'parque', className: 'sq-nome-ponto' });
     m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : ''), { maxWidth: 240 });
-    m.addTo(gPontos[p.cat]); rotPontos.push({ m: m, cat: p.cat });
+    rotPontos.push({ m: m, cat: p.cat });
   });
-  function nomesParques() { var z = map.getZoom(); rotPontos.forEach(function (r) { var t = r.m.getTooltip(); if (t && t.getElement()) t.getElement().style.display = (r.cat === 'parque' && z < 14) ? 'none' : ''; }); }
+  var MINZ = { parque: 13, saude: 13, bombeiros: 13, policia: 13, transporte: 12, escola: 13.5, igreja: 14.5, cultura: 14, servicos: 14.5, mercado: 14.5, desporto: 14.5 };
+  function nomesParques() { var z = map.getZoom();
+    rotPontos.forEach(function (r) { var g = gPontos[r.cat], ver = z >= (MINZ[r.cat] || 13); if (ver && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!ver && g.hasLayer(r.m)) g.removeLayer(r.m); }); rotPontos.forEach(function (r) { var t = r.m.getTooltip(); if (t && t.getElement()) t.getElement().style.display = (r.cat === 'parque' && z < 14) ? 'none' : ''; }); }
   map.on('zoomend', nomesParques); nomesParques();
 
   var Leg = L.Control.extend({ options: { position: 'bottomleft' }, onAdd: function () {
@@ -113,7 +115,7 @@ var ILU = (function () {
       '<li><i class="l" style="background:#6d4bc2"></i>Via nova</li>' +
       '<li><i class="d" style="background:#1b1d22"></i>Estação ou hub de transportes</li>' +
       '<li><i class="q" style="border-color:#d98a1c;background:rgba(217,138,28,.2)"></i>Zona do programa (clica para ver)</li></ul>' +
-      '<p class="sq-leg-t">Locais (marca para mostrar)</p><ul class="sq-leg-l">' + CATS.map(function (c) { return '<li><label><input type="checkbox" data-cat="' + c.id + '" checked><span class="sq-ico-l" style="background:' + c.cor + '">' + c.svg + '</span>' + esc(c.nome) + '</label></li>'; }).join('') + '</ul>';
+      '<p class="sq-leg-t">Locais (aproxima o mapa para ver mais)</p><ul class="sq-leg-l">' + CATS.map(function (c) { return '<li><label><input type="checkbox" data-cat="' + c.id + '" checked><span class="sq-ico-l" style="background:' + c.cor + '">' + c.svg + '</span>' + esc(c.nome) + '</label></li>'; }).join('') + '</ul>';
     p.innerHTML = h;
     L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d);
     L.DomEvent.on(b, 'click', function () { var a = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', a ? 'false' : 'true'); p.hidden = a; b.textContent = a ? 'Mostrar legenda' : 'Esconder legenda'; });
@@ -149,9 +151,17 @@ var ILU = (function () {
   function verTudo() { map.fitBounds(limites, { padding: [24, 24] }); }
   verTudo();
   var Ctl = L.Control.extend({ options: { position: 'topright' }, onAdd: function () {
-    var d = L.DomUtil.create('div', 'leaflet-bar'), b = L.DomUtil.create('button', 'sq-vertudo', d);
-    b.type = 'button'; b.textContent = 'Ver tudo';
+    var d = L.DomUtil.create('div', 'leaflet-bar sq-ctl'), b = L.DomUtil.create('button', 'sq-vertudo', d), f = L.DomUtil.create('button', 'sq-vertudo sq-cheio-btn', d);
+    b.type = 'button'; b.textContent = 'Ver tudo'; f.type = 'button'; f.textContent = 'Ecrã inteiro'; f.setAttribute('aria-pressed', 'false');
     L.DomEvent.disableClickPropagation(d); L.DomEvent.on(b, 'click', function () { map.closePopup(); verTudo(); });
+    function cheio(on) {
+      el.classList.toggle('sq-cheio', on); document.documentElement.classList.toggle('sq-trava', on);
+      f.textContent = on ? 'Sair do ecrã inteiro' : 'Ecrã inteiro'; f.setAttribute('aria-pressed', on ? 'true' : 'false');
+      if (on) el.setAttribute('aria-modal', 'true'); else el.removeAttribute('aria-modal');
+      setTimeout(function () { map.invalidateSize(); }, 50); f.focus();
+    }
+    L.DomEvent.on(f, 'click', function () { cheio(!el.classList.contains('sq-cheio')); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('sq-cheio')) cheio(false); });
     return d;
   } });
   map.addControl(new Ctl());
