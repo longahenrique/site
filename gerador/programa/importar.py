@@ -232,6 +232,33 @@ if os.path.exists(f):
     for z in D['zonas']:
         if z['id'] == 'mata' and sel:
             z['limite'] = sel; z.pop('poligono', None); print('Mata de Sesimbra ->', len(sel), 'manchas de mata (mata.json)')
+# Alfarim: sem zona residencial no OpenStreetMap, o contorno sai da malha de ruas da povoação (ruas.json)
+f = PAS + 'ruas.json'
+if os.path.exists(f):
+    import numpy as np, cv2
+    R = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e.get('geometry') and e.get('tags', {}).get('highway') in ('residential', 'unclassified', 'living_street', 'tertiary', 'pedestrian')]
+    for z in D['zonas']:
+        if z['id'] != 'alfarim': continue
+        c0 = z.get('centro') or [38.4785, -9.1605]; z['_c'] = c0
+        la0, la1, lo0, lo1 = c0[0]-0.0075, c0[0]+0.0075, c0[1]-0.010, c0[1]+0.010; px = 3.0
+        ky, kx = 111320.0, 111320.0*math.cos(math.radians(c0[0]))
+        W, H = int((lo1-lo0)*kx/px)+1, int((la1-la0)*ky/px)+1; img = np.zeros((H, W), np.uint8)
+        for e in R:
+            g = [(p['lat'], p['lon']) for p in e['geometry']]
+            if not any(la0 <= p[0] <= la1 and lo0 <= p[1] <= lo1 for p in g): continue
+            cv2.polylines(img, [np.array([[(p[1]-lo0)*kx/px, (la1-p[0])*ky/px] for p in g], np.int32)], False, 255, 1)
+        k = lambda m: cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(m/px)*2+1,)*2)
+        img = cv2.dilate(img, k(30)); img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, k(50)); img = cv2.morphologyEx(img, cv2.MORPH_OPEN, k(70))
+        n, lab, st, cen = cv2.connectedComponentsWithStats(img)
+        # fica só a mancha que contém (ou está mais perto de) o centro da povoação
+        cx, cy = int((c0[1]-lo0)*kx/px), int((la1-c0[0])*ky/px); alvo = lab[min(max(cy, 0), H-1), min(max(cx, 0), W-1)]
+        if alvo == 0 and n > 1: alvo = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+        if alvo:
+            m1 = (lab == alvo).astype(np.uint8)*255
+            cs, _ = cv2.findContours(m1, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE); c = max(cs, key=cv2.contourArea)
+            c = cv2.approxPolyDP(c, 1.5, True)[:, 0, :]
+            z['limite'] = [[[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in c]]; print('Contorno de Alfarim (ruas) ->', len(c), 'pontos, área ≈', int(cv2.countNonZero(m1)*px*px/10000), 'ha')
+        z.pop('_c', None)
 # Parque da Várzea: contorno real (precisa de varzea.json, botão 6 do descarregador)
 f = PAS + 'varzea.json'
 if os.path.exists(f):

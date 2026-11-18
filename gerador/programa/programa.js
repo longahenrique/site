@@ -38,6 +38,36 @@ var ILU = (function () {
     vila: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 120 Q160 90 300 110 T640 100 V170 H0Z" fill="#9cc58a"/>' + [[90, 112], [150, 100], [205, 118], [260, 96], [330, 110], [390, 98], [450, 116], [510, 104]].map(function (h, i) { return '<rect x="' + h[0] + '" y="' + h[1] + '" width="48" height="' + (180 - h[1]) + '" fill="' + (i % 3 ? '#f7f2e6' : '#f1e3c4') + '" stroke="#d9cfb8"/><path d="M' + (h[0] - 3) + ' ' + h[1] + ' L' + (h[0] + 24) + ' ' + (h[1] - 14) + ' L' + (h[0] + 51) + ' ' + h[1] + 'Z" fill="#c4683f"/>'; }).join('') + '<rect x="0" y="178" width="640" height="18" fill="#efd9a7"/><rect x="0" y="196" width="640" height="54" fill="#5d9bc4"/><path d="M200 214 h70 l-10 14 h-50z" fill="#c0504d"/><line x1="235" y1="214" x2="235" y2="190" stroke="#4a4f57" stroke-width="2"/><path d="M420 220 h56 l-8 11 h-40z" fill="#3a6ea5"/>',
     recupera: '<rect width="640" height="250" fill="#eef4f1"/><path d="M0 180 Q320 160 640 175 V250 H0Z" fill="#c7b78a"/>' + [80, 150, 220, 300, 380, 450, 520, 590].map(function (x, i) { var s = 0.5 + (i % 4) * 0.2; return '<rect x="' + (x - 2) + '" y="' + (175 - 40 * s) + '" width="4" height="' + (40 * s) + '" fill="#6d5a43"/><circle cx="' + x + '" cy="' + (172 - 44 * s) + '" r="' + (16 * s) + '" fill="#5daa66"/>'; }).join('') + '<circle cx="320" cy="196" r="5" fill="#2e8b57"/><rect x="316" y="200" width="8" height="18" rx="3" fill="#2e8b57"/><path d="M300 222 h40" stroke="#6d5a43" stroke-width="3"/>'
   };
+  function casa(x, y, w, h, cor, tel) { return '<rect x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" fill="' + cor + '"/>' + (tel ? '<path d="M' + (x - 3) + ' ' + y + ' L' + (x + w / 2) + ' ' + (y - w * 0.32) + ' L' + (x + w + 3) + ' ' + y + 'Z" fill="' + tel + '"/>' : '') + '<rect x="' + (x + w * 0.18) + '" y="' + (y + h * 0.3) + '" width="' + (w * 0.18) + '" height="' + (h * 0.22) + '" fill="#7aa7c7"/><rect x="' + (x + w * 0.6) + '" y="' + (y + h * 0.55) + '" width="' + (w * 0.2) + '" height="' + (h * 0.45) + '" fill="#8a6a4a"/>'; }
+  function pinheiro(x, y, k) { return '<rect x="' + (x - 2) + '" y="' + y + '" width="4" height="' + (38 * k) + '" fill="#6d5a43"/><ellipse cx="' + x + '" cy="' + (y - 2) + '" rx="' + (24 * k) + '" ry="' + (12 * k) + '" fill="#4f8a55"/>'; }
+  function janelas(x, y, w, h, c, l) { var o = ''; for (var i = 0; i < c; i++) for (var j = 0; j < l; j++) o += '<rect x="' + (x + 6 + i * (w - 12) / c) + '" y="' + (y + 8 + j * (h - 14) / l) + '" width="' + ((w - 12) / c - 5) + '" height="' + ((h - 14) / l - 6) + '" fill="#9cc3dc"/>'; return o; }
+  var P2 = {
+    qconde: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 150 Q200 120 400 140 T640 130 V250 H0Z" fill="#b9d7a0"/><path d="M0 205 Q320 190 640 202 V250 H0Z" fill="#9cc58a"/>' +
+      '<rect x="60" y="92" width="230" height="100" fill="#f1e3c6"/><rect x="54" y="84" width="242" height="10" fill="#b8693f"/>' + janelas(60, 92, 230, 100, 9, 2) + '<rect x="156" y="150" width="38" height="42" fill="#8a6a4a"/><rect x="96" y="60" width="158" height="22" rx="3" fill="#1857d6"/><text x="175" y="76" font-size="13" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">Escola</text>' +
+      casa(330, 138, 62, 54, '#f4e9d2', '#c0694a') + casa(405, 146, 54, 46, '#ecd5b0', '#b8693f') + casa(475, 136, 66, 56, '#fbf6ea', '#c0694a') + casa(556, 148, 56, 44, '#f4e9d2', '#b8693f') +
+      pinheiro(318, 150, 0.8) + '<rect x="0" y="206" width="640" height="14" fill="#d9d3c4"/>' + autocarro(120, 224, 11) + '<path d="M0 238 H640" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>',
+    cotovia: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 200 Q320 186 640 198 V250 H0Z" fill="#cfe0b8"/>' +
+      [[40, 90], [190, 70], [340, 100]].map(function (b, i) { return '<rect x="' + b[0] + '" y="' + b[1] + '" width="120" height="' + (205 - b[1]) + '" fill="' + ['#f1e3c6', '#ecd5b0', '#f4e9d2'][i] + '"/><rect x="' + (b[0] - 4) + '" y="' + (b[1] - 8) + '" width="128" height="8" fill="#b8693f"/>' + janelas(b[0], b[1], 120, 205 - b[1], 4, Math.round((205 - b[1]) / 30)); }).join('') +
+      '<rect x="500" y="40" width="6" height="165" fill="#f2b632"/><path d="M440 48 H590 M500 48 L470 82 M500 48 L540 82" stroke="#f2b632" stroke-width="5" fill="none"/><path d="M560 48 V90" stroke="#555" stroke-width="2"/><rect x="552" y="90" width="16" height="12" fill="#e05a47"/><rect x="470" y="130" width="90" height="75" fill="#e9dcc0"/>' + janelas(470, 130, 90, 75, 3, 2) +
+      [[620, 175]].map(function () { return ''; }).join('') + '<rect x="0" y="205" width="640" height="14" fill="#d9d3c4"/>',
+    sampaio: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 190 Q160 110 330 120 T640 170 V250 H0Z" fill="#a9cf94"/><path d="M0 215 Q320 195 640 212 V250 H0Z" fill="#8cbb7a"/>' +
+      '<rect x="60" y="120" width="170" height="60" fill="#f1e3c6"/><rect x="56" y="112" width="178" height="9" fill="#c0504d"/>' + janelas(60, 120, 170, 60, 7, 1) + '<rect x="140" y="150" width="20" height="30" fill="#8a6a4a"/><path d="M245 120 V84" stroke="#555" stroke-width="3"/><path d="M245 84 h28 v16 h-28z" fill="#1857d6"/>' +
+      '<path d="M360 118 L430 92 L500 118Z" fill="#e9dcc0"/><rect x="368" y="118" width="124" height="52" fill="#f4ecd8"/>' + [376, 396, 416, 436, 456, 476].map(function (x) { return '<rect x="' + x + '" y="120" width="8" height="50" fill="#fffaf0"/>'; }).join('') + '<rect x="360" y="170" width="140" height="8" fill="#d7ccb0"/>' +
+      casa(540, 150, 44, 36, '#f4e9d2', '#c0694a') + casa(590, 160, 38, 30, '#ecd5b0', '#b8693f') + pinheiro(310, 150, 0.9) + '<path d="M0 232 Q300 214 640 230" stroke="#fff" stroke-width="3" stroke-dasharray="8 7" fill="none"/>',
+    alfarim: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 150 Q320 130 640 148 V250 H0Z" fill="#b9d7a0"/><path d="M0 200 Q320 185 640 198 V250 H0Z" fill="#9cc58a"/>' +
+      [[70, 150, 1], [150, 156, 0.85], [230, 148, 1.05], [300, 158, 0.8]].map(function (t) { return '<rect x="' + (t[0] - 3) + '" y="' + t[1] + '" width="6" height="' + (40 * t[2]) + '" fill="#6d5a43"/><circle cx="' + t[0] + '" cy="' + (t[1] - 6) + '" r="' + (26 * t[2]) + '" fill="#4f9560"/>'; }).join('') +
+      '<rect x="110" y="196" width="46" height="6" rx="2" fill="#8a6a4a"/>' + casa(400, 138, 60, 50, '#f4e9d2', '#c0694a') + casa(470, 146, 50, 42, '#ecd5b0', '#b8693f') +
+      '<rect x="560" y="120" width="4" height="86" fill="#555"/><rect x="544" y="104" width="36" height="22" rx="3" fill="#1857d6"/><text x="562" y="120" font-size="14" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">P</text>' + autocarro(500, 214, 11) + '<path d="M0 226 Q320 212 640 226" stroke="#d6246e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round" fill="none"/>',
+    meco: '<rect width="640" height="250" fill="#eaf4f8"/><rect y="112" width="640" height="60" fill="#7fb6d5"/><path d="M0 130 q40 -6 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" stroke="#e8f4fb" stroke-width="3" fill="none"/><path d="M0 172 Q160 150 330 166 T640 160 V250 H0Z" fill="#efdcaa"/><path d="M0 215 Q320 196 640 212 V250 H0Z" fill="#e3c98a"/>' +
+      pinheiro(70, 62, 1.1) + pinheiro(150, 76, 0.9) + pinheiro(540, 60, 1.15) + pinheiro(600, 78, 0.85) +
+      '<path d="M300 196 V156" stroke="#6d5a43" stroke-width="3"/><path d="M270 156 q30 -30 60 0z" fill="#e05a47"/><path d="M420 200 V164" stroke="#6d5a43" stroke-width="3"/><path d="M394 164 q26 -26 52 0z" fill="#f7c948"/>' +
+      '<path d="M0 232 Q320 218 640 230" stroke="#d6246e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round" fill="none"/>' + bicicleta(200, 232, 12),
+    azoia: '<rect width="640" height="250" fill="#e8f2f7"/><circle cx="540" cy="52" r="24" fill="#f7d36b"/><path d="M0 120 Q200 96 400 112 T640 104 V160 H0Z" fill="#bcd9a4"/><rect y="150" width="640" height="26" fill="#7fb6d5" opacity=".55"/><path d="M0 170 Q200 146 400 164 T640 158 V250 H0Z" fill="#a9cf94"/><path d="M0 214 Q320 196 640 210 V250 H0Z" fill="#92bf7e"/>' +
+      casa(60, 142, 62, 42, '#fbf6ea', '#c0694a') + casa(140, 150, 54, 38, '#f4e9d2', '#b8693f') + casa(250, 140, 66, 46, '#fbf6ea', '#c0694a') + casa(440, 148, 56, 40, '#f4e9d2', '#c0694a') + casa(510, 142, 62, 44, '#fbf6ea', '#b8693f') +
+      '<rect x="336" y="136" width="62" height="50" fill="#fbf6ea"/><path d="M332 136 L367 112 L402 136Z" fill="#c0694a"/><rect x="361" y="150" width="12" height="36" fill="#8a6a4a"/><rect x="354" y="124" width="26" height="9" fill="#fff"/><path d="M367 118 v14 M360 125 h14" stroke="#c2362f" stroke-width="4"/>' +
+      pinheiro(30, 150, 0.8) + pinheiro(610, 156, 0.75) + '<path d="M0 232 Q320 216 640 230" stroke="#cfc6b0" stroke-width="8" fill="none"/>'
+  };
+  Object.keys(P2).forEach(function (k) { P[k] = P2[k]; });
   function paisagem(v, nome) { return '<svg viewBox="0 0 640 250" role="img" aria-label="' + (nome ? 'Ilustração: ' + nome : 'Ilustração') + '">' + P[v] + '</svg>'; }
   return { perfil: perfil, paisagem: paisagem };
 })();
@@ -71,13 +101,15 @@ var ILU = (function () {
     if (l.camada === 'ativos' || l.peso <= 6) cas = L.polyline(l.coords, { color: '#fff', weight: Math.min(l.peso, 12) + 4, opacity: 0.85, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas, interactive: false }).addTo(g);
     var lin = L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(l.nome) + '</b><br>' + esc(l.texto), { maxWidth: 260 }).addTo(g);
+    var uiId = l.camada === 'ativos' ? 'ciclo' : l.nome === 'Faixa BUS' ? 'faixa' : (l.camada === 'autocarro' || l.nome === 'Linha Azul') ? 'bus' : 'vias';
+    lin.on('click', function () { destacar(uiId); });
     linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
   var gFixos = L.featureGroup().addTo(map);   // estações que já existem: marcadas desde o início
   DADOS.interfaces.forEach(function (i) {
     L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1, pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(i.nome) + '</b><br>' + esc(i.texto), { maxWidth: 260 })
-      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(i.existe ? gFixos : GR.hubs);
+      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).on('click', function () { if (!i.existe) destacar('hubs'); }).addTo(i.existe ? gFixos : GR.hubs);
   });
 
 
@@ -107,18 +139,26 @@ var ILU = (function () {
   // Camadas que a pessoa liga e desliga (o mapa abre vazio)
   var UI = [
     { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'As ' + ciclos.length + ' ligações desenhadas somam cerca de ' + kmCiclo + ' km (valor aproximado, medido sobre o traçado do mapa) e fazem parte da rede ciclável de 40 km da proposta, com bicicletas partilhadas elétricas.' },
-    { id: 'faixa', nome: 'Faixa BUS', cor: '#8fb0ec', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10 entre a estação de Coina e o Posto da EN10, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
+    { id: 'faixa', nome: 'Faixa BUS', cor: '#f2b01e', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10 entre a estação de Coina e o Posto da EN10, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
     { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais as circulares do Castelo e da Quinta do Conde, a cada 30 min, e o eixo Quinta do Conde–Coina, a cada 10 min na hora de ponta.' },
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, ciclovia e paragens) e variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
-    { id: 'marginal', nome: 'Marginal', cor: '#d6246e', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
+    { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
     { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Os novos hubs onde o autocarro se liga ao parque de estacionamento: Moagem, em Santana, e Alfarim. As estações de Coina e do Fogueteiro já existem e estão sempre marcadas.' },
     { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' }
   ];
   UI.forEach(function (u) { uiOn[u.id] = false; }); uiOn.existe = true;   // o que já existe está sempre no mapa
+  var destId = null, destT = null;
+  function destacar(id) {
+    destId = id; var n = document.getElementById('sq-notas'); if (!n) return;
+    [].forEach.call(n.querySelectorAll('p'), function (p) { p.classList.toggle('dest', p.getAttribute('data-ui') === id); });
+    var x = n.querySelector('p.dest'); if (x) x.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'nearest' });
+    clearTimeout(destT); destT = setTimeout(function () { destId = null; [].forEach.call(n.querySelectorAll('p.dest'), function (p) { p.classList.remove('dest'); }); }, 9000);
+  }
   function ligar(g, q) { if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); }
   function visibilidade() {
     ['ciclo', 'faixa', 'bus', 'vias', 'hubs'].forEach(function (k) { ligar(GR[k], uiOn[k]); });
     CATS.forEach(function (c) { ligar(gPontos[c.id], c.id === 'obra' ? uiOn.obra : (uiOn.existe && catOn[c.id])); });
+    ligar(gFixos, map.getZoom() >= 13);
     if (camadasZona.marginal) ligar(camadasZona.marginal, uiOn.marginal || atual === 'marginal');
     legRender(); notasRender();
   }
@@ -129,6 +169,7 @@ var ILU = (function () {
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false });
     m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, -12], permanent: false, className: 'sq-nome-ponto' });
     m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : ''), { maxWidth: 240 });
+    if (p.cat === 'obra') m.on('click', function () { destacar('obra'); });
     rotPontos.push({ m: m, cat: p.cat });
   });
   var MINZ = { obra: 12.5, saude: 12.5, bombeiros: 12.5, policia: 13, transporte: 12, escola: 13.5, parque: 13.5, servicos: 14.5, cultura: 14.5, igreja: 15, mercado: 15, desporto: 15.5 };
@@ -141,7 +182,7 @@ var ILU = (function () {
       if (ver && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!ver && g.hasLayer(r.m)) g.removeLayer(r.m);
     });
   }
-  map.on('zoomend', nomesParques); nomesParques();
+  map.on('zoomend', function () { nomesParques(); ligar(gFixos, map.getZoom() >= 13); }); nomesParques();
 
 
   var Leg = L.Control.extend({ options: { position: 'bottomleft' }, onAdd: function () {
@@ -172,8 +213,9 @@ var ILU = (function () {
   // Zonas: só aparece o contorno da localidade do cartão escolhido
   var gZona = L.featureGroup().addTo(map);
   DADOS.zonas.forEach(function (z) {
-    var cor = corCamada[z.camada], camada, estilo = { color: cor, weight: 3, opacity: 0.95, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas, interactive: false };
-    if (z.geo && z.geo.linha) camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: false });
+    var cor = z.cor || corCamada[z.camada], camada, estilo = { color: cor, weight: 3, opacity: 0.95, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas, interactive: false };
+    if (z.camada === 'natureza') { estilo.weight = 1; estilo.opacity = 0.7; estilo.fillOpacity = 0.4; }   // áreas, não contornos
+    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.on('click', function () { destacar('marginal'); }); }
     else if (z.limite) camada = L.polygon(z.limite, estilo);
     else if (z.retangulo) camada = L.rectangle(z.retangulo, estilo);
     else if (z.poligono) camada = L.polygon(z.poligono, estilo);
@@ -213,20 +255,31 @@ var ILU = (function () {
     mini.hidden = false; mini.setAttribute('data-fechado', 'n');
     mini.querySelector('.sq-mini-x').addEventListener('click', function () { mini.hidden = true; });
   }
-  // Cartões das localidades (setas para a esquerda e para a direita)
-  var postal = document.getElementById('sq-postal'), nav = document.getElementById('sq-nav');
-  var ORDEM = ['vila', 'marginal', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'mata', 'azoia', 'espichel', 'arrabida', 'qconde', 'varzea'].filter(function (id) { return camadasZona[id]; });
+  // Cartões das localidades: setas dentro do cartão; o primeiro estado é "nada escolhido"
+  var postal = document.getElementById('sq-postal');
+  var ORDEM = ['vila', 'marginal', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'mata', 'azoia', 'espichel', 'arrabida', 'qconde', 'en10', 'varzea'].filter(function (id) { return camadasZona[id]; });
   DADOS.zonas.forEach(function (z) { if (ORDEM.indexOf(z.id) < 0) ORDEM.push(z.id); });
-  var idx = 0, contaEl = null;
+  var SEQ = [null].concat(ORDEM), idx = 0;
+  var live = document.createElement('p'); live.className = 'sr'; live.setAttribute('aria-live', 'polite'); postal.parentNode.insertBefore(live, postal);
   function zonaDe(id) { return DADOS.zonas.filter(function (x) { return x.id === id; })[0]; }
+  function barra() {
+    var chev = function (d) { return '<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="' + (d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>'; };
+    var pontos = SEQ.map(function (_, k) { return '<i class="' + (k === idx ? 'on' : '') + '"></i>'; }).join('');
+    return '<div class="sq-cnav"><button type="button" class="sq-seta" data-d="-1" aria-label="Localidade anterior">' + chev(-1) + '</button><span class="sq-dots" aria-hidden="true">' + pontos + '</span><button type="button" class="sq-seta" data-d="1" aria-label="Localidade seguinte">' + chev(1) + '</button></div>';
+  }
   function cartao(id) {
-    var z = zonaDe(id); if (!z) return; idx = ORDEM.indexOf(id);
-    if (contaEl) contaEl.textContent = z.nome + ', ' + (idx + 1) + ' de ' + ORDEM.length;
-    var il = z.ilustracao, html = '<div class="ilustra">';
+    idx = SEQ.indexOf(id); var z = id ? zonaDe(id) : null;
+    if (!z) {
+      live.textContent = 'Nenhuma localidade escolhida';
+      postal.innerHTML = barra() + '<div class="conteudo sq-intro"><h3>Escolhe uma localidade</h3><p class="frase">Passa de uma para a outra com as setas, ou escolhe aqui, para ver o que muda em cada sítio, como é hoje e como pode ficar.</p><div class="sq-escolhas">' + ORDEM.map(function (k) { return '<button type="button" data-zona="' + k + '">' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div></div>';
+      return null;
+    }
+    live.textContent = z.nome + ', ' + idx + ' de ' + ORDEM.length;
+    var il = z.ilustracao, html = barra() + '<div class="ilustra">';
     if (il.tipo === 'perfil') {
       html += '<div class="sq-alternar" role="group" aria-label="Hoje ou proposta"><button type="button" data-v="hoje" aria-pressed="false">Hoje</button><button type="button" data-v="amanha" aria-pressed="true">Proposta</button></div><div class="desenho">' + ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com a proposta') + '</div><p class="nota-ilu">' + esc(z.perfilNome ? 'Perfil da ' + z.perfilNome + ', ilustrativo.' : 'Perfil da rua, ilustrativo.') + '</p>';
     } else html += ILU.paisagem(il.variante, z.nome);
-    html += '</div><div class="conteudo"><p class="camada">' + esc(nomeCamada[z.camada]) + '</p><h3>' + esc(z.nome) + '</h3><p class="frase">' + esc(z.frase) + '</p><ul class="sq-medidas">' +
+    html += '</div><div class="conteudo"><p class="camada">' + esc(z.etiqueta || nomeCamada[z.camada]) + '</p><h3>' + esc(z.nome) + '</h3><p class="frase">' + esc(z.frase) + '</p><ul class="sq-medidas">' +
       z.medidas.map(function (m) { return '<li>' + esc(m.t) + '</li>'; }).join('') + '</ul><button type="button" class="sq-ver-mapa" data-zona="' + id + '">Ver no mapa</button></div>';
     postal.innerHTML = html;
     [].forEach.call(postal.querySelectorAll('.sq-alternar button'), function (b) {
@@ -238,19 +291,19 @@ var ILU = (function () {
     return z;
   }
   function escolher(id, voar) {
-    var z = cartao(id); if (!z) return;
+    var z = cartao(id);
     if (atual && camadasZona[atual] && gZona.hasLayer(camadasZona[atual])) gZona.removeLayer(camadasZona[atual]);
-    atual = id; var c = camadasZona[id];
-    if (id === 'marginal' && map.hasLayer(c)) map.removeLayer(c);
+    atual = id || null;
+    if (!z) { mini.hidden = true; visibilidade(); if (voar) verTudo(); return; }
+    var c = camadasZona[id];
     gZona.addLayer(c); visibilidade(); miniAtualizar(z, z.ilustracao);
     if (voar) { if (RM) map.fitBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, duration: 0.6 }); }
   }
-  function passo(d) { escolher(ORDEM[(idx + d + ORDEM.length) % ORDEM.length], true); }
-  if (nav) {
-    var seta = function (d, rot) { var b = document.createElement('button'); b.type = 'button'; b.className = 'sq-seta'; b.setAttribute('aria-label', rot); b.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="' + (d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>'; b.addEventListener('click', function () { passo(d); }); return b; };
-    contaEl = document.createElement('p'); contaEl.className = 'sr'; contaEl.setAttribute('aria-live', 'polite');
-    nav.appendChild(seta(-1, 'Localidade anterior')); nav.appendChild(contaEl); nav.appendChild(seta(1, 'Localidade seguinte'));
-  }
+  postal.addEventListener('click', function (e) {
+    var sb = e.target.closest('.sq-seta'), eb = e.target.closest('.sq-escolhas button');
+    if (sb) { var d = +sb.getAttribute('data-d'); escolher(SEQ[(idx + d + SEQ.length) % SEQ.length], true); var n = postal.querySelector('.sq-seta[data-d="' + d + '"]'); if (n) n.focus(); }
+    else if (eb) { escolher(eb.getAttribute('data-zona'), true); var f = postal.querySelector('.sq-seta[data-d="1"]'); if (f) f.focus(); }
+  });
 
   // Menu de camadas (por cima do mapa)
   var fs = document.getElementById('sq-camadas');
@@ -269,7 +322,7 @@ var ILU = (function () {
   var notas = document.getElementById('sq-notas');
   notasRender = function () {
     if (!notas) return; var act = UI.filter(function (u) { return uiOn[u.id]; });
-    notas.innerHTML = act.map(function (u) { return '<p style="border-left-color:' + u.cor + '"><b>' + esc(u.nome) + '.</b> ' + esc(u.nota) + '</p>'; }).join('');
+    notas.innerHTML = act.map(function (u) { return '<p data-ui="' + u.id + '"' + (destId === u.id ? ' class="dest"' : '') + ' style="border-left-color:' + u.cor + '"><b>' + esc(u.nome) + '.</b> ' + esc(u.nota) + '</p>'; }).join('');
   };
 
   // Lista de locais (alternativa ao mapa)
@@ -310,5 +363,5 @@ var ILU = (function () {
   })();
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-ver-mapa'); if (!b) return; escolher(b.getAttribute('data-zona'), true); el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); });
   window.SQ = { escolher: escolher, mapa: map };
-  cartao(ORDEM[0]); visibilidade();
+  cartao(null); visibilidade();
 })();

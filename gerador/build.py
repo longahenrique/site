@@ -712,7 +712,6 @@ def prog_page():
 <div class="sq-notas" id="sq-notas"></div>
 </div>
 <div class="sq-col-cartao">
-<div class="sq-nav" id="sq-nav" role="group" aria-label="Passar de localidade"></div>
 <article class="sq-postal" id="sq-postal" aria-label="Cartão da localidade"></article>
 </div>
 </div>
