@@ -68,3 +68,35 @@
 .sq .leaflet-control-attribution a:focus-visible,.sq .leaflet-bar a:focus-visible,.sq-vertudo:focus-visible{outline-offset:-3px}
 
 .sq-dica{margin:10px 0 0;font:500 14px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted)}
+
+/* Programa completo: acordeão no telemóvel, como em #programa */
+.acc-btn{font:inherit;color:inherit;letter-spacing:inherit;background:none;border:0;padding:0;margin:0;text-align:left;cursor:default}
+.acc-btn::after{content:"";display:none;width:.38em;height:.38em;margin-left:.6em;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:translateY(-.18em) rotate(45deg);transition:transform .15s}
+.acc-btn[aria-expanded="true"]::after{transform:translateY(.05em) rotate(225deg)}
+@media(max-width:600px){.sq-completo{padding:44px 0}.sq-completo h2{margin-bottom:18px}.sq-completo .area{padding:0}.sq-completo .area h3{margin:0}.sq-completo .acc-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:14px 0;cursor:pointer}.sq-completo .acc-btn::after{display:inline-block;margin-right:6px}.sq-completo .acc-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.sq-completo .acc-body{padding-bottom:14px}}
+
+/* Ícones e legenda do mapa */
+.sq .sq-ico span,.sq-ico-l{display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid #fff;box-shadow:0 0 0 1.5px #141414}
+.sq .sq-ico span{width:26px;height:26px;border-radius:50%}
+.sq-ico-l{width:22px;height:22px;border-radius:50%;flex:none}
+.sq-ico-l svg{width:14px;height:14px}
+.sq .leaflet-tooltip.sq-nome-ponto{background:#fff;color:#141414;border:1.5px solid #141414;border-radius:6px;padding:1px 7px;font:700 12px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;box-shadow:none}
+.sq .leaflet-tooltip.sq-nome-ponto::before{display:none}
+.sq-leg{max-width:min(300px,calc(100vw - 80px));background:#fff;border:2px solid #141414;border-radius:8px;font:500 13px/1.35 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:#141414}
+.sq-leg-btn{display:block;width:100%;font:700 13px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;padding:8px 12px;border:0;background:#141414;color:#fff;border-radius:5px;cursor:pointer;text-align:left}
+.sq-leg-btn:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.sq-leg-corpo{padding:8px 12px 10px;max-height:min(34vh,220px);overflow:auto}
+.sq-leg-t{margin:6px 0 4px;font-weight:800}
+.sq-leg-l{list-style:none;margin:0;padding:0}
+.sq-leg-l li{display:flex;align-items:center;gap:8px;margin:3px 0}
+.sq-leg-l label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.sq-leg-l input{margin:0;width:16px;height:16px;accent-color:var(--accent)}
+.sq-leg-l .l{display:inline-block;width:26px;height:4px;border-radius:2px;flex:none}
+.sq-leg-l .d{display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px #141414;flex:none;margin:0 7px}
+.sq-leg-l .q{display:inline-block;width:22px;height:14px;border:2px solid;border-radius:3px;flex:none}
+@media(max-width:640px){.sq-leg-corpo{max-height:34vh}}
+
+
+.prog .sq{padding-top:56px}
+.prog h1{text-wrap:balance}
+@media(max-width:600px){.prog .sq{padding-top:36px}}

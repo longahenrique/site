@@ -688,16 +688,16 @@ def prog_page():
     import json as _j
     comp=_j.load(open('gerador/programa/programa_completo.json',encoding='utf-8'))
     areas=''
-    for a in comp:
+    for n,a in enumerate(comp,1):
         li=''
         for m in a['medidas']:
             w=m['t'].rsplit(' ',1)
             tt=(esc(w[0])+' ' if len(w)>1 else '')+'<span class="lw">'+esc(w[-1])+'<i class="chv" aria-hidden="true"></i></span>'
             onde='<span class="sq-onde" data-zonas="%s"></span>'%','.join(m['mapa']) if m.get('mapa') else ''
             li+='<li><details><summary>%s</summary><p>%s</p>%s</details></li>'%(tt,esc(m['d']),onde)
-        areas+='<div class="area"><h3>%s</h3><div class="acc-body"><ul>%s</ul></div></div>\n'%(esc(a['area']),li)
+        areas+='<div class="area"><h3 data-c="p%d"><span class="acc-t">%s</span></h3><div class="acc-body" id="p%d"><ul>%s</ul></div></div>\n'%(n,esc(a['area']),n,li)
     main=f"""<main id="conteudo" tabindex="-1" class="prog">
-<section class="sq" style="padding-top:56px">
+<section class="sq">
 <div class="wrap">
 <h1>Programa para Sesimbra</h1>
 <p class="sq-lead">Mar, mata, serra e bairros onde dá gosto viver. Escolhe um lugar no mapa para ver o que muda, como é hoje e como pode ficar.</p>
@@ -725,8 +725,12 @@ def prog_page():
     return h+body(header,main,ex)
 if os.path.isdir('gerador/programa'):
     os.makedirs('_site/programa-mapa',exist_ok=True)
-    for _f in ('leaflet.css','leaflet.js','programa.css','programa-dados.js','programa.js'):
+    for _f in ('leaflet.css','leaflet.js','programa.css','programa.js'):
         shutil.copy('gerador/programa/'+_f,'_site/programa-mapa/'+_f)
+    import json as _jj
+    _D=_jj.load(open('gerador/programa/mapa.json',encoding='utf-8'))
+    for _l in _D.get('linhas',[]): _l.pop('pontos',None)
+    open('_site/programa-mapa/programa-dados.js','w',encoding='utf-8').write('/* Gerado a partir de gerador/programa/mapa.json (painel do mapa) */\nvar DADOS = '+_jj.dumps(_D,ensure_ascii=False,separators=(',',':'))+';\n')
     open('_site/teste-programa.html','w',encoding='utf-8').write(prog_page())
 urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
 def _sm(u):

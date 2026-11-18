@@ -56,26 +56,80 @@ var ILU = (function () {
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
   el.addEventListener('wheel', function (e) { if (!(e.ctrlKey || e.metaKey)) e.stopImmediatePropagation(); }, true);
 
+  map.createPane('pZonas').style.zIndex = 410; map.createPane('pLinhas').style.zIndex = 430;
+  var rZonas = L.canvas({ pane: 'pZonas', padding: 0.5, tolerance: 4 }), rLinhas = L.canvas({ pane: 'pLinhas', padding: 0.5, tolerance: 10 });
   var grupos = {}; DADOS.camadas.forEach(function (c) { grupos[c.id] = L.featureGroup().addTo(map); });
 
   // Linhas de mobilidade (do mapa da mobilidade)
   DADOS.linhas.forEach(function (l) {
     var g = l.camada === 'ativos' ? grupos.ativos : grupos.mobilidade;
     if (l.nome === 'Marginal de Sesimbra') return; // aparece como zona
-    L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round' })
+    L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(l.nome) + '</b><br>' + esc(l.texto), { maxWidth: 260 }).addTo(g);
   });
   DADOS.interfaces.forEach(function (i) {
-    L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1 })
+    L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1, pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(i.nome) + '</b><br>' + esc(i.texto), { maxWidth: 260 })
       .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(grupos.mobilidade);
   });
 
+
+  // Locais com ícone (parques, escolas, saúde...) e legenda
+  var P24 = function (d) { return '<svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' + d + '</svg>'; };
+  var CATS = [
+    { id: 'parque', nome: 'Parque ou jardim', cor: '#2f8f5b', svg: P24('<path d="M12 21v-6"/><path d="M12 15a5 5 0 1 0-4-8 4 4 0 0 0 0 7 4 4 0 0 0 4 1z" fill="currentColor"/>') },
+    { id: 'escola', nome: 'Escola', cor: '#8a3fb0', svg: P24('<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/>') },
+    { id: 'saude', nome: 'Saúde', cor: '#c2362f', svg: P24('<path d="M12 5v14M5 12h14" stroke-width="3.5"/>') },
+    { id: 'bombeiros', nome: 'Bombeiros', cor: '#d9531c', svg: P24('<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z" fill="currentColor"/>') },
+    { id: 'policia', nome: 'Polícia (GNR, PSP)', cor: '#1b3a8c', svg: P24('<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/>') },
+    { id: 'igreja', nome: 'Igreja ou capela', cor: '#6b5a3a', svg: P24('<path d="M12 2v6M9.5 4.5h5"/><path d="M5 21V12l7-4 7 4v9z"/><path d="M10 21v-5h4v5"/>') },
+    { id: 'cultura', nome: 'Biblioteca, auditório, cultura', cor: '#b0306f', svg: P24('<path d="M4 5a2 2 0 0 1 2-1h13v16H6a2 2 0 0 0-2 1z"/><path d="M4 5v16"/>') },
+    { id: 'servicos', nome: 'Serviços públicos (junta, loja do cidadão)', cor: '#4a5560', svg: P24('<path d="M3 10l9-6 9 6M5 10v9M9.5 10v9M14.5 10v9M19 10v9M3 21h18"/>') },
+    { id: 'mercado', nome: 'Mercado e supermercado', cor: '#a8650d', svg: P24('<path d="M3 4h2l2 11h11l2-8H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>') },
+    { id: 'desporto', nome: 'Desporto', cor: '#1e7a8c', svg: P24('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>') },
+    { id: 'transporte', nome: 'Estação ou terminal', cor: '#1857d6', svg: P24('<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/>') }
+  ];
+  var catPorId = {}; CATS.forEach(function (c) { catPorId[c.id] = c; });
+  var gPontos = {}, rotPontos = [];
+  CATS.forEach(function (c) { gPontos[c.id] = L.layerGroup().addTo(map); });
+  (DADOS.pontos || []).forEach(function (p) {
+    var c = catPorId[p.cat]; if (!c) return;
+    var ic = L.divIcon({ className: 'sq-ico', html: '<span style="background:' + c.cor + '">' + c.svg + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
+    var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true });
+    m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, -12], permanent: p.cat === 'parque', className: 'sq-nome-ponto' });
+    m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : ''), { maxWidth: 240 });
+    m.addTo(gPontos[p.cat]); rotPontos.push({ m: m, cat: p.cat });
+  });
+  function nomesParques() { var z = map.getZoom(); rotPontos.forEach(function (r) { var t = r.m.getTooltip(); if (t && t.getElement()) t.getElement().style.display = (r.cat === 'parque' && z < 14) ? 'none' : ''; }); }
+  map.on('zoomend', nomesParques); nomesParques();
+
+  var Leg = L.Control.extend({ options: { position: 'bottomleft' }, onAdd: function () {
+    var d = L.DomUtil.create('div', 'sq-leg'), b = L.DomUtil.create('button', 'sq-leg-btn', d), p = L.DomUtil.create('div', 'sq-leg-corpo', d);
+    b.type = 'button'; b.setAttribute('aria-expanded', 'true'); b.setAttribute('aria-controls', 'sq-leg-corpo'); b.textContent = 'Esconder legenda'; p.id = 'sq-leg-corpo';
+    var h = '<p class="sq-leg-t">Linhas e zonas</p><ul class="sq-leg-l">' +
+      '<li><i class="l" style="background:#1857d6"></i>Autocarro rápido e faixa BUS</li>' +
+      '<li><i class="l" style="background:repeating-linear-gradient(90deg,#1e9e5a 0 3px,transparent 3px 8px)"></i>Ciclovia</li>' +
+      '<li><i class="l" style="background:#0e7c7b"></i>Circular de autocarro</li>' +
+      '<li><i class="l" style="background:#6d4bc2"></i>Via nova</li>' +
+      '<li><i class="d" style="background:#1b1d22"></i>Estação ou hub de transportes</li>' +
+      '<li><i class="q" style="border-color:#d98a1c;background:rgba(217,138,28,.2)"></i>Zona do programa (clica para ver)</li></ul>' +
+      '<p class="sq-leg-t">Locais (marca para mostrar)</p><ul class="sq-leg-l">' + CATS.map(function (c) { return '<li><label><input type="checkbox" data-cat="' + c.id + '" checked><span class="sq-ico-l" style="background:' + c.cor + '">' + c.svg + '</span>' + esc(c.nome) + '</label></li>'; }).join('') + '</ul>';
+    p.innerHTML = h;
+    L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d);
+    L.DomEvent.on(b, 'click', function () { var a = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', a ? 'false' : 'true'); p.hidden = a; b.textContent = a ? 'Mostrar legenda' : 'Esconder legenda'; });
+    L.DomEvent.on(p, 'change', function (e) { var t = e.target; if (!t.getAttribute) return; var id = t.getAttribute('data-cat'); if (!id) return; if (t.checked) map.addLayer(gPontos[id]); else map.removeLayer(gPontos[id]); });
+    if (el.clientWidth < 600) L.DomEvent.on(b, 'click', function () {}), setTimeout(function () { b.click(); }, 0);
+    return d;
+  } });
+  map.addControl(new Leg());
+
   // Zonas
   var camadasZona = {}, rotulos = {}, atual = null;
   DADOS.zonas.forEach(function (z) {
-    var cor = corCamada[z.camada], camada, estilo = { color: cor, weight: 2, opacity: 0.9, fillColor: cor, fillOpacity: 0.16 };
-    if (z.geo && z.geo.linha) camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round' });
+    var cor = corCamada[z.camada], camada, estilo = { color: cor, weight: 2, opacity: 0.9, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas };
+    if (z.geo && z.geo.linha) camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas });
+    else if (z.limite) camada = L.polygon(z.limite, estilo);
+    else if (z.retangulo) camada = L.rectangle(z.retangulo, estilo);
     else if (z.poligono) camada = L.polygon(z.poligono, estilo);
     else camada = L.circle(z.centro, L.extend({ radius: z.raio }, estilo));
     camada.on('click', function () { escolher(z.id, false); });
@@ -105,6 +159,7 @@ var ILU = (function () {
   // Botões de lugares
   var lugares = document.getElementById('sq-lugares');
   DADOS.zonas.forEach(function (z) {
+    if (z.botao === false) return;
     var b = document.createElement('button'); b.type = 'button'; b.textContent = z.nome; b.dataset.id = z.id;
     b.addEventListener('click', function () { escolher(z.id, true); });
     lugares.appendChild(b);
@@ -156,6 +211,20 @@ var ILU = (function () {
     document.getElementById('sq-mapa').scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' });
     postal.setAttribute('tabindex', '-1'); postal.focus({ preventScroll: true });
   });
-  window.SQ = { escolher: escolher };
+  // Acordeão no telemóvel (igual ao de #programa)
+  (function () {
+    var mq = window.matchMedia('(max-width:600px)'), hs = document.querySelectorAll('.sq-completo .area h3[data-c]');
+    function corpo(h) { return document.getElementById(h.getAttribute('data-c')); }
+    function alternar(b, h) { var o = b.getAttribute('aria-expanded') !== 'true'; b.setAttribute('aria-expanded', o ? 'true' : 'false'); corpo(h).hidden = !o; }
+    function aplicar() { [].forEach.call(hs, function (h) {
+      var t = h.querySelector('.acc-t'), b = h.querySelector('button');
+      if (mq.matches) {
+        if (!b) { b = document.createElement('button'); b.type = 'button'; b.className = 'acc-btn'; b.setAttribute('aria-controls', h.getAttribute('data-c')); b.addEventListener('click', function () { alternar(b, h); }); b.appendChild(t); h.appendChild(b); }
+        b.setAttribute('aria-expanded', 'false'); corpo(h).hidden = true;
+      } else { if (b) { h.appendChild(t); h.removeChild(b); } corpo(h).hidden = false; }
+    }); }
+    aplicar(); if (mq.addEventListener) mq.addEventListener('change', aplicar); else mq.addListener(aplicar);
+  })();
+  window.SQ = { escolher: escolher, mapa: map };
   escolher('marginal', false);
 })();
