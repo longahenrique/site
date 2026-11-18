@@ -60,12 +60,12 @@ var ILU = (function () {
 
   map.createPane('pZonas').style.zIndex = 410; map.createPane('pLinhas').style.zIndex = 430;
   var rZonas = L.canvas({ pane: 'pZonas', padding: 0.5, tolerance: 4 }), rLinhas = L.canvas({ pane: 'pLinhas', padding: 0.5, tolerance: 10 });
-  var GR = { ciclo: L.featureGroup(), azul: L.featureGroup(), bus: L.featureGroup(), vias: L.featureGroup(), hubs: L.featureGroup() };
+  var GR = { ciclo: L.featureGroup(), faixa: L.featureGroup(), bus: L.featureGroup(), vias: L.featureGroup(), hubs: L.featureGroup() };
 
   // Linhas de mobilidade (do mapa da mobilidade)
   var linhasObj = [];
   DADOS.linhas.forEach(function (l) {
-    var g = l.camada === 'ativos' ? GR.ciclo : (l.nome === 'Linha Azul' || l.nome === 'Faixa BUS') ? GR.azul : l.camada === 'autocarro' ? GR.bus : GR.vias;
+    var g = l.camada === 'ativos' ? GR.ciclo : l.nome === 'Faixa BUS' ? GR.faixa : (l.camada === 'autocarro' || l.nome === 'Linha Azul') ? GR.bus : GR.vias;
     if (l.nome === 'Marginal de Sesimbra') return; // aparece como zona
     var cas = null;
     if (l.camada === 'ativos' || l.peso <= 6) cas = L.polyline(l.coords, { color: '#fff', weight: Math.min(l.peso, 12) + 4, opacity: 0.85, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas, interactive: false }).addTo(g);
@@ -73,10 +73,11 @@ var ILU = (function () {
       .bindPopup('<b>' + esc(l.nome) + '</b><br>' + esc(l.texto), { maxWidth: 260 }).addTo(g);
     linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
+  var gFixos = L.featureGroup().addTo(map);   // estações que já existem: marcadas desde o início
   DADOS.interfaces.forEach(function (i) {
     L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1, pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(i.nome) + '</b><br>' + esc(i.texto), { maxWidth: 260 })
-      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(GR.hubs);
+      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(i.existe ? gFixos : GR.hubs);
   });
 
 
@@ -106,18 +107,17 @@ var ILU = (function () {
   // Camadas que a pessoa liga e desliga (o mapa abre vazio)
   var UI = [
     { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'As ' + ciclos.length + ' ligações desenhadas somam cerca de ' + kmCiclo + ' km (valor aproximado, medido sobre o traçado do mapa) e fazem parte da rede ciclável de 40 km da proposta, com bicicletas partilhadas elétricas.' },
-    { id: 'azul', nome: 'Linha Azul', cor: '#1857d6', nota: 'Autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro: 21,7 km e 16 estações, a cada 10 min na hora de ponta. A faixa BUS (azul mais clara) dá-lhe prioridade onde há filas. Expresso já em 2027; linha completa em 2031.' },
-    { id: 'bus', nome: 'Outros autocarros', cor: '#0e7c7b', nota: 'Circular do Castelo e circular da Quinta do Conde, ambas a cada 30 min, e o eixo Quinta do Conde–Coina, a cada 10 min na hora de ponta.' },
+    { id: 'faixa', nome: 'Faixa BUS', cor: '#8fb0ec', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10 entre a estação de Coina e o Posto da EN10, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
+    { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais as circulares do Castelo e da Quinta do Conde, a cada 30 min, e o eixo Quinta do Conde–Coina, a cada 10 min na hora de ponta.' },
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, ciclovia e paragens) e variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
-    { id: 'marginal', nome: 'Marginal pedonal', cor: '#d6246e', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
-    { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Onde o autocarro se liga ao comboio e ao estacionamento: Fogueteiro, Coina, Moagem e Alfarim.' },
-    { id: 'obra', nome: 'Serviços e obras propostos', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' },
-    { id: 'existe', nome: 'Já existe: escolas, saúde, parques…', cor: '#4a5560', nota: 'Escolas, saúde, parques, mercados e outros locais que já existem. Aproxima o mapa para ver mais.' }
+    { id: 'marginal', nome: 'Marginal', cor: '#d6246e', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
+    { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Os novos hubs onde o autocarro se liga ao parque de estacionamento: Moagem, em Santana, e Alfarim. As estações de Coina e do Fogueteiro já existem e estão sempre marcadas.' },
+    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' }
   ];
-  UI.forEach(function (u) { uiOn[u.id] = false; });
+  UI.forEach(function (u) { uiOn[u.id] = false; }); uiOn.existe = true;   // o que já existe está sempre no mapa
   function ligar(g, q) { if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); }
   function visibilidade() {
-    ['ciclo', 'azul', 'bus', 'vias', 'hubs'].forEach(function (k) { ligar(GR[k], uiOn[k]); });
+    ['ciclo', 'faixa', 'bus', 'vias', 'hubs'].forEach(function (k) { ligar(GR[k], uiOn[k]); });
     CATS.forEach(function (c) { ligar(gPontos[c.id], c.id === 'obra' ? uiOn.obra : (uiOn.existe && catOn[c.id])); });
     if (camadasZona.marginal) ligar(camadasZona.marginal, uiOn.marginal || atual === 'marginal');
     legRender(); notasRender();
@@ -151,7 +151,6 @@ var ILU = (function () {
     L.DomEvent.on(b, 'click', function () { var a = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', a ? 'false' : 'true'); p.hidden = a; b.textContent = a ? 'Mostrar legenda' : 'Esconder legenda'; });
     legRender = function () {
       var cheio = el.classList.contains('sq-cheio'), act = UI.filter(function (u) { return cheio || uiOn[u.id]; });
-      d.style.display = act.length ? '' : 'none';
       var h = '<p class="sq-leg-t">' + (cheio ? 'O que ver no mapa' : 'Legenda') + '</p><ul class="sq-leg-l">' + act.map(function (u) {
         var sw = '<i class="l" style="background:' + u.cor + '"></i>';
         return '<li>' + (cheio ? '<label><input type="checkbox" data-ui="' + u.id + '"' + (uiOn[u.id] ? ' checked' : '') + '>' + sw + esc(u.nome) + '</label>' : sw + esc(u.nome)) + '</li>';
@@ -164,7 +163,6 @@ var ILU = (function () {
     return d;
   } });
   map.addControl(new Leg());
-  var vazio = L.DomUtil.create('div', 'sq-vazio', el); vazio.innerHTML = '<p>Escolhe, por cima do mapa, o que queres ver.</p>';
   function definir(id, on) {
     uiOn[id] = on; var cx = document.querySelector('#sq-camadas input[data-ui="' + id + '"]'); if (cx) cx.checked = on;
     visibilidade();
@@ -223,7 +221,7 @@ var ILU = (function () {
   function zonaDe(id) { return DADOS.zonas.filter(function (x) { return x.id === id; })[0]; }
   function cartao(id) {
     var z = zonaDe(id); if (!z) return; idx = ORDEM.indexOf(id);
-    if (contaEl) contaEl.textContent = z.nome + ' · ' + (idx + 1) + ' de ' + ORDEM.length;
+    if (contaEl) contaEl.textContent = z.nome + ', ' + (idx + 1) + ' de ' + ORDEM.length;
     var il = z.ilustracao, html = '<div class="ilustra">';
     if (il.tipo === 'perfil') {
       html += '<div class="sq-alternar" role="group" aria-label="Hoje ou proposta"><button type="button" data-v="hoje" aria-pressed="false">Hoje</button><button type="button" data-v="amanha" aria-pressed="true">Proposta</button></div><div class="desenho">' + ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com a proposta') + '</div><p class="nota-ilu">' + esc(z.perfilNome ? 'Perfil da ' + z.perfilNome + ', ilustrativo.' : 'Perfil da rua, ilustrativo.') + '</p>';
@@ -244,13 +242,13 @@ var ILU = (function () {
     if (atual && camadasZona[atual] && gZona.hasLayer(camadasZona[atual])) gZona.removeLayer(camadasZona[atual]);
     atual = id; var c = camadasZona[id];
     if (id === 'marginal' && map.hasLayer(c)) map.removeLayer(c);
-    gZona.addLayer(c); vazio.hidden = true; visibilidade(); miniAtualizar(z, z.ilustracao);
+    gZona.addLayer(c); visibilidade(); miniAtualizar(z, z.ilustracao);
     if (voar) { if (RM) map.fitBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, duration: 0.6 }); }
   }
   function passo(d) { escolher(ORDEM[(idx + d + ORDEM.length) % ORDEM.length], true); }
   if (nav) {
     var seta = function (d, rot) { var b = document.createElement('button'); b.type = 'button'; b.className = 'sq-seta'; b.setAttribute('aria-label', rot); b.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="' + (d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>'; b.addEventListener('click', function () { passo(d); }); return b; };
-    contaEl = document.createElement('p'); contaEl.className = 'sq-conta'; contaEl.setAttribute('aria-live', 'polite');
+    contaEl = document.createElement('p'); contaEl.className = 'sr'; contaEl.setAttribute('aria-live', 'polite');
     nav.appendChild(seta(-1, 'Localidade anterior')); nav.appendChild(contaEl); nav.appendChild(seta(1, 'Localidade seguinte'));
   }
 
@@ -272,7 +270,6 @@ var ILU = (function () {
   notasRender = function () {
     if (!notas) return; var act = UI.filter(function (u) { return uiOn[u.id]; });
     notas.innerHTML = act.map(function (u) { return '<p style="border-left-color:' + u.cor + '"><b>' + esc(u.nome) + '.</b> ' + esc(u.nota) + '</p>'; }).join('');
-    vazio.hidden = !!(act.length || atual);
   };
 
   // Lista de locais (alternativa ao mapa)

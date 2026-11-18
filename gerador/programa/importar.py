@@ -249,7 +249,7 @@ if os.path.exists(f):
         cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         ring = [[[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in cv2.approxPolyDP(c, 1.0, True)[:, 0, :]] for c in cs if cv2.contourArea(c) > (30/px)**2]
         for z in D['zonas']:
-            if z['id'] == 'varzea' and ring:
+            if z['id'] == 'varzea' and ring and not z.get('retangulo'):   # se o contorno foi marcado à mão (retângulo), não o substitui
                 z['limite'] = ring; z.pop('centro', None); z.pop('raio', None); z['rotulo'] = centro(max(ring, key=len)); print('Contorno do Parque da Várzea ->', len(ring), 'forma(s)')
     else: print('varzea.json sem o Parque Ecológico da Várzea')
 # recortar à terra (precisa de costa.json) as zonas de natureza que invadem o mar

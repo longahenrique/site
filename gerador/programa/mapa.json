@@ -15310,7 +15310,8 @@
     38.60959,
     -9.10023
    ],
-   "texto": "Comboio para Lisboa e fim da Linha Azul: 30 min desde a vila."
+   "texto": "Comboio para Lisboa e fim da Linha Azul: 30 min desde a vila.",
+   "existe": true
   },
   {
    "nome": "Estação de Coina",
@@ -15318,7 +15319,8 @@
     38.58507,
     -9.05129
    ],
-   "texto": "Comboio para Lisboa, com mais 400 lugares de estacionamento e autocarro à hora de cada comboio."
+   "texto": "Comboio para Lisboa, com mais 400 lugares de estacionamento e autocarro à hora de cada comboio.",
+   "existe": true
   },
   {
    "nome": "Parque da Moagem",

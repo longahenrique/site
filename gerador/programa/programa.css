@@ -10,12 +10,13 @@
 .sq-chip{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;border:2px solid var(--ink);border-radius:8px;background:var(--paper);font:700 15px/1.2 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink);cursor:pointer;user-select:none}
 .sq-chip input{position:absolute;opacity:0;width:1px;height:1px}
 .sq-chip .cor{width:16px;height:16px;border-radius:4px;flex:none;border:2px solid var(--ink)}
-.sq-chip:has(input:checked)::after{content:"";width:.5em;height:.9em;border-right:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(40deg) translate(-.1em,-.12em);margin-left:2px}
-.sq-chip:has(input:not(:checked)){border-style:dashed;border-color:var(--muted);color:var(--muted);font-weight:600}
+.sq-chip::after{content:"";flex:none;width:.5em;height:.9em;border-right:3px solid transparent;border-bottom:3px solid transparent;transform:rotate(40deg) translate(-.1em,-.12em);margin-left:2px}
+.sq-chip:has(input:checked)::after{border-color:transparent currentColor currentColor transparent}
+.sq-chip:has(input:not(:checked)){border-style:dashed;border-color:var(--muted);color:var(--muted)}
 .sq-chip:has(input:not(:checked)) .cor{background:transparent!important;border-color:var(--muted)}
 .sq-chip:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:3px}
 .sq-corpo{display:grid;gap:24px}
-@media(min-width:980px){.sq-postal{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.sq-postal .ilustra{border-bottom:0;border-right:2px solid var(--ink)}}
+@media(min-width:980px){.sq-corpo{grid-template-columns:minmax(0,1fr) 420px;align-items:start}.sq-ver-mapa{display:none}}
 .sq-mapa{position:relative;z-index:0;isolation:isolate;height:640px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--sea)}
 @media(max-width:640px){.sq-mapa{height:62vh;min-height:400px}}
 .sq-osm{filter:grayscale(1) sepia(.12) brightness(1.06) contrast(.88)}
@@ -168,3 +169,6 @@
 .sq-ver-mapa{margin:16px 0 0;min-height:44px;padding:0 18px;border:2px solid var(--ink);border-radius:8px;background:var(--ink);color:var(--paper);font:700 15px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;cursor:pointer}
 .sq-ver-mapa:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 @media(max-width:640px){.sq-camadas{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:20px 0 12px}.sq-chip{padding:4px 10px;gap:8px;font-size:14px;line-height:1.2}.sq-chip .cor{width:14px;height:14px}.sq-todos{padding:0 8px;font-size:14px}}
+
+.sq-nav{justify-content:space-between}
+.sq-col-cartao .sq-nav{margin-top:0}
