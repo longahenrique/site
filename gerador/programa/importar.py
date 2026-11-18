@@ -60,13 +60,39 @@ if os.path.exists(f):
         if c == 'desporto' and t.get('leisure') == 'pitch' and len(n) < 4: continue
         if c == 'saude' and not re.search(r'USF|UCSP|URAP|Centro de Saúde|Unidade|Hospital|SAP|Extensão|Posto', n): continue
         if c == 'escola' and not re.search(r'Escola|Agrupamento|Colégio|Universidade', n): continue
-        k = (c, n.lower())
-        if k in vistos: continue          # um só ponto por nome e tipo
-        vistos.add(k); pts.append({'cat': c, 'nome': n, 'p': p})
+        if c == 'servicos' and not re.search(r'Câmara|Junta|Loja do Cidadão|Balcão|CTT|Finanças|Segurança Social|Tribunal|Espaço Cidadão|Tesouraria', n): continue
+        if c == 'cultura' and not re.search(r'Biblioteca|Cine|Teatro|Auditório|Museu|Centro Cultural|Casa da|Galeria', n): continue
+        if c == 'desporto' and not re.search(r'Pavilhão|Piscina|Estádio|Complexo|Campo|Polidesportivo', n): continue
+        if c == 'mercado' and not re.search(r'Mercado|Pingo Doce|Continente|Lidl|Intermarché|Aldi|Minipreço|Mini Preço|Auchan|Meu Super|Recheio', n): continue
+        if c == 'igreja' and not re.search(r'^(Igreja|Capela|Ermida|Santuário|Convento|Matriz)', n): continue
+        if any(q['cat'] == c and q['nome'].lower() == n.lower() and math.hypot((q['p'][0]-p[0])*111320, (q['p'][1]-p[1])*87000) < 300 for q in pts): continue   # mesmo nome e tipo a menos de 300 m
+        pts.append({'cat': c, 'nome': n, 'p': p})
     # nomes de sítios para posicionar: Moagem de Sampaio, Ribeira do Marchante, Várzea
     for e in els:
         t = e.get('tags', {}); n = t.get('name', '')
         if any(x in n for x in ('Moagem', 'Marchante', 'Várzea', 'Varzea')) and pos(e): print('Sítio encontrado:', n, pos(e))
+    # saúde: várias unidades no mesmo edifício/sítio ficam num só ícone
+    def prio(n): return 0 if 'UCSP' in n else 1 if 'USF' in n else 2
+    saude = sorted([p for p in pts if p['cat'] == 'saude'], key=lambda p: prio(p['nome']))
+    grupos = []
+    for p in saude:
+        for g in grupos:
+            if math.hypot((g[0]['p'][0]-p['p'][0])*111320, (g[0]['p'][1]-p['p'][1])*87000) < 250: g.append(p); break
+        else: grupos.append([p])
+    pts = [p for p in pts if p['cat'] != 'saude']
+    for g in grupos:
+        p = dict(g[0])
+        if len(g) > 1: p['texto'] = 'No mesmo local: ' + '; '.join(x['nome'] for x in g[1:])
+        pts.append(p)
+    # nomes de aldeias e bairros (só texto, sem forma)
+    zn = {'sesimbra', 'castelo', 'santana', 'zambujal', 'zambujal de cima', 'zambujal de baixo', 'quinta do conde', 'alfarim', 'cotovia', 'sampaio', 'aldeia do meco', 'azóia', 'lagoa de albufeira', 'vila e porto'}
+    loc, vistos2 = [], set()
+    for e in els:
+        t = e.get('tags', {}); n = t.get('name'); p = pos(e)
+        if t.get('place') not in ('hamlet', 'village', 'neighbourhood') or not n or not p or n.lower() in zn or n.lower() in vistos2 or n.startswith('Urbanização'): continue
+        if CONC and not dentro(p, CONC): continue
+        vistos2.add(n.lower()); loc.append({'nome': n, 'p': p})
+    D['localidades'] = loc; print(len(loc), 'nomes de localidades')
     D['pontos'] = pts; print(len(pts), 'locais com ícone')
 # contornos
 def simplifica(a, tol=0.00004):
@@ -76,7 +102,7 @@ def simplifica(a, tol=0.00004):
         if math.hypot(p[0]-out[-1][0], p[1]-out[-1][1]) > tol: out.append(p)
     out.append(a[-1]); return out
 # zona -> nomes no OpenStreetMap (ajustar se for preciso)
-NOMES = {'qconde': ['Quinta do Conde'], 'lagoa': ['Lagoa de Albufeira'], 'arrabida': ['Parque Natural da Arrábida', 'Serra da Arrábida'], 'espichel': ['ZPE Cabo Espichel', 'Cabo Espichel'], 'zambujal': ['Zambujal']}
+NOMES = {'qconde': ['Quinta do Conde'], 'arrabida': ['Parque Natural da Arrábida', 'Serra da Arrábida'], 'espichel': ['ZPE Cabo Espichel', 'Cabo Espichel']}
 f = PAS + 'limites.json'
 if os.path.exists(f):
     els = json.load(open(f, encoding='utf-8'))['elements']
@@ -96,27 +122,83 @@ if os.path.exists(f):
             print('Contorno de', z['nome'], '->', len(aneis), 'anel(éis),', sum(len(a) for a in aneis), 'pontos')
         else: print('Sem contorno para', z['nome'], '(mantém o desenho atual)')
 # Zambujal (zonas urbanas junto aos núcleos) e Mata (matas dentro da zona) a partir de areas.json
+def aneis_de(e):
+    if e['type'] == 'way': return [[[round(g['lat'], 5), round(g['lon'], 5)] for g in e['geometry']]]
+    return anel([m for m in e['members'] if m.get('role', 'outer') == 'outer'])
+def centro(a): return [sum(p[0] for p in a)/len(a), sum(p[1] for p in a)/len(a)]
+def uso(e): t = e.get('tags', {}); return t.get('landuse') or t.get('natural')
+def so_terra(aneis, costa):
+    """Recorta os anéis (lat, lon) à parte em terra, usando a linha de costa do OpenStreetMap (terra à esquerda do sentido da linha)."""
+    import numpy as np, cv2
+    pts = [p for a in aneis for p in a]
+    la0, la1 = min(p[0] for p in pts)-0.003, max(p[0] for p in pts)+0.003; lo0, lo1 = min(p[1] for p in pts)-0.003, max(p[1] for p in pts)+0.003
+    px = 12.0; ky = 111320.0; kx = ky*math.cos(math.radians((la0+la1)/2))
+    W, H = int((lo1-lo0)*kx/px)+3, int((la1-la0)*ky/px)+3
+    def xy(la, lo): return ((lo-lo0)*kx/px+1, (la1-la)*ky/px+1)
+    barreira = np.zeros((H, W), np.uint8); sementes = []
+    for w in costa:
+        g = [(x['lat'], x['lon']) for x in w['geometry']]
+        arr = np.array([xy(a, b) for a, b in g], np.float32)
+        cv2.polylines(barreira, [arr.astype(np.int32)], False, 255, 3)
+        for i in range(0, len(g)-1, 3):
+            (a1, b1), (a2, b2) = g[i], g[i+1]
+            dy, dx = (a2-a1)*ky, (b2-b1)*kx; n = math.hypot(dx, dy) or 1
+            # direita do sentido: (dy, -dx) em metros (x leste, y norte)
+            sa, sb = a1 - (-dx/n)*60/ky*(-1) * 0, 0
+            la = a1 + (-dx/n)*60/ky; lo = b1 + (dy/n)*60/kx
+            x, y = xy(la, lo)
+            if 1 <= x < W-2 and 1 <= y < H-2: sementes.append((int(x), int(y)))
+    mar = barreira.copy(); mask = np.zeros((H+2, W+2), np.uint8); mask[1:-1, 1:-1] = (barreira > 0)
+    for sx, sy in sementes[::2]:
+        if mar[sy, sx] == 0: cv2.floodFill(mar, mask, (sx, sy), 128, flags=4 | (255 << 8))
+    mar = (mar == 128)
+    zona = np.zeros((H, W), np.uint8)
+    for a in aneis: cv2.fillPoly(zona, [np.array([xy(p[0], p[1]) for p in a], np.int32)], 255)
+    terra = ((zona > 0) & ~mar).astype(np.uint8)*255
+    terra = cv2.morphologyEx(terra, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
+    cs, _ = cv2.findContours(terra, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE); out = []
+    for c in cs:
+        if cv2.contourArea(c) < 60: continue
+        c = cv2.approxPolyDP(c, 1.0, True)[:, 0, :]
+        out.append([[round(la1-(y-1)*px/ky, 5), round(lo0+(x-1)*px/kx, 5)] for x, y in c])
+    return out
+URB = {'zambujal': ((38.446, 38.464, -9.134, -9.112), 45), 'vila': ((38.435, 38.456, -9.118, -9.088), 60), 'lagoa': ((38.497, 38.514, -9.174, -9.154), 40),
+       'santana': ((38.452, 38.468, -9.113, -9.094), 45), 'cotovia': ((38.466, 38.478, -9.109, -9.094), 45), 'sampaio': ((38.463, 38.477, -9.101, -9.081), 45),
+       'meco': ((38.465, 38.479, -9.181, -9.161), 45), 'azoia': ((38.420, 38.445, -9.200, -9.160), 50)}
+def contorno_urbano(A, caixa, fecho_m):
+    """Junta as zonas residenciais da caixa (lat0, lat1, lon0, lon1) num contorno único (fecho morfológico)."""
+    import numpy as np, cv2
+    la0, la1, lo0, lo1 = caixa; px = 4.0                      # metros por pixel
+    ky, kx = 111320.0, 111320.0*math.cos(math.radians((la0+la1)/2))
+    W, H = int((lo1-lo0)*kx/px)+1, int((la1-la0)*ky/px)+1
+    img = np.zeros((H, W), np.uint8); n = 0
+    for e in A:
+        if uso(e) not in ('residential', 'retail'): continue
+        for a in aneis_de(e):
+            if len(a) < 4: continue
+            c = centro(a)
+            if not (la0 <= c[0] <= la1 and lo0 <= c[1] <= lo1): continue
+            pts = np.array([[(p[1]-lo0)*kx/px, (la1-p[0])*ky/px] for p in a], np.int32)
+            cv2.fillPoly(img, [pts], 255); n += 1
+    if not n: return []
+    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(fecho_m/px)*2+1,)*2)
+    img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, k)
+    cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    out = []
+    for c in cs:
+        if cv2.contourArea(c) < (150/px)**2: continue          # ignora manchas pequenas
+        c = cv2.approxPolyDP(c, 1.2, True)[:, 0, :]
+        out.append([[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in c])
+    return out
 f = PAS + 'areas.json'
 if os.path.exists(f):
     A = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e.get('geometry') or e.get('members')]
-    def aneis_de(e):
-        if e['type'] == 'way': return [[[round(g['lat'], 5), round(g['lon'], 5)] for g in e['geometry']]]
-        return anel([m for m in e['members'] if m.get('role', 'outer') == 'outer'])
-    def centro(a): return [sum(p[0] for p in a)/len(a), sum(p[1] for p in a)/len(a)]
-    def uso(e): t = e.get('tags', {}); return t.get('landuse') or t.get('natural')
-    def pertence(e, nome):
-        for z in D['zonas']:
-            if z['id'] != nome: continue
     for z in D['zonas']:
-        if z['id'] == 'zambujal':
-            nucleos = [[38.4546, -9.1196], [38.4501, -9.1274], [38.4592, -9.1246]]
-            sel = []
-            for e in A:
-                if uso(e) not in ('residential', 'retail'): continue
-                for a in aneis_de(e):
-                    if len(a) > 3 and min(math.hypot(centro(a)[0]-n[0], (centro(a)[1]-n[1])*0.78) for n in nucleos) < 0.0045: sel.append(simplifica(a))
-            if sel: z['limite'] = sel; z.pop('centro', None); z.pop('raio', None); z['rotulo'] = [38.4546, -9.1196]; print('Contorno de Zambujal ->', len(sel), 'zona(s) urbana(s)')
-            else: print('Sem zonas urbanas para o Zambujal')
+        if z['id'] in URB:
+            caixa, fecho = URB[z['id']]
+            ring = contorno_urbano(A, caixa, fecho)
+            if ring: z['limite'] = ring; z.pop('centro', None); z.pop('raio', None); print('Contorno de', z['nome'], '->', len(ring), 'forma(s)', sum(len(r) for r in ring), 'pontos')
+            else: print('Sem zona urbana para', z['nome'])
         if z['id'] == 'mata':
             sel = []; poly = z.get('poligono')
             if not poly: continue
@@ -126,4 +208,13 @@ if os.path.exists(f):
                     if len(a) > 3 and dentro(centro(a), [poly]): sel.append(simplifica(a))
             if sel: z['limite'] = sel; z.pop('poligono', None); print('Contorno da Mata ->', len(sel), 'mancha(s) de mata')
             else: print('Sem matas encontradas dentro da zona')
+# recortar à terra (precisa de costa.json) as zonas de natureza que invadem o mar
+f = PAS + 'costa.json'
+if os.path.exists(f):
+    costa = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e['type'] == 'way' and e.get('geometry')]
+    for z in D['zonas']:
+        if z['id'] in ('espichel', 'arrabida') and z.get('limite'):
+            antes = sum(len(a) for a in z['limite']); novo = so_terra(z['limite'], costa)
+            if novo: z['limite'] = novo; print('Só terra:', z['nome'], antes, '->', sum(len(a) for a in novo), 'pontos em', len(novo), 'forma(s)')
+            else: print('Sem resultado ao recortar', z['nome'])
 json.dump(D, open(MAPA, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)

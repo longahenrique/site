@@ -708,12 +708,13 @@ def prog_page():
 <div class="sq-corpo">
 <div>
 <div class="sq-mapa" id="sq-mapa" role="region" aria-label="Mapa do programa para o concelho de Sesimbra"></div>
+<p class="sq-dica" id="sq-dica">Para aproximar com o touchpad, aperta com dois dedos ou usa Ctrl + roda. Num telemóvel, usa dois dedos.</p>
 <div class="sq-lugares" id="sq-lugares" role="group" aria-label="Lugares"></div>
 </div>
 <article class="sq-postal" id="sq-postal" aria-live="polite"></article>
 </div>
+<details class="sq-lista"><summary>Lista de locais do mapa</summary><div id="sq-lista"></div></details>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
-<p class="sq-dica" id="sq-dica">Para aproximar com o touchpad, aperta com dois dedos ou usa Ctrl + roda. Num telemóvel, usa dois dedos.</p>
 </div>
 </section>
 <section id="programa-completo" class="tint sq-completo">
