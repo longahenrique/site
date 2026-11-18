@@ -30,7 +30,7 @@
   {
    "id": "marginal",
    "nome": "Marginal de Sesimbra",
-   "camada": "bairros",
+   "camada": "ativos",
    "rotulo": [
     38.4425,
     -9.1012
@@ -131,7 +131,7 @@
   },
   {
    "id": "vila",
-   "nome": "Vila e porto",
+   "nome": "Vila de Sesimbra",
    "camada": "bairros",
    "rotulo": [
     38.4462,
@@ -570,7 +570,7 @@
   {
    "id": "santana",
    "nome": "Santana",
-   "camada": "mobilidade",
+   "camada": "bairros",
    "rotulo": [
     38.46554,
     -9.0918
@@ -1552,18 +1552,6 @@
     },
     {
      "t": "Estrada dos Almocreves requalificada até à Maçã, com ciclovia e passeios seguros."
-    },
-    {
-     "t": "Loja do Cidadão, a primeira do concelho (cerca de 1,5 milhões de euros), com AT, IRN e Segurança Social."
-    },
-    {
-     "t": "Posto da GNR da Quinta do Conde, que a Câmara diz ser urgente."
-    },
-    {
-     "t": "Auditório Municipal (cerca de 2,1 milhões de euros), quase pronto, e nova biblioteca (cerca de 1,9 milhões de euros)."
-    },
-    {
-     "t": "Nova Unidade de Saúde, no local da anterior (1,4 milhões de euros do PRR)."
     }
    ],
    "limite": [
@@ -7577,7 +7565,7 @@
   {
    "id": "lagoa",
    "nome": "Lagoa de Albufeira",
-   "camada": "natureza",
+   "camada": "bairros",
    "frase": "Água calma, aves e areia: um lugar protegido onde se chega de bicicleta ou de vaivém.",
    "ilustracao": {
     "tipo": "paisagem",
@@ -12812,7 +12800,7 @@
   {
    "id": "zambujal",
    "nome": "Zambujal",
-   "camada": "natureza",
+   "camada": "bairros",
    "rotulo": [
     38.4546,
     -9.1196
@@ -13277,8 +13265,7 @@
       -9.11202
      ]
     ]
-   ],
-   "botao": false
+   ]
   },
   {
    "id": "cotovia",
@@ -13630,8 +13617,7 @@
       -9.09945
      ]
     ]
-   ],
-   "botao": false
+   ]
   },
   {
    "id": "sampaio",
@@ -14262,8 +14248,7 @@
       -9.09971
      ]
     ]
-   ],
-   "botao": false
+   ]
   },
   {
    "id": "alfarim",
@@ -14298,8 +14283,7 @@
     38.4785,
     -9.1605
    ],
-   "raio": 380,
-   "botao": false
+   "raio": 380
   },
   {
    "id": "meco",
@@ -14671,8 +14655,7 @@
       -9.17393
      ]
     ]
-   ],
-   "botao": false
+   ]
   },
   {
    "id": "azoia",
@@ -15317,8 +15300,7 @@
       -9.16367
      ]
     ]
-   ],
-   "botao": false
+   ]
   }
  ],
  "interfaces": [
@@ -21816,7 +21798,7 @@
  ],
  "manuais": [
   {
-   "cat": "obra",
+   "cat": "cultura",
    "nome": "Polo de Leitura (Pingo Doce, virado para o Parque da Vila)",
    "p": [
     38.5653,

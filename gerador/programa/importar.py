@@ -215,6 +215,23 @@ if os.path.exists(f):
                     if len(a) > 3 and dentro(centro(a), [poly]): sel.append(simplifica(a))
             if sel: z['limite'] = sel; z.pop('poligono', None); print('Contorno da Mata ->', len(sel), 'mancha(s) de mata')
             else: print('Sem matas encontradas dentro da zona')
+# Mata de Sesimbra: todas as matas e bosques do concelho a sul da Quinta do Conde (mata.json, botão 7 do descarregador)
+f = PAS + 'mata.json'
+if os.path.exists(f):
+    MT = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e.get('geometry') or e.get('members')]
+    sel = []
+    for e in MT:
+        if uso(e) not in ('forest', 'wood'): continue
+        for a in aneis_de(e):
+            if len(a) < 4: continue
+            c = centro(a)
+            if c[0] > 38.53 or (CONC and not dentro(c, CONC)): continue
+            la = [p[0] for p in a]; lo = [p[1] for p in a]
+            if (max(la)-min(la))*111320 * (max(lo)-min(lo))*88000 < 15000: continue   # < 1,5 ha
+            sel.append(simplifica(a))
+    for z in D['zonas']:
+        if z['id'] == 'mata' and sel:
+            z['limite'] = sel; z.pop('poligono', None); print('Mata de Sesimbra ->', len(sel), 'manchas de mata (mata.json)')
 # Parque da Várzea: contorno real (precisa de varzea.json, botão 6 do descarregador)
 f = PAS + 'varzea.json'
 if os.path.exists(f):

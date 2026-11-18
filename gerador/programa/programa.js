@@ -11,7 +11,7 @@ var ILU = (function () {
   var CORES_P = ['#3a6ea5', '#c0504d', '#7a5ca8', '#2e8b57', '#d98a1c', '#4a4f57'];
   function perfil(bandas, nome) {
     var W = 640, H = 250, chao = 205, total = bandas.reduce(function (a, b) { return a + b[1]; }, 0);
-    var s = (W - 20) / total, x = 10, svg = '', etiquetas = '', n = 0;
+    var s = (W - 20) / total, x = 10, svg = '', etiquetas = '', n = 0, nomesUs = [];
     svg += '<rect x="0" y="' + chao + '" width="' + W + '" height="' + (H - chao) + '" fill="#f3efe6"/>';
     bandas.forEach(function (b) {
       var tipo = b[0], w = b[1] * s, cx = x + w / 2;
@@ -24,10 +24,10 @@ var ILU = (function () {
       else if (tipo === 'esplanada') { svg += guarda(x + w * 0.35, chao, s * 0.9) + pessoa(x + w * 0.7, chao, s * 0.85, CORES_P[n++ % 6]); }
       else if (tipo === 'peoes') { for (var k = 0; k < 3; k++) svg += pessoa(x + w * (0.2 + k * 0.3), chao, s * (0.95 - k * 0.1), CORES_P[n++ % 6]); }
       else if (tipo === 'passeio') svg += pessoa(cx, chao, s, CORES_P[n++ % 6]);
-      if (w > 22) etiquetas += '<text x="' + cx + '" y="' + (chao + 30) + '" text-anchor="middle" font-size="12" fill="#5d6470" font-family="system-ui, sans-serif">' + NOMES[tipo] + '</text>';
+      if (w > 22 && nomesUs.indexOf(NOMES[tipo]) < 0) nomesUs.push(NOMES[tipo]);
       x += w;
     });
-    return '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (nome || 'Perfil da rua') + '">' + svg + etiquetas + '</svg>';
+    return '<svg viewBox="0 0 ' + W + ' ' + (chao + 14) + '" role="img" aria-label="' + (nome || 'Perfil da rua') + '">' + svg + '</svg><p class="sq-leg-perfil">' + nomesUs.join(' · ') + '</p>';
   }
   var P = {
     mata: '<rect width="640" height="250" fill="#e6f1f4"/><path d="M0 170 Q160 140 320 160 T640 150 V250 H0Z" fill="#d7c48f"/><path d="M0 205 Q200 190 640 200 V250 H0Z" fill="#efe1b8"/>' + [60, 140, 230, 330, 420, 520, 590].map(function (x, i) { var h = 70 + (i % 3) * 18; return '<rect x="' + (x - 3) + '" y="' + (175 - h * 0.55) + '" width="6" height="' + (h * 0.55) + '" fill="#6d5a43"/><ellipse cx="' + x + '" cy="' + (175 - h * 0.6) + '" rx="' + (38 - i % 2 * 8) + '" ry="16" fill="' + (i % 2 ? '#3f7f4c' : '#4c9159') + '"/>'; }).join('') + '<circle cx="300" cy="196" r="5" fill="#c0504d"/><rect x="296" y="200" width="8" height="18" rx="3" fill="#c0504d"/><circle cx="330" cy="198" r="5" fill="#3a6ea5"/><rect x="326" y="202" width="8" height="16" rx="3" fill="#3a6ea5"/>',
@@ -60,20 +60,23 @@ var ILU = (function () {
 
   map.createPane('pZonas').style.zIndex = 410; map.createPane('pLinhas').style.zIndex = 430;
   var rZonas = L.canvas({ pane: 'pZonas', padding: 0.5, tolerance: 4 }), rLinhas = L.canvas({ pane: 'pLinhas', padding: 0.5, tolerance: 10 });
-  var grupos = {}; DADOS.camadas.forEach(function (c) { grupos[c.id] = L.featureGroup().addTo(map); });
+  var GR = { ciclo: L.featureGroup(), azul: L.featureGroup(), bus: L.featureGroup(), vias: L.featureGroup(), hubs: L.featureGroup() };
 
   // Linhas de mobilidade (do mapa da mobilidade)
+  var linhasObj = [];
   DADOS.linhas.forEach(function (l) {
-    var g = l.camada === 'ativos' ? grupos.ativos : grupos.mobilidade;
+    var g = l.camada === 'ativos' ? GR.ciclo : (l.nome === 'Linha Azul' || l.nome === 'Faixa BUS') ? GR.azul : l.camada === 'autocarro' ? GR.bus : GR.vias;
     if (l.nome === 'Marginal de Sesimbra') return; // aparece como zona
-    if (l.camada === 'ativos' || l.peso <= 6) L.polyline(l.coords, { color: '#fff', weight: Math.min(l.peso, 12) + 4, opacity: 0.85, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas, interactive: false }).addTo(g);
-    L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
+    var cas = null;
+    if (l.camada === 'ativos' || l.peso <= 6) cas = L.polyline(l.coords, { color: '#fff', weight: Math.min(l.peso, 12) + 4, opacity: 0.85, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas, interactive: false }).addTo(g);
+    var lin = L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(l.nome) + '</b><br>' + esc(l.texto), { maxWidth: 260 }).addTo(g);
+    linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
   DADOS.interfaces.forEach(function (i) {
     L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1, pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(i.nome) + '</b><br>' + esc(i.texto), { maxWidth: 260 })
-      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(grupos.mobilidade);
+      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(GR.hubs);
   });
 
 
@@ -94,15 +97,32 @@ var ILU = (function () {
     { id: 'transporte', nome: 'Estação ou terminal', cor: '#1857d6', svg: P24('<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/>') }
   ];
   var catPorId = {}; CATS.forEach(function (c) { catPorId[c.id] = c; });
-  var gPontos = {}, rotPontos = [], modo = 'tudo', chipOn = {}, catOn = {};
-  DADOS.camadas.forEach(function (c) { chipOn[c.id] = true; }); CATS.forEach(function (c) { catOn[c.id] = true; });
-  var zonasObj;
+  var gPontos = {}, rotPontos = [], uiOn = {}, catOn = {};
+  CATS.forEach(function (c) { catOn[c.id] = true; });
+  var camadasZona = {}, atual = null, legRender = function () {}, notasRender = function () {};
+  function kmDe(c) { var t = 0; for (var i = 1; i < c.length; i++) t += map.distance(c[i - 1], c[i]); return t / 1000; }
+  var ciclos = linhasObj.filter(function (o) { return o.l.camada === 'ativos'; });
+  var kmCiclo = Math.round(ciclos.reduce(function (a, o) { return a + kmDe(o.l.coords); }, 0));
+  // Camadas que a pessoa liga e desliga (o mapa abre vazio)
+  var UI = [
+    { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'As ' + ciclos.length + ' ligações desenhadas somam cerca de ' + kmCiclo + ' km (valor aproximado, medido sobre o traçado do mapa) e fazem parte da rede ciclável de 40 km da proposta, com bicicletas partilhadas elétricas.' },
+    { id: 'azul', nome: 'Linha Azul', cor: '#1857d6', nota: 'Autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro: 21,7 km e 16 estações, a cada 10 min na hora de ponta. A faixa BUS (azul mais clara) dá-lhe prioridade onde há filas. Expresso já em 2027; linha completa em 2031.' },
+    { id: 'bus', nome: 'Outros autocarros', cor: '#0e7c7b', nota: 'Circular do Castelo e circular da Quinta do Conde, ambas a cada 30 min, e o eixo Quinta do Conde–Coina, a cada 10 min na hora de ponta.' },
+    { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, ciclovia e paragens) e variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
+    { id: 'marginal', nome: 'Marginal pedonal', cor: '#d6246e', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
+    { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Onde o autocarro se liga ao comboio e ao estacionamento: Fogueteiro, Coina, Moagem e Alfarim.' },
+    { id: 'obra', nome: 'Serviços e obras propostos', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' },
+    { id: 'existe', nome: 'Já existe: escolas, saúde, parques…', cor: '#4a5560', nota: 'Escolas, saúde, parques, mercados e outros locais que já existem. Aproxima o mapa para ver mais.' }
+  ];
+  UI.forEach(function (u) { uiOn[u.id] = false; });
+  function ligar(g, q) { if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); }
   function visibilidade() {
-    DADOS.camadas.forEach(function (c) { var q = chipOn[c.id] && modo !== 'existe', g = grupos[c.id]; if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); });
-    CATS.forEach(function (c) { var q = catOn[c.id] && (c.id === 'obra' ? modo !== 'existe' : modo !== 'propostas'), g = gPontos[c.id]; if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); });
-    (zonasObj || []).forEach(function (o) { var ver = modo !== 'propostas' || (o.z.geo && o.z.geo.linha), g = grupos[o.z.camada]; [o.c, o.r].forEach(function (l) { if (ver && !g.hasLayer(l)) g.addLayer(l); else if (!ver && g.hasLayer(l)) g.removeLayer(l); }); });
+    ['ciclo', 'azul', 'bus', 'vias', 'hubs'].forEach(function (k) { ligar(GR[k], uiOn[k]); });
+    CATS.forEach(function (c) { ligar(gPontos[c.id], c.id === 'obra' ? uiOn.obra : (uiOn.existe && catOn[c.id])); });
+    if (camadasZona.marginal) ligar(camadasZona.marginal, uiOn.marginal || atual === 'marginal');
+    legRender(); notasRender();
   }
-  CATS.forEach(function (c) { gPontos[c.id] = L.layerGroup().addTo(map); });
+  CATS.forEach(function (c) { gPontos[c.id] = L.layerGroup(); });
   (DADOS.pontos || []).concat(DADOS.manuais || []).forEach(function (p) {
     var c = catPorId[p.cat]; if (!c) return;
     var ic = L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="background:' + c.cor + '">' + c.svg + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
@@ -123,58 +143,49 @@ var ILU = (function () {
   }
   map.on('zoomend', nomesParques); nomesParques();
 
-  var gLoc = L.layerGroup(), rotLoc = [];
-  (DADOS.localidades || []).forEach(function (l) {
-    var m = L.marker(l.p, { opacity: 0, interactive: false, keyboard: false, icon: L.divIcon({ className: '', iconSize: [1, 1] }) });
-    m.bindTooltip(esc(l.nome), { permanent: true, direction: 'center', className: 'sq-loc' }); gLoc.addLayer(m);
-  });
-  function locVis() { var ver = map.getZoom() >= 14.5; if (ver && !map.hasLayer(gLoc)) map.addLayer(gLoc); else if (!ver && map.hasLayer(gLoc)) map.removeLayer(gLoc); }
-  map.on('zoomend', locVis); locVis();
 
   var Leg = L.Control.extend({ options: { position: 'bottomleft' }, onAdd: function () {
     var d = L.DomUtil.create('div', 'sq-leg'), b = L.DomUtil.create('button', 'sq-leg-btn', d), p = L.DomUtil.create('div', 'sq-leg-corpo', d);
     b.type = 'button'; b.setAttribute('aria-expanded', 'true'); b.setAttribute('aria-controls', 'sq-leg-corpo'); b.textContent = 'Esconder legenda'; p.id = 'sq-leg-corpo';
-    var h = '<p class="sq-leg-t">Mostrar</p><div class="sq-modo" role="radiogroup" aria-label="Mostrar"><label><input type="radio" name="sq-modo" value="tudo" checked>Tudo</label><label><input type="radio" name="sq-modo" value="propostas">Só propostas</label><label><input type="radio" name="sq-modo" value="existe">Só o que já existe</label></div><p class="sq-leg-t">Propostas: linhas e zonas</p><ul class="sq-leg-l">' +
-      '<li><i class="l" style="background:#1857d6"></i>Autocarro rápido e faixa BUS</li>' +
-      '<li><i class="l" style="background:repeating-linear-gradient(90deg,#d6246e 0 3px,transparent 3px 8px)"></i>Ciclovia</li>' +
-      '<li><i class="l" style="background:#0e7c7b"></i>Circular de autocarro</li>' +
-      '<li><i class="l" style="background:#6d4bc2"></i>Via nova</li>' +
-      '<li><i class="d" style="background:#1b1d22"></i>Estação ou hub de transportes</li>' +
-      '<li><i class="q" style="border-color:#d98a1c;background:rgba(217,138,28,.2)"></i>Zona do programa</li></ul>' +
-      '<p class="sq-leg-t">Já existe: locais (aproxima o mapa para ver mais)</p><ul class="sq-leg-l">' + CATS.map(function (c) { return '<li><label><input type="checkbox" data-cat="' + c.id + '" checked><span class="sq-ico-l" style="background:' + c.cor + '">' + c.svg + '</span>' + esc(c.nome) + '</label></li>'; }).join('') + '</ul>';
-    p.innerHTML = h;
     L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d);
     L.DomEvent.on(b, 'click', function () { var a = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', a ? 'false' : 'true'); p.hidden = a; b.textContent = a ? 'Mostrar legenda' : 'Esconder legenda'; });
-    L.DomEvent.on(p, 'change', function (e) { var t = e.target; if (!t.getAttribute) return; if (t.name === 'sq-modo') { modo = t.value; visibilidade(); return; } var id = t.getAttribute('data-cat'); if (!id) return; catOn[id] = t.checked; visibilidade(); });
-    if (el.clientWidth < 600) L.DomEvent.on(b, 'click', function () {}), setTimeout(function () { b.click(); }, 0);
+    legRender = function () {
+      var cheio = el.classList.contains('sq-cheio'), act = UI.filter(function (u) { return cheio || uiOn[u.id]; });
+      d.style.display = act.length ? '' : 'none';
+      var h = '<p class="sq-leg-t">' + (cheio ? 'O que ver no mapa' : 'Legenda') + '</p><ul class="sq-leg-l">' + act.map(function (u) {
+        var sw = '<i class="l" style="background:' + u.cor + '"></i>';
+        return '<li>' + (cheio ? '<label><input type="checkbox" data-ui="' + u.id + '"' + (uiOn[u.id] ? ' checked' : '') + '>' + sw + esc(u.nome) + '</label>' : sw + esc(u.nome)) + '</li>';
+      }).join('') + '</ul>';
+      if (uiOn.existe) h += '<p class="sq-leg-t">Já existe</p><ul class="sq-leg-l">' + CATS.filter(function (c) { return c.id !== 'obra'; }).map(function (c) { return '<li><label><input type="checkbox" data-cat="' + c.id + '"' + (catOn[c.id] ? ' checked' : '') + '><span class="sq-ico-l" style="background:' + c.cor + '">' + c.svg + '</span>' + esc(c.nome) + '</label></li>'; }).join('') + '</ul>';
+      p.innerHTML = h;
+    };
+    L.DomEvent.on(p, 'change', function (e) { var t = e.target; if (!t.getAttribute) return; var u = t.getAttribute('data-ui'); if (u) { definir(u, t.checked); return; } var id = t.getAttribute('data-cat'); if (!id) return; catOn[id] = t.checked; visibilidade(); });
+    if (el.clientWidth < 600) setTimeout(function () { b.click(); }, 0);
     return d;
   } });
   map.addControl(new Leg());
+  var vazio = L.DomUtil.create('div', 'sq-vazio', el); vazio.innerHTML = '<p>Escolhe, por cima do mapa, o que queres ver.</p>';
+  function definir(id, on) {
+    uiOn[id] = on; var cx = document.querySelector('#sq-camadas input[data-ui="' + id + '"]'); if (cx) cx.checked = on;
+    visibilidade();
+  }
 
-  // Zonas
-  var camadasZona = {}, rotulos = {}, atual = null, soMarca = {}; zonasObj = [];
+
+  // Zonas: só aparece o contorno da localidade do cartão escolhido
+  var gZona = L.featureGroup().addTo(map);
   DADOS.zonas.forEach(function (z) {
-    var so = z.botao === false, cor = corCamada[z.camada], camada, estilo = { color: cor, weight: 2, opacity: 0.9, fillColor: cor, fillOpacity: 0.1, pane: 'pZonas', renderer: rZonas };
-    if (so) { estilo.weight = 1.5; estilo.dashArray = '5 4'; estilo.fillOpacity = 0.05; estilo.interactive = false; soMarca[z.id] = true; }
-    if (z.geo && z.geo.linha) camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas });
+    var cor = corCamada[z.camada], camada, estilo = { color: cor, weight: 3, opacity: 0.95, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas, interactive: false };
+    if (z.geo && z.geo.linha) camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: false });
     else if (z.limite) camada = L.polygon(z.limite, estilo);
     else if (z.retangulo) camada = L.rectangle(z.retangulo, estilo);
     else if (z.poligono) camada = L.polygon(z.poligono, estilo);
     else camada = L.circle(z.centro, L.extend({ radius: z.raio }, estilo));
-    if (!so) camada.on('click', function () { escolher(z.id, false); });
-    camada.addTo(grupos[z.camada]);
     camadasZona[z.id] = camada;
-    var pos = z.rotulo || (z.centro) || camada.getBounds().getCenter();
-    var r = L.marker(pos, { opacity: 0, interactive: false, keyboard: false, icon: L.divIcon({ className: '', iconSize: [1, 1] }) });
-    r.bindTooltip(esc(z.nome), { permanent: true, direction: z.direcao || 'center', className: so ? 'sq-loc' : 'sq-rotulo', interactive: !so });
-    r.addTo(grupos[z.camada]);
-    if (!so) r.getTooltip().on('click', function () { escolher(z.id, false); });
-    rotulos[z.id] = r; zonasObj.push({ z: z, c: camada, r: r });
   });
-  function mostrarRotulos() { var zz = map.getZoom(); DADOS.zonas.forEach(function (z) { var e = rotulos[z.id].getTooltip().getElement(); if (e) e.style.display = (!z.minZoom || zz >= z.minZoom || z.id === atual) ? '' : 'none'; }); }
-  map.on('zoomend', mostrarRotulos);
-
-  var limites = L.featureGroup(Object.keys(grupos).map(function (k) { return grupos[k]; })).getBounds();
+  var limites = L.latLngBounds([]);
+  linhasObj.forEach(function (o) { limites.extend(o.p.getBounds()); });
+  DADOS.interfaces.forEach(function (i) { limites.extend(i.p); });
+  Object.keys(camadasZona).forEach(function (k) { var c = camadasZona[k]; limites.extend(c instanceof L.Circle ? c.getLatLng().toBounds(c.getRadius() * 2) : c.getBounds()); });
   function verTudo() { map.fitBounds(limites, { padding: [24, 24] }); }
   verTudo();
   var Ctl = L.Control.extend({ options: { position: 'topright' }, onAdd: function () {
@@ -188,7 +199,7 @@ var ILU = (function () {
       // o resto da página fica inerte (leitores de ecrã e teclado ficam só no mapa)
       var no = el; while (no && no !== document.body) { var pai = no.parentElement; if (pai) [].forEach.call(pai.children, function (irmao) { if (irmao !== no) { if (on) irmao.setAttribute('inert', ''); else irmao.removeAttribute('inert'); } }); no = pai; }
       if (L.Browser.mobile) { if (on) map.dragging.enable(); else map.dragging.disable(); }
-      setTimeout(function () { map.invalidateSize(); if (on) verTudo(); }, 60); f.focus();
+      legRender(); setTimeout(function () { map.invalidateSize(); if (on) verTudo(); }, 60); f.focus();
     }
     L.DomEvent.on(f, 'click', function () { cheio(!el.classList.contains('sq-cheio')); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('sq-cheio')) cheio(false); });
@@ -196,57 +207,73 @@ var ILU = (function () {
   } });
   map.addControl(new Ctl());
 
-  // Botões de lugares
-  var lugares = document.getElementById('sq-lugares');
-  DADOS.zonas.forEach(function (z) {
-    if (z.botao === false) return;
-    var b = document.createElement('button'); b.type = 'button'; b.textContent = z.nome; b.dataset.id = z.id;
-    b.addEventListener('click', function () { escolher(z.id, true); if (window.matchMedia('(max-width:979px)').matches) el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); });
-    lugares.appendChild(b);
-  });
-
   // Cartão pequeno para o ecrã inteiro
   var mini = L.DomUtil.create('div', 'sq-mini', el); mini.hidden = true; L.DomEvent.disableClickPropagation(mini); L.DomEvent.disableScrollPropagation(mini);
   function miniAtualizar(z, il) {
-    var ilu = il.tipo === 'perfil' ? ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com o programa') : ILU.paisagem(il.variante, z.nome);
+    var ilu = il.tipo === 'perfil' ? ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com a proposta') : ILU.paisagem(il.variante, z.nome);
     mini.innerHTML = '<button type="button" class="sq-mini-x" aria-label="Fechar o resumo">×</button><div class="sq-mini-ilu">' + ilu + '</div><h3>' + esc(z.nome) + '</h3><ul>' + z.medidas.slice(0, 3).map(function (m) { return '<li>' + esc(m.t) + '</li>'; }).join('') + '</ul>';
     mini.hidden = false; mini.setAttribute('data-fechado', 'n');
     mini.querySelector('.sq-mini-x').addEventListener('click', function () { mini.hidden = true; });
   }
-  // Postal
-  var postal = document.getElementById('sq-postal');
-  function escolher(id, voar) {
-    var z = DADOS.zonas.filter(function (x) { return x.id === id; })[0]; if (!z) return;
-    atual = id;
-    Object.keys(rotulos).forEach(function (k) { var t = rotulos[k].getTooltip(); if (t && t.getElement()) t.getElement().classList.toggle('ativo', k === id); });
-    Object.keys(camadasZona).forEach(function (k) { var c = camadasZona[k]; if (c.setStyle && !soMarca[k]) c.setStyle(k === id ? { weight: c instanceof L.Polygon || c instanceof L.Circle ? 3.5 : 14, fillOpacity: 0.22 } : { weight: c instanceof L.Polygon || c instanceof L.Circle ? 2 : 10, fillOpacity: 0.1 }); });
-    [].forEach.call(lugares.children, function (b) { b.setAttribute('aria-current', b.dataset.id === id ? 'true' : 'false'); });
+  // Cartões das localidades (setas para a esquerda e para a direita)
+  var postal = document.getElementById('sq-postal'), nav = document.getElementById('sq-nav');
+  var ORDEM = ['vila', 'marginal', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'mata', 'azoia', 'espichel', 'arrabida', 'qconde', 'varzea'].filter(function (id) { return camadasZona[id]; });
+  DADOS.zonas.forEach(function (z) { if (ORDEM.indexOf(z.id) < 0) ORDEM.push(z.id); });
+  var idx = 0, contaEl = null;
+  function zonaDe(id) { return DADOS.zonas.filter(function (x) { return x.id === id; })[0]; }
+  function cartao(id) {
+    var z = zonaDe(id); if (!z) return; idx = ORDEM.indexOf(id);
+    if (contaEl) contaEl.textContent = z.nome + ' · ' + (idx + 1) + ' de ' + ORDEM.length;
     var il = z.ilustracao, html = '<div class="ilustra">';
     if (il.tipo === 'perfil') {
-      html += '<div class="sq-alternar" role="group" aria-label="Hoje ou proposta"><button type="button" data-v="hoje" aria-pressed="false">Hoje</button><button type="button" data-v="amanha" aria-pressed="true">Proposta</button></div><div class="desenho">' + ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com o programa') + '</div><p class="nota-ilu">' + esc(z.perfilNome ? 'Perfil da ' + z.perfilNome + ', ilustrativo.' : 'Perfil da rua, ilustrativo.') + '</p>';
+      html += '<div class="sq-alternar" role="group" aria-label="Hoje ou proposta"><button type="button" data-v="hoje" aria-pressed="false">Hoje</button><button type="button" data-v="amanha" aria-pressed="true">Proposta</button></div><div class="desenho">' + ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com a proposta') + '</div><p class="nota-ilu">' + esc(z.perfilNome ? 'Perfil da ' + z.perfilNome + ', ilustrativo.' : 'Perfil da rua, ilustrativo.') + '</p>';
     } else html += ILU.paisagem(il.variante, z.nome);
     html += '</div><div class="conteudo"><p class="camada">' + esc(nomeCamada[z.camada]) + '</p><h3>' + esc(z.nome) + '</h3><p class="frase">' + esc(z.frase) + '</p><ul class="sq-medidas">' +
-      z.medidas.map(function (m) { return '<li>' + esc(m.t) + '</li>'; }).join('') + '</ul></div>';
-    postal.innerHTML = html; miniAtualizar(z, il);
+      z.medidas.map(function (m) { return '<li>' + esc(m.t) + '</li>'; }).join('') + '</ul><button type="button" class="sq-ver-mapa" data-zona="' + id + '">Ver no mapa</button></div>';
+    postal.innerHTML = html;
     [].forEach.call(postal.querySelectorAll('.sq-alternar button'), function (b) {
       b.addEventListener('click', function () {
-        postal.querySelector('.desenho').innerHTML = ILU.perfil(il[b.dataset.v], 'Perfil de ' + z.nome + (b.dataset.v === 'hoje' ? ' hoje' : ' com o programa'));
+        postal.querySelector('.desenho').innerHTML = ILU.perfil(il[b.dataset.v], 'Perfil de ' + z.nome + (b.dataset.v === 'hoje' ? ' hoje' : ' com a proposta'));
         [].forEach.call(postal.querySelectorAll('.sq-alternar button'), function (o) { o.setAttribute('aria-pressed', o === b ? 'true' : 'false'); });
       });
     });
-    if (voar) { var c = camadasZona[id]; if (RM) map.fitBounds(c.getBounds(), { padding: [90, 90], maxZoom: 13.5, animate: false }); else map.flyToBounds(c.getBounds(), { padding: [90, 90], maxZoom: 13.5, duration: 0.6 }); }
-    mostrarRotulos();
+    return z;
+  }
+  function escolher(id, voar) {
+    var z = cartao(id); if (!z) return;
+    if (atual && camadasZona[atual] && gZona.hasLayer(camadasZona[atual])) gZona.removeLayer(camadasZona[atual]);
+    atual = id; var c = camadasZona[id];
+    if (id === 'marginal' && map.hasLayer(c)) map.removeLayer(c);
+    gZona.addLayer(c); vazio.hidden = true; visibilidade(); miniAtualizar(z, z.ilustracao);
+    if (voar) { if (RM) map.fitBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, duration: 0.6 }); }
+  }
+  function passo(d) { escolher(ORDEM[(idx + d + ORDEM.length) % ORDEM.length], true); }
+  if (nav) {
+    var seta = function (d, rot) { var b = document.createElement('button'); b.type = 'button'; b.className = 'sq-seta'; b.setAttribute('aria-label', rot); b.innerHTML = '<svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="' + (d < 0 ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7') + '"/></svg>'; b.addEventListener('click', function () { passo(d); }); return b; };
+    contaEl = document.createElement('p'); contaEl.className = 'sq-conta'; contaEl.setAttribute('aria-live', 'polite');
+    nav.appendChild(seta(-1, 'Localidade anterior')); nav.appendChild(contaEl); nav.appendChild(seta(1, 'Localidade seguinte'));
   }
 
-  // Camadas
+  // Menu de camadas (por cima do mapa)
   var fs = document.getElementById('sq-camadas');
-  DADOS.camadas.forEach(function (c) {
+  UI.forEach(function (u) {
     var lab = document.createElement('label'); lab.className = 'sq-chip';
-    var inp = document.createElement('input'); inp.type = 'checkbox'; inp.checked = true;
-    inp.addEventListener('change', function () { chipOn[c.id] = inp.checked; visibilidade(); if (atual) escolher(atual, false); });
-    var cor = document.createElement('span'); cor.className = 'cor'; cor.style.background = c.cor;
-    lab.appendChild(inp); lab.appendChild(cor); lab.appendChild(document.createTextNode(c.nome)); fs.appendChild(lab);
+    var inp = document.createElement('input'); inp.type = 'checkbox'; inp.checked = false; inp.setAttribute('data-ui', u.id);
+    inp.addEventListener('change', function () { definir(u.id, inp.checked); });
+    var cor = document.createElement('span'); cor.className = 'cor'; cor.style.background = u.cor;
+    lab.appendChild(inp); lab.appendChild(cor); lab.appendChild(document.createTextNode(u.nome)); fs.appendChild(lab);
   });
+  [['Marcar tudo', true], ['Limpar', false]].forEach(function (x) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sq-todos'; b.textContent = x[0];
+    b.addEventListener('click', function () { UI.forEach(function (u) { uiOn[u.id] = x[1]; var cx = fs.querySelector('input[data-ui="' + u.id + '"]'); if (cx) cx.checked = x[1]; }); visibilidade(); });
+    fs.appendChild(b);
+  });
+  var notas = document.getElementById('sq-notas');
+  notasRender = function () {
+    if (!notas) return; var act = UI.filter(function (u) { return uiOn[u.id]; });
+    notas.innerHTML = act.map(function (u) { return '<p style="border-left-color:' + u.cor + '"><b>' + esc(u.nome) + '.</b> ' + esc(u.nota) + '</p>'; }).join('');
+    vazio.hidden = !!(act.length || atual);
+  };
 
   // Lista de locais (alternativa ao mapa)
   (function () {
@@ -284,6 +311,7 @@ var ILU = (function () {
     }); }
     aplicar(); if (mq.addEventListener) mq.addEventListener('change', aplicar); else mq.addListener(aplicar);
   })();
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-ver-mapa'); if (!b) return; escolher(b.getAttribute('data-zona'), true); el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); });
   window.SQ = { escolher: escolher, mapa: map };
-  escolher('marginal', false);
+  cartao(ORDEM[0]); visibilidade();
 })();
