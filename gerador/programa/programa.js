@@ -2,6 +2,7 @@
 var ILU = (function () {
   var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', berma: 'berma' };
   var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', berma: '#cbbf9d' };
+  function espinha(x, y, s, c) { return '<g transform="translate(' + x + ' ' + y + ') skewX(-22) scale(.8 1) translate(' + (-x) + ' ' + (-y) + ')">' + carro(x, y, s, c) + '</g>'; }
   function pessoa(x, y, s, c) { return '<circle cx="' + x + '" cy="' + (y - 1.55 * s) + '" r="' + (0.13 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.16 * s) + '" y="' + (y - 1.4 * s) + '" width="' + (0.32 * s) + '" height="' + (1.4 * s) + '" rx="' + (0.12 * s) + '" fill="' + c + '"/>'; }
   function arvore(x, y, s) { return '<rect x="' + (x - 0.12 * s) + '" y="' + (y - 2.6 * s) + '" width="' + (0.24 * s) + '" height="' + (2.6 * s) + '" fill="#6d5a43"/><circle cx="' + x + '" cy="' + (y - 3.6 * s) + '" r="' + (1.5 * s) + '" fill="#4f9a5a"/><circle cx="' + (x - 0.8 * s) + '" cy="' + (y - 3.1 * s) + '" r="' + (1 * s) + '" fill="#5daa66"/><circle cx="' + (x + 0.8 * s) + '" cy="' + (y - 3.2 * s) + '" r="' + (1 * s) + '" fill="#468d50"/>'; }
   function carro(x, y, s, c) { return '<rect x="' + (x - 0.9 * s) + '" y="' + (y - 1.15 * s) + '" width="' + (1.8 * s) + '" height="' + (0.75 * s) + '" rx="' + (0.2 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.65 * s) + '" y="' + (y - 1.5 * s) + '" width="' + (1.3 * s) + '" height="' + (0.45 * s) + '" rx="' + (0.15 * s) + '" fill="' + c + '" opacity=".8"/><rect x="' + (x - 0.8 * s) + '" y="' + (y - 0.42 * s) + '" width="' + (0.3 * s) + '" height="' + (0.42 * s) + '" fill="#2a2d33"/><rect x="' + (x + 0.5 * s) + '" y="' + (y - 0.42 * s) + '" width="' + (0.3 * s) + '" height="' + (0.42 * s) + '" fill="#2a2d33"/>'; }
@@ -16,7 +17,8 @@ var ILU = (function () {
     bandas.forEach(function (b) {
       var tipo = b[0], w = b[1] * s, cx = x + w / 2;
       svg += '<rect x="' + x + '" y="' + chao + '" width="' + w + '" height="12" fill="' + CHAO[tipo] + '"/>';
-      if (tipo === 'carro' || tipo === 'estac') svg += carro(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
+      if (tipo === 'carro') svg += carro(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
+      else if (tipo === 'estac') svg += espinha(x + w * 0.3, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]) + espinha(x + w * 0.72, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
       else if (tipo === 'bus') svg += autocarro(cx, chao, s);
       else if (tipo === 'ciclovia') svg += bicicleta(cx, chao, s);
       else if (tipo === 'arvores') svg += arvore(cx, chao, s);
@@ -232,6 +234,7 @@ var ILU = (function () {
 
 
   // Zonas: só aparece o contorno da localidade do cartão escolhido
+  var CONTORNO = false;   // true volta a desenhar o contorno da localidade escolhida
   var gZona = L.featureGroup().addTo(map);
   DADOS.zonas.forEach(function (z) {
     var cor = z.cor || corCamada[z.camada], camada, estilo = { color: cor, weight: 3, opacity: 0.95, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas, interactive: false };
@@ -322,7 +325,8 @@ var ILU = (function () {
     atual = id || null;
     if (!z) { mini.hidden = true; visibilidade(); if (voar) verTudo(); return; }
     var c = camadasZona[id];
-    gZona.addLayer(c); visibilidade(); miniAtualizar(z, z.ilustracao);
+    if (CONTORNO || (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
+    visibilidade(); miniAtualizar(z, z.ilustracao);
     if (voar) { if (RM) map.fitBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, duration: 0.6 }); }
   }
   postal.addEventListener('click', function (e) {
