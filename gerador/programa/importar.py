@@ -160,10 +160,10 @@ def so_terra(aneis, costa):
         c = cv2.approxPolyDP(c, 1.0, True)[:, 0, :]
         out.append([[round(la1-(y-1)*px/ky, 5), round(lo0+(x-1)*px/kx, 5)] for x, y in c])
     return out
-URB = {'zambujal': ((38.446, 38.464, -9.134, -9.112), 45), 'vila': ((38.435, 38.456, -9.118, -9.088), 60), 'lagoa': ((38.497, 38.514, -9.174, -9.154), 40),
+URB = {'zambujal': ((38.440, 38.464, -9.142, -9.112), 45), 'vila': ((38.435, 38.456, -9.118, -9.088), 60), 'lagoa': ((38.488, 38.522, -9.184, -9.146), 40),
        'santana': ((38.452, 38.4640, -9.113, -9.0945), 90), 'cotovia': ((38.466, 38.478, -9.109, -9.094), 45), 'sampaio': ((38.4640, 38.477, -9.0990, -9.081), 100),
-       'meco': ((38.465, 38.479, -9.181, -9.161), 45), 'azoia': ((38.420, 38.445, -9.200, -9.160), 50)}
-def contorno_urbano(A, caixa, fecho_m):
+       'meco': ((38.458, 38.485, -9.188, -9.155), 45), 'azoia': ((38.414, 38.452, -9.206, -9.154), 50)}
+def contorno_urbano(A, caixa, fecho_m, ruas=None, raio_rua=14, edif=None, raio_edif=22, ctr=None):
     """Junta as zonas residenciais da caixa (lat0, lat1, lon0, lon1) num contorno único (fecho morfológico)."""
     import numpy as np, cv2
     la0, la1, lo0, lo1 = caixa; px = 4.0                      # metros por pixel
@@ -178,6 +178,18 @@ def contorno_urbano(A, caixa, fecho_m):
             if not (la0 <= c[0] <= la1 and lo0 <= c[1] <= lo1): continue
             pts = np.array([[(p[1]-lo0)*kx/px, (la1-p[0])*ky/px] for p in a], np.int32)
             cv2.fillPoly(img, [pts], 255); n += 1
+    # ruas residenciais (com casas mas sem 'landuse=residential' no OSM): entram como faixas largas
+    if ruas:
+        for w in ruas:
+            g = w['geometry']
+            if not any(la0 <= q['lat'] <= la1 and lo0 <= q['lon'] <= lo1 for q in g): continue
+            pts = np.array([[(q['lon']-lo0)*kx/px, (la1-q['lat'])*ky/px] for q in g], np.int32)
+            cv2.polylines(img, [pts], False, 255, max(1, int(raio_rua*2/px))); n += 1
+    # edifícios (centro de cada um, descarregados no botão 8): cada casa conta, mesmo sem 'landuse' nem rua marcada
+    if edif:
+        for la, lo in edif:
+            if la0 <= la <= la1 and lo0 <= lo <= lo1:
+                cv2.circle(img, (int((lo-lo0)*kx/px), int((la1-la)*ky/px)), int(raio_edif/px), 255, -1); n += 1
     if not n: return []
     # fecho morfológico; se ficar em várias manchas, vai alargando até a localidade ser uma zona contínua (máx. 3x)
     base = img.copy(); f = fecho_m
@@ -189,21 +201,50 @@ def contorno_urbano(A, caixa, fecho_m):
         if len(grandes) <= 1 or f >= fecho_m*3: break
         f += 15
     if len(grandes) > 1:                                        # ainda separadas: fica só a maior
-        grandes = [max(grandes, key=cv2.contourArea)]
+        if ctr:
+            cx, cy = (ctr[1]-lo0)*kx/px, (la1-ctr[0])*ky/px
+            grandes = [max(grandes, key=lambda c: cv2.pointPolygonTest(c, (cx, cy), True))]   # a mancha que contém (ou está mais perto de) o centro da localidade
+        else: grandes = [max(grandes, key=cv2.contourArea)]
     out = []
     for c in grandes:
         c = cv2.approxPolyDP(c, 1.2, True)[:, 0, :]
         out.append([[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in c])
     return out
+RUAS_RES = []
+if os.path.exists(PAS + 'ruas.json'):
+    RUAS_RES = [e for e in json.load(open(PAS + 'ruas.json', encoding='utf-8'))['elements'] if e.get('type') == 'way' and e.get('geometry') and e.get('tags', {}).get('highway') in ('residential', 'living_street', 'pedestrian')]
+EDIF = []
+if os.path.exists(PAS + 'edificios.json'):
+    for e in json.load(open(PAS + 'edificios.json', encoding='utf-8'))['elements']:
+        c = e.get('center') or ({'lat': e['lat'], 'lon': e['lon']} if 'lat' in e else None)
+        if c: EDIF.append((c['lat'], c['lon']))
+    print(len(EDIF), 'edifícios lidos')
 f = PAS + 'areas.json'
 if os.path.exists(f):
     A = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e.get('geometry') or e.get('members')]
     for z in D['zonas']:
         if z['id'] in URB and not z.get('manual'):
             caixa, fecho = URB[z['id']]
-            ring = contorno_urbano(A, caixa, fecho)
+            ring = contorno_urbano(A, caixa, fecho, RUAS_RES, edif=EDIF, ctr=z.get('rotulo'))
             if ring: z['limite'] = ring; z.pop('centro', None); z.pop('raio', None); print('Contorno de', z['nome'], '->', len(ring), 'forma(s)', sum(len(r) for r in ring), 'pontos')
             else: print('Sem zona urbana para', z['nome'])
+        if z['id'] == 'santana' and z.get('limite') and not z.get('manual'):
+            # Santana começa logo a seguir à Moagem: encosta o contorno ao limite sul de Sampaio (sem espaço vazio no meio)
+            import numpy as np, cv2
+            sp = [q for q in D['zonas'] if q['id'] == 'sampaio' and q.get('limite')]
+            if sp:
+                S = np.array(z['limite'][0]); P = np.array(sp[0]['limite'][0]); la_sul = P[:, 0].min()
+                px = 3.0; ky = 111320.0; kx = ky*math.cos(math.radians(la_sul)); lo0 = S[:, 1].min()-0.0005; la1 = la_sul+0.0002
+                f = lambda a: np.array([[(p[1]-lo0)*kx/px, (la1-p[0])*ky/px] for p in a], np.int32)
+                W = int((S[:, 1].max()+0.0005-lo0)*kx/px)+2; H = int((la1-S[:, 0].min()+0.0005)*ky/px)+2
+                img = np.zeros((H, W), np.uint8); cv2.fillPoly(img, [f(S)], 255)
+                topo = [q for q in P if q[0] < la_sul+0.0008]; lon_a = min(q[1] for q in topo); lon_b = max(q[1] for q in topo)
+                hull = cv2.convexHull(np.vstack([f(S), f([[la_sul, lon_a], [la_sul, lon_b]])])); cv2.fillPoly(img, [hull], 255)
+                img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (41, 41)))
+                cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE); c = max(cs, key=cv2.contourArea)
+                c = cv2.approxPolyDP(c, 1.5, True)[:, 0, :]
+                z['limite'] = [[[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in c]]
+                print('Santana encostada a Sampaio ->', len(c), 'pontos')
         if z['id'] == 'mata':
             sel = []; poly = z.get('poligono')
             if not poly: continue

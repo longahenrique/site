@@ -28,8 +28,14 @@ var ILU = (function () {
       if (runs.length && runs[runs.length - 1].t === NOMES[tipo]) runs[runs.length - 1].w += w; else runs.push({ t: NOMES[tipo], x: x, w: w });
       x += w;
     });
-    runs.forEach(function (r) { if (r.w >= 46) etiquetas += '<text x="' + (r.x + r.w / 2) + '" y="' + (chao + 34) + '" text-anchor="middle" font-size="17" font-weight="700" fill="#2b3128" font-family="Archivo,Arial,sans-serif">' + r.t + '</text>'; });
-    return '<svg viewBox="0 0 ' + W + ' ' + (chao + 46) + '" role="img" aria-label="' + (nome || 'Perfil da rua') + ': ' + nomesUs.join(', ') + '">' + svg + etiquetas + '</svg>';
+    var CURTO = { estacionamento: 'estac.' };
+    runs.forEach(function (r) {
+      var t = r.t, fs = Math.min(17, r.w * 0.92 / (t.length * 0.56));
+      if (fs < 12 && CURTO[t]) { t = CURTO[t]; fs = Math.min(17, r.w * 0.92 / (t.length * 0.56)); }
+      if (fs >= 11.5) etiquetas += '<text x="' + (r.x + r.w / 2) + '" y="' + (chao + 34) + '" text-anchor="middle" font-size="' + fs.toFixed(1) + '" font-weight="700" fill="#2b3128" font-family="Archivo,Arial,sans-serif">' + t + '</text>';
+    });
+    var topo = Math.max(0, Math.floor(chao - 5.4 * s - 12));
+    return '<svg viewBox="0 ' + topo + ' ' + W + ' ' + (chao + 46 - topo) + '" role="img" aria-label="' + (nome || 'Perfil da rua') + ': ' + nomesUs.join(', ') + '">' + svg + etiquetas + '</svg>';
   }
   var P = {
     mata: '<rect width="640" height="250" fill="#e6f1f4"/><path d="M0 170 Q160 140 320 160 T640 150 V250 H0Z" fill="#d7c48f"/><path d="M0 205 Q200 190 640 200 V250 H0Z" fill="#efe1b8"/>' + [60, 140, 230, 330, 420, 520, 590].map(function (x, i) { var h = 70 + (i % 3) * 18; return '<rect x="' + (x - 3) + '" y="' + (175 - h * 0.55) + '" width="6" height="' + (h * 0.55) + '" fill="#6d5a43"/><ellipse cx="' + x + '" cy="' + (175 - h * 0.6) + '" rx="' + (38 - i % 2 * 8) + '" ry="16" fill="' + (i % 2 ? '#3f7f4c' : '#4c9159') + '"/>'; }).join('') + '<circle cx="300" cy="196" r="5" fill="#c0504d"/><rect x="296" y="200" width="8" height="18" rx="3" fill="#c0504d"/><circle cx="330" cy="198" r="5" fill="#3a6ea5"/><rect x="326" y="202" width="8" height="16" rx="3" fill="#3a6ea5"/>',
@@ -90,7 +96,9 @@ var ILU = (function () {
 
   var el = document.getElementById('sq-mapa');
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var map = L.map(el, { zoomAnimation: !RM, fadeAnimation: !RM, markerZoomAnimation: !RM, scrollWheelZoom: true, zoomSnap: 0.5, minZoom: 10, maxZoom: 18, renderer: L.canvas({ padding: 0.5, tolerance: 8 }) });
+  var map = L.map(el, { zoomAnimation: !RM, fadeAnimation: !RM, markerZoomAnimation: !RM, scrollWheelZoom: true, zoomControl: false, zoomSnap: 0.5, minZoom: 10, maxZoom: 18, renderer: L.canvas({ padding: 0.5, tolerance: 8 }) });
+  L.control.zoom({ zoomInTitle: 'Aproximar o mapa', zoomOutTitle: 'Afastar o mapa' }).addTo(map);
+  map.on('popupopen', function (e) { var x = e.popup.getElement(); x = x && x.querySelector('.leaflet-popup-close-button'); if (x) { x.setAttribute('aria-label', 'Fechar'); x.setAttribute('title', 'Fechar'); } });
   map.setView([38.51, -9.11], 11);
   if (L.Browser.mobile) map.dragging.disable();   // no telemóvel o mapa só se arrasta em ecrã inteiro; com um dedo a página desliza
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
@@ -147,13 +155,13 @@ var ILU = (function () {
   var kmCiclo = Math.round(ciclos.reduce(function (a, o) { return a + kmDe(o.l.coords); }, 0));
   // Camadas que a pessoa liga e desliga (o mapa abre vazio)
   var UI = [
-    { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'As ' + ciclos.length + ' ligações desenhadas somam cerca de ' + kmCiclo + ' km (valor aproximado, medido sobre o traçado do mapa) e fazem parte da rede ciclável de 40 km da proposta, com bicicletas partilhadas elétricas.' },
-    { id: 'faixa', nome: 'Faixa BUS', cor: '#f2b01e', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10 entre a estação de Coina e o Posto da EN10, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
-    { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais as circulares do Castelo e da Quinta do Conde, a cada 30 min, e o eixo Quinta do Conde–Coina, a cada 10 min na hora de ponta.' },
-    { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, ciclovia e paragens) e variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
+    { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'As ' + ciclos.length + ' ligações desenhadas somam cerca de ' + kmCiclo + ' km (valor aproximado, medido sobre o traçado do mapa) e fazem parte da rede ciclável de 40 km da proposta, com bicicletas e trotinetes partilhadas.' },
+    { id: 'faixa', nome: 'Faixa BUS', cor: '#b87a00', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10 entre a estação de Coina e o Posto da EN10, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
+    { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais as circulares do Castelo e da Quinta do Conde, a cada 30 min, o eixo Quinta do Conde–Coina, a cada 10 min na hora de ponta, e a ligação Casal do Sapo–Coina, prevista no Plano de Mobilidade Urbana Sustentável (PMUS).' },
+    { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, ciclovia e paragens) o novo acesso dos Negreiros à A2/A33 e a variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
     { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Os novos hubs onde o autocarro se liga ao parque de estacionamento: Moagem, em Santana, e Alfarim. As estações de Coina e do Fogueteiro já existem e estão sempre marcadas.' },
-    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' }
+    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, o Spot Jovem no Parque da Vila, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' }
   ];
   UI.forEach(function (u) { uiOn[u.id] = false; }); uiOn.existe = true;   // o que já existe está sempre no mapa
   function irNota(id) {   // só quando a pessoa pede (ligação no balão): leva até à frase explicativa
@@ -270,7 +278,7 @@ var ILU = (function () {
   });
   // Cartões das localidades: setas dentro do cartão; o primeiro estado é "nada escolhido"
   var postal = document.getElementById('sq-postal');
-  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'azoia', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'en10', 'variante', 'marginal'].filter(function (id) { return camadasZona[id]; });
+  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'azoia', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'ribeira', 'en10', 'variante', 'marginal'].filter(function (id) { return camadasZona[id]; });
   DADOS.zonas.forEach(function (z) { if (ORDEM.indexOf(z.id) < 0) ORDEM.push(z.id); });
   var SEQ = [null].concat(ORDEM), idx = 0;
   var live = document.createElement('p'); live.className = 'sr'; live.setAttribute('aria-live', 'polite'); postal.parentNode.insertBefore(live, postal);

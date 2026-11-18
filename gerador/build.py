@@ -708,7 +708,7 @@ def prog_page():
 <div class="sq-corpo">
 <div class="sq-col-mapa">
 <div class="sq-mapa" id="sq-mapa" role="region" aria-label="Mapa do programa para o concelho de Sesimbra"></div>
-<p class="sq-dica" id="sq-dica">Para aproximar com o touchpad, aperta com dois dedos ou usa Ctrl + roda. Num telemóvel, usa dois dedos.</p>
+<p class="sq-dica" id="sq-dica">Para aproximar o mapa, usa Ctrl + roda do rato ou dois dedos no touchpad. No telemóvel, basta afastar dois dedos no ecrã.</p>
 <div class="sq-notas" id="sq-notas"></div>
 </div>
 <div class="sq-col-cartao">
