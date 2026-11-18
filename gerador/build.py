@@ -684,6 +684,8 @@ open('_site/robots.txt','w',encoding='utf-8').write('User-agent: *\nAllow: /\n\n
 LASTMOD={'/opiniao/'+r[1]:r[0] for r in rows}   # data de publicação de cada artigo
 
 # ---------- página de teste: Programa para Sesimbra (escondida: sem menu, sem sitemap, noindex) ----------
+import time as _t
+_V=str(int(_t.time()))
 def prog_page():
     import json as _j
     comp=_j.load(open('gerador/programa/programa_completo.json',encoding='utf-8'))
@@ -720,8 +722,8 @@ def prog_page():
 {areas}</div>
 </section>
 </main>"""
-    ex='<script src="/programa-mapa/leaflet.js"></script>\n<script src="/programa-mapa/programa-dados.js"></script>\n<script src="/programa-mapa/programa.js"></script>\n'
-    h=head('/teste-programa','Programa para Sesimbra (página de teste)','Programa para Sesimbra: mapa e medidas por área. Página de teste.',css+'\n'+article_css,'website',None,'<meta name="robots" content="noindex, nofollow">\n<link rel="stylesheet" href="/programa-mapa/leaflet.css">\n<link rel="stylesheet" href="/programa-mapa/programa.css">')
+    ex='<script src="/programa-mapa/leaflet.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa-dados.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa.js?v='+_V+'"></script>\n'
+    h=head('/teste-programa','Programa para Sesimbra (página de teste)','Programa para Sesimbra: mapa e medidas por área. Página de teste.',css+'\n'+article_css,'website',None,'<meta name="robots" content="noindex, nofollow">\n<link rel="stylesheet" href="/programa-mapa/leaflet.css?v='+_V+'">\n<link rel="stylesheet" href="/programa-mapa/programa.css?v='+_V+'">')
     return h+body(header,main,ex)
 if os.path.isdir('gerador/programa'):
     os.makedirs('_site/programa-mapa',exist_ok=True)
