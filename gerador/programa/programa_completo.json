@@ -1,0 +1,238 @@
+[
+ {
+  "area": "Habitação e urbanismo",
+  "medidas": [
+   {
+    "t": "Habitação pública e cooperativa a preços acessíveis",
+    "d": "Incentivar a construção de habitação pública a nível municipal, para garantir o acesso das pessoas a habitações dignas, sustentáveis e a preços acessíveis aos seus rendimentos. Por exemplo, através de um programa para habitação cooperativa."
+   },
+   {
+    "t": "Programa 3C municipal – Casa, Conforto e Clima",
+    "d": "Criação de um programa de eficiência energética e de incentivo à melhoria do conforto térmico dos edifícios."
+   },
+   {
+    "t": "Política Fiscal de Incentivo à Habitação e Arrendamento",
+    "d": "Uma revisão da política fiscal municipal que reduz o IMI para habitação própria e projetos de arrendamento acessível, ao mesmo tempo que agrava o imposto sobre segundas habitações e alojamento local, com o objetivo de combater a especulação e promover o acesso à habitação."
+   },
+   {
+    "t": "Observatório intermunicipal da habitação",
+    "d": "Criação do Observatório Intermunicipal da Habitação, uma ferramenta de transparência e planeamento que irá monitorizar em tempo real os preços de venda e arrendamento, identificar edifícios devolutos e publicar dados abertos."
+   }
+  ]
+ },
+ {
+  "area": "Mobilidade e transportes",
+  "medidas": [
+   {
+    "t": "Promover uma Sesimbra dos 15 minutos",
+    "d": "Assegurando que os serviços do dia-a-dia, como escolas, creches, comércio local, espaços de trabalho e associações estejam acessíveis dentro do próprio bairro."
+   },
+   {
+    "t": "Reforço da frequência de autocarros e do serviço noturno",
+    "d": "Ajuste dos horários e ligação entre transportes, em particular aos comboios, e crescimento da rede de trajetos de autocarro dentro do concelho.",
+    "mapa": [
+     "santana"
+    ]
+   },
+   {
+    "t": "Ciclovias e bicicletas partilhadas",
+    "d": "Construção de ciclovias e criação de um programa municipal de bicicletas partilhadas, com bicicletas elétricas, adaptáveis às necessidades dos diferentes utilizadores.",
+    "mapa": [
+     "santana"
+    ]
+   },
+   {
+    "t": "Pedonalização progressiva da Marginal de Sesimbra",
+    "d": "Elaboração e execução de um plano estruturado para a transformação gradual da Marginal de Sesimbra num corredor pedonal e de mobilidade suave, devolvendo a frente de mar às pessoas, reduzindo o ruído e a poluição e dinamizando o comércio e a restauração locais.",
+    "mapa": [
+     "marginal"
+    ]
+   }
+  ]
+ },
+ {
+  "area": "Economia local",
+  "medidas": [
+   {
+    "t": "Promover a integração da comunidade piscatória em ações de desenvolvimento local",
+    "d": "Nomeadamente através da formação e educação geral da população sobre o mar, as pescas e a sustentabilidade dos oceanos, em parceria com associações ambientais locais, municípios e instituições de ensino superior.",
+    "mapa": [
+     "vila"
+    ]
+   },
+   {
+    "t": "Redução de taxas para pequenas e microempresas e empreendedores",
+    "d": "Criação de um pacote municipal de alívio fiscal e redução de custos de contexto para micro e pequenas empresas e novos empreendedores, dinamizando o comércio local e apoiando a criação de emprego no concelho."
+   },
+   {
+    "t": "Diversificar as ofertas turísticas",
+    "d": "Promovendo um turismo cultural baseado na promoção da natureza e biodiversidade, na cultura e identidade local e no turismo gastronómico."
+   },
+   {
+    "t": "Desenvolver um estudo global do concelho tendo em vista o seu desenvolvimento sustentável",
+    "d": "Um estudo centrado em atividades económicas, culturais e desportivas que permitam a fixação de uma população ativa em regime permanente."
+   }
+  ]
+ },
+ {
+  "area": "Saúde e bem-estar",
+  "medidas": [
+   {
+    "t": "Plano municipal de saúde e reforço dos cuidados primários",
+    "d": "Elaboração e implementação do Plano Municipal de Saúde, focado no reforço dos cuidados de saúde primários, na atração e na garantia de uma resposta médica de proximidade e qualidade para todas as famílias do concelho."
+   },
+   {
+    "t": "Gabinete do cuidador informal",
+    "d": "Responsável por criar um sistema de levantamento e registo de cuidadores informais a nível local, facilitando o acesso aos apoios aos quais têm direito e articulando com os serviços sociais e de saúde."
+   },
+   {
+    "t": "Transporte solidário para quem mais precisa",
+    "d": "Desenvolver um programa de transporte solidário para a população em situação de particular vulnerabilidade que permita acesso aos cuidados de saúde primários, criando assim uma política de cuidados de proximidade."
+   },
+   {
+    "t": "Envelhecimento Ativo e Autonomia",
+    "d": "Implementação de uma política municipal integrada de promoção do envelhecimento ativo e saudável, combate à solidão e estímulo à participação comunitária da população sénior, articulando respostas de saúde preventiva, educação, desporto e cultura."
+   }
+  ]
+ },
+ {
+  "area": "Ambiente e ecologia",
+  "medidas": [
+   {
+    "t": "Plano Municipal de Ação Climática",
+    "d": "Elaboração, aprovação e implementação urgente do Plano Municipal de Ação Climática de Sesimbra, corrigindo o incumprimento da Lei de Bases do Clima (Lei n.º 98/2021)."
+   },
+   {
+    "t": "Criação de uma provedoria municipal do animal",
+    "d": "Resposta integrada de proteção e bem-estar animal no concelho para apoiar famílias de baixos rendimentos, seniores e associações locais no acesso a cuidados e medicamentos essenciais."
+   },
+   {
+    "t": "Programa-Piloto para a Criação de Comunidades de Energia Renovável",
+    "d": "Promovendo a transição para fontes limpas, a redução da fatura de eletricidade dos munícipes e o combate direto à pobreza energética no concelho."
+   },
+   {
+    "t": "Definição de uma estratégia de ordenamento do território que promova a valorização dos recursos locais e a proteção ativa da Rede Natura 2000",
+    "d": "Conciliar o desenvolvimento económico sustentável com a salvaguarda rigorosa e a gestão ativa das áreas protegidas do concelho integradas na Rede Natura 2000, com particular foco na Arrábida, no Cabo Espichel e na Lagoa de Albufeira.",
+    "mapa": [
+     "arrabida",
+     "espichel",
+     "lagoa"
+    ]
+   }
+  ]
+ },
+ {
+  "area": "Educação e juventude",
+  "medidas": [
+   {
+    "t": "Conselho Municipal da Juventude",
+    "d": "Criação e instalação imediata do Conselho Municipal de Juventude de Sesimbra, cumprindo a obrigação legal (Lei n.º 8/2009 e Lei n.º 6/2012) e dotando as novas gerações de um órgão consultivo institucional de auscultação, representação e participação ativa na construção das políticas públicas locais."
+   },
+   {
+    "t": "Construção da nova escola secundária da Quinta do Conde",
+    "d": "Pugnar pela construção da nova Escola Secundária da Quinta do Conde, para responder ao crescimento demográfico da freguesia, eliminar a sobrelotação e garantir infraestruturas escolares modernas para a comunidade educativa.",
+    "mapa": [
+     "qconde"
+    ]
+   },
+   {
+    "t": "Investir na diversificação da aprendizagem de todas as crianças",
+    "d": "Através do planeamento e promoção de Atividades de Enriquecimento Curricular (AEC) de qualidade que incentivem o desenvolvimento de competências artísticas, culturais, desportivas, ecológicas e inclusivas, valorizando todas as formas de expressão e realização pessoal."
+   },
+   {
+    "t": "Criação de uma equipa de mentoria, avaliação e formação da Educação Inclusiva",
+    "d": "Garantindo o rigoroso cumprimento do Decreto-Lei n.º 54/2018 e assegurando que todas as crianças e jovens do concelho têm acesso a uma escola verdadeiramente inclusiva, equitativa e de qualidade."
+   }
+  ]
+ },
+ {
+  "area": "Cultura, arte e património",
+  "medidas": [
+   {
+    "t": "Casas da Criação",
+    "d": "Uma rede de espaços culturais abertos à comunidade que convidem ao encontro intergeracional, com um conjunto de equipamentos que potenciem a criação artística, e que primem pela inclusão e diversidade das comunidades.",
+    "mapa": [
+     "vila"
+    ]
+   },
+   {
+    "t": "Promover a realização de eventos culturais relacionados com a biodiversidade e geodiversidade locais",
+    "d": "Reforçar a identidade local, sensibilizar para a conservação ambiental e dinamizar o turismo sustentável em todo o concelho, valorizando a riqueza biológica e o geopatrimónio singular.",
+    "mapa": [
+     "espichel"
+    ]
+   },
+   {
+    "t": "Planos Estratégicos para a Arte e Cultura",
+    "d": "Planos abrangentes, baseados na evidência e com o contributo dos profissionais do setor, das instituições e da cidadania, em toda a sua diversidade, garantindo a sua implementação com os recursos humanos e financeiros adequados."
+   },
+   {
+    "t": "Promover o mapeamento sociocultural do concelho",
+    "d": "Realização de um levantamento, atualizado e participativo do tecido associativo, patrimonial, artístico e humano de Sesimbra, com vista a diagnosticar necessidades, valorizar as identidades locais e fundamentar o planeamento estratégico de políticas públicas de cultura, coesão social e desenvolvimento territorial."
+   }
+  ]
+ },
+ {
+  "area": "Desporto e associativismo",
+  "medidas": [
+   {
+    "t": "Casa do Associativismo",
+    "d": "Criação de uma Casa do Associativismo, como espaço físico e simbólico de encontro, capacitação e colaboração entre as associações do concelho."
+   },
+   {
+    "t": "Equipamentos municipais abertos à comunidade",
+    "d": "Promover o desporto amador abrindo à comunidade os equipamentos camarários com fins desportivos e garantindo apoios sustentados às associações que promovem o desporto amador."
+   },
+   {
+    "t": "Refazer o regulamento do Programa de Apoio ao Associativismo Sesimbrense",
+    "d": "Revisão e atualização do regulamento, simplificando os processos burocráticos de candidatura, garantindo critérios transparentes e equitativos de atribuição de apoios financeiros e logísticos."
+   },
+   {
+    "t": "Desporto acessível a todas as pessoas",
+    "d": "Adaptar os programas municipais de desporto para garantir acessibilidade física, cognitiva e sensorial, incluindo modalidades como natação paralímpica, basquetebol e atletismo adaptado, com treinadoras e treinadores capacitados e espaços acessíveis."
+   }
+  ]
+ },
+ {
+  "area": "Igualdade e direitos humanos",
+  "medidas": [
+   {
+    "t": "Balcão da inclusão",
+    "d": "Criação de um balcão da inclusão com acesso à informação e apoio de uma equipa multidisciplinar."
+   },
+   {
+    "t": "Mediadores culturais",
+    "d": "Contratar mediadores culturais para melhorar o diálogo e a participação política e a representatividade de pessoas em situação de vulnerabilidade social e de grupos minoritários nos processos de decisão das políticas autárquicas."
+   },
+   {
+    "t": "Rede Espaços Cidadão",
+    "d": "Reforçar a implementação em locais, reunindo serviços públicos de várias entidades num único balcão, promovendo a desburocratização e a agilização do atendimento aos e às munícipes."
+   },
+   {
+    "t": "Segurança por proximidade, sem videovigilância",
+    "d": "A sensação de segurança deve ser fomentada com políticas de proximidade, criação de comunidade e espaços comuns, seguros, visíveis e com iluminação adequada."
+   }
+  ]
+ },
+ {
+  "area": "Transparência e participação",
+  "medidas": [
+   {
+    "t": "Participação Cidadã",
+    "d": "Fomentar a participação cidadã na decisão política recorrendo, por exemplo, a referendos locais ou à criação de assembleias cidadãs locais que contribuam para a discussão do futuro do concelho."
+   },
+   {
+    "t": "Orçamento participativo",
+    "d": "Garantir um orçamento participativo, acessível e abrangente, assegurando a concretização das propostas escolhidas pela cidadania e o seguimento das críticas, avisos ou dúvidas dirigidas aos órgãos políticos locais."
+   },
+   {
+    "t": "Guia de participação cívica",
+    "d": "Capacitando os munícipes com conhecimento prático e acessível sobre os seus direitos, mecanismos de intervenção democrática e os canais formais para submeter sugestões, reclamações e denúncias."
+   },
+   {
+    "t": "Promover a adesão a redes europeias e globais de cidades progressistas",
+    "d": "Assumindo o municipalismo como local privilegiado para experimentar novas soluções e ideias, como parte estruturante do projeto europeu."
+   }
+  ]
+ }
+]
