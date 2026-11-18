@@ -42,6 +42,10 @@ var ILU = (function () {
   function pinheiro(x, y, k) { return '<rect x="' + (x - 2) + '" y="' + y + '" width="4" height="' + (38 * k) + '" fill="#6d5a43"/><ellipse cx="' + x + '" cy="' + (y - 2) + '" rx="' + (24 * k) + '" ry="' + (12 * k) + '" fill="#4f8a55"/>'; }
   function janelas(x, y, w, h, c, l) { var o = ''; for (var i = 0; i < c; i++) for (var j = 0; j < l; j++) o += '<rect x="' + (x + 6 + i * (w - 12) / c) + '" y="' + (y + 8 + j * (h - 14) / l) + '" width="' + ((w - 12) / c - 5) + '" height="' + ((h - 14) / l - 6) + '" fill="#9cc3dc"/>'; return o; }
   var P2 = {
+    santana: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 160 Q200 130 420 150 T640 140 V250 H0Z" fill="#b9d7a0"/><path d="M0 208 Q320 194 640 205 V250 H0Z" fill="#9cc58a"/>' +
+      '<rect x="60" y="80" width="150" height="112" fill="#e9d6b0"/><path d="M52 80 L135 46 L218 80Z" fill="#b8693f"/>' + janelas(60, 84, 150, 80, 5, 2) + '<rect x="115" y="150" width="40" height="42" fill="#8a6a4a"/><rect x="218" y="40" width="22" height="152" fill="#d9c49a"/><rect x="214" y="34" width="30" height="10" fill="#b8693f"/><path d="M229 34 q10 -14 -2 -26" stroke="#9aa3ad" stroke-width="5" fill="none" stroke-linecap="round"/>' +
+      '<rect x="300" y="170" width="190" height="34" fill="#cfcabb"/><path d="M310 187 H480" stroke="#fff" stroke-width="2" stroke-dasharray="10 8"/><rect x="420" y="110" width="4" height="62" fill="#555"/><rect x="404" y="92" width="36" height="22" rx="3" fill="#1857d6"/><text x="422" y="108" font-size="14" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">P</text>' + autocarro(350, 204, 12) +
+      pinheiro(520, 120, 0.9) + '<rect x="540" y="196" width="60" height="5" rx="2" fill="#8a6a4a"/>' + bicicleta(580, 232, 12) + bicicleta(520, 232, 12) + '<path d="M0 234 Q320 220 640 232" stroke="#d6246e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round" fill="none"/>',
     qconde: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 150 Q200 120 400 140 T640 130 V250 H0Z" fill="#b9d7a0"/><path d="M0 205 Q320 190 640 202 V250 H0Z" fill="#9cc58a"/>' +
       '<rect x="60" y="92" width="230" height="100" fill="#f1e3c6"/><rect x="54" y="84" width="242" height="10" fill="#b8693f"/>' + janelas(60, 92, 230, 100, 9, 2) + '<rect x="156" y="150" width="38" height="42" fill="#8a6a4a"/><rect x="96" y="60" width="158" height="22" rx="3" fill="#1857d6"/><text x="175" y="76" font-size="13" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">Escola</text>' +
       casa(330, 138, 62, 54, '#f4e9d2', '#c0694a') + casa(405, 146, 54, 46, '#ecd5b0', '#b8693f') + casa(475, 136, 66, 56, '#fbf6ea', '#c0694a') + casa(556, 148, 56, 44, '#f4e9d2', '#b8693f') +
@@ -100,16 +104,16 @@ var ILU = (function () {
     var cas = null;
     if (l.camada === 'ativos' || l.peso <= 6) cas = L.polyline(l.coords, { color: '#fff', weight: Math.min(l.peso, 12) + 4, opacity: 0.85, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas, interactive: false }).addTo(g);
     var lin = L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
-      .bindPopup('<b>' + esc(l.nome) + '</b><br>' + esc(l.texto), { maxWidth: 260 }).addTo(g);
+      .addTo(g);
     var uiId = l.camada === 'ativos' ? 'ciclo' : l.nome === 'Faixa BUS' ? 'faixa' : (l.camada === 'autocarro' || l.nome === 'Linha Azul') ? 'bus' : 'vias';
-    lin.on('click', function () { destacar(uiId); });
+    lin.bindPopup('<b>' + esc(l.nome) + '</b><br>' + esc(l.texto) + ligNota(uiId), { maxWidth: 260 });
     linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
   var gFixos = L.featureGroup().addTo(map);   // estações que já existem: marcadas desde o início
   DADOS.interfaces.forEach(function (i) {
     L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1, pane: 'pLinhas', renderer: rLinhas })
-      .bindPopup('<b>' + esc(i.nome) + '</b><br>' + esc(i.texto), { maxWidth: 260 })
-      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).on('click', function () { if (!i.existe) destacar('hubs'); }).addTo(i.existe ? gFixos : GR.hubs);
+      .bindPopup('<b>' + esc(i.nome) + '</b><br>' + esc(i.texto) + (i.existe ? '' : ligNota('hubs')), { maxWidth: 260 })
+      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(i.existe ? gFixos : GR.hubs);
   });
 
 
@@ -147,13 +151,12 @@ var ILU = (function () {
     { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova biblioteca, o palácio da justiça de Sampaio e as 90 habitações da Cotovia.' }
   ];
   UI.forEach(function (u) { uiOn[u.id] = false; }); uiOn.existe = true;   // o que já existe está sempre no mapa
-  var destId = null, destT = null;
-  function destacar(id) {
-    destId = id; var n = document.getElementById('sq-notas'); if (!n) return;
-    [].forEach.call(n.querySelectorAll('p'), function (p) { p.classList.toggle('dest', p.getAttribute('data-ui') === id); });
-    var x = n.querySelector('p.dest'); if (x) x.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'nearest' });
-    clearTimeout(destT); destT = setTimeout(function () { destId = null; [].forEach.call(n.querySelectorAll('p.dest'), function (p) { p.classList.remove('dest'); }); }, 9000);
+  function irNota(id) {   // só quando a pessoa pede (ligação no balão): leva até à frase explicativa
+    var n = document.getElementById('sq-notas'); if (!n) return;
+    var x = n.querySelector('p[data-ui="' + id + '"]'); if (x) x.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
   }
+  function ligNota(id) { return '<br><button type="button" class="sq-pop-ir" data-ui="' + id + '">Ver a explicação mais abaixo</button>'; }
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-pop-ir'); if (b) irNota(b.getAttribute('data-ui')); });
   function ligar(g, q) { if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); }
   function visibilidade() {
     ['ciclo', 'faixa', 'bus', 'vias', 'hubs'].forEach(function (k) { ligar(GR[k], uiOn[k]); });
@@ -168,11 +171,10 @@ var ILU = (function () {
     var ic = L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="background:' + c.cor + '">' + c.svg + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false });
     m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, -12], permanent: false, className: 'sq-nome-ponto' });
-    m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : ''), { maxWidth: 240 });
-    if (p.cat === 'obra') m.on('click', function () { destacar('obra'); });
+    m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : '') + (p.cat === 'obra' ? ligNota('obra') : ''), { maxWidth: 240 });
     rotPontos.push({ m: m, cat: p.cat });
   });
-  var MINZ = { obra: 12.5, saude: 12.5, bombeiros: 12.5, policia: 13, transporte: 12, escola: 13.5, parque: 13.5, servicos: 14.5, cultura: 14.5, igreja: 15, mercado: 15, desporto: 15.5 };
+  var MINZ = { obra: 12.5, saude: 14.5, bombeiros: 14.5, policia: 14.5, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
   var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'igreja', 'mercado', 'desporto'], DIST = 38;
   function nomesParques() {
     var z = map.getZoom(), ocupados = [];
@@ -215,7 +217,7 @@ var ILU = (function () {
   DADOS.zonas.forEach(function (z) {
     var cor = z.cor || corCamada[z.camada], camada, estilo = { color: cor, weight: 3, opacity: 0.95, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas, interactive: false };
     if (z.camada === 'natureza') { estilo.weight = 1; estilo.opacity = 0.7; estilo.fillOpacity = 0.4; }   // áreas, não contornos
-    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.on('click', function () { destacar('marginal'); }); }
+    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.bindPopup('<b>' + esc(z.nome) + '</b><br>' + esc(z.frase) + ligNota('marginal'), { maxWidth: 260 }); }
     else if (z.limite) camada = L.polygon(z.limite, estilo);
     else if (z.retangulo) camada = L.rectangle(z.retangulo, estilo);
     else if (z.poligono) camada = L.polygon(z.poligono, estilo);
@@ -257,7 +259,7 @@ var ILU = (function () {
   }
   // Cartões das localidades: setas dentro do cartão; o primeiro estado é "nada escolhido"
   var postal = document.getElementById('sq-postal');
-  var ORDEM = ['vila', 'marginal', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'mata', 'azoia', 'espichel', 'arrabida', 'qconde', 'en10', 'varzea'].filter(function (id) { return camadasZona[id]; });
+  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'azoia', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'en10', 'marginal'].filter(function (id) { return camadasZona[id]; });
   DADOS.zonas.forEach(function (z) { if (ORDEM.indexOf(z.id) < 0) ORDEM.push(z.id); });
   var SEQ = [null].concat(ORDEM), idx = 0;
   var live = document.createElement('p'); live.className = 'sr'; live.setAttribute('aria-live', 'polite'); postal.parentNode.insertBefore(live, postal);
@@ -271,7 +273,7 @@ var ILU = (function () {
     idx = SEQ.indexOf(id); var z = id ? zonaDe(id) : null;
     if (!z) {
       live.textContent = 'Nenhuma localidade escolhida';
-      postal.innerHTML = barra() + '<div class="conteudo sq-intro"><h3>Escolhe uma localidade</h3><p class="frase">Passa de uma para a outra com as setas, ou escolhe aqui, para ver o que muda em cada sítio, como é hoje e como pode ficar.</p><div class="sq-escolhas">' + ORDEM.map(function (k) { return '<button type="button" data-zona="' + k + '">' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div></div>';
+      postal.innerHTML = barra() + '<div class="conteudo sq-intro"><h3 class="sr">Localidades</h3><div class="sq-escolhas">' + ORDEM.filter(function (k) { return zonaDe(k).camada === 'bairros'; }).map(function (k) { return '<button type="button" data-zona="' + k + '">' + esc(zonaDe(k).nome) + '</button>'; }).join('') + '</div></div>';
       return null;
     }
     live.textContent = z.nome + ', ' + idx + ' de ' + ORDEM.length;
@@ -322,7 +324,7 @@ var ILU = (function () {
   var notas = document.getElementById('sq-notas');
   notasRender = function () {
     if (!notas) return; var act = UI.filter(function (u) { return uiOn[u.id]; });
-    notas.innerHTML = act.map(function (u) { return '<p data-ui="' + u.id + '"' + (destId === u.id ? ' class="dest"' : '') + ' style="border-left-color:' + u.cor + '"><b>' + esc(u.nome) + '.</b> ' + esc(u.nota) + '</p>'; }).join('');
+    notas.innerHTML = act.map(function (u) { return '<p data-ui="' + u.id + '" style="border-left-color:' + u.cor + '"><b>' + esc(u.nome) + '.</b> ' + esc(u.nota) + '</p>'; }).join('');
   };
 
   // Lista de locais (alternativa ao mapa)

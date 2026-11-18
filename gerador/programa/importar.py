@@ -135,26 +135,24 @@ def so_terra(aneis, costa):
     px = 12.0; ky = 111320.0; kx = ky*math.cos(math.radians((la0+la1)/2))
     W, H = int((lo1-lo0)*kx/px)+3, int((la1-la0)*ky/px)+3
     def xy(la, lo): return ((lo-lo0)*kx/px+1, (la1-la)*ky/px+1)
-    barreira = np.zeros((H, W), np.uint8); sementes = []
+    # lado da costa pelo segmento mais próximo (terra à esquerda do sentido): não depende de a linha estar fechada
+    from scipy.spatial import cKDTree
+    P, Dv = [], []
     for w in costa:
-        g = [(x['lat'], x['lon']) for x in w['geometry']]
-        arr = np.array([xy(a, b) for a, b in g], np.float32)
-        cv2.polylines(barreira, [arr.astype(np.int32)], False, 255, 3)
-        for i in range(0, len(g)-1, 3):
-            (a1, b1), (a2, b2) = g[i], g[i+1]
-            dy, dx = (a2-a1)*ky, (b2-b1)*kx; n = math.hypot(dx, dy) or 1
-            # direita do sentido: (dy, -dx) em metros (x leste, y norte)
-            sa, sb = a1 - (-dx/n)*60/ky*(-1) * 0, 0
-            la = a1 + (-dx/n)*60/ky; lo = b1 + (dy/n)*60/kx
-            x, y = xy(la, lo)
-            if 1 <= x < W-2 and 1 <= y < H-2: sementes.append((int(x), int(y)))
-    mar = barreira.copy(); mask = np.zeros((H+2, W+2), np.uint8); mask[1:-1, 1:-1] = (barreira > 0)
-    for sx, sy in sementes[::2]:
-        if mar[sy, sx] == 0: cv2.floodFill(mar, mask, (sx, sy), 128, flags=4 | (255 << 8))
-    mar = (mar == 128)
+        g = [((x['lon']-lo0)*kx, (x['lat']-la1)*ky) for x in w['geometry']]
+        for (x1, y1), (x2, y2) in zip(g, g[1:]):
+            L = math.hypot(x2-x1, y2-y1) or 1e-9; n = max(1, int(L/8))
+            for k in range(n): P.append((x1+(x2-x1)*k/n, y1+(y2-y1)*k/n)); Dv.append(((x2-x1)/L, (y2-y1)/L))
+    P = np.array(P); Dv = np.array(Dv); arv = cKDTree(P)
+    ys, xs = np.mgrid[0:H, 0:W]; gx = (xs-1)*px; gy = -(ys-1)*px
+    _, ix = arv.query(np.c_[gx.ravel(), gy.ravel()])
+    vx = gx.ravel()-P[ix, 0]; vy = gy.ravel()-P[ix, 1]
+    terra_lado = (Dv[ix, 0]*vy - Dv[ix, 1]*vx > 0).reshape(H, W)
+    mar = ~terra_lado
     zona = np.zeros((H, W), np.uint8)
     for a in aneis: cv2.fillPoly(zona, [np.array([xy(p[0], p[1]) for p in a], np.int32)], 255)
     terra = ((zona > 0) & ~mar).astype(np.uint8)*255
+    terra = cv2.medianBlur(terra, 9)   # tira as cunhas finas que aparecem onde a linha de costa tem falhas
     terra = cv2.morphologyEx(terra, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
     cs, _ = cv2.findContours(terra, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE); out = []
     for c in cs:
@@ -163,7 +161,7 @@ def so_terra(aneis, costa):
         out.append([[round(la1-(y-1)*px/ky, 5), round(lo0+(x-1)*px/kx, 5)] for x, y in c])
     return out
 URB = {'zambujal': ((38.446, 38.464, -9.134, -9.112), 45), 'vila': ((38.435, 38.456, -9.118, -9.088), 60), 'lagoa': ((38.497, 38.514, -9.174, -9.154), 40),
-       'santana': ((38.452, 38.468, -9.113, -9.094), 45), 'cotovia': ((38.466, 38.478, -9.109, -9.094), 45), 'sampaio': ((38.463, 38.477, -9.101, -9.081), 45),
+       'santana': ((38.452, 38.4685, -9.113, -9.0945), 45), 'cotovia': ((38.466, 38.478, -9.109, -9.094), 45), 'sampaio': ((38.4668, 38.477, -9.0985, -9.081), 80),
        'meco': ((38.465, 38.479, -9.181, -9.161), 45), 'azoia': ((38.420, 38.445, -9.200, -9.160), 50)}
 def contorno_urbano(A, caixa, fecho_m):
     """Junta as zonas residenciais da caixa (lat0, lat1, lon0, lon1) num contorno único (fecho morfológico)."""
@@ -201,7 +199,7 @@ f = PAS + 'areas.json'
 if os.path.exists(f):
     A = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e.get('geometry') or e.get('members')]
     for z in D['zonas']:
-        if z['id'] in URB:
+        if z['id'] in URB and not z.get('manual'):
             caixa, fecho = URB[z['id']]
             ring = contorno_urbano(A, caixa, fecho)
             if ring: z['limite'] = ring; z.pop('centro', None); z.pop('raio', None); print('Contorno de', z['nome'], '->', len(ring), 'forma(s)', sum(len(r) for r in ring), 'pontos')
@@ -238,7 +236,7 @@ if os.path.exists(f):
     import numpy as np, cv2
     R = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e.get('geometry') and e.get('tags', {}).get('highway') in ('residential', 'unclassified', 'living_street', 'tertiary', 'pedestrian')]
     for z in D['zonas']:
-        if z['id'] != 'alfarim': continue
+        if z['id'] != 'alfarim' or z.get('manual'): continue
         c0 = z.get('centro') or [38.4785, -9.1605]; z['_c'] = c0
         la0, la1, lo0, lo1 = c0[0]-0.0075, c0[0]+0.0075, c0[1]-0.010, c0[1]+0.010; px = 3.0
         ky, kx = 111320.0, 111320.0*math.cos(math.radians(c0[0]))
@@ -276,7 +274,7 @@ if os.path.exists(f):
         cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         ring = [[[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in cv2.approxPolyDP(c, 1.0, True)[:, 0, :]] for c in cs if cv2.contourArea(c) > (30/px)**2]
         for z in D['zonas']:
-            if z['id'] == 'varzea' and ring and not z.get('retangulo'):   # se o contorno foi marcado à mão (retângulo), não o substitui
+            if z['id'] == 'varzea' and ring and not z.get('retangulo') and not z.get('manual'):   # se o contorno foi marcado à mão (retângulo), não o substitui
                 z['limite'] = ring; z.pop('centro', None); z.pop('raio', None); z['rotulo'] = centro(max(ring, key=len)); print('Contorno do Parque da Várzea ->', len(ring), 'forma(s)')
     else: print('varzea.json sem o Parque Ecológico da Várzea')
 # recortar à terra (precisa de costa.json) as zonas de natureza que invadem o mar
@@ -284,6 +282,13 @@ f = PAS + 'costa.json'
 if os.path.exists(f):
     costa = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e['type'] == 'way' and e.get('geometry')]
     for z in D['zonas']:
+        if z.get('manual'): continue
+        if z['id'] == 'espichel':   # o cabo é a península: terra dentro de uma caixa à volta do santuário e do farol
+            caixa = [[38.405, -9.228], [38.405, -9.196], [38.432, -9.196], [38.432, -9.228], [38.405, -9.228]]
+            novo = so_terra([caixa], costa)
+            novo = [r for r in novo if len(r) >= 15]   # sem lascas soltas
+            if novo: z['limite'] = novo; print('Cabo Espichel (península):', sum(len(a) for a in novo), 'pontos em', len(novo), 'forma(s)')
+            continue
         if z['id'] in ('espichel', 'arrabida') and z.get('limite'):
             antes = sum(len(a) for a in z['limite']); novo = so_terra(z['limite'], costa)
             if novo: z['limite'] = novo; print('Só terra:', z['nome'], antes, '->', sum(len(a) for a in novo), 'pontos em', len(novo), 'forma(s)')

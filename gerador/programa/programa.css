@@ -174,7 +174,6 @@
 .sq-col-cartao .sq-nav{margin-top:0}
 
 .sq-notas p{transition:background .3s}
-.sq-notas p.dest{background:#fff0a8;outline:2px solid #141414;outline-offset:2px}
 .sq-cnav{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 6px;border-bottom:2px solid var(--ink);background:var(--paper)}
 .sq-cnav .sq-seta{width:48px;height:44px;border:0;border-radius:6px;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
 .sq-cnav .sq-seta:hover{background:rgba(20,20,20,.08)}
@@ -187,3 +186,6 @@
 .sq-escolhas button{min-height:44px;padding:0 14px;border:2px solid var(--ink);border-radius:8px;background:var(--paper);font:700 15px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink);cursor:pointer}
 .sq-escolhas button:hover{background:var(--ink);color:var(--paper)}
 .sq-escolhas button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.sq-pop-ir{margin:6px 0 0;padding:6px 10px;min-height:32px;border:2px solid #141414;border-radius:6px;background:#fff;color:#141414;font:700 13px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-pop-ir:focus-visible{outline:3px solid #1857d6;outline-offset:2px}
