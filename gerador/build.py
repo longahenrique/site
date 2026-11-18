@@ -704,6 +704,7 @@ def prog_page():
 <h1>Programa para Sesimbra</h1>
 <p class="sq-lead">Mar, mata, serra e bairros onde dá gosto viver. Escolhe em cima o que queres ver no mapa e, mais abaixo, passa pelas localidades para ver o que muda, como é hoje e como pode ficar.</p>
 <h2 class="sr">Mapa do programa</h2>
+<div class="sq-busca" role="search"><label for="sq-q">Procurar no mapa</label><div class="sq-busca-c"><input type="search" id="sq-q" role="combobox" aria-expanded="false" aria-controls="sq-res" aria-autocomplete="list" autocomplete="off" placeholder="Localidade, serviço, linha de autocarro…"><ul id="sq-res" role="listbox" aria-label="Resultados da pesquisa" hidden></ul></div><p class="sr" id="sq-res-n" aria-live="polite"></p></div>
 <fieldset class="sq-camadas" id="sq-camadas"><legend>O que queres ver no mapa</legend></fieldset>
 <div class="sq-corpo">
 <div class="sq-col-mapa">

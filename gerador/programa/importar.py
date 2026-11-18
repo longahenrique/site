@@ -160,10 +160,13 @@ def so_terra(aneis, costa):
         c = cv2.approxPolyDP(c, 1.0, True)[:, 0, :]
         out.append([[round(la1-(y-1)*px/ky, 5), round(lo0+(x-1)*px/kx, 5)] for x, y in c])
     return out
-URB = {'zambujal': ((38.440, 38.464, -9.142, -9.112), 45), 'vila': ((38.435, 38.456, -9.118, -9.088), 60), 'lagoa': ((38.488, 38.522, -9.184, -9.146), 40),
-       'santana': ((38.452, 38.4640, -9.113, -9.0945), 90), 'cotovia': ((38.466, 38.478, -9.109, -9.094), 45), 'sampaio': ((38.4640, 38.477, -9.0990, -9.081), 100),
-       'meco': ((38.458, 38.485, -9.188, -9.155), 45), 'azoia': ((38.414, 38.452, -9.206, -9.154), 50)}
-def contorno_urbano(A, caixa, fecho_m, ruas=None, raio_rua=14, edif=None, raio_edif=22, ctr=None):
+# Centros das localidades: cada edifício, rua ou zona residencial fica na localidade com o centro mais perto (células de Voronoi),
+# em vez de caixas retangulares, que davam contornos quadrados. O segundo número é o fecho morfológico, em metros.
+CENTROS = {'vila': (38.4445, -9.1005), 'santana': (38.4595, -9.1030), 'sampaio': (38.4700, -9.0930), 'cotovia': (38.4720, -9.1016),
+           'zambujal': (38.4550, -9.1260), 'lagoa': (38.5030, -9.1650), 'meco': (38.4720, -9.1700), 'azoia': (38.4320, -9.1870), 'alfarim': (38.4768, -9.1605)}
+FECHO = {'vila': 60, 'santana': 55, 'sampaio': 55, 'cotovia': 45, 'zambujal': 45, 'lagoa': 40, 'meco': 45, 'azoia': 50}
+URB = {k: ((c[0]-0.016, c[0]+0.016, c[1]-0.022, c[1]+0.022), FECHO[k]) for k, c in CENTROS.items() if k in FECHO}
+def contorno_urbano(A, caixa, fecho_m, ruas=None, raio_rua=14, edif=None, raio_edif=22, ctr=None, eu=None):
     """Junta as zonas residenciais da caixa (lat0, lat1, lon0, lon1) num contorno único (fecho morfológico)."""
     import numpy as np, cv2
     la0, la1, lo0, lo1 = caixa; px = 4.0                      # metros por pixel
@@ -191,11 +194,21 @@ def contorno_urbano(A, caixa, fecho_m, ruas=None, raio_rua=14, edif=None, raio_e
             if la0 <= la <= la1 and lo0 <= lo <= lo1:
                 cv2.circle(img, (int((lo-lo0)*kx/px), int((la1-la)*ky/px)), int(raio_edif/px), 255, -1); n += 1
     if not n: return []
+    if eu:   # só a célula desta localidade
+        la_g = la1-(np.arange(H)+0.5)*px/ky; lo_g = lo0+(np.arange(W)+0.5)*px/kx
+        d_eu = None; melhor = None
+        for k, (a, b) in CENTROS.items():
+            dd = ((la_g[:, None]-a)*ky)**2+((lo_g[None, :]-b)*kx)**2
+            melhor = dd if melhor is None else np.minimum(melhor, dd)
+            if k == eu: d_eu = dd
+        celula = (d_eu <= melhor).astype(np.uint8)*255
+        img = cv2.bitwise_and(img, celula)
     # fecho morfológico; se ficar em várias manchas, vai alargando até a localidade ser uma zona contínua (máx. 3x)
     base = img.copy(); f = fecho_m
     while True:
         k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(f/px)*2+1,)*2)
         img = cv2.morphologyEx(base, cv2.MORPH_CLOSE, k)
+        if eu: img = cv2.bitwise_and(img, celula)
         cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         grandes = [c for c in cs if cv2.contourArea(c) >= (150/px)**2]
         if len(grandes) <= 1 or f >= fecho_m*3: break
@@ -225,26 +238,9 @@ if os.path.exists(f):
     for z in D['zonas']:
         if z['id'] in URB and not z.get('manual'):
             caixa, fecho = URB[z['id']]
-            ring = contorno_urbano(A, caixa, fecho, RUAS_RES, edif=EDIF, ctr=z.get('rotulo'))
+            ring = contorno_urbano(A, caixa, fecho, RUAS_RES, edif=EDIF, ctr=CENTROS.get(z['id']), eu=z['id'])
             if ring: z['limite'] = ring; z.pop('centro', None); z.pop('raio', None); print('Contorno de', z['nome'], '->', len(ring), 'forma(s)', sum(len(r) for r in ring), 'pontos')
             else: print('Sem zona urbana para', z['nome'])
-        if z['id'] == 'santana' and z.get('limite') and not z.get('manual'):
-            # Santana começa logo a seguir à Moagem: encosta o contorno ao limite sul de Sampaio (sem espaço vazio no meio)
-            import numpy as np, cv2
-            sp = [q for q in D['zonas'] if q['id'] == 'sampaio' and q.get('limite')]
-            if sp:
-                S = np.array(z['limite'][0]); P = np.array(sp[0]['limite'][0]); la_sul = P[:, 0].min()
-                px = 3.0; ky = 111320.0; kx = ky*math.cos(math.radians(la_sul)); lo0 = S[:, 1].min()-0.0005; la1 = la_sul+0.0002
-                f = lambda a: np.array([[(p[1]-lo0)*kx/px, (la1-p[0])*ky/px] for p in a], np.int32)
-                W = int((S[:, 1].max()+0.0005-lo0)*kx/px)+2; H = int((la1-S[:, 0].min()+0.0005)*ky/px)+2
-                img = np.zeros((H, W), np.uint8); cv2.fillPoly(img, [f(S)], 255)
-                topo = [q for q in P if q[0] < la_sul+0.0008]; lon_a = min(q[1] for q in topo); lon_b = max(q[1] for q in topo)
-                hull = cv2.convexHull(np.vstack([f(S), f([[la_sul, lon_a], [la_sul, lon_b]])])); cv2.fillPoly(img, [hull], 255)
-                img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (41, 41)))
-                cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE); c = max(cs, key=cv2.contourArea)
-                c = cv2.approxPolyDP(c, 1.5, True)[:, 0, :]
-                z['limite'] = [[[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in c]]
-                print('Santana encostada a Sampaio ->', len(c), 'pontos')
         if z['id'] == 'mata':
             sel = []; poly = z.get('poligono')
             if not poly: continue

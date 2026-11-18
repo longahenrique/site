@@ -1,7 +1,7 @@
 /* ===== Ilustrações ===== */
 var ILU = (function () {
-  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', berma: 'berma' };
-  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', berma: '#cbbf9d' };
+  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', berma: 'berma' };
+  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', berma: '#cbbf9d' };
   function pessoa(x, y, s, c) { return '<circle cx="' + x + '" cy="' + (y - 1.55 * s) + '" r="' + (0.13 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.16 * s) + '" y="' + (y - 1.4 * s) + '" width="' + (0.32 * s) + '" height="' + (1.4 * s) + '" rx="' + (0.12 * s) + '" fill="' + c + '"/>'; }
   function arvore(x, y, s) { return '<rect x="' + (x - 0.12 * s) + '" y="' + (y - 2.6 * s) + '" width="' + (0.24 * s) + '" height="' + (2.6 * s) + '" fill="#6d5a43"/><circle cx="' + x + '" cy="' + (y - 3.6 * s) + '" r="' + (1.5 * s) + '" fill="#4f9a5a"/><circle cx="' + (x - 0.8 * s) + '" cy="' + (y - 3.1 * s) + '" r="' + (1 * s) + '" fill="#5daa66"/><circle cx="' + (x + 0.8 * s) + '" cy="' + (y - 3.2 * s) + '" r="' + (1 * s) + '" fill="#468d50"/>'; }
   function carro(x, y, s, c) { return '<rect x="' + (x - 0.9 * s) + '" y="' + (y - 1.15 * s) + '" width="' + (1.8 * s) + '" height="' + (0.75 * s) + '" rx="' + (0.2 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.65 * s) + '" y="' + (y - 1.5 * s) + '" width="' + (1.3 * s) + '" height="' + (0.45 * s) + '" rx="' + (0.15 * s) + '" fill="' + c + '" opacity=".8"/><rect x="' + (x - 0.8 * s) + '" y="' + (y - 0.42 * s) + '" width="' + (0.3 * s) + '" height="' + (0.42 * s) + '" fill="#2a2d33"/><rect x="' + (x + 0.5 * s) + '" y="' + (y - 0.42 * s) + '" width="' + (0.3 * s) + '" height="' + (0.42 * s) + '" fill="#2a2d33"/>'; }
@@ -22,17 +22,18 @@ var ILU = (function () {
       else if (tipo === 'arvores') svg += arvore(cx, chao, s);
       else if (tipo === 'areia') { svg += guarda(x + w * 0.3, chao, s) + pessoa(x + w * 0.65, chao, s * 0.9, CORES_P[n++ % 6]); }
       else if (tipo === 'esplanada') { svg += guarda(x + w * 0.35, chao, s * 0.9) + pessoa(x + w * 0.7, chao, s * 0.85, CORES_P[n++ % 6]); }
+      else if (tipo === 'esplanada0') svg += guarda(cx, chao, s * 0.9);   // só esplanada, sem gente: o passeio é tão estreito que não passa ninguém
       else if (tipo === 'peoes') { for (var k = 0; k < 3; k++) svg += pessoa(x + w * (0.2 + k * 0.3), chao, s * (0.95 - k * 0.1), CORES_P[n++ % 6]); }
       else if (tipo === 'passeio') svg += pessoa(cx, chao, s, CORES_P[n++ % 6]);
       if (w > 22 && nomesUs.indexOf(NOMES[tipo]) < 0) nomesUs.push(NOMES[tipo]);
       if (runs.length && runs[runs.length - 1].t === NOMES[tipo]) runs[runs.length - 1].w += w; else runs.push({ t: NOMES[tipo], x: x, w: w });
       x += w;
     });
-    var CURTO = { estacionamento: 'estac.' };
+    var CURTO = { estacionamento: 'estac.' }, FS = 16, larg = function (t, f) { return t.length * 0.56 * f; };
+    runs.forEach(function (r) { r.e = r.t; if (larg(r.e, FS) > r.w * 0.96 && CURTO[r.e]) r.e = CURTO[r.e]; });
+    runs.forEach(function (r) { var f = Math.min(FS, r.w * 0.96 / (r.e.length * 0.56)); if (f >= 12 && f < FS) FS = f; });   // um só tamanho de letra em todo o perfil
     runs.forEach(function (r) {
-      var t = r.t, fs = Math.min(17, r.w * 0.92 / (t.length * 0.56));
-      if (fs < 12 && CURTO[t]) { t = CURTO[t]; fs = Math.min(17, r.w * 0.92 / (t.length * 0.56)); }
-      if (fs >= 11.5) etiquetas += '<text x="' + (r.x + r.w / 2) + '" y="' + (chao + 34) + '" text-anchor="middle" font-size="' + fs.toFixed(1) + '" font-weight="700" fill="#2b3128" font-family="Archivo,Arial,sans-serif">' + t + '</text>';
+      if (larg(r.e, FS) <= r.w * 0.98) etiquetas += '<text x="' + (r.x + r.w / 2) + '" y="' + (chao + 34) + '" text-anchor="middle" font-size="' + FS.toFixed(1) + '" font-weight="700" fill="#2b3128" font-family="Archivo,Arial,sans-serif">' + r.e + '</text>';
     });
     var topo = Math.max(0, Math.floor(chao - 5.4 * s - 12));
     return '<svg viewBox="0 ' + topo + ' ' + W + ' ' + (chao + 46 - topo) + '" role="img" aria-label="' + (nome || 'Perfil da rua') + ': ' + nomesUs.join(', ') + '">' + svg + etiquetas + '</svg>';
@@ -123,10 +124,12 @@ var ILU = (function () {
     linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
   var gFixos = L.featureGroup().addTo(map);   // estações que já existem: marcadas desde o início
+  var ifaceObj = [];
   DADOS.interfaces.forEach(function (i) {
-    L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1, pane: 'pLinhas', renderer: rLinhas })
+    var cm = L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1, pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(i.nome) + '</b><br>' + esc(i.texto) + (i.existe ? '' : ligNota('hubs')), { maxWidth: 260 })
       .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(i.existe ? gFixos : GR.hubs);
+    ifaceObj.push({ i: i, m: cm });
   });
 
 
@@ -185,16 +188,18 @@ var ILU = (function () {
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false });
     m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, -12], permanent: false, className: 'sq-nome-ponto' });
     m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : '') + (p.cat === 'obra' ? ligNota('obra') : ''), { maxWidth: 240 });
-    rotPontos.push({ m: m, cat: p.cat });
+    rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto });
   });
   var MINZ = { obra: 0, saude: 14.5, bombeiros: 14.5, policia: 14.5, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
   var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'igreja', 'mercado', 'desporto'], DIST = 38;
+  var forcado = null;   // marcador aberto pela pesquisa: não é escondido pelo desaglomerar
+  map.on('popupclose', function () { forcado = null; });
   function nomesParques() {
     var z = map.getZoom(), ocupados = [];
     rotPontos.slice().sort(function (a, b) { return PRIO.indexOf(a.cat) - PRIO.indexOf(b.cat); }).forEach(function (r) {
-      var g = gPontos[r.cat], ver = z >= (MINZ[r.cat] != null ? MINZ[r.cat] : 13);
+      var g = gPontos[r.cat], ver = r.m === forcado || z >= (MINZ[r.cat] != null ? MINZ[r.cat] : 13);
       if (ver && r.cat === 'obra') ocupados.push(map.latLngToContainerPoint(r.m.getLatLng()));
-      else if (ver) { var q = map.latLngToContainerPoint(r.m.getLatLng()); ver = !ocupados.some(function (o) { return Math.abs(o.x - q.x) < DIST && Math.abs(o.y - q.y) < DIST; }); if (ver) ocupados.push(q); }
+      else if (ver && r.m !== forcado) { var q = map.latLngToContainerPoint(r.m.getLatLng()); ver = !ocupados.some(function (o) { return Math.abs(o.x - q.x) < DIST && Math.abs(o.y - q.y) < DIST; }); if (ver) ocupados.push(q); }
       if (ver && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!ver && g.hasLayer(r.m)) g.removeLayer(r.m);
     });
   }
@@ -278,7 +283,7 @@ var ILU = (function () {
   });
   // Cartões das localidades: setas dentro do cartão; o primeiro estado é "nada escolhido"
   var postal = document.getElementById('sq-postal');
-  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'azoia', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'ribeira', 'en10', 'variante', 'marginal'].filter(function (id) { return camadasZona[id]; });
+  var ORDEM = ['vila', 'santana', 'sampaio', 'cotovia', 'zambujal', 'alfarim', 'meco', 'lagoa', 'azoia', 'qconde', 'mata', 'espichel', 'arrabida', 'varzea', 'en10', 'variante', 'marginal'].filter(function (id) { return camadasZona[id]; });
   DADOS.zonas.forEach(function (z) { if (ORDEM.indexOf(z.id) < 0) ORDEM.push(z.id); });
   var SEQ = [null].concat(ORDEM), idx = 0;
   var live = document.createElement('p'); live.className = 'sr'; live.setAttribute('aria-live', 'polite'); postal.parentNode.insertBefore(live, postal);
@@ -345,6 +350,88 @@ var ILU = (function () {
     if (!notas) return; var act = UI.filter(function (u) { return uiOn[u.id]; });
     notas.innerHTML = act.map(function (u) { return '<p data-ui="' + u.id + '" style="border-left-color:' + u.cor + '"><b>' + esc(u.nome) + '.</b> ' + esc(u.nota) + '</p>'; }).join('');
   };
+
+
+  // ===== Pesquisa =====
+  (function () {
+    var inp = document.getElementById('sq-q'), lista = document.getElementById('sq-res'), nlive = document.getElementById('sq-res-n'); if (!inp || !lista) return;
+    function norm(t) { return String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
+    var IDX = [];
+    function add(grupo, tipo, titulo, extra, acao) { IDX.push({ g: grupo, tipo: tipo, t: titulo, n: norm(titulo), x: norm(extra || ''), a: acao }); }
+    DADOS.zonas.forEach(function (z) {
+      var tipo = z.etiqueta || nomeCamada[z.camada] || 'Zona';
+      add(0, tipo, z.nome, z.frase, function () { escolher(z.id, true); });
+      (z.medidas || []).forEach(function (m) { add(5, 'Medida em ' + z.nome, m.t, '', function () { escolher(z.id, true); }); });
+    });
+    rotPontos.forEach(function (r) {
+      var c = catPorId[r.cat];
+      add(r.cat === 'obra' ? 2 : 3, r.cat === 'obra' ? 'Proposta de serviço' : (c ? c.nome : 'Local'), r.nome, r.texto, function () {
+        if (r.cat === 'obra') definir('obra', true);
+        forcado = r.m; var g = gPontos[r.cat]; if (!g.hasLayer(r.m)) g.addLayer(r.m);
+        var abrir = function () { r.m.openPopup(); };
+        if (RM) { map.setView(r.p, 16, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(r.p, 16, { duration: 0.6 }); }
+      });
+    });
+    linhasObj.forEach(function (o) {
+      var uiId = o.l.camada === 'ativos' ? 'ciclo' : o.l.nome === 'Faixa BUS' ? 'faixa' : (o.l.camada === 'autocarro' || o.l.nome === 'Linha Azul') ? 'bus' : 'vias';
+      var tipo = { ciclo: 'Rede ciclável', faixa: 'Faixa BUS', bus: 'Autocarro', vias: 'Novo acesso' }[uiId];
+      add(4, tipo, o.l.nome, o.l.texto, function () {
+        definir(uiId, true); var b = o.p.getBounds();
+        if (RM) map.fitBounds(b, { padding: [60, 60], animate: false }); else map.flyToBounds(b, { padding: [60, 60], duration: 0.6 });
+        o.p.openPopup(b.getCenter());
+      });
+    });
+    ifaceObj.forEach(function (o) {
+      add(4, o.i.existe ? 'Estação (já existe)' : 'Novo hub', o.i.nome, o.i.texto, function () {
+        if (!o.i.existe) definir('hubs', true);
+        var ver = function () { o.m.openPopup(); };
+        if (RM) { map.setView(o.i.p, 15, { animate: false }); ver(); } else { map.once('moveend', ver); map.flyTo(o.i.p, 15, { duration: 0.6 }); }
+      });
+    });
+    (DADOS.localidades || []).forEach(function (l) {
+      if (IDX.some(function (x) { return x.g === 0 && x.n === norm(l.nome); })) return;
+      add(1, 'Localidade sem cartão próprio', l.nome, '', function () {
+        var p = L.popup({ maxWidth: 220 }).setLatLng(l.p).setContent('<b>' + esc(l.nome) + '</b><br>Sem cartão próprio neste mapa.');
+        var abrir = function () { p.openOn(map); };
+        if (RM) { map.setView(l.p, 15, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, 15, { duration: 0.6 }); }
+      });
+    });
+    var GRUPOS = ['Localidades e estradas', 'Outras localidades', 'Propostas de serviços', 'Locais que já existem', 'Linhas e estações', 'Medidas'];
+    var res = [], ativo = -1;
+    function fechar() { lista.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant'); ativo = -1; }
+    function marcar(i) {
+      ativo = i; [].forEach.call(lista.querySelectorAll('[role=option]'), function (o, k) { o.setAttribute('aria-selected', k === i ? 'true' : 'false'); o.classList.toggle('on', k === i); });
+      if (i >= 0) { var o = lista.querySelectorAll('[role=option]')[i]; inp.setAttribute('aria-activedescendant', o.id); o.scrollIntoView({ block: 'nearest' }); } else inp.removeAttribute('aria-activedescendant');
+    }
+    function escolhe(i) { var r = res[i]; if (!r) return; fechar(); inp.value = ''; r.a(); nlive.textContent = r.t + ': aberto no mapa.'; }
+    function procurar() {
+      var q = norm(inp.value).trim(); if (q.length < 2) { res = []; fechar(); nlive.textContent = ''; return; }
+      var tk = q.split(/\s+/);
+      res = IDX.map(function (it) {
+        var h = it.n + ' ' + it.x; if (!tk.every(function (t) { return h.indexOf(t) >= 0; })) return null;
+        var sc = it.n.indexOf(q) === 0 ? 0 : it.n.indexOf(q) > 0 ? 1 : tk.every(function (t) { return it.n.indexOf(t) >= 0; }) ? 2 : 3;
+        return { it: it, sc: sc };
+      }).filter(Boolean).sort(function (a, b) { return (a.sc > 2) - (b.sc > 2) || a.it.g - b.it.g || a.sc - b.sc || a.it.n.length - b.it.n.length; }).slice(0, 10).map(function (r) { return r.it; });
+      var h = '', ult = -1;
+      res.forEach(function (r, i) {
+        if (r.g !== ult) { h += '<li role="presentation" class="grp">' + GRUPOS[r.g] + '</li>'; ult = r.g; }
+        h += '<li role="option" id="sq-res-' + i + '" aria-selected="false" data-i="' + i + '"><span class="t">' + esc(r.t.length > 90 ? r.t.slice(0, 88) + '…' : r.t) + '</span><span class="k">' + esc(r.tipo) + '</span></li>';
+      });
+      lista.innerHTML = h || '<li role="presentation" class="vazio">Nada encontrado. Experimenta outra palavra.</li>';
+      lista.hidden = false; inp.setAttribute('aria-expanded', 'true'); ativo = -1;
+      nlive.textContent = res.length ? res.length + (res.length === 1 ? ' resultado.' : ' resultados.') + ' Usa as setas para escolher.' : 'Nada encontrado.';
+    }
+    inp.addEventListener('input', procurar);
+    inp.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { if (!res.length) return; e.preventDefault(); if (lista.hidden) { lista.hidden = false; inp.setAttribute('aria-expanded', 'true'); } marcar(Math.min(res.length - 1, ativo + 1)); }
+      else if (e.key === 'ArrowUp') { if (!res.length) return; e.preventDefault(); marcar(Math.max(0, ativo - 1)); }
+      else if (e.key === 'Enter') { if (ativo >= 0) { e.preventDefault(); escolhe(ativo); } else if (res.length) { e.preventDefault(); escolhe(0); } }
+      else if (e.key === 'Escape') { if (!lista.hidden) { e.stopPropagation(); fechar(); } else if (inp.value) inp.value = ''; }
+    });
+    lista.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    lista.addEventListener('click', function (e) { var o = e.target.closest('[role=option]'); if (o) escolhe(+o.getAttribute('data-i')); });
+    inp.addEventListener('blur', function () { setTimeout(fechar, 120); });
+  })();
 
   // Lista de locais (alternativa ao mapa)
   (function () {
