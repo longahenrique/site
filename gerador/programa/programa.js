@@ -51,7 +51,7 @@ var ILU = (function () {
 
   var el = document.getElementById('sq-mapa');
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var map = L.map(el, { zoomAnimation: !RM, fadeAnimation: !RM, markerZoomAnimation: !RM, scrollWheelZoom: true, zoomSnap: 0.5, minZoom: 10, maxZoom: 16, renderer: L.canvas({ padding: 0.5, tolerance: 8 }) });
+  var map = L.map(el, { zoomAnimation: !RM, fadeAnimation: !RM, markerZoomAnimation: !RM, scrollWheelZoom: true, zoomSnap: 0.5, minZoom: 10, maxZoom: 18, renderer: L.canvas({ padding: 0.5, tolerance: 8 }) });
   map.setView([38.51, -9.11], 11);
   if (L.Browser.mobile) map.dragging.disable();   // no telemóvel o mapa só se arrasta em ecrã inteiro; com um dedo a página desliza
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
@@ -96,9 +96,11 @@ var ILU = (function () {
   var catPorId = {}; CATS.forEach(function (c) { catPorId[c.id] = c; });
   var gPontos = {}, rotPontos = [], modo = 'tudo', chipOn = {}, catOn = {};
   DADOS.camadas.forEach(function (c) { chipOn[c.id] = true; }); CATS.forEach(function (c) { catOn[c.id] = true; });
+  var zonasObj;
   function visibilidade() {
     DADOS.camadas.forEach(function (c) { var q = chipOn[c.id] && modo !== 'existe', g = grupos[c.id]; if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); });
     CATS.forEach(function (c) { var q = catOn[c.id] && (c.id === 'obra' ? modo !== 'existe' : modo !== 'propostas'), g = gPontos[c.id]; if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); });
+    (zonasObj || []).forEach(function (o) { var ver = modo !== 'propostas' || (o.z.geo && o.z.geo.linha), g = grupos[o.z.camada]; [o.c, o.r].forEach(function (l) { if (ver && !g.hasLayer(l)) g.addLayer(l); else if (!ver && g.hasLayer(l)) g.removeLayer(l); }); });
   }
   CATS.forEach(function (c) { gPontos[c.id] = L.layerGroup().addTo(map); });
   (DADOS.pontos || []).concat(DADOS.manuais || []).forEach(function (p) {
@@ -150,23 +152,24 @@ var ILU = (function () {
   map.addControl(new Leg());
 
   // Zonas
-  var camadasZona = {}, rotulos = {}, atual = null;
+  var camadasZona = {}, rotulos = {}, atual = null, soMarca = {}; zonasObj = [];
   DADOS.zonas.forEach(function (z) {
-    var cor = corCamada[z.camada], camada, estilo = { color: cor, weight: 2, opacity: 0.9, fillColor: cor, fillOpacity: 0.1, pane: 'pZonas', renderer: rZonas };
+    var so = z.botao === false, cor = corCamada[z.camada], camada, estilo = { color: cor, weight: 2, opacity: 0.9, fillColor: cor, fillOpacity: 0.1, pane: 'pZonas', renderer: rZonas };
+    if (so) { estilo.weight = 1.5; estilo.dashArray = '5 4'; estilo.fillOpacity = 0.05; estilo.interactive = false; soMarca[z.id] = true; }
     if (z.geo && z.geo.linha) camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas });
     else if (z.limite) camada = L.polygon(z.limite, estilo);
     else if (z.retangulo) camada = L.rectangle(z.retangulo, estilo);
     else if (z.poligono) camada = L.polygon(z.poligono, estilo);
     else camada = L.circle(z.centro, L.extend({ radius: z.raio }, estilo));
-    camada.on('click', function () { escolher(z.id, false); });
+    if (!so) camada.on('click', function () { escolher(z.id, false); });
     camada.addTo(grupos[z.camada]);
     camadasZona[z.id] = camada;
     var pos = z.rotulo || (z.centro) || camada.getBounds().getCenter();
     var r = L.marker(pos, { opacity: 0, interactive: false, keyboard: false, icon: L.divIcon({ className: '', iconSize: [1, 1] }) });
-    r.bindTooltip(esc(z.nome), { permanent: true, direction: z.direcao || 'center', className: 'sq-rotulo', interactive: true });
+    r.bindTooltip(esc(z.nome), { permanent: true, direction: z.direcao || 'center', className: so ? 'sq-loc' : 'sq-rotulo', interactive: !so });
     r.addTo(grupos[z.camada]);
-    r.getTooltip().on('click', function () { escolher(z.id, false); });
-    rotulos[z.id] = r;
+    if (!so) r.getTooltip().on('click', function () { escolher(z.id, false); });
+    rotulos[z.id] = r; zonasObj.push({ z: z, c: camada, r: r });
   });
   function mostrarRotulos() { var zz = map.getZoom(); DADOS.zonas.forEach(function (z) { var e = rotulos[z.id].getTooltip().getElement(); if (e) e.style.display = (!z.minZoom || zz >= z.minZoom || z.id === atual) ? '' : 'none'; }); }
   map.on('zoomend', mostrarRotulos);
@@ -216,7 +219,7 @@ var ILU = (function () {
     var z = DADOS.zonas.filter(function (x) { return x.id === id; })[0]; if (!z) return;
     atual = id;
     Object.keys(rotulos).forEach(function (k) { var t = rotulos[k].getTooltip(); if (t && t.getElement()) t.getElement().classList.toggle('ativo', k === id); });
-    Object.keys(camadasZona).forEach(function (k) { var c = camadasZona[k]; if (c.setStyle) c.setStyle(k === id ? { weight: c instanceof L.Polygon || c instanceof L.Circle ? 3.5 : 14, fillOpacity: 0.22 } : { weight: c instanceof L.Polygon || c instanceof L.Circle ? 2 : 10, fillOpacity: 0.1 }); });
+    Object.keys(camadasZona).forEach(function (k) { var c = camadasZona[k]; if (c.setStyle && !soMarca[k]) c.setStyle(k === id ? { weight: c instanceof L.Polygon || c instanceof L.Circle ? 3.5 : 14, fillOpacity: 0.22 } : { weight: c instanceof L.Polygon || c instanceof L.Circle ? 2 : 10, fillOpacity: 0.1 }); });
     [].forEach.call(lugares.children, function (b) { b.setAttribute('aria-current', b.dataset.id === id ? 'true' : 'false'); });
     var il = z.ilustracao, html = '<div class="ilustra">';
     if (il.tipo === 'perfil') {
@@ -258,7 +261,7 @@ var ILU = (function () {
 
   // Ligações "No mapa" do programa completo
   [].forEach.call(document.querySelectorAll('[data-zonas]'), function (sp) {
-    var bs = sp.getAttribute('data-zonas').split(',').map(function (id) { var z = DADOS.zonas.filter(function (x) { return x.id === id; })[0]; return z ? '<button type="button" class="sq-ver" data-zona="' + id + '" aria-label="Ver ' + esc(z.nome) + ' no mapa">' + esc(z.nome) + '</button>' : ''; }).filter(Boolean);
+    var bs = sp.getAttribute('data-zonas').split(',').map(function (id) { var z = DADOS.zonas.filter(function (x) { return x.id === id; })[0]; return z && z.botao !== false ? '<button type="button" class="sq-ver" data-zona="' + id + '" aria-label="Ver ' + esc(z.nome) + ' no mapa">' + esc(z.nome) + '</button>' : ''; }).filter(Boolean);
     if (bs.length) sp.innerHTML = 'No mapa: ' + bs.join(' · ');
   });
   document.addEventListener('click', function (e) {

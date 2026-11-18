@@ -181,12 +181,19 @@ def contorno_urbano(A, caixa, fecho_m):
             pts = np.array([[(p[1]-lo0)*kx/px, (la1-p[0])*ky/px] for p in a], np.int32)
             cv2.fillPoly(img, [pts], 255); n += 1
     if not n: return []
-    k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(fecho_m/px)*2+1,)*2)
-    img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, k)
-    cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    # fecho morfológico; se ficar em várias manchas, vai alargando até a localidade ser uma zona contínua (máx. 3x)
+    base = img.copy(); f = fecho_m
+    while True:
+        k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(f/px)*2+1,)*2)
+        img = cv2.morphologyEx(base, cv2.MORPH_CLOSE, k)
+        cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        grandes = [c for c in cs if cv2.contourArea(c) >= (150/px)**2]
+        if len(grandes) <= 1 or f >= fecho_m*3: break
+        f += 15
+    if len(grandes) > 1:                                        # ainda separadas: fica só a maior
+        grandes = [max(grandes, key=cv2.contourArea)]
     out = []
-    for c in cs:
-        if cv2.contourArea(c) < (150/px)**2: continue          # ignora manchas pequenas
+    for c in grandes:
         c = cv2.approxPolyDP(c, 1.2, True)[:, 0, :]
         out.append([[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in c])
     return out
@@ -208,6 +215,26 @@ if os.path.exists(f):
                     if len(a) > 3 and dentro(centro(a), [poly]): sel.append(simplifica(a))
             if sel: z['limite'] = sel; z.pop('poligono', None); print('Contorno da Mata ->', len(sel), 'mancha(s) de mata')
             else: print('Sem matas encontradas dentro da zona')
+# Parque da Várzea: contorno real (precisa de varzea.json, botão 6 do descarregador)
+f = PAS + 'varzea.json'
+if os.path.exists(f):
+    VZ = [e for e in json.load(open(f, encoding='utf-8'))['elements'] if e.get('geometry') or e.get('members')]
+    sel = [e for e in VZ if re.search(r'Parque Ecol', e.get('tags', {}).get('name', ''))] or []
+    if sel:
+        import numpy as np, cv2
+        todos = [a for e in sel for a in aneis_de(e) if len(a) > 3]
+        la = [p[0] for a in todos for p in a]; lo = [p[1] for a in todos for p in a]
+        la0, la1, lo0, lo1 = min(la)-0.002, max(la)+0.002, min(lo)-0.002, max(lo)+0.002; px = 2.0
+        ky, kx = 111320.0, 111320.0*math.cos(math.radians((la0+la1)/2))
+        W, H = int((lo1-lo0)*kx/px)+1, int((la1-la0)*ky/px)+1; img = np.zeros((H, W), np.uint8)
+        for a in todos: cv2.fillPoly(img, [np.array([[(p[1]-lo0)*kx/px, (la1-p[0])*ky/px] for p in a], np.int32)], 255)
+        img = cv2.morphologyEx(img, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (int(25/px)*2+1,)*2))
+        cs, _ = cv2.findContours(img, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        ring = [[[round(la1-y*px/ky, 5), round(lo0+x*px/kx, 5)] for x, y in cv2.approxPolyDP(c, 1.0, True)[:, 0, :]] for c in cs if cv2.contourArea(c) > (30/px)**2]
+        for z in D['zonas']:
+            if z['id'] == 'varzea' and ring:
+                z['limite'] = ring; z.pop('centro', None); z.pop('raio', None); z['rotulo'] = centro(max(ring, key=len)); print('Contorno do Parque da Várzea ->', len(ring), 'forma(s)')
+    else: print('varzea.json sem o Parque Ecológico da Várzea')
 # recortar à terra (precisa de costa.json) as zonas de natureza que invadem o mar
 f = PAS + 'costa.json'
 if os.path.exists(f):

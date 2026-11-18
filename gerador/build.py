@@ -713,7 +713,6 @@ def prog_page():
 </div>
 <article class="sq-postal" id="sq-postal" aria-live="polite"></article>
 </div>
-<details class="sq-lista"><summary>Lista de locais do mapa</summary><div id="sq-lista"></div></details>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
 </div>
 </section>
