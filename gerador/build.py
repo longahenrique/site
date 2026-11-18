@@ -699,10 +699,8 @@ def prog_page():
     main=f"""<main id="conteudo" tabindex="-1" class="prog">
 <section class="sq" style="padding-top:56px">
 <div class="wrap">
-<p class="sq-kicker">Programa · <span id="sq-data"></span></p>
 <h1>Programa para Sesimbra</h1>
 <p class="sq-lead">Mar, mata, serra e bairros onde dá gosto viver. Escolhe um lugar no mapa para ver o que muda, como é hoje e como pode ficar.</p>
-<p class="sq-aviso">Página de teste: ainda não está publicada e não aparece no menu nem nos motores de pesquisa.</p>
 <h2 class="sr">Mapa do programa</h2>
 <fieldset class="sq-camadas" id="sq-camadas"><legend>Camadas do mapa</legend></fieldset>
 <div class="sq-corpo">
@@ -713,19 +711,12 @@ def prog_page():
 <article class="sq-postal" id="sq-postal" aria-live="polite"></article>
 </div>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
-<div class="sq-bairros">
-<h2>Em todos os bairros</h2>
-<p>O que não cabe num ponto do mapa, porque é para todo o concelho.</p>
-<ul class="sq-grelha" id="sq-grelha"></ul>
-</div>
-<p class="sq-legenda" id="sq-legenda"></p>
-<p class="sq-nota" id="sq-nota"></p>
+<p class="sq-dica" id="sq-dica">Para aproximar com o touchpad, aperta com dois dedos ou usa Ctrl + roda. Num telemóvel, usa dois dedos.</p>
 </div>
 </section>
 <section id="programa-completo" class="tint sq-completo">
 <div class="wrap">
 <h2>Programa completo</h2>
-<p class="intro">Todas as medidas do programa, por área. Algumas têm lugar no mapa.</p>
 {areas}</div>
 </section>
 </main>"""

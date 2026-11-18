@@ -16,7 +16,7 @@
 .sq-chip:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:3px}
 .sq-corpo{display:grid;gap:24px}
 @media(min-width:980px){.sq-corpo{grid-template-columns:1fr 420px;align-items:start}}
-.sq-mapa{height:640px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--sea)}
+.sq-mapa{position:relative;z-index:0;isolation:isolate;height:640px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--sea)}
 @media(max-width:640px){.sq-mapa{height:62vh;min-height:400px}}
 .sq-osm{filter:grayscale(1) sepia(.12) brightness(1.06) contrast(.88)}
 .sq .leaflet-container{font-family:Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
@@ -66,3 +66,5 @@
 .sq-semjs{margin:18px 0 0;font-size:18px}
 .sq .leaflet-control-attribution{font:500 12px/1.4 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
 .sq .leaflet-control-attribution a:focus-visible,.sq .leaflet-bar a:focus-visible,.sq-vertudo:focus-visible{outline-offset:-3px}
+
+.sq-dica{margin:10px 0 0;font:500 14px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted)}

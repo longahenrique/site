@@ -7,7 +7,8 @@ var DADOS = {
     { id: 'natureza', nome: 'Natureza e espaços verdes', cor: '#2f8f5b' },
     { id: 'bairros', nome: 'Vila, bairros e serviços', cor: '#d98a1c' },
     { id: 'mobilidade', nome: 'Autocarro e hubs', cor: '#1857d6' },
-    { id: 'ativos', nome: 'Ciclovias e a pé', cor: '#1e9e5a' }
+    { id: 'ativos', nome: 'Ciclovias e a pé', cor: '#1e9e5a' },
+    { id: 'servicos', nome: 'Escolas, saúde e serviços', cor: '#8a3fb0' }
   ],
   zonas: [
     { id: 'marginal', nome: 'Marginal de Sesimbra', camada: 'bairros', rotulo: [38.4425, -9.1012], direcao: 'bottom', minZoom: 12,
@@ -38,6 +39,23 @@ var DADOS = {
         { t: 'Linha Azul até ao comboio no Fogueteiro em 26 min, a cada 10 min na hora de ponta.', f: ['M'] },
         { t: 'Circular do Castelo e transporte a pedido para as aldeias e praias.', f: ['M','L'] },
         { t: 'Um jardim-biblioteca na praça do hub.', f: ['I'] } ] },
+    { id: 'escola-qc', nome: 'Nova escola secundária (local aproximado)', camada: 'servicos', centro: [38.5625, -9.0510], raio: 650, rotulo: [38.5625, -9.0510], direcao: 'center', minZoom: 12,
+      frase: 'Na zona da Ribeira do Marchante, em terreno municipal, para substituir a Michel Giacometti, hoje com o dobro dos alunos para que foi pensada.',
+      ilustracao: { tipo: 'paisagem', variante: 'vila' },
+      medidas: [
+        { t: '60 turmas e 55 salas, incluindo laboratórios de ciências, salas de informática e de artes.', f: ['H'] },
+        { t: 'Orçamento estimado de cerca de 25 milhões de euros; o projeto está pronto, falta o financiamento do Ministério da Educação.', f: ['H'] },
+        { t: 'A escola atual tem 1137 alunos em 48 turmas e está classificada como prioridade 1, muito urgente.', f: ['H'] }
+      ] },
+    { id: 'equip-qc', nome: 'Novos equipamentos da Quinta do Conde (zona aproximada)', camada: 'servicos', centro: [38.5710, -9.0390], raio: 500, rotulo: [38.5710, -9.0390], direcao: 'top', minZoom: 12.5,
+      frase: 'A Quinta do Conde ganha biblioteca, auditório, centro de saúde e a primeira Loja do Cidadão do concelho.',
+      ilustracao: { tipo: 'paisagem', variante: 'vila' },
+      medidas: [
+        { t: 'Polo de Leitura e Biblioteca Municipal, junto ao recinto da Feira Festa.', f: ['H'] },
+        { t: 'Auditório Municipal, com abertura plena prevista para 2027.', f: ['H'] },
+        { t: 'Nova Unidade de Saúde, no local da anterior; falta garantir profissionais.', f: ['H'] },
+        { t: 'Loja do Cidadão, com AT, IRN e Segurança Social.', f: ['H'] }
+      ] },
     { id: 'qconde', nome: 'Quinta do Conde', camada: 'bairros', rotulo: [38.5655, -9.0445],
       poligono: [[38.5785,-9.0540],[38.5785,-9.0355],[38.5530,-9.0335],[38.5510,-9.0545]],
       frase: 'A maior freguesia ganha a escola que falta, uma avenida com árvores e a estação de Coina a 20 min de autocarro.',

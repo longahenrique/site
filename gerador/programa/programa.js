@@ -50,11 +50,11 @@ var ILU = (function () {
 
   var el = document.getElementById('sq-mapa');
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var map = L.map(el, { zoomAnimation: !RM, fadeAnimation: !RM, markerZoomAnimation: !RM, scrollWheelZoom: false, zoomSnap: 0.5, minZoom: 10, maxZoom: 16, renderer: L.canvas({ padding: 0.5, tolerance: 8 }) });
+  var map = L.map(el, { zoomAnimation: !RM, fadeAnimation: !RM, markerZoomAnimation: !RM, scrollWheelZoom: true, zoomSnap: 0.5, minZoom: 10, maxZoom: 16, renderer: L.canvas({ padding: 0.5, tolerance: 8 }) });
   map.setView([38.51, -9.11], 11);
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
-  map.on('click focus', function () { map.scrollWheelZoom.enable(); });
-  map.on('mouseout blur', function () { map.scrollWheelZoom.disable(); });
+  // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
+  el.addEventListener('wheel', function (e) { if (!(e.ctrlKey || e.metaKey)) e.stopImmediatePropagation(); }, true);
 
   var grupos = {}; DADOS.camadas.forEach(function (c) { grupos[c.id] = L.featureGroup().addTo(map); });
 
@@ -123,7 +123,7 @@ var ILU = (function () {
       html += '<div class="sq-alternar" role="group" aria-label="Hoje ou amanhã"><button type="button" data-v="hoje" aria-pressed="false">Hoje</button><button type="button" data-v="amanha" aria-pressed="true">Com o programa</button></div><div class="desenho">' + ILU.perfil(il.amanha, 'Perfil de ' + z.nome + ' com o programa') + '</div><p class="nota-ilu">' + esc(z.perfilNome ? 'Perfil da ' + z.perfilNome + ', ilustrativo.' : 'Perfil da rua, ilustrativo.') + '</p>';
     } else html += ILU.paisagem(il.variante, z.nome);
     html += '</div><div class="conteudo"><p class="camada">' + esc(nomeCamada[z.camada]) + '</p><h3>' + esc(z.nome) + '</h3><p class="frase">' + esc(z.frase) + '</p><ul class="sq-medidas">' +
-      z.medidas.map(function (m) { return '<li>' + esc(m.t) + '<br>' + fontes(m.f) + '</li>'; }).join('') + '</ul></div>';
+      z.medidas.map(function (m) { return '<li>' + esc(m.t) + '</li>'; }).join('') + '</ul></div>';
     postal.innerHTML = html;
     [].forEach.call(postal.querySelectorAll('.sq-alternar button'), function (b) {
       b.addEventListener('click', function () {
@@ -144,12 +144,6 @@ var ILU = (function () {
     var cor = document.createElement('span'); cor.className = 'cor'; cor.style.background = c.cor;
     lab.appendChild(inp); lab.appendChild(cor); lab.appendChild(document.createTextNode(c.nome)); fs.appendChild(lab);
   });
-
-  // Em todos os bairros
-  document.getElementById('sq-grelha').innerHTML = DADOS.bairros.map(function (b) { return '<li><b>' + esc(b.t) + '</b>' + esc(b.d) + '<br>' + fontes(b.f) + '</li>'; }).join('');
-  document.getElementById('sq-legenda').innerHTML = 'De onde vem cada medida: ' + Object.keys(DADOS.fontes).map(function (k) { return '<span class="sq-fonte ' + k + '">' + esc(DADOS.fontes[k]) + '</span>'; }).join(' ');
-  document.getElementById('sq-data').textContent = DADOS.atualizadoCurto;
-  document.getElementById('sq-nota').textContent = 'Proposta para discussão, atualizada a ' + DADOS.atualizado + '. As zonas e os traçados são indicativos; os perfis das ruas são ilustrações, não projetos.';
 
   // Ligações "No mapa" do programa completo
   [].forEach.call(document.querySelectorAll('[data-zonas]'), function (sp) {
