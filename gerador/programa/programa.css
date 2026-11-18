@@ -234,3 +234,13 @@
 
 .sq-grupos-intro{flex-direction:column;padding:0;gap:10px;background:none}
 .sq-grupos-intro button{flex:none;min-height:56px;font-size:17px}
+
+/* Telemóvel: mapa, depois cartões, depois as descrições das camadas */
+@media(max-width:979px){
+  .sq-corpo:not(.sq-cheio-corpo) .sq-col-mapa{display:contents}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-mapa{order:1}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-dica{order:2;margin:0}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-col-cartao{order:3}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-notas{order:4}
+  .sq-busca{margin-bottom:16px}
+}

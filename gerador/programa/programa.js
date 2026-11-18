@@ -172,7 +172,7 @@ var ILU = (function () {
   // Camadas que a pessoa liga e desliga (o mapa abre vazio)
   var UI = [
     { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'As ' + ciclos.length + ' ligações desenhadas somam cerca de ' + kmCiclo + ' km (valor aproximado, medido sobre o traçado do mapa) e fazem parte da rede ciclável de 40 km da proposta, com bicicletas e trotinetes partilhadas.' },
-    { id: 'faixa', nome: 'Faixa BUS', cor: '#b87a00', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10 entre a estação de Coina e o Posto da EN10, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
+    { id: 'faixa', nome: 'Faixa BUS', cor: '#b87a00', nota: 'Faixas BUS onde há filas, para o autocarro não ficar preso no trânsito: entre Fernão Ferro e o Fogueteiro, na Av. João Paulo II, no Marco do Grilo e na EN10, desde a estação de Coina até ao fim da EN10 urbana, na Quinta do Conde, onde se perdem 8 dos 10 min de atraso na hora de ponta.' },
     { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais a circular do Castelo, a cada 30 min, e a ligação Casal do Sapo–Coina, prevista no Plano de Mobilidade Urbana Sustentável (PMUS). As linhas que já existem, como a circular da Quinta do Conde e o eixo Quinta do Conde–Coina, não estão desenhadas.' },
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, faixas de autocarro e bicicletas, e paragens), o acesso da rotunda de Coina à Rua Luís de Camões (traçado indicativo, sem projeto aprovado), a Estrada dos Almocreves, com ciclovia, e a variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
@@ -228,7 +228,7 @@ var ILU = (function () {
   var MINZ = { obra: 0, saude: 14.5, bombeiros: 14.5, policia: 14.5, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
   var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'igreja', 'mercado', 'desporto'], DIST = 38;
   var filtro = null;   // com um cartão escolhido, só se mostra o que é dessa zona: {b: limites} ou {solo: nome da linha}
-  function nofiltro(r) { return !filtro || (!filtro.solo && filtro.b.contains(r.p)); }
+  function nofiltro(r) { return !filtro || (!filtro.solo && !filtro.semObra && filtro.b.contains(r.p)); }
   var forcado = null;   // marcador aberto pela pesquisa: não é escondido pelo desaglomerar
   map.on('popupclose', function () { forcado = null; });
   function nomesParques() {
@@ -249,7 +249,7 @@ var ILU = (function () {
     L.DomEvent.disableClickPropagation(d); L.DomEvent.disableScrollPropagation(d);
     L.DomEvent.on(b, 'click', function () { var a = b.getAttribute('aria-expanded') === 'true'; b.setAttribute('aria-expanded', a ? 'false' : 'true'); p.hidden = a; b.textContent = a ? 'Mostrar legenda' : 'Esconder legenda'; });
     legRender = function () {
-      var cheio = el.classList.contains('sq-cheio'), act = UI.filter(function (u) { return cheio || uiOn[u.id]; });
+      var cheio = el.classList.contains('sq-cheio'), act = UI.filter(function (u) { return cheio || uiOn[u.id]; });   // o menu de camadas só aparece em ecrã inteiro
       var h = '<p class="sq-leg-t">' + (cheio ? 'O que ver no mapa' : 'Legenda') + '</p><ul class="sq-leg-l">' + act.map(function (u) {
         var sw = '<i class="l" style="background:' + u.cor + '"></i>';
         return '<li>' + (cheio ? '<label><input type="checkbox" data-ui="' + u.id + '"' + (uiOn[u.id] ? ' checked' : '') + '>' + sw + esc(u.nome) + '</label>' : sw + esc(u.nome)) + '</li>';
@@ -380,13 +380,13 @@ var ILU = (function () {
     var solo = z.id === 'variante' ? [z.nome] : z.id === 'almocreves' ? ['Estrada dos Almocreves', 'Ciclovia da Estrada dos Almocreves'] : null;   // mostram-se sozinhas
     if (solo) { filtro = { solo: solo }; lig('vias'); if (z.id === 'almocreves') lig('ciclo'); return; }
     var b = (c instanceof L.Circle ? c.getLatLng().toBounds(c.getRadius() * 2) : c.getBounds()).pad(0.1);
-    filtro = { b: b };
+    filtro = { b: b, semObra: !!(z.geo && z.geo.linha) };   // nos cartões de estradas não aparecem os serviços propostos à volta
     linhasObj.forEach(function (o) {
       var uiId = o.l.camada === 'ativos' ? 'ciclo' : o.l.nome === 'Faixa BUS' ? 'faixa' : (o.l.camada === 'autocarro' || o.l.nome === 'Linha Azul') ? 'bus' : 'vias';
       if (o.l.coords.some(function (q) { return b.contains(q); })) lig(uiId);
     });
     ifaceObj.forEach(function (o) { if (!o.i.existe && b.contains(o.i.p)) lig('hubs'); });
-    rotPontos.forEach(function (r) { if (r.cat === 'obra' && b.contains(r.p)) lig('obra'); });
+    rotPontos.forEach(function (r) { if (r.cat === 'obra' && !filtro.semObra && b.contains(r.p)) lig('obra'); });
     if (camadasZona.marginal && camadasZona.marginal.getBounds && b.intersects(camadasZona.marginal.getBounds())) lig('marginal');
   }
   function escolher(id, voar) {
@@ -408,7 +408,7 @@ var ILU = (function () {
   });
 
   // Menu de camadas (por cima do mapa)
-  var fs = document.getElementById('sq-camadas');
+  var fs = document.getElementById('sq-camadas') || document.createElement('fieldset');   // o menu de camadas vive na legenda do mapa
   UI.forEach(function (u) {
     var lab = document.createElement('label'); lab.className = 'sq-chip';
     var inp = document.createElement('input'); inp.type = 'checkbox'; inp.checked = false; inp.setAttribute('data-ui', u.id);
@@ -517,7 +517,7 @@ var ILU = (function () {
 
   // A pesquisa fica no topo da coluna dos cartões no computador e por cima do menu no telemóvel
   (function () {
-    var bx = document.querySelector('.sq-busca'), col = document.querySelector('.sq-col-cartao'), menu = document.getElementById('sq-camadas'); if (!bx || !col || !menu || !window.matchMedia) return;
+    var bx = document.querySelector('.sq-busca'), col = document.querySelector('.sq-col-cartao'); if (!bx || !col || !window.matchMedia) return;
     var mq = window.matchMedia('(min-width: 980px)');
     var cp = col.parentNode;
     function pos() { if (mq.matches || (corpo && corpo.classList.contains('sq-cheio-corpo'))) { if (bx.parentNode !== col) col.insertBefore(bx, col.firstChild); } else if (bx.nextElementSibling !== cp) cp.parentNode.insertBefore(bx, cp); }

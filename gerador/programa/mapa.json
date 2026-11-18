@@ -3769,7 +3769,7 @@
      "t": "O passeio do lado nascente pode não existir nos troços junto à Várzea; o desenho mostra o perfil completo."
     },
     {
-     "t": "Faixa BUS na EN10, nos dois sentidos, entre a estação de Coina e o Posto da EN10, com prioridade nas rotundas."
+     "t": "Faixa BUS na EN10, nos dois sentidos, desde a estação de Coina até ao fim da avenida, com prioridade nas rotundas."
     },
     {
      "t": "Autocarro para Coina a cada 10 min na ponta, à hora de cada comboio."
@@ -50451,7 +50451,7 @@
    "cor": "#b87a00",
    "peso": 16,
    "opacidade": 0.9,
-   "texto": "Na EN10, nos dois sentidos, entre a estação de Coina e o Posto da EN10, com prioridade nas rotundas. É aqui que se perdem 8 dos 10 min de atraso na hora de ponta.",
+   "texto": "Na EN10, nos dois sentidos, desde a estação de Coina até ao fim da EN10 urbana, com prioridade nas rotundas. É no troço até ao Posto da EN10 que se perdem 8 dos 10 min de atraso na hora de ponta.",
    "coords": [
     [
      38.58544,
@@ -50526,24 +50526,24 @@
      -9.04112
     ],
     [
-     38.57971,
-     -9.0406
+     38.57984,
+     -9.04067
     ],
     [
-     38.57941,
-     -9.04039
+     38.57956,
+     -9.0405
     ],
     [
      38.57894,
      -9.03994
     ],
     [
-     38.57848,
-     -9.03965
+     38.5786,
+     -9.03971
     ],
     [
-     38.57801,
-     -9.03951
+     38.57814,
+     -9.03954
     ],
     [
      38.57717,
@@ -50562,8 +50562,88 @@
      -9.03817
     ],
     [
-     38.57241,
-     -9.03739
+     38.57195,
+     -9.03717
+    ],
+    [
+     38.57178,
+     -9.03717
+    ],
+    [
+     38.57147,
+     -9.03696
+    ],
+    [
+     38.57108,
+     -9.03685
+    ],
+    [
+     38.56946,
+     -9.03667
+    ],
+    [
+     38.56825,
+     -9.03684
+    ],
+    [
+     38.56745,
+     -9.03684
+    ],
+    [
+     38.56693,
+     -9.03672
+    ],
+    [
+     38.56566,
+     -9.03613
+    ],
+    [
+     38.56488,
+     -9.036
+    ],
+    [
+     38.56438,
+     -9.03604
+    ],
+    [
+     38.56402,
+     -9.03624
+    ],
+    [
+     38.56374,
+     -9.03615
+    ],
+    [
+     38.5626,
+     -9.03635
+    ],
+    [
+     38.56195,
+     -9.03636
+    ],
+    [
+     38.56104,
+     -9.03616
+    ],
+    [
+     38.5595,
+     -9.03542
+    ],
+    [
+     38.55704,
+     -9.03508
+    ],
+    [
+     38.55664,
+     -9.03508
+    ],
+    [
+     38.55567,
+     -9.03521
+    ],
+    [
+     38.55518,
+     -9.03519
     ]
    ],
    "pontos": [
@@ -50578,6 +50658,22 @@
     [
      38.57238,
      -9.03747
+    ],
+    [
+     38.56965,
+     -9.03667
+    ],
+    [
+     38.56566,
+     -9.03613
+    ],
+    [
+     38.5595,
+     -9.03542
+    ],
+    [
+     38.55506,
+     -9.03516
     ]
    ]
   },
