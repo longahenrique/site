@@ -1,7 +1,7 @@
 /* ===== Ilustrações ===== */
 var ILU = (function () {
-  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma' };
-  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d' };
+  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma', terra: 'terra batida', bermaerva: 'berma' };
+  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d', terra: '#b08d5b', bermaerva: '#cbbf9d' };
   function espinha(x, y, s, c) {   // carro estacionado de lado (visto de perfil), a entrar na espinha
     var L = 2.1 * s;
     return '<path d="M' + (x - L) + ' ' + (y - 0.35 * s) + ' L' + (x - L) + ' ' + (y - 0.85 * s) + ' Q' + (x - L) + ' ' + (y - 1.05 * s) + ' ' + (x - 1.7 * s) + ' ' + (y - 1.05 * s) + ' L' + (x - 1.05 * s) + ' ' + (y - 1.1 * s) + ' L' + (x - 0.55 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 0.7 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 1.3 * s) + ' ' + (y - 1.1 * s) + ' L' + (x + 1.8 * s) + ' ' + (y - 1.02 * s) + ' Q' + (x + L) + ' ' + (y - 0.95 * s) + ' ' + (x + L) + ' ' + (y - 0.7 * s) + ' L' + (x + L) + ' ' + (y - 0.35 * s) + ' Z" fill="' + c + '"/>' +
@@ -9,6 +9,7 @@ var ILU = (function () {
       '<circle cx="' + (x - 1.3 * s) + '" cy="' + (y - 0.35 * s) + '" r="' + (0.38 * s) + '" fill="#2b2f36"/><circle cx="' + (x + 1.3 * s) + '" cy="' + (y - 0.35 * s) + '" r="' + (0.38 * s) + '" fill="#2b2f36"/>' +
       '<circle cx="' + (x - 1.3 * s) + '" cy="' + (y - 0.35 * s) + '" r="' + (0.16 * s) + '" fill="#aab1ba"/><circle cx="' + (x + 1.3 * s) + '" cy="' + (y - 0.35 * s) + '" r="' + (0.16 * s) + '" fill="#aab1ba"/>';
   }
+  function erva(x, y, s) { s *= 0.5; var d = ''; [-0.35, 0, 0.35].forEach(function (k, i) { d += '<path d="M' + (x + k * s) + ' ' + y + ' q' + ((k - 0.1) * s * 0.6) + ' ' + (-0.5 * s) + ' ' + (k * s * 0.8 - 0.1 * s) + ' ' + (-(0.8 + 0.2 * i) * s) + '" fill="none" stroke="#6f8f4a" stroke-width="' + (0.1 * s) + '" stroke-linecap="round"/>'; }); return d; }
   function pessoa(x, y, s, c) { return '<circle cx="' + x + '" cy="' + (y - 1.55 * s) + '" r="' + (0.13 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.16 * s) + '" y="' + (y - 1.4 * s) + '" width="' + (0.32 * s) + '" height="' + (1.4 * s) + '" rx="' + (0.12 * s) + '" fill="' + c + '"/>'; }
   function arvore(x, y, s) { return '<rect x="' + (x - 0.12 * s) + '" y="' + (y - 2.6 * s) + '" width="' + (0.24 * s) + '" height="' + (2.6 * s) + '" fill="#6d5a43"/><circle cx="' + x + '" cy="' + (y - 3.6 * s) + '" r="' + (1.5 * s) + '" fill="#4f9a5a"/><circle cx="' + (x - 0.8 * s) + '" cy="' + (y - 3.1 * s) + '" r="' + (1 * s) + '" fill="#5daa66"/><circle cx="' + (x + 0.8 * s) + '" cy="' + (y - 3.2 * s) + '" r="' + (1 * s) + '" fill="#468d50"/>'; }
   function carro(x, y, s, c) { return '<rect x="' + (x - 0.9 * s) + '" y="' + (y - 1.15 * s) + '" width="' + (1.8 * s) + '" height="' + (0.75 * s) + '" rx="' + (0.2 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.65 * s) + '" y="' + (y - 1.5 * s) + '" width="' + (1.3 * s) + '" height="' + (0.45 * s) + '" rx="' + (0.15 * s) + '" fill="' + c + '" opacity=".8"/><rect x="' + (x - 0.8 * s) + '" y="' + (y - 0.42 * s) + '" width="' + (0.3 * s) + '" height="' + (0.42 * s) + '" fill="#2a2d33"/><rect x="' + (x + 0.5 * s) + '" y="' + (y - 0.42 * s) + '" width="' + (0.3 * s) + '" height="' + (0.42 * s) + '" fill="#2a2d33"/>'; }
@@ -26,6 +27,8 @@ var ILU = (function () {
       if (tipo === 'carro') svg += carro(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
       else if (tipo === 'estac') svg += espinha(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
       else if (tipo === 'bus') svg += autocarro(cx, chao, s);
+      else if (tipo === 'terra') svg += erva(x + w * 0.22, chao, s) + erva(x + w * 0.78, chao, s * 0.9);
+      else if (tipo === 'bermaerva') svg += erva(cx, chao, s * 0.8);
       else if (tipo === 'busciclo') svg += autocarro(x + w * 0.32, chao, s * 0.85) + bicicleta(x + w * 0.78, chao, s);
       else if (tipo === 'ciclovia') svg += bicicleta(cx, chao, s);
       else if (tipo === 'arvores') svg += arvore(cx, chao, s);
@@ -174,7 +177,7 @@ var ILU = (function () {
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, faixas de autocarro e bicicletas, e paragens), o acesso da rotunda de Coina à Rua Luís de Camões (traçado indicativo, sem projeto aprovado), a Estrada dos Almocreves, com ciclovia, e a variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
     { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Os novos hubs onde o autocarro se liga ao parque de estacionamento: Moagem, em Santana, e Alfarim. As estações de Coina e do Fogueteiro já existem e estão sempre marcadas.' },
-    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, o Spot Jovem no Parque da Vila, a nova biblioteca e o palácio da justiça de Sampaio.' }
+    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova escola secundária da Quinta do Conde, o Spot Jovem no Parque da Vila, a nova biblioteca e o palácio da justiça de Sampaio.' }
   ];
   UI.forEach(function (u) { uiOn[u.id] = false; }); uiOn.existe = true;   // o que já existe está sempre no mapa
   function irNota(id) {   // só quando a pessoa pede (ligação no balão): leva até à frase explicativa
@@ -187,9 +190,9 @@ var ILU = (function () {
   function aplicarFiltro() {
     linhasObj.forEach(function (o) {
       var uiId = o.l.camada === 'ativos' ? 'ciclo' : o.l.nome === 'Faixa BUS' ? 'faixa' : (o.l.camada === 'autocarro' || o.l.nome === 'Linha Azul') ? 'bus' : 'vias', g = GR[uiId];
-      var ver = !filtro || (filtro.solo ? o.l.nome === filtro.solo : o.l.coords.some(function (q) { return filtro.b.contains(q); }));
+      var ver = !filtro || (filtro.solo ? filtro.solo.indexOf(o.l.nome) >= 0 : o.l.coords.some(function (q) { return filtro.b.contains(q); }));
       var seg = o.l.coords;
-      if (filtro && !filtro.solo && ver) {   // só o troço que passa pela zona (com um ponto de folga de cada lado)
+      if (false) {   // as linhas que passam pela zona mostram-se completas, sem corte   // só o troço que passa pela zona (com um ponto de folga de cada lado)
         seg = []; var cur = null, cs = o.l.coords;
         cs.forEach(function (q, k) {
           var dentro = filtro.b.contains(q) || (k > 0 && filtro.b.contains(cs[k - 1])) || (k < cs.length - 1 && filtro.b.contains(cs[k + 1]));
@@ -374,8 +377,8 @@ var ILU = (function () {
     function lig(id) { uiOn[id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + id + '"]'); if (cx) cx.checked = true; }
     UI.forEach(function (u) { uiOn[u.id] = false; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = false; });
     if (z.camada === 'natureza') { filtro = null; return; }   // áreas naturais: nada de camadas
-    var solo = z.id === 'variante' ? z.nome : null;   // a variante mostra-se sozinha
-    if (solo) { filtro = { solo: solo }; lig('vias'); return; }
+    var solo = z.id === 'variante' ? [z.nome] : z.id === 'almocreves' ? ['Estrada dos Almocreves', 'Ciclovia da Estrada dos Almocreves'] : null;   // mostram-se sozinhas
+    if (solo) { filtro = { solo: solo }; lig('vias'); if (z.id === 'almocreves') lig('ciclo'); return; }
     var b = (c instanceof L.Circle ? c.getLatLng().toBounds(c.getRadius() * 2) : c.getBounds()).pad(0.1);
     filtro = { b: b };
     linhasObj.forEach(function (o) {

@@ -49891,16 +49891,16 @@
     "tipo": "perfil",
     "hoje": [
      [
-      "berma",
-      1
+      "bermaerva",
+      1.5
      ],
      [
-      "carro",
+      "terra",
       4.5
      ],
      [
-      "berma",
-      1
+      "bermaerva",
+      1.5
      ]
     ],
     "amanha": [
@@ -55576,6 +55576,15 @@
     -9.03733
    ],
    "texto": "Previsto dentro do Parque da Vila, junto ao parque de estacionamento da Avenida Cova dos Vidros. Local aproximado."
+  },
+  {
+   "cat": "obra",
+   "nome": "Nova Escola Secundária da Quinta do Conde",
+   "p": [
+    38.5675,
+    -9.051
+   ],
+   "texto": "Em terreno municipal cedido pela Câmara, junto ao eixo da Ribeira do Marchante. Projeto apresentado em abril de 2025; financiamento ainda por garantir. Local aproximado."
   }
  ]
 }
