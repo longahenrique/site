@@ -142,7 +142,7 @@ var ILU = (function () {
     var lin = L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
       .addTo(g);
     var uiId = l.camada === 'ativos' ? 'ciclo' : l.nome === 'Faixa BUS' ? 'faixa' : (l.camada === 'autocarro' || l.nome === 'Linha Azul') ? 'bus' : 'vias';
-    lin.bindPopup('<b>' + esc(l.nome) + '</b>' + (l.balao && l.texto ? '<br>' + esc(l.texto) : '') + (l.cartao ? '<br><button type="button" class="sq-pop-cartao" data-cartao="' + esc(l.cartao) + '">Ver cartão</button>' : ''), { maxWidth: 260 });   // só o nome; a descrição só nas linhas com "balao" (a Linha Azul)
+    lin.bindPopup('<b>' + esc(l.nome) + '</b>' + (l.balao && l.texto ? '<br>' + esc(l.texto) : '') + (l.cartao ? '<span class="sq-pop-w"><br><button type="button" class="sq-pop-cartao" data-cartao="' + esc(l.cartao) + '">Ver cartão</button></span>' : ''), { maxWidth: 260 });   // só o nome; a descrição só nas linhas com "balao" (a Linha Azul)
     linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
   var gFixos = L.featureGroup().addTo(map);   // estações que já existem: marcadas desde o início
@@ -653,7 +653,7 @@ var ILU = (function () {
     aplicar(); if (mq.addEventListener) mq.addEventListener('change', aplicar); else mq.addListener(aplicar);
   })();
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-ver-mapa'); if (!b) return; escolher(b.getAttribute('data-zona'), true); el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); });
-  window.SQ = { escolher: escolher, mapa: map };
+  window.SQ = { escolher: escolher, mapa: map, esc: esc, cats: CATS };
   var mHash = /^#cartao-([\w-]+)$/.exec(decodeURIComponent(location.hash));   // ligação direta a um cartão (por exemplo, a prévia da página principal): /programa#cartao-vila
   cartao(null); visibilidade(); urlSync = true;
   if (mHash && zonaDe(mHash[1])) setTimeout(function () { escolher(mHash[1], true); el.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 120);

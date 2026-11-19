@@ -207,12 +207,11 @@
 #sq-res[hidden]{display:none}
 #sq-res li{margin:0;padding:10px 14px;font:500 16px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
 #sq-res .grp{padding:8px 14px 4px;font:700 12px/1.2 Archivo,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#4b5347}
-#sq-res [role=option]{display:flex;justify-content:space-between;gap:12px;align-items:baseline;cursor:pointer;min-height:44px;box-sizing:border-box;align-items:center}
-#sq-res [role=option] .k{flex:none;font-size:13px;font-weight:600;color:#4b5347}
+#sq-res [role=option]{display:flex;flex-direction:column;align-items:flex-start;gap:2px;cursor:pointer;min-height:44px;box-sizing:border-box;justify-content:center}   /* texto em cima, a indicação (Medida em…, tipo) por baixo: não fica espremido em larguras pequenas */
+#sq-res [role=option] .k{font-size:13px;font-weight:600;color:#4b5347}
 #sq-res [role=option].on,#sq-res [role=option]:hover{background:var(--ink);color:var(--paper)}
 #sq-res [role=option].on .k,#sq-res [role=option]:hover .k{color:var(--paper)}
 #sq-res .vazio{color:#4b5347}
-@media(max-width:640px){#sq-res [role=option]{flex-direction:column;align-items:flex-start;gap:2px}}
 @media(prefers-reduced-motion:reduce){#sq-res{box-shadow:none}}
 
 @media(min-width:980px){.sq-col-cartao .sq-busca{margin:0 0 12px;max-width:none}.sq-col-cartao .sq-busca label{font-size:14px;margin-bottom:4px}.sq-col-cartao .sq-busca input{font-size:16px;padding:10px 12px;min-height:44px}.sq-col-cartao .sq-busca #sq-res li{font-size:15px}}
@@ -290,3 +289,37 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .leaflet-container .leaflet-control-attribution{background:#fff;color:#1a1a1a}
 .leaflet-container .leaflet-control-attribution a{color:#00425c}
 
+
+/* o cartão está sempre ao lado do mapa: o botão "Ver cartão" do balão só faz sentido quando o cartão fica por baixo (telemóvel e tablet) */
+@media(min-width:980px){.sq-pop-w{display:none}}
+
+.sq-dados{margin:14px 0 0;font-size:14px;line-height:1.5;color:#4b5347}
+.sq-dados a{color:inherit;text-decoration:underline}
+
+/* Sugerir no mapa */
+.sq-btn-sug{margin:14px 0 0;padding:10px 16px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:700 15px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-btn-sug:hover{background:var(--ink);color:#fff}
+.sq-btn-sug:focus-visible,.sq-sug button:focus-visible,.sq-sug select:focus-visible,.sq-sug textarea:focus-visible,.sq-sug input:focus-visible{outline:3px solid #1857d6;outline-offset:2px}
+.sq-sug{margin:14px 0 0;padding:16px;border:2px solid var(--ink);border-radius:12px;background:var(--paper)}
+.sq-sug[hidden]{display:none}
+.sq-sug-cab{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sq-sug h3{margin:0;font-size:20px}
+.sq-sug-x{width:44px;height:44px;border:2px solid var(--ink);border-radius:8px;background:#fff;font:700 24px/1 Archivo,Arial,sans-serif;cursor:pointer}
+.sq-sug fieldset{margin:12px 0 0;padding:0;border:0}
+.sq-sug legend{padding:0;font:700 15px Archivo,Arial,sans-serif}
+.sq-sug-tipos label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:15px;line-height:1.35;cursor:pointer}
+.sq-sug-tipos input{margin-top:3px;width:18px;height:18px;flex:none}
+.sq-sug-ajuda,.sq-sug-estado,.sq-sug-nota{margin:10px 0 0;font-size:14px;line-height:1.45;color:#2d332a}
+.sq-sug-estado{font-weight:700}
+.sq-sug-ferr,.sq-sug-acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.sq-sug-ferr button,.sq-sug-canc{padding:8px 12px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:600 14px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-sug-env{padding:8px 16px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:var(--ink);color:#fff;font:700 15px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-sug-campo{margin-top:12px}
+.sq-sug-campo[hidden]{display:none}
+.sq-sug-campo label{display:block;margin-bottom:4px;font:700 14px Archivo,Arial,sans-serif}
+.sq-sug select,.sq-sug textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:16px Archivo,Arial,sans-serif}
+.sq-sug-modo{cursor:crosshair}
+.sq-sug-modo .leaflet-interactive{cursor:crosshair}
+.sq-sug-txt{display:none}
+@media(min-width:980px){.sq-sug-txt{display:inline}}
+.sq-sug,.sq-sug p,.sq-sug label{font-family:Archivo,Arial,sans-serif}

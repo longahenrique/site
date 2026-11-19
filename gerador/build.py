@@ -575,6 +575,7 @@ priv=f"""<p>Esta página explica que dados pessoais este site trata e porquê. E
 <li>O site é alojado no GitHub Pages, um serviço da GitHub, Inc. Como em qualquer alojamento, este serviço pode registar dados técnicos do teu pedido, como o endereço IP, para fornecer o site e por razões de segurança. Estes dados são tratados pela GitHub, que pode tratá-los nos Estados Unidos, segundo a sua própria política de privacidade. Segundo a GitHub, as transferências de dados para fora do Espaço Económico Europeu assentam em cláusulas contratuais-tipo aprovadas pela Comissão Europeia e no Quadro de Privacidade de Dados UE–EUA (ver a <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">política de privacidade da GitHub</a>).</li>
 <li>Os tipos de letra do site estão guardados no próprio site, por isso a tua visita não envia pedidos ao Google Fonts nem a serviços semelhantes.</li>
 <li>Na página do programa (/programa), o mapa vai buscar as imagens do mapa ao OpenStreetMap, um serviço da Fundação OpenStreetMap, que recebe o teu endereço IP e dados técnicos do teu navegador, como acontece com qualquer imagem de um site externo. O mapa não cria cookies e não envia para lado nenhum o que escolhes ou pesquisas nele. Mais informação na <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">política de privacidade da Fundação OpenStreetMap</a>.</li>
+<li>No computador, a página do programa tem a opção "Sugerir no mapa". O que desenhas e escreves fica só no teu navegador até clicares em "Enviar por email", que abre o teu programa de email com a sugestão escrita. O site não recebe nem guarda nada: só chega a nós o que enviares.</li>
 <li>Se usares o menu de acessibilidade (tamanho do texto, contraste e outras opções) ou fechares um aviso no topo do site, essa escolha fica guardada apenas no teu navegador, para a lembrar na visita seguinte. Não é enviada para lado nenhum.</li>
 </ul>
 {stats}<h2>Se me enviares um email</h2>
@@ -720,6 +721,8 @@ def prog_page():
 </div>
 </div>
 <p class="sq-aviso sq-vivo"><strong>Um programa vivo.</strong> Este mapa reúne ideias e propostas para Sesimbra, que vão sendo atualizadas e discutidas. Os traçados e as localizações são indicativos e ficam sujeitos a estudo e a decisão pública.</p>
+<button type="button" class="sq-btn-sug" id="sq-sug-abrir" hidden>Sugerir no mapa</button>
+<p class="sq-dados"><span class="sq-sug-txt">Desenha um percurso, marca um local novo ou assinala um problema e envia-nos por email. Também podes escrever para <a href="mailto:geral@henriquelonga.pt?subject=Mapa%20do%20programa">geral@henriquelonga.pt</a>. </span>Dados do mapa abertos para descarregar: <a href="/programa-mapa/dados/programa-sesimbra.geojson" download>GeoJSON</a> e <a href="/programa-mapa/dados/programa-sesimbra.csv" download>CSV</a>. Licença <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">ODbL</a>: podes usar e partilhar, citando "© colaboradores do OpenStreetMap" e o programa, e mantendo a mesma licença.</p>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
 </div>
 </section>
@@ -729,17 +732,41 @@ def prog_page():
 {areas}</div>
 </section>
 </main>"""
-    ex='<script src="/programa-mapa/leaflet.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa-dados.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa.js?v='+_V+'"></script>\n'
+    ex='<script src="/programa-mapa/leaflet.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa-dados.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa.js?v='+_V+'"></script>\n<script src="/programa-mapa/sugestao.js?v='+_V+'"></script>\n'
     h=head('/programa','Programa para Sesimbra','Programa para Sesimbra: mapa com as propostas para cada localidade, estradas e natureza, e o programa completo por áreas.',css+'\n'+article_css,'website',None,'<link rel="stylesheet" href="/programa-mapa/leaflet.css?v='+_V+'">\n<link rel="stylesheet" href="/programa-mapa/programa.css?v='+_V+'">')
     return h+body(header.replace('<a href="/programa">','<a href="/programa" aria-current="page">'),main,ex)
 if os.path.isdir('gerador/programa'):
     os.makedirs('_site/programa-mapa',exist_ok=True)
-    for _f in ('leaflet.css','leaflet.js','programa.css','programa.js'):
+    for _f in ('leaflet.css','leaflet.js','programa.css','programa.js','sugestao.js'):
         shutil.copy('gerador/programa/'+_f,'_site/programa-mapa/'+_f)
     import json as _jj
     _D=_jj.load(open('gerador/programa/mapa.json',encoding='utf-8'))
     for _l in _D.get('linhas',[]): _l.pop('pontos',None)
     open('_site/programa-mapa/programa-dados.js','w',encoding='utf-8').write('/* Gerado a partir de gerador/programa/mapa.json (painel do mapa) */\nvar DADOS = '+_jj.dumps(_D,ensure_ascii=False,separators=(',',':'))+';\n')
+    # dados abertos: GeoJSON e CSV gerados a partir do mesmo ficheiro do mapa
+    import csv as _csv, io as _io
+    _CAT={'parque':'Parque ou jardim','escola':'Escola','saude':'Saúde','farmacia':'Farmácia','estacionamento':'Estacionamento','bombeiros':'Bombeiros','policia':'Polícia','igreja':'Igreja ou capela','cultura':'Biblioteca, auditório, cultura','servicos':'Serviços públicos','mercado':'Mercado e supermercado','desporto':'Desporto','social':'Apoio social e comunitário','obra':'Proposta no mapa','transporte':'Estação ou terminal'}
+    _CAM={c['id']:c['nome'] for c in _D.get('camadas',[])}; _CAM.update({'vias':'Estradas','autocarro':'Autocarro'})
+    _feat=[]; _rows=[]
+    for _p in _D.get('pontos',[])+_D.get('manuais',[]):
+        _t='proposta' if _p['cat']=='obra' else 'existente'
+        _pr={'tipo':_t,'categoria':_CAT.get(_p['cat'],_p['cat']),'nome':_p['nome']}
+        if _p.get('texto') and _p['cat']!='obra': _pr['descricao']=_p['texto']
+        _feat.append({'type':'Feature','properties':_pr,'geometry':{'type':'Point','coordinates':[_p['p'][1],_p['p'][0]]}})
+        _rows.append([_pr['tipo'],_pr['categoria'],_pr['nome'],_pr.get('descricao',''),_p['p'][0],_p['p'][1]])
+    for _i in _D.get('interfaces',[]):
+        _pr={'tipo':'existente' if _i.get('existe') else 'proposta','categoria':'Estação ou hub','nome':_i['nome'],'descricao':_i.get('texto','')}
+        _feat.append({'type':'Feature','properties':_pr,'geometry':{'type':'Point','coordinates':[_i['p'][1],_i['p'][0]]}})
+        _rows.append([_pr['tipo'],_pr['categoria'],_pr['nome'],_pr['descricao'],_i['p'][0],_i['p'][1]])
+    for _l in _D.get('linhas',[]):
+        _pr={'tipo':_l.get('estado','proposta'),'categoria':_CAM.get(_l.get('camada'),_l.get('camada','')),'nome':_l['nome']}
+        if _l.get('texto'): _pr['descricao']=_l['texto']
+        _feat.append({'type':'Feature','properties':_pr,'geometry':{'type':'LineString','coordinates':[[c[1],c[0]] for c in _l['coords']]}})
+    _gj={'type':'FeatureCollection','name':'Programa para Sesimbra','license':'ODbL-1.0','attribution':'Contém dados © colaboradores do OpenStreetMap (ODbL). © Henrique Longa, programa para Sesimbra.','features':_feat}
+    os.makedirs('_site/programa-mapa/dados',exist_ok=True)
+    open('_site/programa-mapa/dados/programa-sesimbra.geojson','w',encoding='utf-8').write(_jj.dumps(_gj,ensure_ascii=False,separators=(',',':')))
+    _o=_io.StringIO(); _w=_csv.writer(_o,lineterminator='\n'); _w.writerow(['tipo','categoria','nome','descricao','latitude','longitude']); _w.writerows(_rows)
+    open('_site/programa-mapa/dados/programa-sesimbra.csv','w',encoding='utf-8-sig',newline='').write(_o.getvalue())
     open('_site/programa.html','w',encoding='utf-8').write(prog_page())
 urls=['/','/biografia','/programa','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
 def _sm(u):
