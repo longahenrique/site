@@ -236,18 +236,19 @@ var ILU = (function () {
     m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto && p.cat !== 'obra' ? '<br>' + esc(p.texto) : ''), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
     rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto, local: p.local });
   });
-  var MINZ = { obra: 0, saude: 14.5, bombeiros: 14.5, policia: 16, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
-  var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'igreja', 'mercado', 'desporto'], DIST = 38;
+  var MINZ = { obra: 0, transporte: 14, saude: 14.5, bombeiros: 14.5, policia: 14.5, escola: 14.5, parque: 14.5, servicos: 14.5, cultura: 14.5, social: 14.5, igreja: 14.5, mercado: 14.5, desporto: 14.5 };   // tudo o que já existe aparece ao mesmo tempo que os parques
+  var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'social', 'igreja', 'mercado', 'desporto'], DIST = 38;
   var filtro = null;   // com um cartão escolhido, só se mostra o que é dessa zona: {b: limites} ou {solo: nome da linha}
   function nofiltro(r) { return !filtro || (!filtro.solo && !filtro.semObra && filtro.b.contains(r.p)); }
   var forcado = null;   // marcador aberto pela pesquisa: não é escondido pelo desaglomerar
   map.on('popupclose', function () { forcado = null; });
   function nomesParques() {
     var z = map.getZoom(), ocupados = [];
+    // muito juntos: fica o mais importante e os outros aparecem ao aproximar (com zoom máximo, só se escondem os que estão praticamente em cima uns dos outros)
     rotPontos.slice().sort(function (a, b) { return PRIO.indexOf(a.cat) - PRIO.indexOf(b.cat); }).forEach(function (r) {
       var g = gPontos[r.cat], ver = r.m === forcado || (z >= (MINZ[r.cat] != null ? MINZ[r.cat] : 13) && (r.cat !== 'obra' || nofiltro(r)));
       if (ver && r.cat === 'obra') ocupados.push(map.latLngToContainerPoint(r.m.getLatLng()));
-      else if (ver && r.m !== forcado) { var q = map.latLngToContainerPoint(r.m.getLatLng()); ver = !ocupados.some(function (o) { return Math.abs(o.x - q.x) < DIST && Math.abs(o.y - q.y) < DIST; }); if (ver) ocupados.push(q); }
+      else if (ver && r.m !== forcado) { var q = map.latLngToContainerPoint(r.m.getLatLng()); var dm = z >= 17 ? 16 : DIST; ver = !ocupados.some(function (o) { return Math.abs(o.x - q.x) < dm && Math.abs(o.y - q.y) < dm; }); if (ver) ocupados.push(q); }
       if (ver && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!ver && g.hasLayer(r.m)) g.removeLayer(r.m);
     });
   }
