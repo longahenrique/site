@@ -378,7 +378,9 @@ var ILU = (function () {
     if (!aberto) return '';   // cartão inicial: só os três botões, sem setas
     return tabs + '<div class="sq-cnav"><button type="button" class="sq-seta" data-d="-1" aria-label="Cartão anterior">' + chev(-1) + '</button><span class="sq-dots" aria-hidden="true">' + pontos + '</span><button type="button" class="sq-seta" data-d="1" aria-label="Cartão seguinte">' + chev(1) + '</button></div>' + chips;
   }
+  var urlSync = false;   // o endereço acompanha o cartão aberto (#cartao-…), para a ligação não ficar a apontar para outro cartão
   function cartao(id) {
+    if (urlSync) { try { history.replaceState(null, '', id && zonaDe(id) ? '#cartao-' + id : location.pathname + location.search); } catch (e) {} }
     if (id) grupoAtual = grupoDe(id);
     idx = id ? grupoAtual.ids.indexOf(id) : -1; var z = id ? zonaDe(id) : null;
     if (!z) {
@@ -633,8 +635,7 @@ var ILU = (function () {
   })();
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-ver-mapa'); if (!b) return; escolher(b.getAttribute('data-zona'), true); el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); });
   window.SQ = { escolher: escolher, mapa: map };
-  cartao(null); visibilidade();
-  // ligação direta a um cartão (por exemplo, a prévia da página principal): /programa#cartao-vila
-  (function () { var m = /^#cartao-([\w-]+)$/.exec(decodeURIComponent(location.hash)); if (!m || !zonaDe(m[1])) return;
-    setTimeout(function () { escolher(m[1], true); el.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 120); })();
+  var mHash = /^#cartao-([\w-]+)$/.exec(decodeURIComponent(location.hash));   // ligação direta a um cartão (por exemplo, a prévia da página principal): /programa#cartao-vila
+  cartao(null); visibilidade(); urlSync = true;
+  if (mHash && zonaDe(mHash[1])) setTimeout(function () { escolher(mHash[1], true); el.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 120);
 })();
