@@ -150,7 +150,7 @@ var ILU = (function () {
   DADOS.interfaces.forEach(function (i) {
     var cm = L.circleMarker(i.p, { radius: 7, color: '#fff', weight: 3, fillColor: '#1b1d22', fillOpacity: 1, pane: 'pLinhas', renderer: rLinhas })
       .bindPopup('<b>' + esc(i.nome) + '</b>' + (i.existe ? '<br>' + esc(i.texto) : ''), { maxWidth: 260 })
-      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(i.existe ? gFixos : GR.hubs);
+      .bindTooltip(esc(i.nome), { direction: 'right', offset: [10, 0] }).addTo(GR.hubs);   // as estações que já existem também só aparecem com "Estações e hubs" marcado na legenda
     ifaceObj.push({ i: i, m: cm });
   });
 
