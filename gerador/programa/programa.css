@@ -253,3 +253,6 @@
   .sq-cheio-corpo .sq-busca{display:none}
 }
 .sq-cheio .sq-pop-ir{display:none}
+
+/* A busca alinha com o topo do mapa: a etiqueta fica só para leitores de ecrã */
+@media(min-width:980px){.sq-col-cartao .sq-busca label{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
