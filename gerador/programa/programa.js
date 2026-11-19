@@ -508,6 +508,21 @@ var ILU = (function () {
         if (RM) { map.setView(l.p, 15, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, 15, { duration: 0.6 }); }
       });
     });
+    // Sem repetições: se o resultado é uma estrada ou localidade que já tem cartão, só aparece o cartão (abre-o e leva o mapa até lá)
+    (function () {
+      var cartoes = IDX.filter(function (x) { return x.g === 0; }).map(function (x) { return x.n; });
+      var estradas = DADOS.zonas.filter(function (z) { return z.camada === 'mobilidade' || z.id === 'marginal'; }).map(function (z) { return norm(z.nome); });
+      var alias = ['en10 urbana na quinta do conde'];
+      var vistos = {};
+      IDX = IDX.filter(function (x) {
+        if (x.g === 2 || x.g === 3 || x.g === 4) return cartoes.indexOf(x.n) < 0 && alias.indexOf(x.n) < 0;
+        if (x.g === 5) {
+          if (estradas.some(function (e) { return x.n.indexOf(e) >= 0; })) return false;
+          if (vistos[x.n]) return false; vistos[x.n] = 1;
+        }
+        return true;
+      });
+    })();
     var GRUPOS = ['Localidades e estradas', 'Outras localidades', 'Propostas de serviços', 'Locais que já existem', 'Linhas e estações', 'Medidas'];
     var res = [], ativo = -1;
     function fechar() { lista.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant'); ativo = -1; }

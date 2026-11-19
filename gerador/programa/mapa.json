@@ -2237,17 +2237,20 @@
    ],
    "direcao": "center",
    "minZoom": 13,
-   "frase": "O Parque Ecológico da Várzea e a ribeira formam um só corredor verde na Quinta do Conde, com passadiços, zonas de estadia e ligação a pé e de bicicleta à EN10.",
+   "frase": "O Parque Ecológico da Várzea e a ribeira formam um só corredor verde na Quinta do Conde, com passadiços e ligação a pé e de bicicleta à EN10.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "varzea"
    },
    "medidas": [
     {
-     "t": "Parque Linear da Ribeira, ao longo da EN10 urbana."
+     "t": "Corredor verde."
     },
     {
-     "t": "O Parque Ecológico da Várzea já recebe visitas e saídas de campo sobre biodiversidade."
+     "t": "Limpeza e renaturalização das margens."
+    },
+    {
+     "t": "Hortas comunitárias."
     }
    ],
    "limite": [
@@ -3772,17 +3775,14 @@
     38.488,
     -9.14
    ],
-   "frase": "O pinhal e as praias do Meco ficam como são: para passear, respirar e chegar sem filas de carros.",
+   "frase": "A Mata de Sesimbra fica como é: para passear e respirar.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "mata"
    },
    "medidas": [
     {
-     "t": "Suspender o licenciamento de grandes projetos turísticos no Meco e na Mata de Sesimbra."
-    },
-    {
-     "t": "Avaliação do impacte ambiental de todos os projetos em conjunto."
+     "t": "Proteger a mata do fogo, com limpeza de matos, pontos de água e vigilância no verão."
     },
     {
      "t": "Ciclovia Alfarim–Meco–Lagoa e vaivém de verão para a praia, a partir de Alfarim e de Santana."
@@ -42263,9 +42263,6 @@
      "t": "Eventos sobre a biodiversidade e a geodiversidade locais."
     },
     {
-     "t": "Noites de observação de estrelas, aqui no Cabo."
-    },
-    {
      "t": "Ciclovia Zambujal–Cabo Espichel."
     }
    ],
@@ -54384,16 +54381,8 @@
    "texto": "Pela EM569, do Zambujal ao Cabo Espichel.",
    "coords": [
     [
-     38.45466,
-     -9.11976
-    ],
-    [
-     38.45437,
-     -9.12024
-    ],
-    [
-     38.45371,
-     -9.12026
+     38.4536,
+     -9.1198
     ],
     [
      38.4535,
@@ -54654,8 +54643,8 @@
    ],
    "pontos": [
     [
-     38.4546,
-     -9.1196
+     38.4536,
+     -9.1198
     ],
     [
      38.4462,
