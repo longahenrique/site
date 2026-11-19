@@ -4,8 +4,10 @@
   'use strict';
   if (!window.SQ || !window.SQ.mapa || !window.L) return;
   var map = window.SQ.mapa, esc = window.SQ.esc, CATS = window.SQ.cats || [], EMAIL = 'geral@henriquelonga.pt';
-  var abrir = document.getElementById('sq-sug-abrir'), coluna = document.querySelector('.sq-col-mapa');
-  if (!coluna) return;
+  var coluna = document.querySelector('.sq-col-cartao'), corpoMapa = document.querySelector('.sq-corpo'), ctl = document.querySelector('.sq-ctl');
+  if (!coluna || !corpoMapa || !ctl) return;
+  // botão "Sugerir no mapa": junto aos botões do mapa, e só no ecrã inteiro (no computador)
+  var abrir = document.createElement('button'); abrir.type = 'button'; abrir.className = 'sq-vertudo sq-sug-btn'; abrir.textContent = 'Sugerir no mapa'; abrir.hidden = true; ctl.appendChild(abrir);
   var COR = '#b0158f';
   var TIPOS = [['linha', 'Desenhar um percurso (ciclovia, passeio, linha de autocarro)'], ['local', 'Marcar um local novo (escola, paragem, parque…)'], ['problema', 'Assinalar um problema num sítio']];
   var SUB_LINHA = ['Ciclovia', 'Percurso pedonal', 'Linha ou faixa de autocarro', 'Outro percurso'];
@@ -60,10 +62,9 @@
     '<p class="sq-sug-estado" id="sq-sug-estado" role="status" aria-live="polite"></p>' +
     '<div class="sq-sug-campo" id="sq-sug-subw"><label for="sq-sug-sub">Qual?</label><select id="sq-sug-sub"></select></div>' +
     '<div class="sq-sug-campo"><label for="sq-sug-desc">Descreve a tua sugestão</label><textarea id="sq-sug-desc" rows="3" maxlength="600"></textarea></div>' +
-    '<p class="sq-sug-nota">Ao enviar, abre-se o teu programa de email com a sugestão escrita; se não abrir, copia a sugestão e envia-a para ' + EMAIL + '. Só envias se quiseres, e o site não guarda nada. Se não conseguires desenhar, escreve só a descrição e diz onde fica.</p>' +
+    '<p class="sq-sug-nota">O email abre com a sugestão já escrita. Se não abrir, usa "Copiar sugestão" e envia-a para <a href="mailto:' + EMAIL + '">' + EMAIL + '</a>. O site não guarda nada do que desenhas ou escreves. Se não conseguires desenhar, descreve onde fica.</p>' +
     '<div class="sq-sug-acoes"><button type="button" class="sq-sug-env">Enviar por email</button><button type="button" class="sq-sug-cop">Copiar sugestão</button><button type="button" class="sq-sug-canc">Cancelar</button></div>';
-  var notas = document.getElementById('sq-notas');
-  coluna.insertBefore(painel, notas ? notas.nextSibling : null);
+  coluna.insertBefore(painel, coluna.firstChild);
   var $ = function (s) { return painel.querySelector(s); }, ajuda = $('#sq-sug-ajuda'), estado = $('#sq-sug-estado'), sel = $('#sq-sug-sub'), desc = $('#sq-sug-desc'), subw = $('#sq-sug-subw');
 
   function opcoes() { var l = tipo === 'linha' ? SUB_LINHA : SUB_LOCAL; sel.innerHTML = l.map(function (n) { return '<option>' + esc(n) + '</option>'; }).join(''); subw.hidden = tipo === 'problema'; $('label[for=sq-sug-sub]').textContent = tipo === 'linha' ? 'Que tipo de percurso?' : 'Que tipo de local?'; }
@@ -87,18 +88,30 @@
   });
 
   function abrirPainel() {
-    aberto = true; painel.hidden = false; map.doubleClickZoom.disable(); map.getContainer().classList.add('sq-sug-modo');
-    opcoes(); texto(); var r = $('input[type=radio]:checked'); if (r) r.focus({ preventScroll: true });
+    aberto = true; coluna.classList.add('sq-sug-on'); painel.hidden = false; map.doubleClickZoom.disable(); map.getContainer().classList.add('sq-sug-modo');
+    if (!map.hasLayer(g)) g.addTo(map); desenha(); texto(); var r = $('input[type=radio]:checked'); if (r) r.focus({ preventScroll: true });
   }
   function fechar(limpa) {
-    aberto = false; painel.hidden = true; map.doubleClickZoom.enable(); map.getContainer().classList.remove('sq-sug-modo');
+    aberto = false; coluna.classList.remove('sq-sug-on'); painel.hidden = true; map.doubleClickZoom.enable(); map.getContainer().classList.remove('sq-sug-modo');
     if (limpa) { pts = []; g.clearLayers(); desc.value = ''; }
-    if (abrir) abrir.focus();
+    if (!abrir.hidden) abrir.focus();
   }
-  // só no computador (cartão ao lado do mapa): no telemóvel desenhar no mapa pequeno seria demasiado complicado
+  // só no ecrã inteiro e no computador (cartão ao lado do mapa): no telemóvel desenhar num mapa pequeno seria demasiado complicado
   var mqPc = window.matchMedia('(min-width: 980px)');
-  function aplicarPc() { if (abrir) abrir.hidden = !mqPc.matches; if (!mqPc.matches && aberto) fechar(true); }
-  if (abrir) { abrir.addEventListener('click', function () { if (aberto) fechar(false); else abrirPainel(); }); aplicarPc(); if (mqPc.addEventListener) mqPc.addEventListener('change', aplicarPc); else mqPc.addListener(aplicarPc); }
+  opcoes();
+  var guardado = false;   // ao sair do ecrã inteiro, a sugestão fica guardada e reaparece quando se volta
+  function aplicarPc() {
+    var pc = corpoMapa.classList.contains('sq-cheio-corpo') && mqPc.matches;
+    abrir.hidden = !pc;
+    if (!pc) {
+      if (aberto || pts.length || desc.value.trim()) guardado = true;
+      if (aberto) { aberto = false; coluna.classList.remove('sq-sug-on'); painel.hidden = true; map.doubleClickZoom.enable(); map.getContainer().classList.remove('sq-sug-modo'); }
+      if (map.hasLayer(g)) map.removeLayer(g);
+    } else if (guardado) { guardado = false; abrirPainel(); }
+  }
+  abrir.addEventListener('click', function () { if (aberto) fechar(false); else abrirPainel(); });
+  aplicarPc(); new MutationObserver(aplicarPc).observe(corpoMapa, { attributes: true, attributeFilter: ['class'] });
+  if (mqPc.addEventListener) mqPc.addEventListener('change', aplicarPc); else mqPc.addListener(aplicarPc);
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && aberto && painel.contains(document.activeElement)) fechar(false); });
 
   /* envio por email */

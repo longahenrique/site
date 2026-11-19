@@ -297,9 +297,7 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-dados a{color:inherit;text-decoration:underline}
 
 /* Sugerir no mapa */
-.sq-btn-sug{margin:14px 0 0;padding:10px 16px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:700 15px Archivo,Arial,sans-serif;cursor:pointer}
-.sq-btn-sug:hover{background:var(--ink);color:#fff}
-.sq-btn-sug:focus-visible,.sq-sug button:focus-visible,.sq-sug select:focus-visible,.sq-sug textarea:focus-visible,.sq-sug input:focus-visible{outline:3px solid #1857d6;outline-offset:2px}
+.sq-sug button:focus-visible,.sq-sug select:focus-visible,.sq-sug textarea:focus-visible,.sq-sug input:focus-visible{outline:3px solid #1857d6;outline-offset:2px}
 .sq-sug{margin:14px 0 0;padding:16px;border:2px solid var(--ink);border-radius:12px;background:var(--paper)}
 .sq-sug[hidden]{display:none}
 .sq-sug-cab{display:flex;justify-content:space-between;align-items:center;gap:12px}
@@ -321,3 +319,9 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-sug-modo{cursor:crosshair}
 .sq-sug-modo .leaflet-interactive{cursor:crosshair}
 .sq-sug,.sq-sug p,.sq-sug label{font-family:Archivo,Arial,sans-serif}
+.sq-sug-nota a{color:inherit;text-decoration:underline}
+
+.sq-col-cartao.sq-sug-on>*:not(.sq-sug){display:none!important}
+.sq-col-cartao .sq-sug{margin:0;border:0;padding:4px 2px}
+.sq-sug-txt{display:none}
+@media(min-width:980px){.sq-sug-txt{display:inline}}

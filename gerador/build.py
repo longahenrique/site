@@ -721,8 +721,7 @@ def prog_page():
 </div>
 </div>
 <p class="sq-aviso sq-vivo"><strong>Um programa vivo.</strong> Este mapa reúne ideias e propostas para Sesimbra, que vão sendo atualizadas e discutidas. Os traçados e as localizações são indicativos e ficam sujeitos a estudo e a decisão pública.</p>
-<button type="button" class="sq-btn-sug" id="sq-sug-abrir" hidden>Sugerir no mapa</button>
-<p class="sq-dados">Dados do mapa abertos para descarregar: <a href="/programa-mapa/dados/programa-sesimbra.geojson" download>GeoJSON</a> e <a href="/programa-mapa/dados/programa-sesimbra.csv" download>CSV</a>.</p>
+<p class="sq-dados"><span class="sq-sug-txt">Para sugerir alterações, abre o mapa em ecrã inteiro e usa “Sugerir no mapa”. </span>Dados do mapa abertos para descarregar: <a href="/programa-mapa/dados/programa-sesimbra.geojson" download>GeoJSON</a> e <a href="/programa-mapa/dados/programa-sesimbra.csv" download>CSV</a>.</p>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
 </div>
 </section>
