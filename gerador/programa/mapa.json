@@ -437,23 +437,20 @@
    ],
    "direcao": "right",
    "minZoom": 12,
-   "frase": "Uma vila de pescadores viva todo o ano, com mercado, cultura e camiões fora das ruas estreitas.",
+   "frase": "Uma vila de pescadores viva todo o ano. Uma vila, em comunidade e que valoriza a sua identidade e cultura.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "vila"
    },
    "medidas": [
     {
-     "t": "A comunidade piscatória entra no desenvolvimento local: formação sobre o mar, as pescas e os oceanos."
+     "t": "Pedonalização progressiva da Marginal de Sesimbra."
     },
     {
-     "t": "Mercados revitalizados e ligados ao comércio, às escolas e aos artistas."
+     "t": "Promover a integração da comunidade piscatória em ações de desenvolvimento local."
     },
     {
-     "t": "Variante ao Porto de Abrigo, que tira os pesados da vila."
-    },
-    {
-     "t": "Uma Casa da Criação, espaço cultural aberto a todas as idades (local a definir)."
+     "t": "Construção da variante ao Porto de Abrigo."
     }
    ],
    "limite": [
@@ -1418,7 +1415,7 @@
     -9.0918
    ],
    "direcao": "right",
-   "frase": "A praça onde tudo se liga: deixar o carro, apanhar a Linha Azul, pegar numa bicicleta ou ler à sombra.",
+   "frase": "O ponto central da intermodalidade no concelho. Recebe um novo hub de Transportes públicos.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "santana"
@@ -1428,13 +1425,13 @@
      "t": "Hub com terminal, parque dissuasor de 300 lugares e bicicletas partilhadas."
     },
     {
-     "t": "Linha Azul até ao comboio no Fogueteiro em 26 min, a cada 10 min na hora de ponta."
+     "t": "Linha Azul até ao comboio no Fogueteiro em 26 min."
     },
     {
-     "t": "Circular do Castelo e transporte a pedido para as aldeias e praias."
+     "t": "Ciclovias a ligar Santana a Sampaio, à Cotovia e ao Zambujal."
     },
     {
-     "t": "Um jardim-biblioteca na praça do hub."
+     "t": "Circular do Castelo e transporte a pedido."
     }
    ],
    "limite": [
@@ -2523,26 +2520,23 @@
     38.5655,
     -9.0445
    ],
-   "frase": "A maior freguesia ganha a escola que falta, ruas mais seguras para andar a pé e de bicicleta e a estação de Coina a 20 min de autocarro.",
+   "frase": "A maior freguesia ganha a escola que falta, um novo acesso à estação de Coina e uma requalificação da nacional e espaços verdes.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "qconde"
    },
    "medidas": [
     {
-     "t": "Nova escola secundária da Quinta do Conde, para acabar com a sobrelotação."
+     "t": "Construção da Nova escola secundária da Quinta do Conde."
     },
     {
      "t": "Estrada dos Almocreves requalificada até à Maçã, com ciclovia e passeios seguros."
     },
     {
-     "t": "Autocarro para Coina a cada 10 min na ponta, à hora de cada comboio."
+     "t": "Requalificação da Estrada Nacional 10."
     },
     {
-     "t": "Zonas 30 nos bairros e caminho das escolas, com rotundas e \"portas de entrada\" que acalmam o trânsito."
-    },
-    {
-     "t": "Estacionamento gerido, com sistema de Smart Parking, e bicicletas e trotinetes partilhadas."
+     "t": "Ciclovia Quinta do Conde–Coina."
     }
    ],
    "limite": [
@@ -41125,7 +41119,7 @@
    "id": "lagoa",
    "nome": "Lagoa de Albufeira",
    "camada": "bairros",
-   "frase": "Água calma, aves e areia: um lugar protegido onde se chega de bicicleta ou de vaivém.",
+   "frase": "Água calma, aves e areia. Um lugar protegido onde se chega de bicicleta.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "lagoa"
@@ -41138,7 +41132,7 @@
      "t": "Turismo de natureza e de biodiversidade em vez de mais betão."
     },
     {
-     "t": "Vaivém de verão Santana–Meco–Lagoa, a cada 30 min."
+     "t": "Ciclovia Alfarim–Meco–Lagoa."
     }
    ],
    "limite": [
@@ -44948,7 +44942,7 @@
    ],
    "direcao": "left",
    "minZoom": 12,
-   "frase": "Do aterro ilegal a terreno recuperado, ligado à vila por ciclovia e ao porto pela variante.",
+   "frase": "Do aterro ilegal a terreno recuperado. Nova ligação ao Porto de Sesimbra pela variante.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "recupera"
@@ -44958,13 +44952,10 @@
      "t": "Comissão técnica intermunicipal para acabar com o aterro ilegal."
     },
     {
-     "t": "Variante ao porto até à zona industrial do Zambujal."
+     "t": "Construção da variante ao Porto de Abrigo."
     },
     {
      "t": "Ciclovia Santana–Corredoura–Zambujal."
-    },
-    {
-     "t": "Reflorestar o terreno recuperado."
     }
    ],
    "limite": [
@@ -46360,7 +46351,10 @@
      "t": "90 habitações públicas em construção, com cerca de 15 milhões de euros do PRR."
     },
     {
-     "t": "Habitação pública e cooperativa a preços acessíveis em todo o concelho."
+     "t": "Habitação pública e cooperativa a preços acessíveis."
+    },
+    {
+     "t": "Ciclovia Santana–Sampaio–Cotovia, a ligar a Cotovia a Santana e às escolas de Sampaio."
     }
    ],
    "limite": [
@@ -48001,10 +47995,13 @@
    },
    "medidas": [
     {
-     "t": "Palácio da Justiça de Sampaio, com cerca de 3,3 milhões de euros."
+     "t": "Palácio da Justiça de Sesimbra, com cerca de 3,3 milhões de euros."
     },
     {
      "t": "Ciclovia de Sampaio a Azeitão."
+    },
+    {
+     "t": "Circular do Castelo e transporte a pedido."
     }
    ],
    "limite": [
@@ -48478,20 +48475,20 @@
    ],
    "direcao": "center",
    "minZoom": 13,
-   "frase": "Alfarim fica ligada ao Meco e às praias por ciclovia e vaivém.",
+   "frase": "Alfarim com mais mobilidade. Mais transportes públicos e uma nova ciclovia.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "alfarim"
    },
    "medidas": [
     {
-     "t": "Parque dissuasor com vaivém de verão para as praias do Meco."
+     "t": "Mais oferta de transportes públicos."
     },
     {
      "t": "Ciclovia Alfarim–Meco–Lagoa."
     },
     {
-     "t": "Posto de enfermagem apoiado pela Câmara."
+     "t": "Parque dissuasor."
     }
    ],
    "centro": [
@@ -48816,7 +48813,7 @@
      "t": "Ciclovia Alfarim–Meco–Lagoa."
     },
     {
-     "t": "Vaivém de verão para as praias do Meco."
+     "t": "Mais oferta de transportes públicos."
     }
    ],
    "limite": [
@@ -50012,14 +50009,6 @@
    ],
    "texto": "Comboio para Lisboa, com mais 400 lugares de estacionamento e autocarro à hora de cada comboio.",
    "existe": true
-  },
-  {
-   "nome": "Parque da Moagem",
-   "p": [
-    38.46497,
-    -9.09769
-   ],
-   "texto": "Parque gratuito com ≈200 lugares e vaivém de verão até ao mar."
   },
   {
    "nome": "Parque de Alfarim",
@@ -52376,7 +52365,7 @@
    "cor": "#d6246e",
    "peso": 3,
    "tracejado": "2 7",
-   "texto": "Parte da rede ciclável de 40 km. Entre a estação de Coina e a EN10 urbana a ligação faz-se pelas faixas de autocarro e bicicletas da avenida, por isso a ciclovia desenhada começa onde a EN10 termina. As bicicletas partilhadas elétricas começam aqui e entre Santana e a vila.",
+   "texto": "Parte da rede ciclável. Segue até à EN10 urbana, onde continua pela Ciclovia Quinta do Conde–Coina até à estação de Coina. As bicicletas partilhadas elétricas começam aqui e entre Santana e a vila.",
    "coords": [
     [
      38.57241,
@@ -54711,6 +54700,168 @@
      -9.216
     ]
    ]
+  },
+  {
+   "camada": "ativos",
+   "nome": "Ciclovia Quinta do Conde–Coina",
+   "estado": "proposta",
+   "cor": "#d6246e",
+   "peso": 3,
+   "tracejado": "2 7",
+   "texto": "Ciclovia ao longo da EN10 requalificada, da Quinta do Conde à estação de Coina.",
+   "coords": [
+    [
+     38.57195,
+     -9.03717
+    ],
+    [
+     38.57403,
+     -9.03817
+    ],
+    [
+     38.57482,
+     -9.03843
+    ],
+    [
+     38.57674,
+     -9.03927
+    ],
+    [
+     38.57717,
+     -9.03939
+    ],
+    [
+     38.57801,
+     -9.03951
+    ],
+    [
+     38.57848,
+     -9.03965
+    ],
+    [
+     38.57894,
+     -9.03994
+    ],
+    [
+     38.57941,
+     -9.04039
+    ],
+    [
+     38.57971,
+     -9.0406
+    ],
+    [
+     38.58082,
+     -9.04112
+    ],
+    [
+     38.58114,
+     -9.04136
+    ],
+    [
+     38.58132,
+     -9.04159
+    ],
+    [
+     38.58139,
+     -9.04184
+    ],
+    [
+     38.58137,
+     -9.04222
+    ],
+    [
+     38.58131,
+     -9.04259
+    ],
+    [
+     38.58129,
+     -9.04316
+    ],
+    [
+     38.58115,
+     -9.04352
+    ],
+    [
+     38.58133,
+     -9.04397
+    ],
+    [
+     38.58115,
+     -9.04352
+    ],
+    [
+     38.58159,
+     -9.04471
+    ],
+    [
+     38.58241,
+     -9.04638
+    ],
+    [
+     38.58248,
+     -9.04657
+    ],
+    [
+     38.58251,
+     -9.04677
+    ],
+    [
+     38.58271,
+     -9.04698
+    ],
+    [
+     38.58329,
+     -9.04808
+    ],
+    [
+     38.5835,
+     -9.04822
+    ],
+    [
+     38.58371,
+     -9.04822
+    ],
+    [
+     38.58378,
+     -9.04829
+    ],
+    [
+     38.58408,
+     -9.0484
+    ],
+    [
+     38.5844,
+     -9.04845
+    ],
+    [
+     38.58457,
+     -9.04858
+    ],
+    [
+     38.58597,
+     -9.051
+    ]
+   ],
+   "pontos": [
+    [
+     38.57238,
+     -9.03747
+    ],
+    [
+     38.57714,
+     -9.04028
+    ],
+    [
+     38.58125,
+     -9.04401
+    ],
+    [
+     38.5851,
+     -9.0513
+    ]
+   ],
+   "semSnap": true
   }
  ],
  "pontos": [
@@ -55862,7 +56013,7 @@
   },
   {
    "cat": "obra",
-   "nome": "Palácio da Justiça de Sampaio",
+   "nome": "Palácio da Justiça de Sesimbra",
    "p": [
     38.4659,
     -9.0962
@@ -55900,10 +56051,10 @@
    "cat": "obra",
    "nome": "Hub de Santana",
    "p": [
-    38.46554,
-    -9.0968
+    38.4655,
+    -9.0972
    ],
-   "texto": "Junto à Moagem, com parque gratuito de cerca de 200 lugares e vaivém de verão até ao mar. Local aproximado."
+   "texto": "Ponto de intermodalidade e estacionamento dissuasor na zona alta (Santana/Sampaio), junto ao principal nó rodoviário do concelho, com vaivéns frequentes para a vila e para as praias, para reduzir a pressão de carros e autocarros pesados na frente urbana de Sesimbra. Local aproximado."
   },
   {
    "cat": "servicos",
@@ -55912,7 +56063,7 @@
     38.44187,
     -9.09275
    ],
-   "texto": "Tribunal atual, no Edifício Falésia. Localização aproximada; a proposta prevê o futuro Palácio da Justiça de Sampaio."
+   "texto": "Tribunal atual, no Edifício Falésia. Localização aproximada; a proposta prevê o futuro Palácio da Justiça de Sesimbra."
   },
   {
    "cat": "obra",

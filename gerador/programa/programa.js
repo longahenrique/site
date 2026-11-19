@@ -181,8 +181,8 @@ var ILU = (function () {
     { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Linha Azul: autocarro elétrico de alto nível de serviço, da vila de Sesimbra à estação do Fogueteiro, com 21,7 km e 16 estações, a cada 10 min na hora de ponta (expresso já em 2027; linha completa em 2031). Mais a circular do Castelo, a cada 30 min, e a ligação Casal do Sapo–Coina, prevista no Plano de Mobilidade Urbana Sustentável (PMUS). As linhas que já existem, como a circular da Quinta do Conde e o eixo Quinta do Conde–Coina, não estão desenhadas.' },
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'EN10 urbana na Quinta do Conde (≈3 km, com travessias, faixas de autocarro e bicicletas, e paragens), o acesso da rotunda de Coina à Rua Luís de Camões (traçado indicativo, sem projeto aprovado), a Estrada dos Almocreves, com ciclovia, e a variante ao Porto de Abrigo, para tirar os pesados da vila (traçado a estudar, ≈15 M€).' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'Pedonalização progressiva da Marginal de Sesimbra: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
-    { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Os novos hubs onde o autocarro se liga ao parque de estacionamento: Moagem, em Santana, e Alfarim. As estações de Coina e do Fogueteiro já existem e estão sempre marcadas.' },
-    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova escola secundária da Quinta do Conde, o Spot Jovem no Parque da Vila, a nova biblioteca e o palácio da justiça de Sampaio.' }
+    { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Os novos hubs onde o autocarro se liga ao parque de estacionamento: o de Alfarim e, em Santana, no principal nó rodoviário do concelho, o Hub de Santana (marcado nos serviços e outros). Na zona alta, o hub e os vaivéns frequentes para a vila e para as praias reduzem a pressão de carros e autocarros pesados na frente urbana de Sesimbra. As estações de Coina e do Fogueteiro já existem e estão sempre marcadas.' },
+    { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Serviços e obras propostos ou em curso, como a Loja do Cidadão, o novo quartel da GNR, o auditório, a nova escola secundária da Quinta do Conde, o Spot Jovem no Parque da Vila, a nova biblioteca e o palácio da justiça de Sesimbra.' }
   ];
   UI.forEach(function (u) { uiOn[u.id] = false; }); uiOn.existe = true;   // o que já existe está sempre no mapa
   function irNota(id) {   // só quando a pessoa pede (ligação no balão): leva até à frase explicativa
@@ -403,7 +403,7 @@ var ILU = (function () {
     if (z.camada === 'natureza') { filtro = null; return; }   // áreas naturais: nada de camadas
     var solo = z.id === 'variante' ? [z.nome] : z.id === 'almocreves' ? ['Estrada dos Almocreves', 'Ciclovia da Estrada dos Almocreves'] : z.id === 'acessocoina' ? [z.nome] : null;   // mostram-se sozinhas
     if (solo) { filtro = { solo: solo }; lig('vias'); if (z.id === 'almocreves') lig('ciclo'); return; }
-    var b = (c instanceof L.Circle ? c.getLatLng().toBounds(c.getRadius() * 2) : c.getBounds()).pad(0.1);
+    var b = (c instanceof L.Circle ? c.getLatLng().toBounds(c.getRadius() * 2) : c.getBounds()).pad(0.03);
     filtro = { b: b, semObra: !!(z.geo && z.geo.linha) };   // nos cartões de estradas não aparecem os serviços propostos à volta
     linhasObj.forEach(function (o) {
       var uiId = o.l.camada === 'ativos' ? 'ciclo' : o.l.nome === 'Faixa BUS' ? 'faixa' : (o.l.camada === 'autocarro' || o.l.nome === 'Linha Azul') ? 'bus' : 'vias';
