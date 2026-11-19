@@ -715,6 +715,7 @@ def prog_page():
 <article class="sq-postal" id="sq-postal" aria-label="Cartão da localidade"></article>
 </div>
 </div>
+<p class="sq-aviso sq-vivo"><strong>Um programa vivo.</strong> Este mapa reúne ideias e propostas para Sesimbra, que vão sendo atualizadas e discutidas com quem cá vive. Os traçados e as localizações são indicativos e ficam sujeitos a estudo e a decisão pública.</p>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
 </div>
 </section>

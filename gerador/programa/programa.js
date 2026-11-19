@@ -125,6 +125,9 @@ var ILU = (function () {
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
   // a roda do rato aproxima e afasta o mapa quando o cursor está sobre ele (a página rola fora do mapa)
 
+  // Sobre um balão a roda não aproxima o mapa: a página continua a deslizar
+  map.on('popupopen', function (e) { var c = e.popup && e.popup.getElement && e.popup.getElement(); if (c) L.DomEvent.disableScrollPropagation(c); });
+
   map.createPane('pZonas').style.zIndex = 410; map.createPane('pLinhas').style.zIndex = 430;
   var rZonas = L.canvas({ pane: 'pZonas', padding: 0.5, tolerance: 4 }), rLinhas = L.canvas({ pane: 'pLinhas', padding: 0.5, tolerance: 10 });
   var GR = { ciclo: L.featureGroup(), faixa: L.featureGroup(), bus: L.featureGroup(), vias: L.featureGroup(), hubs: L.featureGroup() };
@@ -139,7 +142,7 @@ var ILU = (function () {
     var lin = L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
       .addTo(g);
     var uiId = l.camada === 'ativos' ? 'ciclo' : l.nome === 'Faixa BUS' ? 'faixa' : (l.camada === 'autocarro' || l.nome === 'Linha Azul') ? 'bus' : 'vias';
-    lin.bindPopup('<b>' + esc(l.nome) + '</b>' + (l.balao && l.texto ? '<br>' + esc(l.texto) : ''), { maxWidth: 260 });   // só o nome; a descrição só nas linhas com "balao" (a Linha Azul)
+    lin.bindPopup('<b>' + esc(l.nome) + '</b>' + (l.balao && l.texto ? '<br>' + esc(l.texto) : '') + (l.cartao ? '<br><button type="button" class="sq-pop-cartao" data-cartao="' + esc(l.cartao) + '">Ver cartão</button>' : ''), { maxWidth: 260 });   // só o nome; a descrição só nas linhas com "balao" (a Linha Azul)
     linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
   var gFixos = L.featureGroup().addTo(map);   // estações que já existem: marcadas desde o início
@@ -192,6 +195,7 @@ var ILU = (function () {
   }
   function ligNota(id) { return '<br><button type="button" class="sq-pop-ir" data-ui="' + id + '">Saber mais</button>'; }
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-pop-ir'); if (b) irNota(b.getAttribute('data-ui')); });
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-pop-cartao'); if (b) { map.closePopup(); escolher(b.getAttribute('data-cartao'), true); } });   // do balão de uma estrada para o respetivo cartão
   function ligar(g, q) { if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); }
   function aplicarFiltro() {
     linhasObj.forEach(function (o) {

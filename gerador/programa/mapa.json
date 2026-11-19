@@ -53005,7 +53005,8 @@
      38.55506,
      -9.03516
     ]
-   ]
+   ],
+   "cartao": "en10"
   },
   {
    "camada": "vias",
@@ -53051,7 +53052,8 @@
      -9.12799
     ]
    ],
-   "semSnap": true
+   "semSnap": true,
+   "cartao": "variante"
   },
   {
    "camada": "vias",
@@ -53243,7 +53245,8 @@
      38.55504,
      -9.03525
     ]
-   ]
+   ],
+   "cartao": "en10"
   },
   {
    "camada": "autocarro",
@@ -59642,7 +59645,8 @@
      38.44228,
      -9.09618
     ]
-   ]
+   ],
+   "cartao": "marginal"
   },
   {
    "camada": "autocarro",
@@ -59889,7 +59893,8 @@
      -9.047
     ]
    ],
-   "semSnap": true
+   "semSnap": true,
+   "cartao": "acessocoina"
   },
   {
    "camada": "vias",
@@ -60048,7 +60053,8 @@
      -9.0715
     ]
    ],
-   "semSnap": true
+   "semSnap": true,
+   "cartao": "almocreves"
   },
   {
    "camada": "ativos",
@@ -60208,7 +60214,8 @@
      -9.0715
     ]
    ],
-   "semSnap": true
+   "semSnap": true,
+   "cartao": "almocreves"
   },
   {
    "camada": "ativos",
