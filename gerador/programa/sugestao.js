@@ -13,6 +13,9 @@
   var SUB_LINHA = ['Ciclovia', 'Percurso pedonal', 'Linha ou faixa de autocarro', 'Outro percurso'];
   var SUB_LOCAL = CATS.filter(function (c) { return c.id !== 'obra'; }).map(function (c) { return c.nome; }).concat(['Outro']);
 
+  // a sugestão desenha-se acima de tudo (linhas propostas, faixa BUS, pinos): painel próprio, acima dos pinos
+  map.createPane('pSug').style.zIndex = 620;
+  var rSug = L.canvas({ pane: 'pSug', padding: 0.5 });
   var g = L.featureGroup().addTo(map), pts = [], tipo = 'linha', aberto = false;
 
   /* geometria */
@@ -47,8 +50,8 @@
   function desenha() {
     g.clearLayers();
     if (!pts.length) return;
-    if (tipo === 'linha' && pts.length > 1) L.polyline(pts, { color: COR, weight: 4, dashArray: '8 7', interactive: false }).addTo(g);
-    pts.forEach(function (p, i) { L.circleMarker(p, { radius: tipo === 'linha' ? 5 : 9, color: '#fff', weight: 2, fillColor: COR, fillOpacity: 1, interactive: false }).addTo(g); });
+    if (tipo === 'linha' && pts.length > 1) L.polyline(pts, { color: COR, weight: 4, dashArray: '8 7', interactive: false, pane: 'pSug', renderer: rSug }).addTo(g);
+    pts.forEach(function (p, i) { L.circleMarker(p, { radius: tipo === 'linha' ? 5 : 9, color: '#fff', weight: 2, fillColor: COR, fillOpacity: 1, interactive: false, pane: 'pSug', renderer: rSug }).addTo(g); });
   }
 
   /* painel */
@@ -163,7 +166,7 @@
     var ll = typeof o.g === 'string' ? descodifica(o.g) : [];
     if (!ll.length) return;
     var info = '<b>Sugestão de um visitante</b><br>' + esc((o.t === 'linha' ? 'Percurso' : o.t === 'local' ? 'Local novo' : 'Problema') + (o.k ? ' (' + String(o.k).slice(0, 60) + ')' : '')) + (o.d ? '<br>' + esc(String(o.d).slice(0, 160)) : '') + '<br><i>Ainda não faz parte do programa.</i>';
-    var camada = (o.t === 'linha' && ll.length > 1) ? L.polyline(ll, { color: COR, weight: 5, dashArray: '8 7' }) : L.circleMarker(ll[0], { radius: 10, color: '#fff', weight: 2, fillColor: COR, fillOpacity: 1 });
+    var camada = (o.t === 'linha' && ll.length > 1) ? L.polyline(ll, { color: COR, weight: 5, dashArray: '8 7', pane: 'pSug', renderer: rSug }) : L.circleMarker(ll[0], { radius: 10, color: '#fff', weight: 2, fillColor: COR, fillOpacity: 1, pane: 'pSug', renderer: rSug });
     camada.addTo(map).bindPopup(info, { maxWidth: 260 });
     setTimeout(function () { map.fitBounds(L.latLngBounds(ll), { padding: [40, 40], maxZoom: 17 }); camada.openPopup(camada.getBounds ? camada.getBounds().getCenter() : undefined); }, 400);
   })();
