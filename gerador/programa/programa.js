@@ -428,7 +428,12 @@ var ILU = (function () {
       var bd = c.getBounds();
       if (id === 'espichel') linhasObj.forEach(function (o) { if (o.l.nome === 'Ciclovia Zambujal–Cabo Espichel') bd = L.latLngBounds(bd.getSouthWest(), bd.getNorthEast()).extend(o.p.getBounds()); });   // inclui toda a ciclovia
       if (z.vista) { if (RM) map.setView(z.vista.c, z.vista.z, { animate: false }); else map.flyTo(z.vista.c, z.vista.z, { duration: 0.6 }); }
-      else if (RM) map.fitBounds(bd, { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(bd, { padding: [90, 90], maxZoom: 15, duration: 0.6 });
+      else {
+        var sz = map.getSize(), pequeno = window.matchMedia && window.matchMedia('(max-width:979px)').matches;
+        var pd = pequeno ? Math.max(14, Math.min(40, Math.round(Math.min(sz.x, sz.y) * 0.06))) : 90;   // no telemóvel o mapa é baixo: margem pequena, para a zona ocupar o ecrã
+        var op = { padding: [pd, pd], maxZoom: pequeno ? 16 : 15 };
+        if (RM) map.fitBounds(bd, Object.assign({ animate: false }, op)); else map.flyToBounds(bd, Object.assign({ duration: 0.6 }, op));
+      }
     }
   }
   postal.addEventListener('click', function (e) {
