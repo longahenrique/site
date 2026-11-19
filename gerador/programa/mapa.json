@@ -61732,7 +61732,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento - Marginal da Lagoa",
+   "nome": "Estacionamento - Lagoa de Albufeira",
    "p": [
     38.50743,
     -9.17828
@@ -61807,7 +61807,7 @@
    "nome": "Estacionamento Telpark - Praia do Ouro",
    "p": [
     38.44329,
-    -9.10574
+    -9.10546
    ]
   },
   {
@@ -61822,8 +61822,8 @@
    "cat": "estacionamento",
    "nome": "Estacionamento - Castelo",
    "p": [
-    38.4512,
-    -9.10902
+    38.45116,
+    -9.10835
    ]
   },
   {
@@ -61862,16 +61862,16 @@
    "cat": "estacionamento",
    "nome": "Estacionamento - Doca Pesca",
    "p": [
-    38.43789,
-    -9.1134
+    38.44128,
+    -9.1129
    ]
   },
   {
    "cat": "estacionamento",
    "nome": "Estacionamento - Porto de Abrigo",
    "p": [
-    38.43575,
-    -9.11535
+    38.4365,
+    -9.11572
    ]
   },
   {
@@ -61896,6 +61896,14 @@
    "p": [
     38.56495,
     -9.03778
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Moagem",
+   "p": [
+    38.46514,
+    -9.09794
    ]
   }
  ],

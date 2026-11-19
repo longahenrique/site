@@ -246,9 +246,11 @@ var ILU = (function () {
   map.on('popupclose', function () { forcado = null; });
   function nomesParques() {
     var z = map.getZoom(), ocupados = [];
+    // com poucas categorias marcadas na legenda (até 3), aparecem com qualquer zoom: serve para ver, por exemplo, todos os estacionamentos do concelho de uma vez
+    var ativas = CATS.filter(function (c) { return c.id !== 'obra' && uiOn.existe && catOn[c.id]; }).length, poucas = ativas > 0 && ativas <= 3;
     // muito juntos: fica o mais importante e os outros aparecem ao aproximar (com zoom máximo, só se escondem os que estão praticamente em cima uns dos outros)
     rotPontos.slice().sort(function (a, b) { return PRIO.indexOf(a.cat) - PRIO.indexOf(b.cat); }).forEach(function (r) {
-      var g = gPontos[r.cat], ver = r.m === forcado || (z >= (MINZ[r.cat] != null ? MINZ[r.cat] : 13) && (r.cat !== 'obra' || nofiltro(r)));
+      var g = gPontos[r.cat], ver = r.m === forcado || (z >= (poucas && r.cat !== 'obra' ? 0 : (MINZ[r.cat] != null ? MINZ[r.cat] : 13)) && (r.cat !== 'obra' || nofiltro(r)));
       if (ver && r.cat === 'obra') ocupados.push(map.latLngToContainerPoint(r.m.getLatLng()));
       else if (ver && r.m !== forcado) { var q = map.latLngToContainerPoint(r.m.getLatLng()); var dm = z >= 17 ? 16 : DIST; ver = !ocupados.some(function (o) { return Math.abs(o.x - q.x) < dm && Math.abs(o.y - q.y) < dm; }); if (ver) ocupados.push(q); }
       if (ver && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!ver && g.hasLayer(r.m)) g.removeLayer(r.m);
