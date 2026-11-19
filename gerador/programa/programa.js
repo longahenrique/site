@@ -235,7 +235,7 @@ var ILU = (function () {
     var ic = L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="background:' + (p.cor || c.cor) + '">' + (p.icone === 'estacionar' ? P24('<path d="M9 18V6h4a3.5 3.5 0 0 1 0 7H9" stroke-width="2.6"/>') : c.svg) + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false });
     m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, -12], permanent: false, className: 'sq-nome-ponto' });
-    m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto && p.cat !== 'obra' ? '<br>' + esc(p.texto) : ''), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
+    m.bindPopup('<b>' + esc(p.nome) + '</b>' + (p.cat === 'estacionamento' ? '' : '<br>' + esc(c.nome) + (p.texto && p.cat !== 'obra' ? '<br>' + esc(p.texto) : '')), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
     rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto, local: p.local });
   });
   var MINZ = { obra: 0, transporte: 14, saude: 14.5, farmacia: 14.5, estacionamento: 14.5, bombeiros: 14.5, policia: 14.5, escola: 14.5, parque: 14.5, servicos: 14.5, cultura: 14.5, social: 14.5, igreja: 14.5, mercado: 14.5, desporto: 14.5 };   // tudo o que já existe aparece ao mesmo tempo que os parques

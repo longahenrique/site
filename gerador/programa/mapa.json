@@ -61684,7 +61684,23 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Parque Amarelo",
+   "nome": "Estacionamento",
+   "p": [
+    38.44637,
+    -9.09977
+   ]
+  },
+  {
+   "cat": "farmacia",
+   "nome": "Farmácia Sofárida Quinta do Conde",
+   "p": [
+    38.56445,
+    -9.03728
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
    "p": [
     38.48882,
     -9.18092
@@ -61692,7 +61708,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Parque do Avô",
+   "nome": "Estacionamento",
    "p": [
     38.48805,
     -9.18165
@@ -61700,87 +61716,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Avenida Humberto Delgado)",
-   "p": [
-    38.56358,
-    -9.03883
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Rua do Caminho Branco)",
-   "p": [
-    38.48498,
-    -9.1043
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Rua do Azevinho)",
-   "p": [
-    38.4709,
-    -9.08432
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Avenida Dom Manuel Martins)",
-   "p": [
-    38.47322,
-    -9.09656
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Avenida João Paulo II)",
-   "p": [
-    38.46791,
-    -9.10019
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento",
-   "p": [
-    38.48945,
-    -9.10512
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Avenida Sérgio Pereira de Melo)",
-   "p": [
-    38.46489,
-    -9.09789
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Rua Cidade de Portalegre)",
-   "p": [
-    38.56023,
-    -9.05398
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Rua Duarte Leite)",
-   "p": [
-    38.56028,
-    -9.04183
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Rua Cidade da Praia)",
-   "p": [
-    38.55817,
-    -9.05489
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Parque das Videiras",
+   "nome": "Estacionamento",
    "p": [
     38.48719,
     -9.18079
@@ -61788,18 +61724,154 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Avenida da Liberdade)",
+   "nome": "Estacionamento",
    "p": [
-    38.44637,
-    -9.09977
+    38.44355,
+    -9.10996
    ]
   },
   {
    "cat": "estacionamento",
-   "nome": "Parque de estacionamento (Avenida da Liberdade)",
+   "nome": "Estacionamento",
    "p": [
-    38.44892,
-    -9.10039
+    38.44286,
+    -9.10017
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Dornier",
+   "p": [
+    38.44349,
+    -9.09686
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.50743,
+    -9.17828
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.44483,
+    -9.10024
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.5638,
+    -9.03691
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.57368,
+    -9.03719
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.55879,
+    -9.04592
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.41967,
+    -9.21344
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.47154,
+    -9.12834
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Fertagus",
+   "p": [
+    38.58541,
+    -9.05088
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Fertagus",
+   "p": [
+    38.60992,
+    -9.10115
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.4458,
+    -9.10136
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.44277,
+    -9.09512
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.44434,
+    -9.10423
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.43611,
+    -9.11576
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.44394,
+    -9.10851
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.45256,
+    -9.199
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.49262,
+    -9.12709
    ]
   }
  ],
