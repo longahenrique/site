@@ -419,7 +419,7 @@ var ILU = (function () {
     var z = cartao(id);
     if (atual && camadasZona[atual] && gZona.hasLayer(camadasZona[atual])) gZona.removeLayer(camadasZona[atual]);
     atual = id || null;
-    if (!z) { filtro = null; mini.hidden = true; if (voar) UI.forEach(function (u) { uiOn[u.id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = true; }); visibilidade(); if (voar) verTudo(); return; }
+    if (!z) { filtro = null; mini.hidden = true; if (voar) UI.forEach(function (u) { uiOn[u.id] = voar !== 'vazio'; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = voar !== 'vazio'; }); visibilidade(); if (voar) verTudo(); return; }
     var c = camadasZona[id];
     if (CONTORNO || (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
     ligarDaZona(c, z);
@@ -432,7 +432,7 @@ var ILU = (function () {
   }
   postal.addEventListener('click', function (e) {
     var sb = e.target.closest('.sq-seta'), eb = e.target.closest('.sq-escolhas button'), gb = e.target.closest('.sq-grupos button');
-    if (gb && gb.getAttribute('aria-pressed') === 'true') { escolher(null, true); var ti = postal.querySelector('.sq-grupos button'); if (ti) ti.focus(); }
+    if (gb && gb.getAttribute('aria-pressed') === 'true') { escolher(null, 'vazio'); var ti = postal.querySelector('.sq-grupos button'); if (ti) ti.focus(); }
     else if (gb) { grupoAtual = GRUPOS_C.filter(function (g) { return g.id === gb.getAttribute('data-g'); })[0]; escolher(grupoAtual.ids[0], true); var t = postal.querySelector('.sq-grupos button[data-g="' + grupoAtual.id + '"]'); if (t) t.focus(); }
     else if (sb) { var d = +sb.getAttribute('data-d'); escolher(vizinho(d), true); var n = postal.querySelector('.sq-seta[data-d="' + d + '"]'); if (n) n.focus(); }
     else if (eb) { escolher(eb.getAttribute('data-zona'), true); var f = postal.querySelector('.sq-chips button[aria-current]') || postal.querySelector('.sq-seta[data-d="1"]'); if (f) f.focus(); }
