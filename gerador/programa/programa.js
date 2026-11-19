@@ -177,7 +177,7 @@ var ILU = (function () {
   var kmCiclo = Math.round(ciclos.reduce(function (a, o) { return a + kmDe(o.l.coords); }, 0));
   // Camadas que a pessoa liga e desliga (o mapa abre vazio)
   var UI = [
-    { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'Ciclovias que ligam as localidades entre si e às paragens de transporte, com bicicletas e trotinetes partilhadas.' },
+    { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'Cerca de 40 km de ciclovias que ligam as localidades entre si e às paragens de transporte, com bicicletas e trotinetes partilhadas.' },
     { id: 'faixa', nome: 'Faixa BUS', cor: '#b87a00', nota: 'Faixas reservadas ao autocarro nos troços com mais trânsito, para os autocarros não ficarem presos nas filas.' },
     { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Mais autocarros, mais frequentes e a ligar melhor o concelho: a Linha Azul, a circular do Castelo e novas ligações. As linhas que já existem não estão desenhadas.' },
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'Estradas novas ou requalificadas, para tirar trânsito das zonas mais sensíveis e ligar melhor o concelho.' },
@@ -508,7 +508,7 @@ var ILU = (function () {
     });
     (DADOS.localidades || []).forEach(function (l) {
       if (IDX.some(function (x) { return x.g === 0 && x.n === norm(l.nome); })) return;
-      add(1, 'Localidade sem cartão próprio', l.nome, '', function () {
+      add(0, 'Localidade', l.nome, '', function () {
         // Sem cartão: mostra-se no mapa o que está previsto à volta (ciclovias, linhas, hubs, equipamentos novos)
         escolher(null, 'vazio');
         var b = L.latLng(l.p).toBounds(3000), perto = [];
@@ -535,6 +535,7 @@ var ILU = (function () {
       var alias = ['en10 urbana na quinta do conde'];
       var vistos = {};
       IDX = IDX.filter(function (x) {
+        if (x.g === 4) { var k4 = 'l|' + x.n; if (vistos[k4]) return false; vistos[k4] = 1; }   // linhas com o mesmo nome (a ciclovia em dois troços): um só resultado
         if (x.g === 2 || x.g === 3 || x.g === 4) return cartoes.indexOf(x.n) < 0 && alias.indexOf(x.n) < 0;
         if (x.g === 5) {
           if (estradas.some(function (e) { return x.n.indexOf(e) >= 0; })) return false;
@@ -543,7 +544,7 @@ var ILU = (function () {
         return true;
       });
     })();
-    var GRUPOS = ['Localidades e estradas', 'Outras localidades', 'Propostas de serviços', 'Locais que já existem', 'Linhas e estações', 'Medidas'];
+    var GRUPOS = ['Localidades', '', 'Propostas de serviços', 'Locais que já existem', 'Linhas e estações', 'Medidas'];
     var res = [], ativo = -1;
     function fechar() { lista.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant'); ativo = -1; }
     function marcar(i) {
