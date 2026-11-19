@@ -269,7 +269,7 @@ var ILU = (function () {
     };
     L.DomEvent.on(p, 'change', function (e) { var t = e.target; if (!t.getAttribute) return; filtro = null;   // ao mexer na legenda, as camadas aparecem no mapa todo, mesmo com um cartão aberto
       var u = t.getAttribute('data-ui'); if (u) { definir(u, t.checked); return; } var id = t.getAttribute('data-cat'); if (!id) return; catOn[id] = t.checked; visibilidade(); });
-    if (el.clientWidth < 600) setTimeout(function () { b.click(); }, 0);
+    if (el.clientWidth < 600 || !window.matchMedia('(min-width:1200px)').matches || L.Browser.mobile) setTimeout(function () { b.click(); }, 0);
     return d;
   } });
   map.addControl(new Leg());

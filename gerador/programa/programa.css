@@ -278,3 +278,5 @@ html{scrollbar-gutter:stable}
 
 /* Nota 'programa vivo': depois do mapa e dos cartões, discreta */
 .prog .sq-vivo{margin:28px 0 0;padding:0;border:0;border-top:2px solid var(--ink);border-radius:0;padding-top:14px;font:500 14px/1.55 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted);max-width:46em}
+.prog .sq{padding-bottom:22px}
+.prog .sq-vivo{margin-top:48px}
