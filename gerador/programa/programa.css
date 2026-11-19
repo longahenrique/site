@@ -294,7 +294,7 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 @media(min-width:980px){.sq-pop-w{display:none}}
 
 .sq-dados{margin:14px 0 0;font-size:14px;line-height:1.55;color:#4b5347}
-.sq-sug-txt+.sq-dados{margin-top:0}   /* as duas últimas frases ficam à distância de linhas do mesmo parágrafo, como no aviso */
+.sq-sug-txt~.sq-dados:not(.sq-sug-mail){margin-top:0}   /* as duas últimas frases ficam à distância de linhas do mesmo parágrafo, como no aviso */
 .sq-dados a{color:inherit;text-decoration:underline}
 
 /* Sugerir no mapa */
@@ -332,3 +332,11 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-sug-modo .leaflet-marker-pane{opacity:.6}
 .sq-sug-modo .leaflet-marker-pane .leaflet-marker-icon{pointer-events:none}
 .sq-cheio-corpo .sq-col-cartao{scrollbar-gutter:stable}   /* o cartão tem sempre a mesma largura, haja ou não barra para descer */
+
+/* modo leve (nível 3): sem transições nem esmaecidos */
+.sq-leve3 *,.sq-leve3.leaflet-container *{transition:none!important;animation:none!important}
+.sq-leve3.sq-sug-modo .leaflet-pLinhas-pane,.sq-leve3.sq-sug-modo .leaflet-pZonas-pane,.sq-leve3.sq-sug-modo .leaflet-marker-pane{opacity:1}
+
+/* frase de sugestão: no computador, o ecrã inteiro; no telemóvel, o email */
+.sq-sug-mail{display:block}
+@media(min-width:980px){.sq-sug-mail{display:none}}

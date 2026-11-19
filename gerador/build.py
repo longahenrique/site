@@ -722,6 +722,7 @@ def prog_page():
 </div>
 <p class="sq-aviso sq-vivo"><strong>Um programa vivo.</strong> Este mapa reúne ideias e propostas para Sesimbra, que vão sendo atualizadas e discutidas. Os traçados e as localizações são indicativos e ficam sujeitos a estudo e a decisão pública.</p>
 <p class="sq-dados sq-sug-txt">Para sugerir alterações, abre o mapa em ecrã inteiro e usa “Sugerir no mapa”.</p>
+<p class="sq-dados sq-sug-mail">Para sugerir alterações, envia email para <a href="mailto:geral@henriquelonga.pt">geral@henriquelonga.pt</a>.</p>
 <p class="sq-dados">Dados do mapa abertos para descarregar: <a href="/programa-mapa/dados/programa-sesimbra.geojson" download>GeoJSON</a> e <a href="/programa-mapa/dados/programa-sesimbra.csv" download>CSV</a>.</p>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
 </div>

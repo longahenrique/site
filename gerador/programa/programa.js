@@ -131,7 +131,7 @@ var ILU = (function () {
   }
   map.on('popupopen', function (e) { rodaParaMapa(e.popup && e.popup._container); });
   if (L.Browser.mobile) map.dragging.disable();   // no telemóvel o mapa só se arrasta em ecrã inteiro; com um dedo a página desliza
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 4, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+  var camadaOSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 4, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
   // a roda do rato aproxima e afasta o mapa quando o cursor está sobre ele (a página rola fora do mapa)
 
@@ -185,7 +185,7 @@ var ILU = (function () {
     { id: 'transporte', nome: 'Estação ou terminal', cor: '#1857d6', svg: P24('<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/>') }
   ];
   var catPorId = {}; CATS.forEach(function (c) { catPorId[c.id] = c; });
-  var gPontos = {}, rotPontos = [], uiOn = {}, catOn = {};
+  var gPontos = {}, rotPontos = [], uiOn = {}, catOn = {}; var levMan = false;   // a pessoa mexeu à mão em "Já existe": o modo leve automático deixa de lhe mexer
   CATS.forEach(function (c) { catOn[c.id] = true; });
   var camadasZona = {}, atual = null, legRender = function () {}, notasRender = function () {};
   function kmDe(c) { var t = 0; for (var i = 1; i < c.length; i++) t += map.distance(c[i - 1], c[i]); return t / 1000; }
@@ -297,7 +297,7 @@ var ILU = (function () {
       p.innerHTML = h;
     };
     L.DomEvent.on(p, 'change', function (e) { var t = e.target; if (!t.getAttribute) return; filtro = null;   // ao mexer na legenda, as camadas aparecem no mapa todo, mesmo com um cartão aberto
-      var u = t.getAttribute('data-ui'); if (u) { definir(u, t.checked); return; } var id = t.getAttribute('data-cat'); if (!id) return; catOn[id] = t.checked; visibilidade(); });
+      var u = t.getAttribute('data-ui'); if (u) { definir(u, t.checked); return; } var id = t.getAttribute('data-cat'); if (!id) return; levMan = true; catOn[id] = t.checked; visibilidade(); });
     if (el.clientWidth < 600 || !window.matchMedia('(min-width:1200px)').matches || L.Browser.mobile) setTimeout(function () { b.click(); }, 0);
     return d;
   } });
@@ -664,7 +664,37 @@ var ILU = (function () {
     aplicar(); if (mq.addEventListener) mq.addEventListener('change', aplicar); else mq.addListener(aplicar);
   })();
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-ver-mapa'); if (!b) return; escolher(b.getAttribute('data-zona'), true); el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); });
-  window.SQ = { escolher: escolher, mapa: map, esc: esc, cats: CATS,
+  // ===== Modo leve automático =====
+  // Mede a fluidez do mapa quando se mexe (fotogramas perdidos). Se for lento duas vezes seguidas, aligeira em três níveis:
+  // 1) desliga "Já existe" (a pessoa pode voltar a ligar; se mexer lá, deixa de lhe mexer), 2) menos mosaicos e margem de desenho menor, 3) sem transições nem esmaecidos. Não guarda nada.
+  var nivelLeve = (function () {
+    var nivel = 0, lentos = 0, ep = null, fim = null, t0 = Date.now(), folga = false;
+    function amostra(t) { if (!ep) return; if (ep.u) ep.d.push(t - ep.u); ep.u = t; requestAnimationFrame(amostra); }
+    function sobe() {
+      nivel++; lentos = 0; folga = true;
+      if (nivel === 1 && !levMan) { CATS.forEach(function (c) { if (c.id !== 'obra') catOn[c.id] = false; }); visibilidade(); }
+      if (nivel === 2) {
+        try { rZonas.options.padding = 0.15; rLinhas.options.padding = 0.15; if (map._renderer) map._renderer.options.padding = 0.15; camadaOSM.options.keepBuffer = 1; } catch (e) { }
+      }
+      if (nivel === 3) {
+        el.classList.add('sq-leve3');
+        try { map.options.zoomAnimation = false; map.options.fadeAnimation = false; map._zoomAnimated = false; L.DomUtil.removeClass(map.getPane('mapPane'), 'leaflet-zoom-anim'); } catch (e) { }
+      }
+    }
+    function avalia() {
+      var d = ep ? ep.d : []; ep = null;
+      if (folga) { folga = false; return; }                   // o episódio a seguir a uma mudança serve para assentar
+      d = d.slice(2);                                          // os primeiros fotogramas de um movimento são sempre mais pesados
+      if (document.hidden || Date.now() - t0 < 3000) return;
+      // com o ecrã a 60 fps, só a cauda de 250 ms já dá uns 15 fotogramas: muito menos que 6 é sinal de dispositivo a sofrer
+      var m = d.length ? d.slice().sort(function (a, b) { return a - b; })[d.length >> 1] : 999, maus = d.length ? d.filter(function (x) { return x > 90; }).length / d.length : 1;
+      if (d.length < 6 || m > 45 || maus > 0.4) { if (++lentos >= 2 && nivel < 3) sobe(); } else lentos = 0;
+    }
+    map.on('movestart zoomstart', function () { clearTimeout(fim); if (!ep && nivel < 3) { ep = { d: [], u: 0 }; requestAnimationFrame(amostra); } });
+    map.on('moveend zoomend', function () { clearTimeout(fim); if (ep) fim = setTimeout(avalia, 250); });
+    return function () { return nivel; };
+  })();
+  window.SQ = { escolher: escolher, nivelLeve: nivelLeve, mapa: map, esc: esc, cats: CATS,
     // ao abrir "Sugerir no mapa": se a legenda não tem nenhuma proposta ligada, liga-as (para ver o que já está proposto); o que a pessoa já tinha ligado fica como está
     propostasPorDefeito: function () {
       if (UI.some(function (u) { return u.id !== 'existe' && uiOn[u.id]; })) return;
