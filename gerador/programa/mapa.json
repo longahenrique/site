@@ -49948,8 +49948,8 @@
    "geo": {
     "linha": [
      [
-      38.58355,
-      -9.0485
+      38.58341,
+      -9.04847
      ],
      [
       38.5822,
@@ -50487,6 +50487,106 @@
    "opacidade": 0.9,
    "texto": "Na EN10, nos dois sentidos, desde a estação de Coina até ao fim da EN10 urbana, com prioridade nas rotundas. É no troço até ao Posto da EN10 que se perdem 8 dos 10 min de atraso na hora de ponta.",
    "coords": [
+    [
+     38.58507,
+     -9.05143
+    ],
+    [
+     38.58514,
+     -9.05166
+    ],
+    [
+     38.58532,
+     -9.05193
+    ],
+    [
+     38.58538,
+     -9.05212
+    ],
+    [
+     38.58553,
+     -9.05231
+    ],
+    [
+     38.58581,
+     -9.0526
+    ],
+    [
+     38.58606,
+     -9.05295
+    ],
+    [
+     38.58636,
+     -9.05331
+    ],
+    [
+     38.58672,
+     -9.05343
+    ],
+    [
+     38.58688,
+     -9.05345
+    ],
+    [
+     38.58704,
+     -9.05362
+    ],
+    [
+     38.58726,
+     -9.05363
+    ],
+    [
+     38.58746,
+     -9.05354
+    ],
+    [
+     38.58751,
+     -9.0533
+    ],
+    [
+     38.58737,
+     -9.05311
+    ],
+    [
+     38.58717,
+     -9.05298
+    ],
+    [
+     38.58699,
+     -9.05276
+    ],
+    [
+     38.5869,
+     -9.05232
+    ],
+    [
+     38.58675,
+     -9.05214
+    ],
+    [
+     38.58642,
+     -9.05196
+    ],
+    [
+     38.58621,
+     -9.05166
+    ],
+    [
+     38.58606,
+     -9.05124
+    ],
+    [
+     38.58589,
+     -9.05082
+    ],
+    [
+     38.58568,
+     -9.05059
+    ],
+    [
+     38.58556,
+     -9.05029
+    ],
     [
      38.58544,
      -9.0501
@@ -54738,8 +54838,8 @@
    "texto": "Novo acesso da rotunda a seguir à estação de Coina até à Rua Luís de Camões, na Quinta do Conde, para ligar o bairro à estação sem passar pela EN10. Traçado indicativo, a estudar: ainda não há projeto nem traçado aprovados.",
    "pontos": [
     [
-     38.58355,
-     -9.0485
+     38.58341,
+     -9.04847
     ],
     [
      38.5822,
@@ -54756,8 +54856,8 @@
    ],
    "coords": [
     [
-     38.58355,
-     -9.0485
+     38.58341,
+     -9.04847
     ],
     [
      38.5822,
@@ -56705,8 +56805,7 @@
    "p": [
     38.56584,
     -9.04582
-   ],
-   "texto": "Cerca de 680 m² e 1,9 milhões de euros; antigo Centro de Inovação e Participação Associativa. Conclusão prevista para novembro."
+   ]
   },
   {
    "cat": "obra",
@@ -56714,8 +56813,7 @@
    "p": [
     38.46596,
     -9.09679
-   ],
-   "texto": "Cerca de 3,3 milhões de euros. Local aproximado, atrás da Moagem de Sampaio."
+   ]
   },
   {
    "cat": "obra",
@@ -56723,8 +56821,7 @@
    "p": [
     38.5585,
     -9.0457
-   ],
-   "texto": "Instalada no edifício do Mercado Municipal, na Rua Manuel de Arriaga, junto ao atual Balcão Único de Serviços. Cerca de 1,5 milhões de euros."
+   ]
   },
   {
    "cat": "obra",
@@ -56732,8 +56829,7 @@
    "p": [
     38.5469,
     -9.0511
-   ],
-   "texto": "Lotes cedidos pela Câmara no final da Avenida da Liberdade, junto ao Miradouro do Cabeço do Melão, para substituir as instalações atuais da Rua Gama Pinto. Local aproximado."
+   ]
   },
   {
    "cat": "obra",
@@ -56741,8 +56837,7 @@
    "p": [
     38.56537,
     -9.04787
-   ],
-   "texto": "No eixo central da freguesia, junto à Rua Sacadura Cabral e à Avenida dos Combatentes, na zona envolvente da Nova Biblioteca Municipal e do Parque da Vila. Cerca de 2,1 milhões de euros. Local aproximado."
+   ]
   },
   {
    "cat": "obra",
@@ -56750,8 +56845,7 @@
    "p": [
     38.46377,
     -9.0982
-   ],
-   "texto": "Ponto de intermodalidade e estacionamento dissuasor na zona alta (Santana/Sampaio), junto ao principal nó rodoviário do concelho, com vaivéns frequentes para a vila e para as praias, para reduzir a pressão de carros e autocarros pesados na frente urbana de Sesimbra. Local aproximado."
+   ]
   },
   {
    "cat": "servicos",
@@ -56767,8 +56861,7 @@
    "p": [
     38.56657,
     -9.03695
-   ],
-   "texto": "Previsto dentro do Parque da Vila, junto ao parque de estacionamento da Avenida Cova dos Vidros. Local aproximado."
+   ]
   },
   {
    "cat": "obra",
@@ -56776,8 +56869,7 @@
    "p": [
     38.5482,
     -9.043
-   ],
-   "texto": "Em terreno municipal cedido pela Câmara, junto ao eixo da Ribeira do Marchante. Projeto apresentado em abril de 2025; financiamento ainda por garantir. Local aproximado."
+   ]
   },
   {
    "cat": "obra",
@@ -56788,7 +56880,6 @@
    ],
    "cor": "#2f8f5b",
    "icone": "estacionar",
-   "texto": "Local aproximado.",
    "local": "Santana"
   },
   {
@@ -56800,7 +56891,6 @@
    ],
    "cor": "#2f8f5b",
    "icone": "estacionar",
-   "texto": "Local aproximado.",
    "local": "Alfarim"
   }
  ]
