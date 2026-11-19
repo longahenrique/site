@@ -293,7 +293,8 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 /* o cartão está sempre ao lado do mapa: o botão "Ver cartão" do balão só faz sentido quando o cartão fica por baixo (telemóvel e tablet) */
 @media(min-width:980px){.sq-pop-w{display:none}}
 
-.sq-dados{margin:14px 0 0;font-size:14px;line-height:1.5;color:#4b5347}
+.sq-dados{margin:14px 0 0;font-size:14px;line-height:1.55;color:#4b5347}
+.sq-sug-txt+.sq-dados{margin-top:0}   /* as duas últimas frases ficam à distância de linhas do mesmo parágrafo, como no aviso */
 .sq-dados a{color:inherit;text-decoration:underline}
 
 /* Sugerir no mapa */
