@@ -634,4 +634,7 @@ var ILU = (function () {
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-ver-mapa'); if (!b) return; escolher(b.getAttribute('data-zona'), true); el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); });
   window.SQ = { escolher: escolher, mapa: map };
   cartao(null); visibilidade();
+  // ligação direta a um cartão (por exemplo, a prévia da página principal): /programa#cartao-vila
+  (function () { var m = /^#cartao-([\w-]+)$/.exec(decodeURIComponent(location.hash)); if (!m || !zonaDe(m[1])) return;
+    setTimeout(function () { escolher(m[1], true); el.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 120); })();
 })();
