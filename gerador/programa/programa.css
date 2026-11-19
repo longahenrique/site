@@ -239,8 +239,8 @@
 @media(max-width:979px){
   .sq-corpo:not(.sq-cheio-corpo) .sq-col-mapa{display:contents}
   .sq-corpo:not(.sq-cheio-corpo) .sq-mapa{order:1}
-  .sq-corpo:not(.sq-cheio-corpo) .sq-dica{order:2;margin:0}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-dica{order:4;margin:16px 0 0}
   .sq-corpo:not(.sq-cheio-corpo) .sq-col-cartao{order:3}
-  .sq-corpo:not(.sq-cheio-corpo) .sq-notas{order:4}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-notas{order:5}
   .sq-busca{margin-bottom:16px}
 }
