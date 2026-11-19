@@ -250,7 +250,7 @@ var ILU = (function () {
     var ativas = CATS.filter(function (c) { return c.id !== 'obra' && uiOn.existe && catOn[c.id]; }).length, poucas = ativas > 0 && ativas <= 3;
     // muito juntos: fica o mais importante e os outros aparecem ao aproximar (com zoom máximo, só se escondem os que estão praticamente em cima uns dos outros)
     // regra estável: um ponto só se esconde se houver, a menos de DIST pixels, outro de maior prioridade (mesmo que esse esteja escondido). Como as distâncias só crescem ao aproximar, um ponto que apareceu nunca desaparece nem troca por outro ao dar zoom
-    var acima = [], dm = z >= 17 ? 16 : DIST;
+    var acima = [], dm = z >= 17 ? 16 : (poucas ? 28 : DIST);   // com poucas categorias, só se escondem os que se sobrepõem de facto (ícones de 26 px)
     rotPontos.slice().sort(function (a, b) { return PRIO.indexOf(a.cat) - PRIO.indexOf(b.cat); }).forEach(function (r) {
       var g = gPontos[r.cat], q = map.latLngToContainerPoint(r.m.getLatLng());
       var zmin = poucas && r.cat !== 'obra' ? 0 : (MINZ[r.cat] != null ? MINZ[r.cat] : 13);
