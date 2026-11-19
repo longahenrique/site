@@ -56001,16 +56001,16 @@
  "manuais": [
   {
    "cat": "cultura",
-   "nome": "Polo de Leitura (Pingo Doce, virado para o Parque da Vila)",
+   "nome": "Polo de Leitura",
    "p": [
-    38.5653,
-    -9.03786
+    38.56516,
+    -9.03715
    ],
    "texto": "Polo de Leitura da Quinta do Conde, no edifício do Pingo Doce, virado para o Parque da Vila."
   },
   {
    "cat": "obra",
-   "nome": "Nova Biblioteca Municipal",
+   "nome": "Biblioteca Municipal da Quinta do Conde",
    "p": [
     38.56584,
     -9.04582
@@ -56046,7 +56046,7 @@
   },
   {
    "cat": "obra",
-   "nome": "Novo Auditório da Quinta do Conde",
+   "nome": "Auditório Municipal da Quinta do Conde",
    "p": [
     38.56537,
     -9.04787
@@ -56084,8 +56084,8 @@
    "cat": "obra",
    "nome": "Nova Escola Secundária da Quinta do Conde",
    "p": [
-    38.5675,
-    -9.051
+    38.5482,
+    -9.043
    ],
    "texto": "Em terreno municipal cedido pela Câmara, junto ao eixo da Ribeira do Marchante. Projeto apresentado em abril de 2025; financiamento ainda por garantir. Local aproximado."
   }
