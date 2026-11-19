@@ -517,7 +517,7 @@ var ILU = (function () {
         rotPontos.forEach(function (r) { if (r.cat === 'obra' && b.contains(r.p)) { lig('obra'); if (perto.indexOf(r.nome) < 0) perto.push(r.nome); } });
         if (perto.length) filtro = { b: b };
         visibilidade();
-        var txt = '<b>' + esc(l.nome) + '</b><br>Sem cartão próprio neste mapa.' + (perto.length ? '<br>Previsto por perto: ' + perto.slice(0, 4).map(esc).join('; ') + (perto.length > 4 ? ' e mais ' + (perto.length - 4) : '') + '.' : '');
+        var txt = '<b>' + esc(l.nome) + '</b>';
         var p = L.popup({ maxWidth: 260 }).setLatLng(l.p).setContent(txt);
         var abrir = function () { p.openOn(map); }, zm = perto.length ? 14 : 15;
         if (RM) { map.setView(l.p, zm, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, zm, { duration: 0.6 }); }

@@ -49685,8 +49685,8 @@
    "geo": {
     "linha": [
      [
-      38.4385,
-      -9.115
+      38.4393,
+      -9.11598
      ],
      [
       38.443,
@@ -49697,8 +49697,8 @@
       -9.125
      ],
      [
-      38.4497,
-      -9.1283
+      38.44945,
+      -9.12799
      ]
     ]
    },
@@ -56730,10 +56730,10 @@
    "cat": "obra",
    "nome": "Novo quartel da GNR da Quinta do Conde",
    "p": [
-    38.5668,
-    -9.0494
+    38.5469,
+    -9.0511
    ],
-   "texto": "Lotes cedidos pela Câmara na Avenida Cova dos Vidros, para substituir as instalações atuais da Rua Gama Pinto. Local aproximado."
+   "texto": "Lotes cedidos pela Câmara no final da Avenida da Liberdade, junto ao Miradouro do Cabeço do Melão, para substituir as instalações atuais da Rua Gama Pinto. Local aproximado."
   },
   {
    "cat": "obra",

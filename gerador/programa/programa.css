@@ -256,3 +256,13 @@
 
 /* A busca alinha com o topo do mapa: a etiqueta fica só para leitores de ecrã */
 @media(min-width:980px){.sq-col-cartao .sq-busca label{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
+
+/* Frase de ajuda: uma versão para computador, outra (mais curta) para telemóvel; sem espaços vazios */
+.sq-dica-tel{display:none}
+.sq-notas:empty{display:none}
+@media(max-width:979px){
+  .sq-dica-pc{display:none}.sq-dica-tel{display:inline}
+  .sq-corpo{gap:16px}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-dica{margin:0}
+  .sq-dica{font-size:14px;line-height:1.45}
+}
