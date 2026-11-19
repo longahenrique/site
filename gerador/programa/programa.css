@@ -324,4 +324,5 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-col-cartao.sq-sug-on>*:not(.sq-sug){display:none!important}
 .sq-col-cartao .sq-sug{margin:0;border:0;padding:4px 2px}
 .sq-sug-txt{display:none}
-@media(min-width:980px){.sq-sug-txt{display:inline}}
+@media(min-width:980px){.sq-sug-txt{display:block}}
+.sq-sug-txt+.sq-dados{margin-top:6px}
