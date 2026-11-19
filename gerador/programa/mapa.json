@@ -55853,10 +55853,10 @@
   },
   {
    "cat": "obra",
-   "nome": "Nova Biblioteca Municipal (junto ao recinto da Feira Festa)",
+   "nome": "Nova Biblioteca Municipal",
    "p": [
-    38.56565,
-    -9.04717
+    38.56584,
+    -9.04582
    ],
    "texto": "Cerca de 680 m² e 1,9 milhões de euros; antigo Centro de Inovação e Participação Associativa. Conclusão prevista para novembro."
   },
@@ -55891,8 +55891,8 @@
    "cat": "obra",
    "nome": "Novo Auditório da Quinta do Conde",
    "p": [
-    38.5665,
-    -9.0462
+    38.56537,
+    -9.04787
    ],
    "texto": "No eixo central da freguesia, junto à Rua Sacadura Cabral e à Avenida dos Combatentes, na zona envolvente da Nova Biblioteca Municipal e do Parque da Vila. Cerca de 2,1 milhões de euros. Local aproximado."
   },
@@ -55916,7 +55916,7 @@
   },
   {
    "cat": "obra",
-   "nome": "Spot Jovem (Parque da Vila)",
+   "nome": "Spot Jovem",
    "p": [
     38.56644,
     -9.03733

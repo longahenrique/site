@@ -79,7 +79,7 @@ var ILU = (function () {
     qconde: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 150 Q200 120 400 140 T640 130 V250 H0Z" fill="#b9d7a0"/><path d="M0 205 Q320 190 640 202 V250 H0Z" fill="#9cc58a"/>' +
       '<rect x="60" y="92" width="230" height="100" fill="#f1e3c6"/><rect x="54" y="84" width="242" height="10" fill="#b8693f"/>' + janelas(60, 92, 230, 100, 9, 2) + '<rect x="156" y="150" width="38" height="42" fill="#8a6a4a"/><rect x="96" y="60" width="158" height="22" rx="3" fill="#1857d6"/><text x="175" y="76" font-size="13" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">Escola</text>' +
       casa(330, 138, 62, 54, '#f4e9d2', '#c0694a') + casa(405, 146, 54, 46, '#ecd5b0', '#b8693f') + casa(475, 136, 66, 56, '#fbf6ea', '#c0694a') + casa(556, 148, 56, 44, '#f4e9d2', '#b8693f') +
-      pinheiro(318, 150, 0.8) + '<rect x="0" y="206" width="640" height="14" fill="#d9d3c4"/>' + autocarro(120, 224, 11) + '<path d="M0 238 H640" stroke="#fff" stroke-width="3" stroke-dasharray="14 12"/>',
+      pinheiro(318, 150, 0.8) + '<rect x="0" y="206" width="640" height="14" fill="#d9d3c4"/>' + autocarro(120, 224, 11) + '<path d="M0 238 H640" stroke="#d6246e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round" fill="none"/>',
     cotovia: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 200 Q320 186 640 198 V250 H0Z" fill="#cfe0b8"/>' +
       [[40, 90], [190, 70], [340, 100]].map(function (b, i) { return '<rect x="' + b[0] + '" y="' + b[1] + '" width="120" height="' + (205 - b[1]) + '" fill="' + ['#f1e3c6', '#ecd5b0', '#f4e9d2'][i] + '"/><rect x="' + (b[0] - 4) + '" y="' + (b[1] - 8) + '" width="128" height="8" fill="#b8693f"/>' + janelas(b[0], b[1], 120, 205 - b[1], 4, Math.round((205 - b[1]) / 30)); }).join('') +
       '<rect x="500" y="40" width="6" height="165" fill="#f2b632"/><path d="M440 48 H590 M500 48 L470 82 M500 48 L540 82" stroke="#f2b632" stroke-width="5" fill="none"/><path d="M560 48 V90" stroke="#555" stroke-width="2"/><rect x="552" y="90" width="16" height="12" fill="#e05a47"/><rect x="470" y="130" width="90" height="75" fill="#e9dcc0"/>' + janelas(470, 130, 90, 75, 3, 2) +
@@ -87,15 +87,14 @@ var ILU = (function () {
     sampaio: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 190 Q160 110 330 120 T640 170 V250 H0Z" fill="#a9cf94"/><path d="M0 215 Q320 195 640 212 V250 H0Z" fill="#8cbb7a"/>' +
       '<rect x="60" y="120" width="170" height="60" fill="#f1e3c6"/><rect x="56" y="112" width="178" height="9" fill="#c0504d"/>' + janelas(60, 120, 170, 60, 7, 1) + '<rect x="140" y="150" width="20" height="30" fill="#8a6a4a"/><path d="M245 120 V84" stroke="#555" stroke-width="3"/><path d="M245 84 h28 v16 h-28z" fill="#1857d6"/>' +
       '<path d="M360 118 L430 92 L500 118Z" fill="#e9dcc0"/><rect x="368" y="118" width="124" height="52" fill="#f4ecd8"/>' + [376, 396, 416, 436, 456, 476].map(function (x) { return '<rect x="' + x + '" y="120" width="8" height="50" fill="#fffaf0"/>'; }).join('') + '<rect x="360" y="170" width="140" height="8" fill="#d7ccb0"/>' +
-      casa(540, 150, 44, 36, '#f4e9d2', '#c0694a') + casa(590, 160, 38, 30, '#ecd5b0', '#b8693f') + pinheiro(310, 150, 0.9) + '<path d="M0 232 Q300 214 640 230" stroke="#fff" stroke-width="3" stroke-dasharray="8 7" fill="none"/>',
+      casa(540, 150, 44, 36, '#f4e9d2', '#c0694a') + casa(590, 160, 38, 30, '#ecd5b0', '#b8693f') + pinheiro(310, 150, 0.9) + '<path d="M0 232 Q300 214 640 230" stroke="#d6246e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round" fill="none"/>',
     alfarim: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 150 Q320 130 640 148 V250 H0Z" fill="#b9d7a0"/><path d="M0 200 Q320 185 640 198 V250 H0Z" fill="#9cc58a"/>' +
       [[70, 150, 1], [150, 156, 0.85], [230, 148, 1.05], [300, 158, 0.8]].map(function (t) { return '<rect x="' + (t[0] - 3) + '" y="' + t[1] + '" width="6" height="' + (40 * t[2]) + '" fill="#6d5a43"/><circle cx="' + t[0] + '" cy="' + (t[1] - 6) + '" r="' + (26 * t[2]) + '" fill="#4f9560"/>'; }).join('') +
       '<rect x="110" y="196" width="46" height="6" rx="2" fill="#8a6a4a"/>' + casa(400, 138, 60, 50, '#f4e9d2', '#c0694a') + casa(470, 146, 50, 42, '#ecd5b0', '#b8693f') +
       '<rect x="560" y="120" width="4" height="86" fill="#555"/><rect x="544" y="104" width="36" height="22" rx="3" fill="#1857d6"/><text x="562" y="120" font-size="14" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">P</text>' + autocarro(500, 214, 11) + '<path d="M0 226 Q320 212 640 226" stroke="#d6246e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round" fill="none"/>',
     meco: '<rect width="640" height="250" fill="#eaf4f8"/><rect y="112" width="640" height="60" fill="#7fb6d5"/><path d="M0 130 q40 -6 80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0 t80 0" stroke="#e8f4fb" stroke-width="3" fill="none"/><path d="M0 172 Q160 150 330 166 T640 160 V250 H0Z" fill="#efdcaa"/><path d="M0 215 Q320 196 640 212 V250 H0Z" fill="#e3c98a"/>' +
       pinheiro(70, 62, 1.1) + pinheiro(150, 76, 0.9) + pinheiro(540, 60, 1.15) + pinheiro(600, 78, 0.85) +
-      '<path d="M300 196 V156" stroke="#6d5a43" stroke-width="3"/><path d="M270 156 q30 -30 60 0z" fill="#e05a47"/><path d="M420 200 V164" stroke="#6d5a43" stroke-width="3"/><path d="M394 164 q26 -26 52 0z" fill="#f7c948"/>' +
-      '<path d="M0 232 Q320 218 640 230" stroke="#d6246e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round" fill="none"/>' + bicicleta(200, 232, 12),
+      '<path d="M300 196 V156" stroke="#6d5a43" stroke-width="3"/><path d="M270 156 q30 -30 60 0z" fill="#e05a47"/><path d="M420 200 V164" stroke="#6d5a43" stroke-width="3"/><path d="M394 164 q26 -26 52 0z" fill="#f7c948"/>',
     azoia: '<rect width="640" height="250" fill="#e8f2f7"/><circle cx="540" cy="52" r="24" fill="#f7d36b"/><path d="M0 120 Q200 96 400 112 T640 104 V160 H0Z" fill="#bcd9a4"/><rect y="150" width="640" height="26" fill="#7fb6d5" opacity=".55"/><path d="M0 170 Q200 146 400 164 T640 158 V250 H0Z" fill="#a9cf94"/><path d="M0 214 Q320 196 640 210 V250 H0Z" fill="#92bf7e"/>' +
       casa(60, 142, 62, 42, '#fbf6ea', '#c0694a') + casa(140, 150, 54, 38, '#f4e9d2', '#b8693f') + casa(250, 140, 66, 46, '#fbf6ea', '#c0694a') + casa(440, 148, 56, 40, '#f4e9d2', '#c0694a') + casa(510, 142, 62, 44, '#fbf6ea', '#b8693f') +
       '<rect x="336" y="136" width="62" height="50" fill="#fbf6ea"/><path d="M332 136 L367 112 L402 136Z" fill="#c0694a"/><rect x="361" y="150" width="12" height="36" fill="#8a6a4a"/><rect x="354" y="124" width="26" height="9" fill="#fff"/><path d="M367 118 v14 M360 125 h14" stroke="#c2362f" stroke-width="4"/>' +
@@ -159,13 +158,13 @@ var ILU = (function () {
     { id: 'escola', nome: 'Escola', cor: '#8a3fb0', svg: P24('<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/>') },
     { id: 'saude', nome: 'Saúde', cor: '#c2362f', svg: P24('<path d="M12 5v14M5 12h14" stroke-width="3.5"/>') },
     { id: 'bombeiros', nome: 'Bombeiros', cor: '#d9531c', svg: P24('<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z" fill="currentColor"/>') },
-    { id: 'policia', nome: 'Polícia (GNR, Polícia Marítima)', cor: '#1b3a8c', svg: P24('<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/>') },
+    { id: 'policia', nome: 'Polícia', cor: '#1b3a8c', svg: P24('<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/>') },
     { id: 'igreja', nome: 'Igreja ou capela', cor: '#6b5a3a', svg: P24('<path d="M12 2v6M9.5 4.5h5"/><path d="M5 21V12l7-4 7 4v9z"/><path d="M10 21v-5h4v5"/>') },
     { id: 'cultura', nome: 'Biblioteca, auditório, cultura', cor: '#b0306f', svg: P24('<path d="M4 5a2 2 0 0 1 2-1h13v16H6a2 2 0 0 0-2 1z"/><path d="M4 5v16"/>') },
-    { id: 'servicos', nome: 'Serviços públicos (junta, loja do cidadão)', cor: '#4a5560', svg: P24('<path d="M3 10l9-6 9 6M5 10v9M9.5 10v9M14.5 10v9M19 10v9M3 21h18"/>') },
+    { id: 'servicos', nome: 'Serviços públicos', cor: '#4a5560', svg: P24('<path d="M3 10l9-6 9 6M5 10v9M9.5 10v9M14.5 10v9M19 10v9M3 21h18"/>') },
     { id: 'mercado', nome: 'Mercado e supermercado', cor: '#a8650d', svg: P24('<path d="M3 4h2l2 11h11l2-8H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>') },
     { id: 'desporto', nome: 'Desporto', cor: '#1e7a8c', svg: P24('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>') },
-    { id: 'obra', nome: 'Em obra ou planeado (proposta)', cor: '#c2570c', svg: P24('<path d="M3 21h18M5 21v-3a7 7 0 0 1 14 0v3M12 8v4M9 11l1.5 2M15 11l-1.5 2"/>'), tracejado: true },
+    { id: 'obra', nome: 'Em obra ou planeado', cor: '#c2570c', svg: P24('<path d="M3 21h18M5 21v-3a7 7 0 0 1 14 0v3M12 8v4M9 11l1.5 2M15 11l-1.5 2"/>'), tracejado: true },
     { id: 'transporte', nome: 'Estação ou terminal', cor: '#1857d6', svg: P24('<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/>') }
   ];
   var catPorId = {}; CATS.forEach(function (c) { catPorId[c.id] = c; });
@@ -190,7 +189,7 @@ var ILU = (function () {
     var n = document.getElementById('sq-notas'); if (!n) return;
     var x = n.querySelector('p[data-ui="' + id + '"]'); if (x) x.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'center' });
   }
-  function ligNota(id) { return '<br><button type="button" class="sq-pop-ir" data-ui="' + id + '">Ver a explicação mais abaixo</button>'; }
+  function ligNota(id) { return '<br><button type="button" class="sq-pop-ir" data-ui="' + id + '">Saber mais</button>'; }
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-pop-ir'); if (b) irNota(b.getAttribute('data-ui')); });
   function ligar(g, q) { if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); }
   function aplicarFiltro() {
@@ -228,7 +227,7 @@ var ILU = (function () {
     var ic = L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="background:' + c.cor + '">' + c.svg + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false });
     m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, -12], permanent: false, className: 'sq-nome-ponto' });
-    m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto ? '<br>' + esc(p.texto) : '') + (p.cat === 'obra' ? ligNota('obra') : ''), { maxWidth: 240 });
+    m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto && p.cat !== 'obra' ? '<br>' + esc(p.texto) : '') + (p.cat === 'obra' ? ligNota('obra') : ''), { maxWidth: 240 });
     rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto });
   });
   var MINZ = { obra: 0, saude: 14.5, bombeiros: 14.5, policia: 16, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
