@@ -67,11 +67,11 @@ var ILU = (function () {
     variante: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 120 Q120 100 220 118 T400 96 T640 84 V250 H0Z" fill="#b9d7a0"/><path d="M0 205 Q320 192 640 200 V250 H0Z" fill="#9cc58a"/><rect x="0" y="158" width="150" height="92" fill="#8fc0dc"/><path d="M20 190 q18 -6 36 0 M80 214 q18 -6 36 0" stroke="#e8f4fb" stroke-width="3" fill="none"/><path d="M60 170 l22 0 l-4 12 h-14z" fill="#b8693f"/><rect x="68" y="150" width="3" height="20" fill="#555"/>' +
       '<path d="M150 214 C240 200 300 160 380 150 S520 120 650 96" stroke="#7b7f86" stroke-width="26" fill="none" stroke-linecap="round"/><path d="M150 214 C240 200 300 160 380 150 S520 120 650 96" stroke="#fff" stroke-width="2" stroke-dasharray="10 9" fill="none"/>' +
       '<rect x="330" y="108" width="62" height="30" rx="3" fill="#e8e2d2" stroke="#8f8a7a"/><rect x="392" y="116" width="24" height="22" rx="3" fill="#c4473a"/><circle cx="346" cy="141" r="6" fill="#222"/><circle cx="372" cy="141" r="6" fill="#222"/><circle cx="404" cy="141" r="6" fill="#222"/>' + pinheiro(250, 128, 0.9) + pinheiro(560, 70, 0.8) + pinheiro(600, 78, 0.7) + casa(190, 150, 50, 36, '#f7f2e6', '#b8693f'),
-    acessocoina: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 130 Q160 105 330 124 T640 110 V250 H0Z" fill="#b9d7a0"/><path d="M0 214 Q320 200 640 210 V250 H0Z" fill="#9cc58a"/>' +
-      '<path d="M0 196 C160 186 300 160 640 128" stroke="#7b7f86" stroke-width="22" fill="none" stroke-linecap="round"/><path d="M0 196 C160 186 300 160 640 128" stroke="#fff" stroke-width="2" stroke-dasharray="10 9" fill="none"/>' +
-      casa(60, 150, 48, 34, '#f7f2e6', '#b8693f') + casa(130, 156, 44, 32, '#f3ead6', '#a85a3a') + pinheiro(585, 100, 0.8) + pinheiro(625, 104, 0.65) +
-      '<rect x="260" y="92" width="70" height="28" rx="3" fill="#e8e2d2" stroke="#8f8a7a"/><rect x="268" y="100" width="12" height="12" fill="#8fc0dc"/><rect x="288" y="100" width="12" height="12" fill="#8fc0dc"/><rect x="308" y="100" width="12" height="12" fill="#8fc0dc"/>' +
-      autocarro(310, 172, 15) + bicicleta(420, 150, 15),
+    acessocoina: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 120 Q160 95 330 110 T640 100 V250 H0Z" fill="#b9d7a0"/><path d="M0 232 Q320 222 640 228 V250 H0Z" fill="#9cc58a"/>' +
+      '<path d="M0 214 C200 206 400 190 640 166" stroke="#7b7f86" stroke-width="22" fill="none" stroke-linecap="round"/><path d="M0 214 C200 206 400 190 640 166" stroke="#fff" stroke-width="2" stroke-dasharray="10 9" fill="none"/>' +
+      casa(40, 118, 46, 30, '#f7f2e6', '#b8693f') + casa(110, 122, 42, 28, '#f3ead6', '#a85a3a') + pinheiro(585, 92, 0.8) + pinheiro(625, 96, 0.65) +
+      '<rect x="260" y="102" width="70" height="28" rx="3" fill="#e8e2d2" stroke="#8f8a7a"/><rect x="268" y="110" width="12" height="12" fill="#8fc0dc"/><rect x="288" y="110" width="12" height="12" fill="#8fc0dc"/><rect x="308" y="110" width="12" height="12" fill="#8fc0dc"/>' +
+      autocarro(300, 214, 15) + bicicleta(430, 196, 15),
     santana: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 160 Q200 130 420 150 T640 140 V250 H0Z" fill="#b9d7a0"/><path d="M0 208 Q320 194 640 205 V250 H0Z" fill="#9cc58a"/>' +
       '<rect x="60" y="80" width="150" height="112" fill="#e9d6b0"/><path d="M52 80 L135 46 L218 80Z" fill="#b8693f"/>' + janelas(60, 84, 150, 80, 5, 2) + '<rect x="115" y="150" width="40" height="42" fill="#8a6a4a"/><rect x="218" y="40" width="22" height="152" fill="#d9c49a"/><rect x="214" y="34" width="30" height="10" fill="#b8693f"/><path d="M229 34 q10 -14 -2 -26" stroke="#9aa3ad" stroke-width="5" fill="none" stroke-linecap="round"/>' +
       '<rect x="300" y="170" width="190" height="34" fill="#cfcabb"/><path d="M310 187 H480" stroke="#fff" stroke-width="2" stroke-dasharray="10 8"/><rect x="420" y="110" width="4" height="62" fill="#555"/><rect x="404" y="92" width="36" height="22" rx="3" fill="#1857d6"/><text x="422" y="108" font-size="14" font-weight="700" text-anchor="middle" fill="#fff" font-family="sans-serif">P</text>' + autocarro(350, 204, 12) +
@@ -298,7 +298,16 @@ var ILU = (function () {
     var d = L.DomUtil.create('div', 'leaflet-bar sq-ctl'), b = L.DomUtil.create('button', 'sq-vertudo', d), f = L.DomUtil.create('button', 'sq-vertudo sq-cheio-btn', d);
     b.type = 'button'; b.textContent = 'Ver tudo'; f.type = 'button'; f.textContent = 'Ecrã inteiro'; f.setAttribute('aria-pressed', 'false');
     L.DomEvent.disableClickPropagation(d); L.DomEvent.on(b, 'click', function () { map.closePopup(); verTudo(); });
+    var colC = document.querySelector('.sq-col-cartao'), alca = document.createElement('button');
+    alca.type = 'button'; alca.className = 'sq-alca'; alca.setAttribute('aria-expanded', 'true'); alca.textContent = 'Esconder cartões';
+    if (colC) colC.insertBefore(alca, colC.firstChild);
+    alca.addEventListener('click', function () {
+      var min = !corpo.classList.contains('sq-cartoes-min'); corpo.classList.toggle('sq-cartoes-min', min);
+      alca.textContent = min ? 'Mostrar cartões' : 'Esconder cartões'; alca.setAttribute('aria-expanded', min ? 'false' : 'true');
+      setTimeout(function () { map.invalidateSize(); }, 60);
+    });
     function cheio(on) {
+      if (!on) { corpo.classList.remove('sq-cartoes-min'); alca.textContent = 'Esconder cartões'; alca.setAttribute('aria-expanded', 'true'); }
       el.classList.toggle('sq-cheio', on); corpo.classList.toggle('sq-cheio-corpo', on); document.documentElement.classList.toggle('sq-trava', on); posBusca();
       f.textContent = on ? 'Sair do ecrã inteiro' : 'Ecrã inteiro'; f.setAttribute('aria-pressed', on ? 'true' : 'false');
       if (on) { corpo.setAttribute('role', 'dialog'); corpo.setAttribute('aria-modal', 'true'); corpo.setAttribute('aria-label', 'Mapa e cartões em ecrã inteiro'); } else { corpo.removeAttribute('role'); corpo.removeAttribute('aria-modal'); corpo.removeAttribute('aria-label'); }
@@ -400,7 +409,7 @@ var ILU = (function () {
     var z = cartao(id);
     if (atual && camadasZona[atual] && gZona.hasLayer(camadasZona[atual])) gZona.removeLayer(camadasZona[atual]);
     atual = id || null;
-    if (!z) { filtro = null; mini.hidden = true; visibilidade(); if (voar) verTudo(); return; }
+    if (!z) { filtro = null; mini.hidden = true; if (voar) UI.forEach(function (u) { uiOn[u.id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = true; }); visibilidade(); if (voar) verTudo(); return; }
     var c = camadasZona[id];
     if (CONTORNO || (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
     ligarDaZona(c, z);
@@ -528,7 +537,7 @@ var ILU = (function () {
     var bx = document.querySelector('.sq-busca'), col = document.querySelector('.sq-col-cartao'); if (!bx || !col || !window.matchMedia) return;
     var mq = window.matchMedia('(min-width: 980px)');
     var cp = col.parentNode;
-    function pos() { if (mq.matches || (corpo && corpo.classList.contains('sq-cheio-corpo'))) { if (bx.parentNode !== col) col.insertBefore(bx, col.firstChild); } else if (bx.nextElementSibling !== cp) cp.parentNode.insertBefore(bx, cp); }
+    function pos() { if (mq.matches || (corpo && corpo.classList.contains('sq-cheio-corpo'))) { if (bx.parentNode !== col) col.insertBefore(bx, col.querySelector('.sq-alca') ? col.querySelector('.sq-alca').nextSibling : col.firstChild); } else if (bx.nextElementSibling !== cp) cp.parentNode.insertBefore(bx, cp); }
     posBusca = pos; pos(); if (mq.addEventListener) mq.addEventListener('change', pos); else mq.addListener(pos);
   })();
   // Lista de locais (alternativa ao mapa)

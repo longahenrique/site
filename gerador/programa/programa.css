@@ -244,3 +244,12 @@
   .sq-corpo:not(.sq-cheio-corpo) .sq-notas{order:5}
   .sq-busca{margin-bottom:16px}
 }
+
+.sq-alca{display:none}
+@media(max-width:979px){
+  .sq-cheio-corpo .sq-alca{display:block;position:sticky;top:-12px;z-index:2;width:100%;min-height:44px;margin:-12px 0 10px;padding:0 12px;border:0;border-bottom:2px solid var(--ink);background:var(--paper);color:var(--ink);font:700 15px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;cursor:pointer}
+  .sq-corpo.sq-cheio-corpo.sq-cartoes-min{grid-template-rows:minmax(0,1fr) 46px}
+  .sq-cartoes-min .sq-col-cartao{overflow:hidden}
+}
+.sq-alternar{position:relative;z-index:2;margin-bottom:-56px;pointer-events:none}
+.sq-alternar button{pointer-events:auto;box-shadow:0 1px 0 rgba(0,0,0,.08)}
