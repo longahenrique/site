@@ -17,8 +17,8 @@
 .sq-chip:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:3px}
 .sq-corpo{display:grid;gap:24px}
 @media(min-width:980px){.sq-corpo{grid-template-columns:minmax(0,1fr) 420px;align-items:start}.sq-ver-mapa{display:none}}
-.sq-mapa{position:relative;z-index:0;isolation:isolate;height:640px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--sea)}
-@media(max-width:640px){.sq-mapa{height:62vh;min-height:400px}}
+.sq-mapa{position:relative;z-index:0;isolation:isolate;height:560px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--sea)}
+@media(max-width:640px){.sq-mapa{height:56vh;min-height:360px}}
 .sq-osm{filter:grayscale(1) sepia(.12) brightness(1.06) contrast(.88)}
 .sq .leaflet-container{font-family:Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
 .sq .leaflet-container:focus:not(:focus-visible){outline:none}
@@ -280,3 +280,8 @@ html{scrollbar-gutter:stable}
 .prog .sq-vivo{margin:28px 0 0;padding:0;border:0;border-top:2px solid var(--ink);border-radius:0;padding-top:14px;font:500 14px/1.55 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted);max-width:46em}
 .prog .sq{padding-bottom:22px}
 .prog .sq-vivo{margin-top:48px}
+
+/* ecrã inteiro com o texto aumentado ou diminuído no menu de acessibilidade (zoom da página): compensa o tamanho para ocupar sempre o ecrã todo */
+.sq-corpo.sq-cheio-corpo{inset:0 auto auto 0;width:calc((100vw - var(--sbw,0px)) / var(--az,1));height:calc(100vh / var(--az,1));height:calc(100dvh / var(--az,1))}
+.sq-trava{scrollbar-gutter:auto}
+html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela própria (Esc sai); o menu de acessibilidade volta ao sair */

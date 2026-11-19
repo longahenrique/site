@@ -107,7 +107,7 @@ css=re.search(r'<style>(.*?)</style>',s,flags=re.S).group(1).strip()
 header=re.search(r'<header class="top sea">.*?</header>',s,flags=re.S).group(0)
 art_header=header.replace('<a href="/opiniao/">','<a href="/opiniao/" aria-current="true">')
 gal_header=header.replace('<a href="/biografia">','<a href="/biografia" aria-current="true">')
-for a in ('programa',): header=header.replace('href="#%s"'%a,'href="/#%s"'%a)
+pass
 contact=re.search(r'<div class="sea" id="contacto">.*?</footer>\n</div>\n</div>',s,flags=re.S).group(0)
 a11y=re.search(r'<div class="a11y">.*?</div>\n</div>\n',s,flags=re.S).group(0)
 fav='<link rel="icon" href="/favicon.ico" sizes="any">\n<link rel="icon" type="image/png" sizes="48x48" href="/icon-48.png">\n<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">\n<link rel="apple-touch-icon" href="/apple-touch-icon.png">'
@@ -574,6 +574,7 @@ priv=f"""<p>Esta página explica que dados pessoais este site trata e porquê. E
 <ul>
 <li>O site é alojado no GitHub Pages, um serviço da GitHub, Inc. Como em qualquer alojamento, este serviço pode registar dados técnicos do teu pedido, como o endereço IP, para fornecer o site e por razões de segurança. Estes dados são tratados pela GitHub, que pode tratá-los nos Estados Unidos, segundo a sua própria política de privacidade. Segundo a GitHub, as transferências de dados para fora do Espaço Económico Europeu assentam em cláusulas contratuais-tipo aprovadas pela Comissão Europeia e no Quadro de Privacidade de Dados UE–EUA (ver a <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">política de privacidade da GitHub</a>).</li>
 <li>Os tipos de letra do site estão guardados no próprio site, por isso a tua visita não envia pedidos ao Google Fonts nem a serviços semelhantes.</li>
+<li>Na página do programa (/programa), o mapa vai buscar as imagens do mapa ao OpenStreetMap, um serviço da Fundação OpenStreetMap, que recebe o teu endereço IP e dados técnicos do teu navegador, como acontece com qualquer imagem de um site externo. O mapa não cria cookies e não envia para lado nenhum o que escolhes ou pesquisas nele. Mais informação na <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">política de privacidade da Fundação OpenStreetMap</a>.</li>
 <li>Se usares o menu de acessibilidade (tamanho do texto, contraste e outras opções) ou fechares um aviso no topo do site, essa escolha fica guardada apenas no teu navegador, para a lembrar na visita seguinte. Não é enviada para lado nenhum.</li>
 </ul>
 {stats}<h2>Se me enviares um email</h2>
@@ -600,11 +601,13 @@ acc=f"""<p>Quero que este site possa ser usado por todas as pessoas. A referênc
 <li>Os resultados eleitorais são apresentados como uma lista de etiquetas e valores, que se adapta ao telemóvel sem deslizar para o lado e que os leitores de ecrã e os modos de leitura apresentam sem repetições.</li>
 <li>As ligações que abrem num separador novo avisam os leitores de ecrã disso. Os botões de descarregar fotografias dizem, para os leitores de ecrã, de que fotografia se trata, e as expressões em inglês estão marcadas com o idioma certo, para serem lidas com a pronúncia correta.</li>
 <li>Respeito pela definição do sistema “reduzir movimento”: quem a tiver ligada deixa de ver a página deslizar e as setas a rodar.</li>
+<li>Na página do programa, o mapa pode ser deslocado e aproximado com o teclado (setas para o deslocar, mais e menos para aproximar). Os pontos e as linhas do mapa só se abrem com o rato ou com o toque, por isso tudo o que está no mapa também está em texto: nos cartões por localidade, estrada e natureza, na pesquisa e no programa completo, que está na mesma página.</li>
 <li>O idioma da página indicado (português de Portugal).</li>
 </ul>
 <h2>Limitações conhecidas</h2>
 <ul>
 <li>As descrições das fotografias são curtas e descrevem a cena de forma geral.</li>
+<li>O mapa do programa é visual por natureza: os pontos e as linhas não se podem selecionar com o teclado, os traçados e as localizações são indicativos e as ilustrações dos cartões são decorativas. Quem não o consiga usar encontra a mesma informação nos cartões, na pesquisa e no programa completo.</li>
 <li>Em ecrãs de toque, as ligações do rodapé e do menu são pequenas, o que pode dificultar o toque.</li>
 <li>As ligações para sites de terceiros (jornais e redes sociais) levam a páginas cuja acessibilidade não controlo.</li>
 </ul>
@@ -683,7 +686,7 @@ open('_site/imprensa.html','w',encoding='utf-8').write(head('/imprensa','Imprens
 open('_site/robots.txt','w',encoding='utf-8').write('User-agent: *\nAllow: /\n\nSitemap: '+SITE+'/sitemap.xml\n')
 LASTMOD={'/opiniao/'+r[1]:r[0] for r in rows}   # data de publicação de cada artigo
 
-# ---------- página de teste: Programa para Sesimbra (escondida: sem menu, sem sitemap, noindex) ----------
+# ---------- Programa para Sesimbra (/programa) ----------
 import time as _t
 _V=str(int(_t.time()))
 def prog_page():
@@ -726,8 +729,8 @@ def prog_page():
 </section>
 </main>"""
     ex='<script src="/programa-mapa/leaflet.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa-dados.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa.js?v='+_V+'"></script>\n'
-    h=head('/teste-programa','Programa para Sesimbra (página de teste)','Programa para Sesimbra: mapa e medidas por área. Página de teste.',css+'\n'+article_css,'website',None,'<meta name="robots" content="noindex, nofollow">\n<link rel="stylesheet" href="/programa-mapa/leaflet.css?v='+_V+'">\n<link rel="stylesheet" href="/programa-mapa/programa.css?v='+_V+'">')
-    return h+body(header,main,ex)
+    h=head('/programa','Programa para Sesimbra','Programa para Sesimbra: mapa com as propostas para cada localidade, estradas e natureza, e o programa completo por áreas.',css+'\n'+article_css,'website',None,'<link rel="stylesheet" href="/programa-mapa/leaflet.css?v='+_V+'">\n<link rel="stylesheet" href="/programa-mapa/programa.css?v='+_V+'">')
+    return h+body(header.replace('<a href="/programa">','<a href="/programa" aria-current="page">'),main,ex)
 if os.path.isdir('gerador/programa'):
     os.makedirs('_site/programa-mapa',exist_ok=True)
     for _f in ('leaflet.css','leaflet.js','programa.css','programa.js'):
@@ -736,8 +739,8 @@ if os.path.isdir('gerador/programa'):
     _D=_jj.load(open('gerador/programa/mapa.json',encoding='utf-8'))
     for _l in _D.get('linhas',[]): _l.pop('pontos',None)
     open('_site/programa-mapa/programa-dados.js','w',encoding='utf-8').write('/* Gerado a partir de gerador/programa/mapa.json (painel do mapa) */\nvar DADOS = '+_jj.dumps(_D,ensure_ascii=False,separators=(',',':'))+';\n')
-    open('_site/teste-programa.html','w',encoding='utf-8').write(prog_page())
-urls=['/','/biografia','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
+    open('_site/programa.html','w',encoding='utf-8').write(prog_page())
+urls=['/','/biografia','/programa','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
 def _sm(u):
     img=''.join('<image:image><image:loc>%s/fotos/%s</image:loc></image:image>'%(SITE,ph['file']) for ph in PHOTOS) if u=='/galeria' else ''
     lm=('<lastmod>%s</lastmod>'%LASTMOD[u]) if u in LASTMOD else ''
