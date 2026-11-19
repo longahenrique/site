@@ -298,16 +298,25 @@ var ILU = (function () {
     var d = L.DomUtil.create('div', 'leaflet-bar sq-ctl'), b = L.DomUtil.create('button', 'sq-vertudo', d), f = L.DomUtil.create('button', 'sq-vertudo sq-cheio-btn', d);
     b.type = 'button'; b.textContent = 'Ver tudo'; f.type = 'button'; f.textContent = 'Ecrã inteiro'; f.setAttribute('aria-pressed', 'false');
     L.DomEvent.disableClickPropagation(d); L.DomEvent.on(b, 'click', function () { map.closePopup(); verTudo(); });
-    var colC = document.querySelector('.sq-col-cartao'), alca = document.createElement('button');
-    alca.type = 'button'; alca.className = 'sq-alca'; alca.setAttribute('aria-expanded', 'true'); alca.textContent = 'Esconder cartões';
+    var colC = document.querySelector('.sq-col-cartao'), alca = document.createElement('button'), ultimaAlt = null;
+    alca.type = 'button'; alca.className = 'sq-alca'; alca.setAttribute('aria-label', 'Ajustar a altura dos cartões: arrasta, ou toca para esconder e mostrar'); alca.innerHTML = '<span aria-hidden="true"></span>';
     if (colC) colC.insertBefore(alca, colC.firstChild);
-    alca.addEventListener('click', function () {
-      var min = !corpo.classList.contains('sq-cartoes-min'); corpo.classList.toggle('sq-cartoes-min', min);
-      alca.textContent = min ? 'Mostrar cartões' : 'Esconder cartões'; alca.setAttribute('aria-expanded', min ? 'false' : 'true');
-      setTimeout(function () { map.invalidateSize(); }, 60);
+    function altura(px) { corpo.style.setProperty('--cart', px == null ? '' : px + 'px'); }
+    var arr = null;
+    alca.addEventListener('pointerdown', function (e) { arr = { y: e.clientY, h: colC.getBoundingClientRect().height, mov: false }; alca.setPointerCapture(e.pointerId); });
+    alca.addEventListener('pointermove', function (e) {
+      if (!arr) return; var d = e.clientY - arr.y; if (Math.abs(d) > 5) arr.mov = true; if (!arr.mov) return;
+      altura(Math.max(46, Math.min(window.innerHeight - 110, arr.h - d))); map.invalidateSize();
     });
+    function fim() {
+      if (!arr) return; var m = arr.mov; arr = null;
+      if (!m) { var min = colC.getBoundingClientRect().height <= 60; if (min) altura(ultimaAlt); else { ultimaAlt = colC.getBoundingClientRect().height; altura(46); } }
+      setTimeout(function () { map.invalidateSize(); }, 60);
+    }
+    alca.addEventListener('pointerup', fim); alca.addEventListener('pointercancel', fim);
+    alca.addEventListener('keydown', function (e) { if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); altura(Math.max(46, Math.min(window.innerHeight - 110, colC.getBoundingClientRect().height + (e.key === 'ArrowUp' ? 60 : -60)))); map.invalidateSize(); } });
     function cheio(on) {
-      if (!on) { corpo.classList.remove('sq-cartoes-min'); alca.textContent = 'Esconder cartões'; alca.setAttribute('aria-expanded', 'true'); }
+      if (!on) { altura(null); ultimaAlt = null; }
       el.classList.toggle('sq-cheio', on); corpo.classList.toggle('sq-cheio-corpo', on); document.documentElement.classList.toggle('sq-trava', on); posBusca();
       f.textContent = on ? 'Sair do ecrã inteiro' : 'Ecrã inteiro'; f.setAttribute('aria-pressed', on ? 'true' : 'false');
       if (on) { corpo.setAttribute('role', 'dialog'); corpo.setAttribute('aria-modal', 'true'); corpo.setAttribute('aria-label', 'Mapa e cartões em ecrã inteiro'); } else { corpo.removeAttribute('role'); corpo.removeAttribute('aria-modal'); corpo.removeAttribute('aria-label'); }
