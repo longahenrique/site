@@ -58,7 +58,7 @@
     '<div class="sq-sug-cab"><h3 id="sq-sug-t">Sugerir no mapa</h3><button type="button" class="sq-sug-x" aria-label="Fechar e apagar a sugestão">×</button></div>' +
     '<fieldset class="sq-sug-tipos"><legend>O que queres sugerir?</legend>' + TIPOS.map(function (t, i) { return '<label><input type="radio" name="sq-sug-tipo" value="' + t[0] + '"' + (i === 0 ? ' checked' : '') + '> ' + t[1] + '</label>'; }).join('') + '</fieldset>' +
     '<p class="sq-sug-ajuda" id="sq-sug-ajuda"></p>' +
-    '<div class="sq-sug-ferr"><button type="button" data-a="centro">Marcar o centro do mapa</button><button type="button" data-a="desfazer">Desfazer o último</button><button type="button" data-a="limpar">Limpar</button></div>' +
+    '<div class="sq-sug-ferr"><button type="button" data-a="desfazer">Desfazer o último</button><button type="button" data-a="limpar">Limpar</button></div>' +
     '<p class="sq-sug-estado" id="sq-sug-estado" role="status" aria-live="polite"></p>' +
     '<div class="sq-sug-campo" id="sq-sug-subw"><label for="sq-sug-sub">Qual?</label><select id="sq-sug-sub"></select></div>' +
     '<div class="sq-sug-campo"><label for="sq-sug-desc">Descreve a tua sugestão</label><textarea id="sq-sug-desc" rows="3" maxlength="600"></textarea></div>' +
@@ -69,18 +69,20 @@
 
   function opcoes() { var l = tipo === 'linha' ? SUB_LINHA : SUB_LOCAL; sel.innerHTML = l.map(function (n) { return '<option>' + esc(n) + '</option>'; }).join(''); subw.hidden = tipo === 'problema'; $('label[for=sq-sug-sub]').textContent = tipo === 'linha' ? 'Que tipo de percurso?' : 'Que tipo de local?'; }
   function texto() {
-    ajuda.textContent = tipo === 'linha' ? 'Toca ou clica no mapa para marcar os pontos do percurso, por ordem. Com o teclado, move o mapa e usa "Marcar o centro do mapa".' : 'Toca ou clica no mapa no sítio exato. Com o teclado, move o mapa e usa "Marcar o centro do mapa".';
+    ajuda.textContent = tipo === 'linha' ? 'Toca ou clica no mapa para marcar os pontos do percurso, por ordem.' : 'Toca ou clica no mapa no sítio exato.';
     if (!pts.length) estado.textContent = 'Ainda sem localização marcada.';
     else estado.textContent = tipo === 'linha' ? pts.length + (pts.length === 1 ? ' ponto marcado' : ' pontos marcados') + (pts.length > 1 ? ', cerca de ' + (comprimento() >= 1000 ? (comprimento() / 1000).toFixed(1).replace('.', ',') + ' km' : Math.round(comprimento() / 10) * 10 + ' m') : '') + '.' : 'Local marcado.';
   }
   function marca(ll) { if (tipo === 'linha') { if (pts.length < 400) pts.push(ll); } else pts = [ll]; desenha(); texto(); }
-  map.on('click', function (e) { if (!aberto) return; map.closePopup(); marca(e.latlng); });
+  // 'preclick' e não 'click': o clique sobre uma linha ou pino com balão não chega ao mapa como 'click', mas o 'preclick' chega sempre
+  map.on('preclick', function (e) { if (!aberto) return; map.closePopup(); marca(e.latlng); });
+  // botão direito do rato: desfaz o último ponto (e não abre o menu do navegador)
+  map.on('contextmenu', function (e) { if (!aberto) return; L.DomEvent.preventDefault(e.originalEvent); if (pts.length) { pts.pop(); desenha(); texto(); } });
   painel.addEventListener('change', function (e) { if (e.target.name !== 'sq-sug-tipo') return; tipo = e.target.value; if (tipo !== 'linha' && pts.length > 1) pts = [pts[pts.length - 1]]; opcoes(); desenha(); texto(); });
   painel.addEventListener('click', function (e) {
     var b = e.target.closest('button'); if (!b) return;
     var a = b.getAttribute('data-a');
-    if (a === 'centro') marca(map.getCenter());
-    else if (a === 'desfazer') { pts.pop(); desenha(); texto(); }
+    if (a === 'desfazer') { pts.pop(); desenha(); texto(); }
     else if (a === 'limpar') { pts = []; desenha(); texto(); }
     else if (b.classList.contains('sq-sug-x') || b.classList.contains('sq-sug-canc')) fechar(true);
     else if (b.classList.contains('sq-sug-env')) enviar();
