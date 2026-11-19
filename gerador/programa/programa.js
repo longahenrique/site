@@ -139,7 +139,7 @@ var ILU = (function () {
     var lin = L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
       .addTo(g);
     var uiId = l.camada === 'ativos' ? 'ciclo' : l.nome === 'Faixa BUS' ? 'faixa' : (l.camada === 'autocarro' || l.nome === 'Linha Azul') ? 'bus' : 'vias';
-    lin.bindPopup('<b>' + esc(l.nome) + '</b>', { maxWidth: 260 });   // só o nome, sem descrição
+    lin.bindPopup('<b>' + esc(l.nome) + '</b>' + (l.balao && l.texto ? '<br>' + esc(l.texto) : ''), { maxWidth: 260 });   // só o nome; a descrição só nas linhas com "balao" (a Linha Azul)
     linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
   var gFixos = L.featureGroup().addTo(map);   // estações que já existem: marcadas desde o início
