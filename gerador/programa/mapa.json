@@ -61684,10 +61684,10 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento Estádio da Vila Amália",
    "p": [
-    38.44637,
-    -9.09977
+    38.44736,
+    -9.09978
    ]
   },
   {
@@ -61700,7 +61700,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento - Parque Amarelo",
    "p": [
     38.48882,
     -9.18092
@@ -61708,7 +61708,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento - Parque do Avô",
    "p": [
     38.48805,
     -9.18165
@@ -61716,7 +61716,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento - Parque das Videiras",
    "p": [
     38.48719,
     -9.18079
@@ -61724,7 +61724,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento - Dornier",
+   "nome": "Estacionamento",
    "p": [
     38.44349,
     -9.09686
@@ -61732,7 +61732,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento - Marginal da Lagoa",
    "p": [
     38.50743,
     -9.17828
@@ -61780,7 +61780,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento - Fertagus",
+   "nome": "Estacionamento Fertagus - Coina",
    "p": [
     38.58541,
     -9.05088
@@ -61788,7 +61788,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento - Fertagus",
+   "nome": "Estacionamento Fertagus - Fogueteiro",
    "p": [
     38.60992,
     -9.10115
@@ -61796,7 +61796,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento - Empark",
+   "nome": "Estacionamento Empark - Heliodoro Salgado",
    "p": [
     38.44235,
     -9.09624
@@ -61804,10 +61804,10 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento - Telpark",
+   "nome": "Estacionamento Telpark - Praia do Ouro",
    "p": [
-    38.44136,
-    -9.10744
+    38.44329,
+    -9.10574
    ]
   },
   {
@@ -61820,66 +61820,82 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento - Castelo",
    "p": [
-    38.49262,
-    -9.12709
+    38.4512,
+    -9.10902
    ]
   },
   {
    "cat": "estacionamento",
    "nome": "Estacionamento",
    "p": [
-    38.4513,
-    -9.11118
+    38.4493,
+    -9.10057
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Terminal",
+   "p": [
+    38.44614,
+    -9.09986
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Infante",
+   "p": [
+    38.44401,
+    -9.10551
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Palames",
+   "p": [
+    38.44351,
+    -9.10993
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Doca Pesca",
+   "p": [
+    38.43789,
+    -9.1134
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento - Porto de Abrigo",
+   "p": [
+    38.43575,
+    -9.11535
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento Telpark - Praia da Califórnia",
+   "p": [
+    38.44284,
+    -9.0954
    ]
   },
   {
    "cat": "estacionamento",
    "nome": "Estacionamento",
    "p": [
-    38.44853,
-    -9.10071
+    38.56598,
+    -9.03792
    ]
   },
   {
    "cat": "estacionamento",
    "nome": "Estacionamento",
    "p": [
-    38.4452,
-    -9.10018
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.44422,
-    -9.10516
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.44226,
-    -9.10765
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.43906,
-    -9.11659
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.43257,
-    -9.11997
+    38.56495,
+    -9.03778
    ]
   }
  ],
