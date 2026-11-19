@@ -15,6 +15,7 @@ def cat(t):
     if l in ('park', 'garden'): return 'parque'
     if a in ('school', 'college', 'university'): return 'escola'
     if a in ('clinic', 'doctors', 'hospital'): return 'saude'
+    if a == 'pharmacy': return 'farmacia'
     if a == 'fire_station': return 'bombeiros'
     if a == 'police': return 'policia'
     if a == 'place_of_worship' and t.get('religion', 'christian') == 'christian': return 'igreja'
@@ -56,7 +57,7 @@ f = PAS + 'equipamentos.json'
 if os.path.exists(f):
     els = json.load(open(f, encoding='utf-8'))['elements']; pts, vistos = [], set()
     for e in els:
-        t = e.get('tags', {}); c = cat(t); n = t.get('name'); p = pos(e)
+        t = e.get('tags', {}); c = cat(t); n = t.get('name') or ('Farmácia' if t.get('amenity') == 'pharmacy' else None); p = pos(e)
         if not c or not n or not p: continue
         if CONC and not dentro(p, CONC): continue   # só dentro do concelho de Sesimbra
         if c == 'desporto' and t.get('leisure') == 'pitch' and len(n) < 4: continue

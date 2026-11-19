@@ -46357,6 +46357,9 @@
      "t": "Habitação pública e cooperativa a preços acessíveis."
     },
     {
+     "t": "Programa-Piloto para a Criação de Comunidades de Energia Renovável."
+    },
+    {
      "t": "Ciclovia Santana–Sampaio–Cotovia, a ligar a Cotovia a Santana e às escolas de Sampaio."
     }
    ],
@@ -61621,6 +61624,182 @@
    "p": [
     38.47672,
     -9.16025
+   ]
+  },
+  {
+   "cat": "farmacia",
+   "nome": "Farmácia Sofárida Sesimbra",
+   "p": [
+    38.44351,
+    -9.10027
+   ]
+  },
+  {
+   "cat": "farmacia",
+   "nome": "Farmácia Sofárida Santana",
+   "p": [
+    38.46123,
+    -9.10339
+   ]
+  },
+  {
+   "cat": "farmacia",
+   "nome": "Farmácia da Cotovia",
+   "p": [
+    38.47017,
+    -9.10061
+   ]
+  },
+  {
+   "cat": "farmacia",
+   "nome": "Farmácia Quinta do Conde",
+   "p": [
+    38.55675,
+    -9.04651
+   ]
+  },
+  {
+   "cat": "farmacia",
+   "nome": "Farmácia Liz",
+   "p": [
+    38.47303,
+    -9.15427
+   ]
+  },
+  {
+   "cat": "farmacia",
+   "nome": "Bio Latina",
+   "p": [
+    38.56446,
+    -9.05236
+   ]
+  },
+  {
+   "cat": "farmacia",
+   "nome": "Farmácia",
+   "p": [
+    38.57182,
+    -9.0381
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque Amarelo",
+   "p": [
+    38.48882,
+    -9.18092
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque do Avô",
+   "p": [
+    38.48805,
+    -9.18165
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Avenida Humberto Delgado)",
+   "p": [
+    38.56358,
+    -9.03883
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Rua do Caminho Branco)",
+   "p": [
+    38.48498,
+    -9.1043
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Rua do Azevinho)",
+   "p": [
+    38.4709,
+    -9.08432
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Avenida Dom Manuel Martins)",
+   "p": [
+    38.47322,
+    -9.09656
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Avenida João Paulo II)",
+   "p": [
+    38.46791,
+    -9.10019
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento",
+   "p": [
+    38.48945,
+    -9.10512
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Avenida Sérgio Pereira de Melo)",
+   "p": [
+    38.46489,
+    -9.09789
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Rua Cidade de Portalegre)",
+   "p": [
+    38.56023,
+    -9.05398
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Rua Duarte Leite)",
+   "p": [
+    38.56028,
+    -9.04183
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Rua Cidade da Praia)",
+   "p": [
+    38.55817,
+    -9.05489
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque das Videiras",
+   "p": [
+    38.48719,
+    -9.18079
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Avenida da Liberdade)",
+   "p": [
+    38.44637,
+    -9.09977
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Parque de estacionamento (Avenida da Liberdade)",
+   "p": [
+    38.44892,
+    -9.10039
    ]
   }
  ],

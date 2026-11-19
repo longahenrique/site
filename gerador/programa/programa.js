@@ -83,7 +83,7 @@ var ILU = (function () {
       pinheiro(318, 150, 0.8) + '<rect x="0" y="206" width="640" height="14" fill="#d9d3c4"/>' + autocarro(120, 224, 11) + '<path d="M0 238 H640" stroke="#d6246e" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round" fill="none"/>',
     cotovia: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 200 Q320 186 640 198 V250 H0Z" fill="#cfe0b8"/>' +
       [[40, 90], [190, 70], [340, 100]].map(function (b, i) { return '<rect x="' + b[0] + '" y="' + b[1] + '" width="120" height="' + (205 - b[1]) + '" fill="' + ['#f1e3c6', '#ecd5b0', '#f4e9d2'][i] + '"/><rect x="' + (b[0] - 4) + '" y="' + (b[1] - 8) + '" width="128" height="8" fill="#b8693f"/>' + janelas(b[0], b[1], 120, 205 - b[1], 4, Math.round((205 - b[1]) / 30)); }).join('') +
-      '<rect x="500" y="40" width="6" height="165" fill="#f2b632"/><path d="M440 48 H590 M500 48 L470 82 M500 48 L540 82" stroke="#f2b632" stroke-width="5" fill="none"/><path d="M560 48 V90" stroke="#555" stroke-width="2"/><rect x="552" y="90" width="16" height="12" fill="#e05a47"/><rect x="470" y="130" width="90" height="75" fill="#e9dcc0"/>' + janelas(470, 130, 90, 75, 3, 2) +
+      '<rect x="500" y="40" width="6" height="165" fill="#f2b632"/><path d="M440 48 H590 M500 48 L470 82 M500 48 L540 82" stroke="#f2b632" stroke-width="5" fill="none"/><path d="M560 48 V90" stroke="#555" stroke-width="2"/><rect x="552" y="90" width="16" height="12" fill="#e05a47"/><rect x="470" y="130" width="90" height="75" fill="#e9dcc0"/><path d="M476 130 L554 130 L546 110 L484 110Z" fill="#1f4fb5" stroke="#dbe7ff" stroke-width="1.5"/><path d="M495 110 L492 130 M515 110 L515 130 M535 110 L538 130 M480 120 H550" stroke="#dbe7ff" stroke-width="1.2" fill="none"/>' + janelas(470, 130, 90, 75, 3, 2) +
       [[620, 175]].map(function () { return ''; }).join('') + '<rect x="0" y="205" width="640" height="14" fill="#d9d3c4"/>',
     sampaio: '<rect width="640" height="250" fill="#e6f1f6"/><path d="M0 190 Q160 110 330 120 T640 170 V250 H0Z" fill="#a9cf94"/><path d="M0 215 Q320 195 640 212 V250 H0Z" fill="#8cbb7a"/>' +
       '<rect x="60" y="120" width="170" height="60" fill="#f1e3c6"/><rect x="56" y="112" width="178" height="9" fill="#c0504d"/>' + janelas(60, 120, 170, 60, 7, 1) + '<rect x="140" y="150" width="20" height="30" fill="#8a6a4a"/><path d="M245 120 V84" stroke="#555" stroke-width="3"/><path d="M245 84 h28 v16 h-28z" fill="#1857d6"/>' +
@@ -161,6 +161,8 @@ var ILU = (function () {
     { id: 'parque', nome: 'Parque ou jardim', cor: '#2f8f5b', svg: P24('<path d="M12 21v-6"/><path d="M12 15a5 5 0 1 0-4-8 4 4 0 0 0 0 7 4 4 0 0 0 4 1z" fill="currentColor"/>') },
     { id: 'escola', nome: 'Escola', cor: '#8a3fb0', svg: P24('<path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c3 2.5 9 2.5 12 0v-5"/>') },
     { id: 'saude', nome: 'Saúde', cor: '#c2362f', svg: P24('<path d="M12 5v14M5 12h14" stroke-width="3.5"/>') },
+    { id: 'farmacia', nome: 'Farmácia', cor: '#4d7c0f', svg: P24('<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M12 8v8M8 12h8" stroke-width="2.6"/>') },
+    { id: 'estacionamento', nome: 'Parque de estacionamento', cor: '#44546a', svg: P24('<path d="M9 18V6h4a3.5 3.5 0 0 1 0 7H9" stroke-width="2.6"/>') },
     { id: 'bombeiros', nome: 'Bombeiros', cor: '#d9531c', svg: P24('<path d="M12 3c1 4 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-5 1-9z" fill="currentColor"/>') },
     { id: 'policia', nome: 'Polícia', cor: '#1b3a8c', svg: P24('<path d="M12 3l7 3v6c0 4-3 7-7 9-4-2-7-5-7-9V6z"/>') },
     { id: 'igreja', nome: 'Igreja ou capela', cor: '#6b5a3a', svg: P24('<path d="M12 2v6M9.5 4.5h5"/><path d="M5 21V12l7-4 7 4v9z"/><path d="M10 21v-5h4v5"/>') },
@@ -236,8 +238,8 @@ var ILU = (function () {
     m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto && p.cat !== 'obra' ? '<br>' + esc(p.texto) : ''), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
     rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto, local: p.local });
   });
-  var MINZ = { obra: 0, transporte: 14, saude: 14.5, bombeiros: 14.5, policia: 14.5, escola: 14.5, parque: 14.5, servicos: 14.5, cultura: 14.5, social: 14.5, igreja: 14.5, mercado: 14.5, desporto: 14.5 };   // tudo o que já existe aparece ao mesmo tempo que os parques
-  var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'social', 'igreja', 'mercado', 'desporto'], DIST = 38;
+  var MINZ = { obra: 0, transporte: 14, saude: 14.5, farmacia: 14.5, estacionamento: 14.5, bombeiros: 14.5, policia: 14.5, escola: 14.5, parque: 14.5, servicos: 14.5, cultura: 14.5, social: 14.5, igreja: 14.5, mercado: 14.5, desporto: 14.5 };   // tudo o que já existe aparece ao mesmo tempo que os parques
+  var PRIO = ['obra', 'saude', 'farmacia', 'estacionamento', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'social', 'igreja', 'mercado', 'desporto'], DIST = 38;
   var filtro = null;   // com um cartão escolhido, só se mostra o que é dessa zona: {b: limites} ou {solo: nome da linha}
   function nofiltro(r) { return !filtro || (!filtro.solo && !filtro.semObra && filtro.b.contains(r.p)); }
   var forcado = null;   // marcador aberto pela pesquisa: não é escondido pelo desaglomerar
