@@ -49715,7 +49715,7 @@
    },
    "medidas": [
     {
-     "t": "Começa pela plataforma que já existe a noroeste do porto."
+     "t": "Começa pela plataforma que já existe a noroeste do porto e termina na interseção com a Avenida dos Náufragos."
     },
     {
      "t": "Essencial para a pesca, uma das principais atividades económicas do concelho."
@@ -50718,11 +50718,11 @@
    "cor": "#6d4bc2",
    "peso": 5,
    "tracejado": "10 8",
-   "texto": "Liga o Porto de Abrigo à zona industrial do Zambujal e tira os pesados da vila. Começa pela plataforma que já existe a noroeste do porto. Traçado a estudar; a pedir ao Estado, ≈15 M€.",
+   "texto": "Liga o Porto de Abrigo à zona industrial do Zambujal e tira os pesados da vila. Começa pela plataforma que já existe a noroeste do porto e termina na interseção com a Avenida dos Náufragos. Traçado a estudar; a pedir ao Estado, ≈15 M€.",
    "coords": [
     [
-     38.4385,
-     -9.115
+     38.4393,
+     -9.11598
     ],
     [
      38.443,
@@ -50733,14 +50733,14 @@
      -9.125
     ],
     [
-     38.4497,
-     -9.1283
+     38.44945,
+     -9.12799
     ]
    ],
    "pontos": [
     [
-     38.4385,
-     -9.115
+     38.4393,
+     -9.11598
     ],
     [
      38.443,
@@ -50751,8 +50751,8 @@
      -9.125
     ],
     [
-     38.4497,
-     -9.1283
+     38.44945,
+     -9.12799
     ]
    ],
    "semSnap": true
@@ -56694,8 +56694,8 @@
    "cat": "cultura",
    "nome": "Polo de Leitura",
    "p": [
-    38.56516,
-    -9.03715
+    38.56518,
+    -9.03738
    ],
    "texto": "Polo de Leitura da Quinta do Conde, no edifício do Pingo Doce, virado para o Parque da Vila."
   },
@@ -56765,8 +56765,8 @@
    "cat": "obra",
    "nome": "Spot Jovem",
    "p": [
-    38.56644,
-    -9.03733
+    38.56657,
+    -9.03695
    ],
    "texto": "Previsto dentro do Parque da Vila, junto ao parque de estacionamento da Avenida Cova dos Vidros. Local aproximado."
   },
@@ -56778,6 +56778,30 @@
     -9.043
    ],
    "texto": "Em terreno municipal cedido pela Câmara, junto ao eixo da Ribeira do Marchante. Projeto apresentado em abril de 2025; financiamento ainda por garantir. Local aproximado."
+  },
+  {
+   "cat": "obra",
+   "nome": "Parque dissuasor",
+   "p": [
+    38.46355,
+    -9.09775
+   ],
+   "cor": "#2f8f5b",
+   "icone": "estacionar",
+   "texto": "Local aproximado.",
+   "local": "Santana"
+  },
+  {
+   "cat": "obra",
+   "nome": "Parque dissuasor",
+   "p": [
+    38.47719,
+    -9.16093
+   ],
+   "cor": "#2f8f5b",
+   "icone": "estacionar",
+   "texto": "Local aproximado.",
+   "local": "Alfarim"
   }
  ]
 }

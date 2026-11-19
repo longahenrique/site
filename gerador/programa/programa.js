@@ -225,11 +225,11 @@ var ILU = (function () {
   CATS.forEach(function (c) { gPontos[c.id] = L.layerGroup(); });
   (DADOS.pontos || []).concat(DADOS.manuais || []).forEach(function (p) {
     var c = catPorId[p.cat]; if (!c) return;
-    var ic = L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="background:' + c.cor + '">' + c.svg + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
+    var ic = L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="background:' + (p.cor || c.cor) + '">' + (p.icone === 'estacionar' ? P24('<path d="M9 18V6h4a3.5 3.5 0 0 1 0 7H9" stroke-width="2.6"/>') : c.svg) + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false });
     m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, -12], permanent: false, className: 'sq-nome-ponto' });
     m.bindPopup('<b>' + esc(p.nome) + '</b><br>' + esc(c.nome) + (p.texto && p.cat !== 'obra' ? '<br>' + esc(p.texto) : ''), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
-    rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto });
+    rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto, local: p.local });
   });
   var MINZ = { obra: 0, saude: 14.5, bombeiros: 14.5, policia: 16, transporte: 14, escola: 14.5, parque: 14.5, servicos: 15, cultura: 15, igreja: 15.5, mercado: 15.5, desporto: 16 };
   var PRIO = ['obra', 'saude', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'igreja', 'mercado', 'desporto'], DIST = 38;
@@ -478,7 +478,7 @@ var ILU = (function () {
     });
     rotPontos.forEach(function (r) {
       var c = catPorId[r.cat];
-      add(r.cat === 'obra' ? 2 : 3, r.cat === 'obra' ? 'Proposta de serviço' : (c ? c.nome : 'Local'), r.nome, r.texto, function () {
+      add(r.cat === 'obra' ? 2 : 3, r.cat === 'obra' ? 'Proposta de serviço' + (r.local ? ' em ' + r.local : '') : (c ? c.nome : 'Local'), r.nome, r.texto, function () {
         if (r.cat === 'obra') definir('obra', true);
         forcado = r.m; var g = gPontos[r.cat]; if (!g.hasLayer(r.m)) g.addLayer(r.m);
         var abrir = function () { r.m.openPopup(); };
