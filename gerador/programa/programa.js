@@ -249,15 +249,24 @@ var ILU = (function () {
     // com poucas categorias marcadas na legenda (até 3), aparecem com qualquer zoom: serve para ver, por exemplo, todos os estacionamentos do concelho de uma vez
     var ativas = CATS.filter(function (c) { return c.id !== 'obra' && uiOn.existe && catOn[c.id]; }).length, poucas = ativas > 0 && ativas <= 3;
     // muito juntos: fica o mais importante e os outros aparecem ao aproximar (com zoom máximo, só se escondem os que estão praticamente em cima uns dos outros)
-    // regra estável: um ponto só se esconde se houver, a menos de DIST pixels, outro de maior prioridade (mesmo que esse esteja escondido). Como as distâncias só crescem ao aproximar, um ponto que apareceu nunca desaparece nem troca por outro ao dar zoom
-    var acima = [], dm = z >= 17 ? 16 : (poucas ? 28 : DIST);   // com poucas categorias, só se escondem os que se sobrepõem de facto (ícones de 26 px)
-    rotPontos.slice().sort(function (a, b) { return PRIO.indexOf(a.cat) - PRIO.indexOf(b.cat); }).forEach(function (r) {
-      var g = gPontos[r.cat], q = map.latLngToContainerPoint(r.m.getLatLng());
-      var zmin = poucas && r.cat !== 'obra' ? 0 : (MINZ[r.cat] != null ? MINZ[r.cat] : 13);
-      var ver = r.m === forcado || (z >= zmin && (r.cat !== 'obra' || nofiltro(r)));
-      if (ver && r.cat !== 'obra' && r.m !== forcado) ver = !acima.some(function (o) { return Math.abs(o.x - q.x) < dm && Math.abs(o.y - q.y) < dm; });
-      if (r.cat === 'obra' ? nofiltro(r) : (uiOn.existe && catOn[r.cat])) acima.push(q);
-      if (ver && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!ver && g.hasLayer(r.m)) g.removeLayer(r.m);
+    // regra: quando há sobreposição aparece um só (o de maior prioridade) e ao aproximar aparece o outro logo que deixam de se sobrepor. Calcula-se a partir de um zoom baixo até ao atual, e o que já apareceu nunca desaparece: ao dar zoom não há saltos
+    var act = rotPontos.filter(function (r) { return r.cat === 'obra' ? (uiOn.obra && nofiltro(r)) : (uiOn.existe && catOn[r.cat]); }).sort(function (a, b) { return PRIO.indexOf(a.cat) - PRIO.indexOf(b.cat); });
+    var mostra = new Array(act.length), lista = [], zs = [], k;
+    for (k = 5; k < z; k += 0.25) zs.push(k); zs.push(z);
+    zs.forEach(function (zz) {
+      var dm = zz >= 17 ? 16 : (poucas ? 28 : DIST), pts = act.map(function (r) { return map.project(r.m.getLatLng(), zz); });
+      act.forEach(function (r, i) {
+        if (mostra[i]) return;
+        if (r.cat === 'obra') { mostra[i] = true; lista.push(i); return; }
+        if (zz < (poucas ? 0 : (MINZ[r.cat] != null ? MINZ[r.cat] : 13))) return;
+        var q = pts[i];
+        if (!lista.some(function (o) { return Math.abs(pts[o].x - q.x) < dm && Math.abs(pts[o].y - q.y) < dm; })) { mostra[i] = true; lista.push(i); }
+      });
+    });
+    var ver = new Map(); act.forEach(function (r, i) { ver.set(r, !!mostra[i]); });
+    rotPontos.forEach(function (r) {
+      var g = gPontos[r.cat], v = r.m === forcado || ver.get(r) === true;
+      if (v && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!v && g.hasLayer(r.m)) g.removeLayer(r.m);
     });
   }
   map.on('zoomend', function () { nomesParques(); ligar(gFixos, map.getZoom() >= 13); }); nomesParques();
@@ -310,7 +319,7 @@ var ILU = (function () {
   verTudo();
   var Ctl = L.Control.extend({ options: { position: 'topright' }, onAdd: function () {
     var d = L.DomUtil.create('div', 'leaflet-bar sq-ctl'), b = L.DomUtil.create('button', 'sq-vertudo', d), f = L.DomUtil.create('button', 'sq-vertudo sq-cheio-btn', d);
-    b.type = 'button'; b.textContent = 'Ver tudo'; f.type = 'button'; f.textContent = 'Ecrã inteiro'; f.setAttribute('aria-pressed', 'false');
+    b.type = 'button'; b.textContent = 'Mapa completo'; b.setAttribute('aria-label', 'Afastar para ver o mapa completo'); f.type = 'button'; f.textContent = 'Ecrã inteiro'; f.setAttribute('aria-pressed', 'false');
     L.DomEvent.disableClickPropagation(d); L.DomEvent.on(b, 'click', function () { map.closePopup(); verTudo(); });
     var colC = document.querySelector('.sq-col-cartao'), alca = document.createElement('button'), ultimaAlt = null;
     alca.type = 'button'; alca.className = 'sq-alca'; alca.setAttribute('aria-label', 'Ajustar a altura dos cartões: arrasta, ou toca para esconder e mostrar'); alca.innerHTML = '<span aria-hidden="true"></span>';
