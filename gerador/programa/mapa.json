@@ -61820,7 +61820,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento - Empark",
    "p": [
     38.4458,
     -9.10136
@@ -61828,7 +61828,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento - Telpark",
    "p": [
     38.44277,
     -9.09512
@@ -61836,7 +61836,7 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
+   "nome": "Estacionamento - Telpark",
    "p": [
     38.44434,
     -9.10423
