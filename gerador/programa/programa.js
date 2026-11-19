@@ -245,10 +245,10 @@ var ILU = (function () {
     var prop = p.cat === 'obra', ct = (prop && p.tipo && catPorId[p.tipo]) || c;   // o proposto mostra o símbolo do que vai ser, com anel tracejado e selo "+"
     var glifo = p.icone === 'estacionar' ? P24('<path d="M9 18V6h4a3.5 3.5 0 0 1 0 7H9" stroke-width="2.6"/>') : ct.svg;
     var ic = prop
-      ? L.divIcon({ className: 'sq-ico', html: '<div class="sq-prop"><div class="b" style="background:' + (p.cor || ct.cor) + '">' + glifo + '</div><i aria-hidden="true">+</i></div>', iconSize: [38, 38], iconAnchor: [19, 19] })
+      ? L.divIcon({ className: 'sq-ico', html: '<div class="sq-prop"><div class="b" style="background:' + (p.cor || ct.cor) + '">' + glifo + '</div><i aria-hidden="true">+</i></div>', iconSize: [32, 32], iconAnchor: [16, 16] })
       : L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="background:' + (p.cor || c.cor) + '">' + glifo + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false, zIndexOffset: prop ? 500 : 0 });
-    m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, prop ? -20 : -12], permanent: false, className: 'sq-nome-ponto' });
+    m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, prop ? -17 : -12], permanent: false, className: 'sq-nome-ponto' });
     m.bindPopup('<b>' + esc(p.nome) + '</b>' + (p.cat === 'estacionamento' ? '' : '<br>' + esc(c.nome) + (p.texto && p.cat !== 'obra' ? '<br>' + esc(p.texto) : '')), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
     rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto, local: p.local });
   });
