@@ -61724,22 +61724,6 @@
   },
   {
    "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.44355,
-    -9.10996
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.44286,
-    -9.10017
-   ]
-  },
-  {
-   "cat": "estacionamento",
    "nome": "Estacionamento - Dornier",
    "p": [
     38.44349,
@@ -61752,14 +61736,6 @@
    "p": [
     38.50743,
     -9.17828
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.44483,
-    -9.10024
    ]
   },
   {
@@ -61822,40 +61798,16 @@
    "cat": "estacionamento",
    "nome": "Estacionamento - Empark",
    "p": [
-    38.4458,
-    -9.10136
+    38.44235,
+    -9.09624
    ]
   },
   {
    "cat": "estacionamento",
    "nome": "Estacionamento - Telpark",
    "p": [
-    38.44277,
-    -9.09512
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento - Telpark",
-   "p": [
-    38.44434,
-    -9.10423
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.43611,
-    -9.11576
-   ]
-  },
-  {
-   "cat": "estacionamento",
-   "nome": "Estacionamento",
-   "p": [
-    38.44394,
-    -9.10851
+    38.44136,
+    -9.10744
    ]
   },
   {
@@ -61872,6 +61824,62 @@
    "p": [
     38.49262,
     -9.12709
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.4513,
+    -9.11118
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.44853,
+    -9.10071
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.4452,
+    -9.10018
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.44422,
+    -9.10516
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.44226,
+    -9.10765
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.43906,
+    -9.11659
+   ]
+  },
+  {
+   "cat": "estacionamento",
+   "nome": "Estacionamento",
+   "p": [
+    38.43257,
+    -9.11997
    ]
   }
  ],
