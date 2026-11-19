@@ -249,10 +249,14 @@ var ILU = (function () {
     // com poucas categorias marcadas na legenda (até 3), aparecem com qualquer zoom: serve para ver, por exemplo, todos os estacionamentos do concelho de uma vez
     var ativas = CATS.filter(function (c) { return c.id !== 'obra' && uiOn.existe && catOn[c.id]; }).length, poucas = ativas > 0 && ativas <= 3;
     // muito juntos: fica o mais importante e os outros aparecem ao aproximar (com zoom máximo, só se escondem os que estão praticamente em cima uns dos outros)
+    // regra estável: um ponto só se esconde se houver, a menos de DIST pixels, outro de maior prioridade (mesmo que esse esteja escondido). Como as distâncias só crescem ao aproximar, um ponto que apareceu nunca desaparece nem troca por outro ao dar zoom
+    var acima = [], dm = z >= 17 ? 16 : DIST;
     rotPontos.slice().sort(function (a, b) { return PRIO.indexOf(a.cat) - PRIO.indexOf(b.cat); }).forEach(function (r) {
-      var g = gPontos[r.cat], ver = r.m === forcado || (z >= (poucas && r.cat !== 'obra' ? 0 : (MINZ[r.cat] != null ? MINZ[r.cat] : 13)) && (r.cat !== 'obra' || nofiltro(r)));
-      if (ver && r.cat === 'obra') ocupados.push(map.latLngToContainerPoint(r.m.getLatLng()));
-      else if (ver && r.m !== forcado) { var q = map.latLngToContainerPoint(r.m.getLatLng()); var dm = z >= 17 ? 16 : DIST; ver = !ocupados.some(function (o) { return Math.abs(o.x - q.x) < dm && Math.abs(o.y - q.y) < dm; }); if (ver) ocupados.push(q); }
+      var g = gPontos[r.cat], q = map.latLngToContainerPoint(r.m.getLatLng());
+      var zmin = poucas && r.cat !== 'obra' ? 0 : (MINZ[r.cat] != null ? MINZ[r.cat] : 13);
+      var ver = r.m === forcado || (z >= zmin && (r.cat !== 'obra' || nofiltro(r)));
+      if (ver && r.cat !== 'obra' && r.m !== forcado) ver = !acima.some(function (o) { return Math.abs(o.x - q.x) < dm && Math.abs(o.y - q.y) < dm; });
+      if (r.cat === 'obra' ? nofiltro(r) : (uiOn.existe && catOn[r.cat])) acima.push(q);
       if (ver && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!ver && g.hasLayer(r.m)) g.removeLayer(r.m);
     });
   }
