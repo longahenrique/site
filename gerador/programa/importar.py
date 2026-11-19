@@ -9,6 +9,7 @@ D = json.load(open(MAPA, encoding='utf-8'))
 def pos(e):
     if 'lat' in e: return [round(e['lat'], 5), round(e['lon'], 5)]
     c = e.get('center'); return [round(c['lat'], 5), round(c['lon'], 5)] if c else None
+SOCIAL = r'Centro Comunit|Centro de Conv|Sénior|Lar |Cercizimbra|APPDA|CPCJ|C\.A\.S\.C\.U\.Z|Raio de Luz|As Tias|Sociedade Santanense|ABAS'   # apoio social e comunitário
 def cat(t):
     a, l, s, r, h = t.get('amenity'), t.get('leisure'), t.get('shop'), t.get('railway'), t.get('highway')
     if l in ('park', 'garden'): return 'parque'
@@ -17,6 +18,7 @@ def cat(t):
     if a == 'fire_station': return 'bombeiros'
     if a == 'police': return 'policia'
     if a == 'place_of_worship' and t.get('religion', 'christian') == 'christian': return 'igreja'
+    if a in ('community_centre', 'social_facility') and re.search(SOCIAL, t.get('name') or ''): return 'social'
     if a in ('library', 'arts_centre', 'theatre', 'cinema', 'community_centre'): return 'cultura'
     if a in ('townhall', 'post_office', 'social_facility'): return 'servicos'
     if a == 'marketplace' or s == 'supermarket': return 'mercado'
@@ -61,7 +63,7 @@ if os.path.exists(f):
         if c == 'saude' and not re.search(r'USF|UCSP|URAP|Centro de Saúde|Unidade|Hospital|SAP|Extensão|Posto', n): continue
         if c == 'escola' and not re.search(r'Escola|Agrupamento|Colégio|Universidade', n): continue
         if c == 'servicos' and not re.search(r'Câmara|Junta|Loja do Cidadão|Balcão|CTT|Finanças|Segurança Social|Tribunal|Espaço Cidadão|Tesouraria', n): continue
-        if c == 'cultura' and not re.search(r'Biblioteca|Cine|Teatro|Auditório|Museu|Centro Cultural|Casa da|Galeria', n): continue
+        if c == 'cultura' and not re.search(r'Biblioteca|Cine|Teatro|Auditório|Museu|Centro Cultural|Casa da|Galeria|Multiusos', n): continue
         if c == 'desporto' and not re.search(r'Pavilhão|Piscina|Estádio|Complexo|Campo|Polidesportivo', n): continue
         if c == 'mercado' and not re.search(r'Mercado|Pingo Doce|Continente|Lidl|Intermarché|Aldi|Minipreço|Mini Preço|Auchan|Meu Super|Recheio', n): continue
         if c == 'igreja' and not re.search(r'^(Igreja|Capela|Ermida|Santuário|Convento|Matriz)', n): continue

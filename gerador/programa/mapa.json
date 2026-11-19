@@ -2539,6 +2539,9 @@
      "t": "Requalificação da Estrada Nacional 10."
     },
     {
+     "t": "Construção de um novo acesso Coina–Quinta do Conde."
+    },
+    {
      "t": "Ciclovia Quinta do Conde–Coina."
     }
    ],
@@ -60836,7 +60839,7 @@
   },
   {
    "cat": "servicos",
-   "nome": "Balcão Único de Serviços",
+   "nome": "Balcão Único de Serviços (Cotovia)",
    "p": [
     38.46759,
     -9.10001
@@ -60984,7 +60987,8 @@
    "p": [
     38.44374,
     -9.09982
-   ]
+   ],
+   "texto": "Inclui o Balcão Único de Serviços da vila de Sesimbra"
   },
   {
    "cat": "parque",
@@ -61498,6 +61502,126 @@
     38.44374,
     -9.0966
    ]
+  },
+  {
+   "cat": "cultura",
+   "nome": "Espaço Multiusos",
+   "p": [
+    38.47191,
+    -9.08682
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "Centro Comunitário da Quinta do Conde",
+   "p": [
+    38.56167,
+    -9.04657
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "ABAS - Centro de Convívio",
+   "p": [
+    38.44272,
+    -9.0971
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "Cotovia Sénior",
+   "p": [
+    38.48831,
+    -9.11128
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "Cercizimbra",
+   "p": [
+    38.4727,
+    -9.0907
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "APPDA Quinta do Conde",
+   "p": [
+    38.56636,
+    -9.03937
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "CPCJ Sesimbra",
+   "p": [
+    38.47242,
+    -9.0896
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "Lar Costa Azul",
+   "p": [
+    38.48731,
+    -9.10473
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "Residência Sénior Egas Moniz",
+   "p": [
+    38.47155,
+    -9.08862
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "As Tias",
+   "p": [
+    38.46906,
+    -9.10605
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "C.A.S.C.U.Z.",
+   "p": [
+    38.45132,
+    -9.12907
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "Centro de Estudos Culturais e de Acção Social Raio de Luz",
+   "p": [
+    38.47234,
+    -9.08969
+   ]
+  },
+  {
+   "cat": "social",
+   "nome": "Sociedade Santanense de Instrução e Recreio",
+   "p": [
+    38.46213,
+    -9.10242
+   ]
+  },
+  {
+   "cat": "servicos",
+   "nome": "Balcão Único de Serviços (Quinta do Conde)",
+   "p": [
+    38.55858,
+    -9.04565
+   ]
+  },
+  {
+   "cat": "servicos",
+   "nome": "Balcão Único de Serviços (Alfarim)",
+   "p": [
+    38.47672,
+    -9.16025
+   ]
   }
  ],
  "localidades": [
@@ -61824,8 +61948,7 @@
    "p": [
     38.56518,
     -9.03738
-   ],
-   "texto": "Polo de Leitura da Quinta do Conde, no edifício do Pingo Doce, virado para o Parque da Vila."
+   ]
   },
   {
    "cat": "obra",

@@ -168,6 +168,7 @@ var ILU = (function () {
     { id: 'servicos', nome: 'Serviços públicos', cor: '#4a5560', svg: P24('<path d="M3 10l9-6 9 6M5 10v9M9.5 10v9M14.5 10v9M19 10v9M3 21h18"/>') },
     { id: 'mercado', nome: 'Mercado e supermercado', cor: '#a8650d', svg: P24('<path d="M3 4h2l2 11h11l2-8H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>') },
     { id: 'desporto', nome: 'Desporto', cor: '#1e7a8c', svg: P24('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>') },
+    { id: 'social', nome: 'Apoio social e comunitário', cor: '#0f766e', svg: P24('<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>') },
     { id: 'obra', nome: 'Em obra ou planeado', cor: '#c2570c', svg: P24('<path d="M3 21h18M5 21v-3a7 7 0 0 1 14 0v3M12 8v4M9 11l1.5 2M15 11l-1.5 2"/>'), tracejado: true },
     { id: 'transporte', nome: 'Estação ou terminal', cor: '#1857d6', svg: P24('<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/>') }
   ];
