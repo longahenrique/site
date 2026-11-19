@@ -331,3 +331,9 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-sug-modo .leaflet-pLinhas-pane,.sq-sug-modo .leaflet-pZonas-pane{opacity:.5}
 .sq-sug-modo .leaflet-marker-pane{opacity:.6}
 .sq-sug-modo .leaflet-marker-pane .leaflet-marker-icon{pointer-events:none}
+/* barra de deslocamento da coluna do cartão (ecrã inteiro): fina e na cor do site, sem setas */
+.sq-cheio-corpo .sq-col-cartao{scrollbar-width:thin;scrollbar-color:#b4caad transparent}
+.sq-cheio-corpo .sq-col-cartao::-webkit-scrollbar{width:8px}
+.sq-cheio-corpo .sq-col-cartao::-webkit-scrollbar-track{background:transparent}
+.sq-cheio-corpo .sq-col-cartao::-webkit-scrollbar-thumb{background:#b4caad;border-radius:8px}
+.sq-cheio-corpo .sq-col-cartao::-webkit-scrollbar-button{display:none;width:0;height:0}

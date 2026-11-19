@@ -340,8 +340,9 @@ var ILU = (function () {
     alca.addEventListener('keydown', function (e) { if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); altura(Math.max(46, Math.min(window.innerHeight - 110, colC.getBoundingClientRect().height + (e.key === 'ArrowUp' ? 60 : -60)))); map.invalidateSize(); } });
     function cheio(on) {
       if (!on) { altura(null); ultimaAlt = null; }
-      document.documentElement.style.setProperty('--sbw', (window.innerWidth - document.documentElement.clientWidth) + 'px');
-      el.classList.toggle('sq-cheio', on); corpo.classList.toggle('sq-cheio-corpo', on); document.documentElement.classList.toggle('sq-trava', on); posBusca();
+      el.classList.toggle('sq-cheio', on); corpo.classList.toggle('sq-cheio-corpo', on); document.documentElement.classList.toggle('sq-trava', on);
+      document.documentElement.style.setProperty('--sbw', (window.innerWidth - document.documentElement.clientWidth) + 'px');   // medido já sem a barra da página (em ecrã inteiro ela desaparece), para o mapa ocupar a largura toda
+      posBusca();
       f.textContent = on ? 'Sair do ecrã inteiro' : 'Ecrã inteiro'; f.setAttribute('aria-pressed', on ? 'true' : 'false');
       if (on) { corpo.setAttribute('role', 'dialog'); corpo.setAttribute('aria-modal', 'true'); corpo.setAttribute('aria-label', 'Mapa e cartões em ecrã inteiro'); } else { corpo.removeAttribute('role'); corpo.removeAttribute('aria-modal'); corpo.removeAttribute('aria-label'); }
       // o resto da página fica inerte (leitores de ecrã e teclado ficam só no mapa)
