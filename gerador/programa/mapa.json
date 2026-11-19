@@ -37,7 +37,7 @@
    ],
    "direcao": "bottom",
    "minZoom": 12,
-   "frase": "A frente de mar volta a ser de quem passeia: esplanadas, sombra e o som do mar em vez do trânsito.",
+   "frase": "A frente de mar volta a ser de quem passeia. Esplanadas, sombra e o som do mar em vez do trânsito.",
    "geo": {
     "linha": [
      [
@@ -415,13 +415,13 @@
    },
    "medidas": [
     {
-     "t": "Pedonalização progressiva da Marginal, com um plano por fases."
+     "t": "Pedonalização progressiva da Marginal de Sesimbra."
     },
     {
      "t": "Menos ruído e poluição, mais vida no comércio e na restauração."
     },
     {
-     "t": "Zona de coexistência no núcleo da vila e vaivém de verão desde o parque da Moagem."
+     "t": "Possibilidade de cargas e descargas."
     }
    ],
    "etiqueta": "Frente de mar",
@@ -3751,22 +3751,16 @@
     -9.03716
    ],
    "direcao": "right",
-   "frase": "Cerca de 3 km da EN10, na Quinta do Conde, passam de estrada a avenida: árvores, faixas de autocarro e bicicletas, paragens e travessias seguras.",
+   "frase": "Cerca de 3 km da EN10, na Quinta do Conde, passam de estrada a avenida. Árvores, faixas de autocarro e bicicletas, paragens e travessias seguras.",
    "medidas": [
-    {
-     "t": "EN10 urbana: ≈3 km de avenida com travessias, faixas de autocarro e bicicletas, paragens e o Parque Linear da Ribeira."
-    },
-    {
-     "t": "As faixas de autocarro e bicicletas ficam livres para a passagem de ambulâncias e outros veículos de emergência."
-    },
-    {
-     "t": "O passeio do lado nascente pode não existir nos troços junto à Várzea; o desenho mostra o perfil completo."
-    },
     {
      "t": "Faixa BUS na EN10, nos dois sentidos, desde a estação de Coina até ao fim da avenida, com prioridade nas rotundas."
     },
     {
-     "t": "Autocarro para Coina a cada 10 min na ponta, à hora de cada comboio."
+     "t": "Árvores e sombra nos passeios, para uma avenida mais fresca e agradável."
+    },
+    {
+     "t": "Parque Linear da Ribeira, a ligar a Várzea e a Ribeira da Quinta do Conde."
     }
    ]
   },
@@ -49707,20 +49701,17 @@
    ],
    "direcao": "right",
    "minZoom": 13,
-   "frase": "Uma estrada nova para tirar os camiões do Porto de Abrigo da vila e levá-los à zona industrial do Zambujal.",
+   "frase": "Uma nova ligação do Porto de Abrigo da vila à zona industrial do Zambujal.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "variante"
    },
    "medidas": [
     {
-     "t": "Liga o Porto de Abrigo à zona industrial do Zambujal e tira os pesados da vila."
-    },
-    {
      "t": "Começa pela plataforma que já existe a noroeste do porto."
     },
     {
-     "t": "Traçado a estudar; a pedir ao Estado, ≈15 M€."
+     "t": "Essencial para a pesca, uma das principais atividades económicas do concelho."
     }
    ]
   },
@@ -49889,7 +49880,7 @@
    "direcao": "right",
    "minZoom": 13,
    "perfilNome": "Estrada dos Almocreves",
-   "frase": "De caminho de terra batida a estrada calma e segura entre a Quinta do Conde e Sampaio, com ciclovia a acompanhar.",
+   "frase": "De terra batida a estrada calma e segura entre a Quinta do Conde e Sampaio. Uma nova estrada que liga o concelho.",
    "ilustracao": {
     "tipo": "perfil",
     "hoje": [
@@ -49916,7 +49907,7 @@
       3
      ],
      [
-      "carrobus",
+      "estradacarro",
       3
      ],
      [
@@ -49931,16 +49922,13 @@
    },
    "medidas": [
     {
-     "t": "Cerca de 6,7 km, da Quinta do Conde a Sampaio, a passar de terra batida a estrada pavimentada de duas faixas estreitas."
+     "t": "Cerca de 6,7 km, da Quinta do Conde a Sampaio, a passar de terra batida a estrada pavimentada de duas faixas."
     },
     {
-     "t": "Ciclovia bidirecional de 2,5 m ao lado da estrada, separada dos carros, a ligar as duas povoações pelo planalto."
+     "t": "Ciclovia bidirecional ao lado da estrada."
     },
     {
-     "t": "Velocidade máxima de 30 a 40 km/h, para uso local, bicicletas e emergência, sem tráfego de pesados de passagem."
-    },
-    {
-     "t": "A confirmar se o traçado passa por áreas protegidas (Parque Natural da Arrábida, Rede Natura 2000), o que exige parecer prévio."
+     "t": "Estrada integrada no Parque Natural da Arrábida e na Rede Natura 2000, para proteger o território e não para o destruir."
     }
    ]
   },
@@ -49976,7 +49964,7 @@
    ],
    "direcao": "right",
    "minZoom": 13,
-   "frase": "Um acesso novo liga o topo da Rua Luís de Camões à rotunda de Coina, para o bairro chegar à estação sem passar pela EN10.",
+   "frase": "Um novo acesso que liga o topo da Rua Luís de Camões à rotunda de Coina. Permite chegar a Coina sem passar pela EN10.",
    "ilustracao": {
     "tipo": "paisagem",
     "variante": "acessocoina"
@@ -49986,13 +49974,13 @@
      "t": "Liga o topo da Rua Luís de Camões, na Quinta do Conde, à rotunda a seguir à estação de Coina (cerca de 0,6 km)."
     },
     {
-     "t": "Dá ao bairro uma entrada direta para a estação de Coina, sem passar pela EN10."
+     "t": "Dá à Quinta do Conde uma entrada direta para a estação de Coina, sem passar pela EN10."
     },
     {
-     "t": "O traçado tem de atravessar a A2, o que exige uma passagem a estudar."
+     "t": "Passagem aérea pela A2."
     },
     {
-     "t": "Traçado indicativo, sem projeto aprovado."
+     "t": "Possibilidade de integrar ciclovia e/ou faixa BUS."
     }
    ]
   }
@@ -50015,14 +50003,6 @@
    ],
    "texto": "Comboio para Lisboa, com mais 400 lugares de estacionamento e autocarro à hora de cada comboio.",
    "existe": true
-  },
-  {
-   "nome": "Parque de Alfarim",
-   "p": [
-    38.47683,
-    -9.1605
-   ],
-   "texto": "Parque dissuasor e vaivém de verão para as praias do Meco."
   }
  ],
  "linhas": [
@@ -56021,8 +56001,8 @@
    "cat": "obra",
    "nome": "Palácio da Justiça de Sesimbra",
    "p": [
-    38.4659,
-    -9.0962
+    38.46596,
+    -9.09679
    ],
    "texto": "Cerca de 3,3 milhões de euros. Local aproximado, atrás da Moagem de Sampaio."
   },
@@ -56057,19 +56037,18 @@
    "cat": "obra",
    "nome": "Hub de Santana",
    "p": [
-    38.4655,
-    -9.0972
+    38.46377,
+    -9.0982
    ],
    "texto": "Ponto de intermodalidade e estacionamento dissuasor na zona alta (Santana/Sampaio), junto ao principal nó rodoviário do concelho, com vaivéns frequentes para a vila e para as praias, para reduzir a pressão de carros e autocarros pesados na frente urbana de Sesimbra. Local aproximado."
   },
   {
    "cat": "servicos",
-   "nome": "Tribunal de Sesimbra (atual, no Edifício Falésia)",
+   "nome": "Tribunal de Sesimbra",
    "p": [
-    38.44187,
-    -9.09275
-   ],
-   "texto": "Tribunal atual, no Edifício Falésia. Localização aproximada; a proposta prevê o futuro Palácio da Justiça de Sesimbra."
+    38.44132,
+    -9.09188
+   ]
   },
   {
    "cat": "obra",
