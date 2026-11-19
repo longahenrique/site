@@ -116,6 +116,7 @@ var ILU = (function () {
   var el = document.getElementById('sq-mapa');
   var posBusca = function () {}, corpo = document.querySelector('.sq-corpo');
   var RM = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SEMVOO = RM || L.Browser.mobile;   // em ecrãs táteis o mapa salta direto para a zona (o voo animado pede muitos mosaicos e pesa em tablets)
   var map = L.map(el, { zoomAnimation: !RM, fadeAnimation: !RM, markerZoomAnimation: !RM, scrollWheelZoom: true, zoomControl: false, zoomSnap: 0.5, minZoom: 10, maxZoom: 18, renderer: L.canvas({ padding: 0.5, tolerance: 8 }) });
   L.control.zoom({ zoomInTitle: 'Aproximar o mapa', zoomOutTitle: 'Afastar o mapa' }).addTo(map);
   map.on('popupopen', function (e) { var x = e.popup.getElement(); x = x && x.querySelector('.leaflet-popup-close-button'); if (x) { x.setAttribute('aria-label', 'Fechar'); x.setAttribute('title', 'Fechar'); } });
@@ -130,7 +131,7 @@ var ILU = (function () {
   }
   map.on('popupopen', function (e) { rodaParaMapa(e.popup && e.popup._container); });
   if (L.Browser.mobile) map.dragging.disable();   // no telemóvel o mapa só se arrasta em ecrã inteiro; com um dedo a página desliza
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 4, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
   // a roda do rato aproxima e afasta o mapa quando o cursor está sobre ele (a página rola fora do mapa)
 
@@ -463,12 +464,12 @@ var ILU = (function () {
     if (voar) {
       var bd = c.getBounds();
       if (id === 'espichel') linhasObj.forEach(function (o) { if (o.l.nome === 'Ciclovia Zambujal–Cabo Espichel') bd = L.latLngBounds(bd.getSouthWest(), bd.getNorthEast()).extend(o.p.getBounds()); });   // inclui toda a ciclovia
-      if (z.vista) { if (RM) map.setView(z.vista.c, z.vista.z, { animate: false }); else map.flyTo(z.vista.c, z.vista.z, { duration: 0.6 }); }
+      if (z.vista) { if (SEMVOO) map.setView(z.vista.c, z.vista.z, { animate: false }); else map.flyTo(z.vista.c, z.vista.z, { duration: 0.6 }); }
       else {
         var sz = map.getSize(), pequeno = window.matchMedia && window.matchMedia('(max-width:979px)').matches;
         var pd = pequeno ? Math.max(14, Math.min(40, Math.round(Math.min(sz.x, sz.y) * 0.06))) : 90;   // no telemóvel o mapa é baixo: margem pequena, para a zona ocupar o ecrã
         var op = { padding: [pd, pd], maxZoom: pequeno ? 16 : 15 };
-        if (RM) map.fitBounds(bd, Object.assign({ animate: false }, op)); else map.flyToBounds(bd, Object.assign({ duration: 0.6 }, op));
+        if (SEMVOO) map.fitBounds(bd, Object.assign({ animate: false }, op)); else map.flyToBounds(bd, Object.assign({ duration: 0.6 }, op));
       }
     }
   }
@@ -523,7 +524,7 @@ var ILU = (function () {
         if (r.cat === 'obra') definir('obra', true);
         forcado = r.m; var g = gPontos[r.cat]; if (!g.hasLayer(r.m)) g.addLayer(r.m);
         var abrir = function () { r.m.openPopup(); };
-        if (RM) { map.setView(r.p, 16, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(r.p, 16, { duration: 0.6 }); }
+        if (SEMVOO) { map.setView(r.p, 16, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(r.p, 16, { duration: 0.6 }); }
       });
     });
     linhasObj.forEach(function (o) {
@@ -531,7 +532,7 @@ var ILU = (function () {
       var tipo = { ciclo: 'Rede ciclável', faixa: 'Faixa BUS', bus: 'Autocarro', vias: 'Novo acesso' }[uiId];
       add(4, tipo, o.l.nome, o.l.texto, function () {
         definir(uiId, true); var b = o.p.getBounds();
-        if (RM) map.fitBounds(b, { padding: [60, 60], animate: false }); else map.flyToBounds(b, { padding: [60, 60], duration: 0.6 });
+        if (SEMVOO) map.fitBounds(b, { padding: [60, 60], animate: false }); else map.flyToBounds(b, { padding: [60, 60], duration: 0.6 });
         o.p.openPopup(b.getCenter());
       });
     });
@@ -539,7 +540,7 @@ var ILU = (function () {
       add(4, o.i.existe ? 'Estação (já existe)' : 'Novo hub', o.i.nome, o.i.texto, function () {
         if (!o.i.existe) definir('hubs', true);
         var ver = function () { o.m.openPopup(); };
-        if (RM) { map.setView(o.i.p, 15, { animate: false }); ver(); } else { map.once('moveend', ver); map.flyTo(o.i.p, 15, { duration: 0.6 }); }
+        if (SEMVOO) { map.setView(o.i.p, 15, { animate: false }); ver(); } else { map.once('moveend', ver); map.flyTo(o.i.p, 15, { duration: 0.6 }); }
       });
     });
     (DADOS.localidades || []).forEach(function (l) {
@@ -561,7 +562,7 @@ var ILU = (function () {
         var txt = '<b>' + esc(l.nome) + '</b>';
         var p = L.popup({ maxWidth: 260 }).setLatLng(l.p).setContent(txt);
         var abrir = function () { p.openOn(map); }, zm = perto.length ? 14 : 15;
-        if (RM) { map.setView(l.p, zm, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, zm, { duration: 0.6 }); }
+        if (SEMVOO) { map.setView(l.p, zm, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, zm, { duration: 0.6 }); }
       });
     });
     // Sem repetições: se o resultado é uma estrada ou localidade que já tem cartão, só aparece o cartão (abre-o e leva o mapa até lá)
