@@ -266,3 +266,6 @@
   .sq-corpo:not(.sq-cheio-corpo) .sq-dica{margin:0}
   .sq-dica{font-size:14px;line-height:1.45}
 }
+
+/* Reserva sempre o espaço da barra de rolagem: sem ela os cartões curtos (ex.: Aldeia do Meco) ficavam mais largos que os longos */
+html{scrollbar-gutter:stable}
