@@ -504,9 +504,23 @@ var ILU = (function () {
     (DADOS.localidades || []).forEach(function (l) {
       if (IDX.some(function (x) { return x.g === 0 && x.n === norm(l.nome); })) return;
       add(1, 'Localidade sem cartão próprio', l.nome, '', function () {
-        var p = L.popup({ maxWidth: 220 }).setLatLng(l.p).setContent('<b>' + esc(l.nome) + '</b><br>Sem cartão próprio neste mapa.');
-        var abrir = function () { p.openOn(map); };
-        if (RM) { map.setView(l.p, 15, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, 15, { duration: 0.6 }); }
+        // Sem cartão: mostra-se no mapa o que está previsto à volta (ciclovias, linhas, hubs, equipamentos novos)
+        escolher(null, 'vazio');
+        var b = L.latLng(l.p).toBounds(3000), perto = [];
+        function lig(id) { uiOn[id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + id + '"]'); if (cx) cx.checked = true; }
+        linhasObj.forEach(function (o) {
+          if (!o.l.coords.some(function (q) { return b.contains(q); })) return;
+          lig(o.l.camada === 'ativos' ? 'ciclo' : o.l.nome === 'Faixa BUS' ? 'faixa' : (o.l.camada === 'autocarro' || o.l.nome === 'Linha Azul') ? 'bus' : 'vias');
+          if (perto.indexOf(o.l.nome) < 0) perto.push(o.l.nome);
+        });
+        ifaceObj.forEach(function (o) { if (!o.i.existe && b.contains(o.i.p)) { lig('hubs'); perto.push(o.i.nome); } });
+        rotPontos.forEach(function (r) { if (r.cat === 'obra' && b.contains(r.p)) { lig('obra'); if (perto.indexOf(r.nome) < 0) perto.push(r.nome); } });
+        if (perto.length) filtro = { b: b };
+        visibilidade();
+        var txt = '<b>' + esc(l.nome) + '</b><br>Sem cartão próprio neste mapa.' + (perto.length ? '<br>Previsto por perto: ' + perto.slice(0, 4).map(esc).join('; ') + (perto.length > 4 ? ' e mais ' + (perto.length - 4) : '') + '.' : '');
+        var p = L.popup({ maxWidth: 260 }).setLatLng(l.p).setContent(txt);
+        var abrir = function () { p.openOn(map); }, zm = perto.length ? 14 : 15;
+        if (RM) { map.setView(l.p, zm, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, zm, { duration: 0.6 }); }
       });
     });
     // Sem repetições: se o resultado é uma estrada ou localidade que já tem cartão, só aparece o cartão (abre-o e leva o mapa até lá)
