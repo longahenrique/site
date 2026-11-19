@@ -590,7 +590,7 @@ var ILU = (function () {
       var h = '', ult = -1;
       res.forEach(function (r, i) {
         if (r.g !== ult) { h += '<li role="presentation" class="grp">' + GRUPOS[r.g] + '</li>'; ult = r.g; }
-        h += '<li role="option" id="sq-res-' + i + '" aria-selected="false" data-i="' + i + '"><span class="t">' + esc(r.t.length > 90 ? r.t.slice(0, 88) + '…' : r.t) + '</span><span class="k">' + esc(r.tipo) + '</span></li>';
+        h += '<li role="option" id="sq-res-' + i + '" aria-selected="false" data-i="' + i + '"><span class="t">' + esc(r.t.length > 90 ? r.t.slice(0, 88) + '…' : r.t) + '</span></li>';
       });
       lista.innerHTML = h || '<li role="presentation" class="vazio">Nada encontrado. Experimenta outra palavra.</li>';
       lista.hidden = false; inp.setAttribute('aria-expanded', 'true'); ativo = -1;

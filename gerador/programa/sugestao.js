@@ -8,7 +8,7 @@
   if (!coluna || !corpoMapa || !ctl) return;
   // botão "Sugerir no mapa": junto aos botões do mapa, e só no ecrã inteiro (no computador)
   var abrir = document.createElement('button'); abrir.type = 'button'; abrir.className = 'sq-vertudo sq-sug-btn'; abrir.textContent = 'Sugerir no mapa'; abrir.hidden = true; ctl.appendChild(abrir);
-  var COR = '#b4caad';
+  var COR = '#4a6a45';
   var TIPOS = [['linha', 'Desenhar um percurso (ciclovia, passeio, linha de autocarro)'], ['local', 'Marcar um local novo (escola, paragem, parque…)'], ['problema', 'Assinalar um problema num sítio']];
   var SUB_LINHA = ['Ciclovia', 'Percurso pedonal', 'Linha ou faixa de autocarro', 'Outro percurso'];
   var SUB_LOCAL = CATS.filter(function (c) { return c.id !== 'obra'; }).map(function (c) { return c.nome; }).concat(['Outro']);
