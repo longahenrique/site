@@ -722,7 +722,7 @@ def prog_page():
 </div>
 <p class="sq-aviso sq-vivo"><strong>Um programa vivo.</strong> Este mapa reúne ideias e propostas para Sesimbra, que vão sendo atualizadas e discutidas. Os traçados e as localizações são indicativos e ficam sujeitos a estudo e a decisão pública.</p>
 <button type="button" class="sq-btn-sug" id="sq-sug-abrir" hidden>Sugerir no mapa</button>
-<p class="sq-dados"><span class="sq-sug-txt">Desenha um percurso, marca um local novo ou assinala um problema e envia-nos por email. Também podes escrever para <a href="mailto:geral@henriquelonga.pt?subject=Mapa%20do%20programa">geral@henriquelonga.pt</a>. </span>Dados do mapa abertos para descarregar: <a href="/programa-mapa/dados/programa-sesimbra.geojson" download>GeoJSON</a> e <a href="/programa-mapa/dados/programa-sesimbra.csv" download>CSV</a>. Licença <a href="https://opendatacommons.org/licenses/odbl/1-0/" target="_blank" rel="noopener">ODbL</a>: podes usar e partilhar, citando "© colaboradores do OpenStreetMap" e o programa, e mantendo a mesma licença.</p>
+<p class="sq-dados">Dados do mapa abertos para descarregar: <a href="/programa-mapa/dados/programa-sesimbra.geojson" download>GeoJSON</a> e <a href="/programa-mapa/dados/programa-sesimbra.csv" download>CSV</a>.</p>
 <noscript><p class="sq-semjs">O mapa precisa de JavaScript. O programa completo está mais abaixo nesta página.</p></noscript>
 </div>
 </section>

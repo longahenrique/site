@@ -312,7 +312,7 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-sug-ajuda,.sq-sug-estado,.sq-sug-nota{margin:10px 0 0;font-size:14px;line-height:1.45;color:#2d332a}
 .sq-sug-estado{font-weight:700}
 .sq-sug-ferr,.sq-sug-acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.sq-sug-ferr button,.sq-sug-canc{padding:8px 12px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:600 14px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-sug-ferr button,.sq-sug-canc,.sq-sug-cop{padding:8px 12px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:600 14px Archivo,Arial,sans-serif;cursor:pointer}
 .sq-sug-env{padding:8px 16px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:var(--ink);color:#fff;font:700 15px Archivo,Arial,sans-serif;cursor:pointer}
 .sq-sug-campo{margin-top:12px}
 .sq-sug-campo[hidden]{display:none}
@@ -320,6 +320,4 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-sug select,.sq-sug textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:16px Archivo,Arial,sans-serif}
 .sq-sug-modo{cursor:crosshair}
 .sq-sug-modo .leaflet-interactive{cursor:crosshair}
-.sq-sug-txt{display:none}
-@media(min-width:980px){.sq-sug-txt{display:inline}}
 .sq-sug,.sq-sug p,.sq-sug label{font-family:Archivo,Arial,sans-serif}

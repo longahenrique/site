@@ -60,8 +60,8 @@
     '<p class="sq-sug-estado" id="sq-sug-estado" role="status" aria-live="polite"></p>' +
     '<div class="sq-sug-campo" id="sq-sug-subw"><label for="sq-sug-sub">Qual?</label><select id="sq-sug-sub"></select></div>' +
     '<div class="sq-sug-campo"><label for="sq-sug-desc">Descreve a tua sugestão</label><textarea id="sq-sug-desc" rows="3" maxlength="600"></textarea></div>' +
-    '<p class="sq-sug-nota">Ao enviar, abre-se o teu programa de email com a sugestão escrita. Só envias se quiseres, e o site não guarda nada. Se não conseguires desenhar, escreve só a descrição e diz onde fica.</p>' +
-    '<div class="sq-sug-acoes"><button type="button" class="sq-sug-env">Enviar por email</button><button type="button" class="sq-sug-canc">Cancelar</button></div>';
+    '<p class="sq-sug-nota">Ao enviar, abre-se o teu programa de email com a sugestão escrita; se não abrir, copia a sugestão e envia-a para ' + EMAIL + '. Só envias se quiseres, e o site não guarda nada. Se não conseguires desenhar, escreve só a descrição e diz onde fica.</p>' +
+    '<div class="sq-sug-acoes"><button type="button" class="sq-sug-env">Enviar por email</button><button type="button" class="sq-sug-cop">Copiar sugestão</button><button type="button" class="sq-sug-canc">Cancelar</button></div>';
   var notas = document.getElementById('sq-notas');
   coluna.insertBefore(painel, notas ? notas.nextSibling : null);
   var $ = function (s) { return painel.querySelector(s); }, ajuda = $('#sq-sug-ajuda'), estado = $('#sq-sug-estado'), sel = $('#sq-sug-sub'), desc = $('#sq-sug-desc'), subw = $('#sq-sug-subw');
@@ -83,6 +83,7 @@
     else if (a === 'limpar') { pts = []; desenha(); texto(); }
     else if (b.classList.contains('sq-sug-x') || b.classList.contains('sq-sug-canc')) fechar(true);
     else if (b.classList.contains('sq-sug-env')) enviar();
+    else if (b.classList.contains('sq-sug-cop')) copiar();
   });
 
   function abrirPainel() {
@@ -101,9 +102,9 @@
   document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && aberto && painel.contains(document.activeElement)) fechar(false); });
 
   /* envio por email */
-  function enviar() {
+  function montar() {
     var d = desc.value.trim();
-    if (!d && !pts.length) { estado.textContent = 'Escreve uma descrição ou marca um sítio no mapa antes de enviar.'; desc.focus(); return; }
+    if (!d && !pts.length) { estado.textContent = 'Escreve uma descrição ou marca um sítio no mapa antes de enviar.'; desc.focus(); return null; }
     var nomeTipo = tipo === 'linha' ? 'Percurso' : tipo === 'local' ? 'Local novo' : 'Problema', sub = tipo === 'problema' ? '' : sel.value, base = location.origin + location.pathname;
     var MAX = 1800, tol = 3, ll, geom, corpo, url;
     for (;;) {
@@ -116,9 +117,25 @@
       tol *= 1.6;
     }
     if (encodeURIComponent(corpo).length > MAX) { corpo = corpo.slice(0, corpo.indexOf('Pontos do percurso')) + 'Os pontos seguem pelo link acima.\n'; }
-    estado.textContent = 'A abrir o teu programa de email…';
-    window.SQ.ultimoMail = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Sugestão para o mapa: ' + nomeTipo.toLowerCase()) + '&body=' + encodeURIComponent(corpo);
-    location.href = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent('Sugestão para o mapa: ' + nomeTipo.toLowerCase()) + '&body=' + encodeURIComponent(corpo);
+    return { assunto: 'Sugestão para o mapa: ' + nomeTipo.toLowerCase(), corpo: corpo };
+  }
+  function enviar() {
+    var m = montar(); if (!m) return;
+    estado.textContent = 'A abrir o teu programa de email… Se não abrir, usa "Copiar sugestão" e cola-a numa mensagem para ' + EMAIL + '.';
+    window.SQ.ultimoMail = 'mailto:' + EMAIL + '?subject=' + encodeURIComponent(m.assunto) + '&body=' + encodeURIComponent(m.corpo);
+    location.href = window.SQ.ultimoMail;
+  }
+  function copiar() {
+    var m = montar(); if (!m) return;
+    var t = 'Para: ' + EMAIL + '\nAssunto: ' + m.assunto + '\n\n' + m.corpo;
+    window.SQ.ultimaCopia = t;
+    function ok() { estado.textContent = 'Sugestão copiada. Cola-a num email ou mensagem para ' + EMAIL + '.'; }
+    function falha() {
+      var ta = document.createElement('textarea'); ta.value = t; ta.setAttribute('readonly', ''); ta.style.cssText = 'position:fixed;top:0;left:0;opacity:0';
+      document.body.appendChild(ta); ta.select(); var certo = false; try { certo = document.execCommand('copy'); } catch (e) {} document.body.removeChild(ta);
+      if (certo) ok(); else estado.textContent = 'Não consegui copiar automaticamente. Seleciona a descrição e escreve para ' + EMAIL + '.';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(ok, falha); else falha();
   }
 
   /* ver uma sugestão recebida (ligação #sugestao=…) */
