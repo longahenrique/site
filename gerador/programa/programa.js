@@ -226,7 +226,7 @@ var ILU = (function () {
     ['ciclo', 'faixa', 'bus', 'vias', 'hubs'].forEach(function (k) { ligar(GR[k], uiOn[k]); });
     CATS.forEach(function (c) { ligar(gPontos[c.id], c.id === 'obra' ? uiOn.obra : (uiOn.existe && catOn[c.id])); });
     ligar(gFixos, map.getZoom() >= 13);
-    if (camadasZona.marginal) ligar(camadasZona.marginal, uiOn.marginal || atual === 'marginal');
+    if (camadasZona.marginal) ligar(camadasZona.marginal, uiOn.marginal);   // o que está marcado na legenda manda: abrir o cartão da Marginal liga-a, mas pode desligar-se
     legRender(); notasRender();
   }
   CATS.forEach(function (c) { gPontos[c.id] = L.layerGroup(); });
