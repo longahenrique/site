@@ -706,6 +706,7 @@ def prog_page():
 <div class="wrap">
 <h1>Programa para Sesimbra</h1>
 <p class="sq-lead">Sesimbra tem tudo para valorizar as suas raízes, respeitar o ambiente e preparar o futuro. Bairros, transportes, habitação acessível e espaços verdes, onde se vive em comunidade. Escolhe o teu e vê como pode ficar.</p>
+<a class="skip" href="#programa-completo">Saltar o mapa e ir para o programa completo</a>
 <h2 class="sr">Mapa do programa</h2>
 <div class="sq-busca" role="search"><label for="sq-q">Procurar no mapa</label><div class="sq-busca-c"><input type="search" id="sq-q" role="combobox" aria-expanded="false" aria-controls="sq-res" aria-autocomplete="list" autocomplete="off" placeholder="Localidade, serviço, linha de autocarro…"><ul id="sq-res" role="listbox" aria-label="Resultados da pesquisa" hidden></ul></div><p class="sr" id="sq-res-n" aria-live="polite"></p></div>
 <div class="sq-corpo">

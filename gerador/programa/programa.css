@@ -285,3 +285,7 @@ html{scrollbar-gutter:stable}
 .sq-corpo.sq-cheio-corpo{inset:0 auto auto 0;width:calc((100vw - var(--sbw,0px)) / var(--az,1));height:calc(100vh / var(--az,1));height:calc(100dvh / var(--az,1))}
 .sq-trava{scrollbar-gutter:auto}
 html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela própria (Esc sai); o menu de acessibilidade volta ao sair */
+
+/* ligações da atribuição do mapa com contraste AAA (7:1) */
+.leaflet-container .leaflet-control-attribution{background:#fff;color:#1a1a1a}
+.leaflet-container .leaflet-control-attribution a{color:#00425c}
