@@ -42263,6 +42263,9 @@
      "t": "Eventos sobre a biodiversidade e a geodiversidade locais."
     },
     {
+     "t": "Diversificar a oferta turística, com um turismo cultural ligado à natureza e biodiversidade, à identidade local e à gastronomia."
+    },
+    {
      "t": "Ciclovia Zambujal–Cabo Espichel."
     }
    ],
@@ -49664,7 +49667,14 @@
       -9.17566
      ]
     ]
-   ]
+   ],
+   "vista": {
+    "c": [
+     38.4729,
+     -9.1746
+    ],
+    "z": 15
+   }
   },
   {
    "id": "variante",

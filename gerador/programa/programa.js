@@ -427,7 +427,8 @@ var ILU = (function () {
     if (voar) {
       var bd = c.getBounds();
       if (id === 'espichel') linhasObj.forEach(function (o) { if (o.l.nome === 'Ciclovia Zambujal–Cabo Espichel') bd = L.latLngBounds(bd.getSouthWest(), bd.getNorthEast()).extend(o.p.getBounds()); });   // inclui toda a ciclovia
-      if (RM) map.fitBounds(bd, { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(bd, { padding: [90, 90], maxZoom: 15, duration: 0.6 });
+      if (z.vista) { if (RM) map.setView(z.vista.c, z.vista.z, { animate: false }); else map.flyTo(z.vista.c, z.vista.z, { duration: 0.6 }); }
+      else if (RM) map.fitBounds(bd, { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(bd, { padding: [90, 90], maxZoom: 15, duration: 0.6 });
     }
   }
   postal.addEventListener('click', function (e) {
