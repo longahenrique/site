@@ -331,3 +331,4 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-sug-modo .leaflet-pLinhas-pane,.sq-sug-modo .leaflet-pZonas-pane{opacity:.5}
 .sq-sug-modo .leaflet-marker-pane{opacity:.6}
 .sq-sug-modo .leaflet-marker-pane .leaflet-marker-icon{pointer-events:none}
+.sq-cheio-corpo .sq-col-cartao{scrollbar-gutter:stable}   /* o cartão tem sempre a mesma largura, haja ou não barra para descer */

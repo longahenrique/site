@@ -120,6 +120,15 @@ var ILU = (function () {
   L.control.zoom({ zoomInTitle: 'Aproximar o mapa', zoomOutTitle: 'Afastar o mapa' }).addTo(map);
   map.on('popupopen', function (e) { var x = e.popup.getElement(); x = x && x.querySelector('.leaflet-popup-close-button'); if (x) { x.setAttribute('aria-label', 'Fechar'); x.setAttribute('title', 'Fechar'); } });
   map.setView([38.51, -9.11], 11);
+  // a roda do rato sobre um balão (ou os botões do mapa) dá zoom no mapa, em vez de deslizar a página
+  function rodaParaMapa(n) {
+    if (!n || n._sqRoda) return; n._sqRoda = true;
+    n.addEventListener('wheel', function (ev) {
+      ev.preventDefault();
+      map.getContainer().dispatchEvent(new WheelEvent('wheel', { deltaX: ev.deltaX, deltaY: ev.deltaY, deltaZ: ev.deltaZ, deltaMode: ev.deltaMode, ctrlKey: ev.ctrlKey, clientX: ev.clientX, clientY: ev.clientY, bubbles: true, cancelable: true }));
+    }, { passive: false, capture: true });   // em captura: o Leaflet pára a roda dentro do balão e ela nunca chegaria cá em bolha
+  }
+  map.on('popupopen', function (e) { rodaParaMapa(e.popup && e.popup._container); });
   if (L.Browser.mobile) map.dragging.disable();   // no telemóvel o mapa só se arrasta em ecrã inteiro; com um dedo a página desliza
   L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
@@ -352,7 +361,7 @@ var ILU = (function () {
     }
     L.DomEvent.on(f, 'click', function () { cheio(!el.classList.contains('sq-cheio')); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('sq-cheio')) cheio(false); });
-    return d;
+    rodaParaMapa(d); return d;
   } });
   map.addControl(new Ctl());
 
