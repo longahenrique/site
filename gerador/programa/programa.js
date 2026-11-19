@@ -1,7 +1,7 @@
 /* ===== Ilustrações ===== */
 var ILU = (function () {
-  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma', terra: 'terra batida', bermaerva: 'berma', bermaarv: 'berma' };
-  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d', terra: '#b08d5b', bermaerva: '#cbbf9d', bermaarv: '#cbbf9d' };
+  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma', terra: 'terra batida', bermaerva: 'berma', bermaarv: 'berma', carrobus: 'autocarros' };
+  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d', terra: '#b08d5b', bermaerva: '#cbbf9d', bermaarv: '#cbbf9d', carrobus: '#6b7078' };
   function espinha(x, y, s, c) {   // carro estacionado de lado (visto de perfil), a entrar na espinha
     var L = 2.1 * s;
     return '<path d="M' + (x - L) + ' ' + (y - 0.35 * s) + ' L' + (x - L) + ' ' + (y - 0.85 * s) + ' Q' + (x - L) + ' ' + (y - 1.05 * s) + ' ' + (x - 1.7 * s) + ' ' + (y - 1.05 * s) + ' L' + (x - 1.05 * s) + ' ' + (y - 1.1 * s) + ' L' + (x - 0.55 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 0.7 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 1.3 * s) + ' ' + (y - 1.1 * s) + ' L' + (x + 1.8 * s) + ' ' + (y - 1.02 * s) + ' Q' + (x + L) + ' ' + (y - 0.95 * s) + ' ' + (x + L) + ' ' + (y - 0.7 * s) + ' L' + (x + L) + ' ' + (y - 0.35 * s) + ' Z" fill="' + c + '"/>' +
@@ -27,12 +27,13 @@ var ILU = (function () {
       if (tipo === 'carro') svg += carro(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
       else if (tipo === 'estac') svg += espinha(cx, chao, s, ['#8d949e', '#b3504a', '#4b6c9b'][n++ % 3]);
       else if (tipo === 'bus') svg += autocarro(cx, chao, s);
+      else if (tipo === 'carrobus') svg += autocarro(cx, chao, s * 0.8);
       else if (tipo === 'terra') svg += erva(x + w * 0.22, chao, s) + erva(x + w * 0.78, chao, s * 0.9);
-      else if (tipo === 'bermaarv') svg += arvore(cx, chao, s * 0.9);
+      else if (tipo === 'bermaarv') svg += arvore(cx, chao, Math.min(s * 0.9, 30));
       else if (tipo === 'bermaerva') svg += erva(cx, chao, s * 0.8);
       else if (tipo === 'busciclo') svg += autocarro(x + w * 0.32, chao, s * 0.85) + bicicleta(x + w * 0.78, chao, s);
       else if (tipo === 'ciclovia') svg += bicicleta(cx, chao, s);
-      else if (tipo === 'arvores') svg += arvore(cx, chao, s);
+      else if (tipo === 'arvores') svg += arvore(cx, chao, Math.min(s, 30));
       else if (tipo === 'areia') { svg += guarda(x + w * 0.3, chao, s) + pessoa(x + w * 0.65, chao, s * 0.9, CORES_P[n++ % 6]); }
       else if (tipo === 'esplanada') { svg += guarda(x + w * 0.35, chao, s * 0.9) + pessoa(x + w * 0.7, chao, s * 0.85, CORES_P[n++ % 6]); }
       else if (tipo === 'esplanada0') svg += guarda(cx, chao, s * 0.9);   // só esplanada, sem gente: o passeio é tão estreito que não passa ninguém
@@ -48,7 +49,7 @@ var ILU = (function () {
     runs.forEach(function (r) {
       if (larg(r.e, FS) <= r.w * 0.98) etiquetas += '<text x="' + (r.x + r.w / 2) + '" y="' + (chao + 34) + '" text-anchor="middle" font-size="' + FS.toFixed(1) + '" font-weight="700" fill="#2b3128" font-family="Archivo,Arial,sans-serif">' + r.e + '</text>';
     });
-    var topo = Math.max(0, Math.floor(chao - 5.4 * s - 12));
+    var topo = Math.max(0, Math.floor(chao - 5.4 * Math.min(s, 30) - 12));
     return '<svg viewBox="0 ' + topo + ' ' + W + ' ' + (chao + 46 - topo) + '" role="img" aria-label="' + (nome || 'Perfil da rua') + ': ' + nomesUs.join(', ') + '">' + svg + etiquetas + '</svg>';
   }
   var P = {
@@ -400,6 +401,7 @@ var ILU = (function () {
   function ligarDaZona(c, z) {
     function lig(id) { uiOn[id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + id + '"]'); if (cx) cx.checked = true; }
     UI.forEach(function (u) { uiOn[u.id] = false; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = false; });
+    if (z.id === 'espichel') { filtro = { solo: ['Ciclovia Zambujal–Cabo Espichel'] }; lig('ciclo'); return; }   // o Cabo mostra a ciclovia que lá chega
     if (z.camada === 'natureza') { filtro = null; return; }   // áreas naturais: nada de camadas
     var solo = z.id === 'variante' ? [z.nome] : z.id === 'almocreves' ? ['Estrada dos Almocreves', 'Ciclovia da Estrada dos Almocreves'] : z.id === 'acessocoina' ? [z.nome] : null;   // mostram-se sozinhas
     if (solo) { filtro = { solo: solo }; lig('vias'); if (z.id === 'almocreves') lig('ciclo'); return; }
@@ -422,7 +424,11 @@ var ILU = (function () {
     if (CONTORNO || (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
     ligarDaZona(c, z);
     visibilidade(); miniAtualizar(z, z.ilustracao);
-    if (voar) { if (RM) map.fitBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(c.getBounds(), { padding: [90, 90], maxZoom: 15, duration: 0.6 }); }
+    if (voar) {
+      var bd = c.getBounds();
+      if (id === 'espichel') linhasObj.forEach(function (o) { if (o.l.nome === 'Ciclovia Zambujal–Cabo Espichel') bd = L.latLngBounds(bd.getSouthWest(), bd.getNorthEast()).extend(o.p.getBounds()); });   // inclui toda a ciclovia
+      if (RM) map.fitBounds(bd, { padding: [90, 90], maxZoom: 15, animate: false }); else map.flyToBounds(bd, { padding: [90, 90], maxZoom: 15, duration: 0.6 });
+    }
   }
   postal.addEventListener('click', function (e) {
     var sb = e.target.closest('.sq-seta'), eb = e.target.closest('.sq-escolhas button'), gb = e.target.closest('.sq-grupos button');
