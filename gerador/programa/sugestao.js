@@ -8,7 +8,7 @@
   if (!coluna || !corpoMapa || !ctl) return;
   // botão "Sugerir no mapa": junto aos botões do mapa, e só no ecrã inteiro (no computador)
   var abrir = document.createElement('button'); abrir.type = 'button'; abrir.className = 'sq-vertudo sq-sug-btn'; abrir.textContent = 'Sugerir no mapa'; abrir.hidden = true; ctl.appendChild(abrir);
-  var COR = '#b0158f';
+  var COR = '#b4caad';
   var TIPOS = [['linha', 'Desenhar um percurso (ciclovia, passeio, linha de autocarro)'], ['local', 'Marcar um local novo (escola, paragem, parque…)'], ['problema', 'Assinalar um problema num sítio']];
   var SUB_LINHA = ['Ciclovia', 'Percurso pedonal', 'Linha ou faixa de autocarro', 'Outro percurso'];
   var SUB_LOCAL = CATS.filter(function (c) { return c.id !== 'obra'; }).map(function (c) { return c.nome; }).concat(['Outro']);
@@ -87,8 +87,10 @@
     else if (b.classList.contains('sq-sug-cop')) copiar();
   });
 
+  map.on('popupopen', function () { if (aberto) map.closePopup(); });   // a desenhar, um clique sobre uma linha existente não abre o balão: marca o ponto
   function abrirPainel() {
     aberto = true; coluna.classList.add('sq-sug-on'); painel.hidden = false; map.doubleClickZoom.disable(); map.getContainer().classList.add('sq-sug-modo');
+    if (window.SQ.propostasPorDefeito) window.SQ.propostasPorDefeito();
     if (!map.hasLayer(g)) g.addTo(map); desenha(); texto(); var r = $('input[type=radio]:checked'); if (r) r.focus({ preventScroll: true });
   }
   function fechar(limpa) {

@@ -326,3 +326,8 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-col-cartao .sq-sug{margin:0;border:0;padding:4px 2px}
 .sq-sug-txt{display:none}
 @media(min-width:980px){.sq-sug-txt{display:block}}
+
+/* a desenhar uma sugestão: o que já está no mapa fica mais discreto e deixa passar os cliques */
+.sq-sug-modo .leaflet-pLinhas-pane,.sq-sug-modo .leaflet-pZonas-pane{opacity:.5}
+.sq-sug-modo .leaflet-marker-pane{opacity:.6}
+.sq-sug-modo .leaflet-marker-pane .leaflet-marker-icon{pointer-events:none}

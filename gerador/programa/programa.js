@@ -653,7 +653,13 @@ var ILU = (function () {
     aplicar(); if (mq.addEventListener) mq.addEventListener('change', aplicar); else mq.addListener(aplicar);
   })();
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-ver-mapa'); if (!b) return; escolher(b.getAttribute('data-zona'), true); el.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); });
-  window.SQ = { escolher: escolher, mapa: map, esc: esc, cats: CATS };
+  window.SQ = { escolher: escolher, mapa: map, esc: esc, cats: CATS,
+    // ao abrir "Sugerir no mapa": se a legenda não tem nenhuma proposta ligada, liga-as (para ver o que já está proposto); o que a pessoa já tinha ligado fica como está
+    propostasPorDefeito: function () {
+      if (UI.some(function (u) { return u.id !== 'existe' && uiOn[u.id]; })) return;
+      UI.forEach(function (u) { if (u.id !== 'existe') { uiOn[u.id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = true; } });
+      visibilidade();
+    } };
   var mHash = /^#cartao-([\w-]+)$/.exec(decodeURIComponent(location.hash));   // ligação direta a um cartão (por exemplo, a prévia da página principal): /programa#cartao-vila
   cartao(null); visibilidade(); urlSync = true;
   if (mHash && zonaDe(mHash[1])) setTimeout(function () { escolher(mHash[1], true); el.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 120);
