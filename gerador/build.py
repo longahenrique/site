@@ -757,22 +757,46 @@ if os.path.isdir('gerador/programa'):
         _LOC=[(l['nome'],l['p']) for l in _D.get('localidades',[])]
         _EXC={'footway','steps','cycleway','path','track','bridleway','proposed','construction','service','corridor'}
         _bb=[e['bounds'] for e in _jj.load(open('gerador/programa/limites.json',encoding='utf-8'))['elements'] if e.get('tags',{}).get('name')=='Sesimbra' and e['type']=='relation'][0]   # só ruas do concelho
-        _gr={}
+        _porNome={}
         for _e in _R.get('elements',[]):
             _t=_e.get('tags',{}); _g=_e.get('geometry')
             if not _t.get('name') or not _t.get('highway') or _t['highway'] in _EXC or not _g: continue
-            _m=_g[len(_g)//2]; _la,_lo=_m['lat'],_m['lon']
-            if not (_bb['minlat']<=_la<=_bb['maxlat'] and _bb['minlon']<=_lo<=_bb['maxlon']): continue
-            _k=(_t['name'],round(_la/0.012),round(_lo/0.015))
-            if _k not in _gr or len(_g)>_gr[_k][0]: _gr[_k]=(len(_g),_la,_lo)
+            _m=_g[len(_g)//2]
+            if not (_bb['minlat']<=_m['lat']<=_bb['maxlat'] and _bb['minlon']<=_m['lon']<=_bb['maxlon']): continue
+            _porNome.setdefault(_t['name'],[]).append(_g)
+        # troços do mesmo nome que se tocam (a menos de ~300 m) são a mesma rua: uma só entrada
+        _gr={}
+        for _n,_ways in _porNome.items():
+            _pai=list(range(len(_ways)))
+            def _f(x):
+                while _pai[x]!=x: _pai[x]=_pai[_pai[x]]; x=_pai[x]
+                return x
+            _cel={}
+            for _i,_w in enumerate(_ways):
+                for _p in _w[::2]+[_w[-1]]:
+                    _c=(round(_p['lat']/0.003),round(_p['lon']/0.004))
+                    for _dy in (-1,0,1):
+                        for _dx in (-1,0,1):
+                            for _k in _cel.get((_c[0]+_dy,_c[1]+_dx),()):
+                                _pai[_f(_i)]=_f(_k)
+                    _cel.setdefault(_c,set()).add(_i)
+            _cl={}
+            for _i,_w in enumerate(_ways): _cl.setdefault(_f(_i),[]).append(_w)
+            for _k,_ws in _cl.items():
+                _pts=[p for w in _ws for p in w]
+                _cla=sum(p['lat'] for p in _pts)/len(_pts); _clo=sum(p['lon'] for p in _pts)/len(_pts)
+                _m=min(_pts,key=lambda p:(p['lat']-_cla)**2+(p['lon']-_clo)**2)   # ponto da rua mais perto do centro
+                _gr[(_n,_k)]=(len(_pts),_m['lat'],_m['lon'])
         _out=[]
-        for (_n,_,_),(_ln,_la,_lo) in _gr.items():
+        _out_t=[]
+        for (_n,_k2),(_ln,_la,_lo) in sorted(_gr.items(),key=lambda kv:-kv[1][0]):
             _zid='';_loc=''
             for _id,_nm,_lim in _ZB:
                 if any(_dentro(_la,_lo,_a) for _a in _lim): _zid=_id;_loc=_nm;break
             if not _zid and _LOC:
                 _d,_nn=min(((( _la-p[0])**2+((_lo-p[1])*0.78)**2),n) for n,p in _LOC)
                 if _d<0.02**2: _loc=_nn
+            if any(o[0]==_n and (o[1]-_la)**2+((o[2]-_lo)*0.78)**2<0.015**2 for o in _out): continue   # troço da mesma rua, perto de outro maior
             _out.append([_n,round(_la,5),round(_lo,5),_zid,_loc])
         _v=set(); _o2=[]
         for _r in _out:
