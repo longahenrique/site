@@ -75,8 +75,6 @@ if 'Ver todos os artigos' not in s:
     m=re.search(r'<ul class="articles">(.*?)</ul>',s,flags=re.S); assert m
     lis=re.findall(r'<li>.*?</li>',m.group(1),flags=re.S); assert len(lis)==5,len(lis)
     s=s.replace(m.group(0),'<ul class="articles">'+''.join(lis[:3])+'</ul>\n<p style="margin:36px 0 0"><a class="btn" href="/opiniao">Ver todos os artigos</a></p>')
-if '@media(hover:hover)' not in s:
-    s,n=re.subn(r'(?m)^([^{}\n]*:hover[^{}\n]*\{[^{}]*\})$',lambda m:'@media(hover:hover),(any-hover:hover),(any-pointer:fine){'+m.group(1)+'}',s); assert n==4,n
 open(src,'w',encoding='utf-8').write(s)
 if '/privacidade' not in s:
     sub1('Todos os direitos reservados.</footer>','Todos os direitos reservados. <a href="/privacidade">Privacidade</a> | <a href="/acessibilidade">Acessibilidade</a></footer>')
@@ -139,7 +137,7 @@ main:focus,.article:focus{outline:none}
 .share h2,.more-articles h2{margin:0 0 14px;font:800 22px/1.2 Archivo,"Helvetica Neue",Arial,sans-serif}
 .share ul{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0}
 .share a,.share button{display:inline-block;padding:9px 16px;border:2px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);font:700 15px Archivo,"Helvetica Neue",Arial,sans-serif;text-decoration:none;cursor:pointer}
-@media(hover:hover),(any-hover:hover),(any-pointer:fine){.share a:hover,.share button:hover{background:var(--ink);color:var(--paper)}}
+html:not(.sem-rato) .share a:hover,html:not(.sem-rato) .share button:hover{background:var(--ink);color:var(--paper)}
 .more-articles .articles{max-width:44em}
 .rss{margin:28px 0 0;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}
 .rss a{text-underline-offset:5px}
@@ -215,6 +213,7 @@ def head(path,title,desc,css_text,ogtype='article',ld=None,meta_extra='',image='
 </head>
 '''
 UX_JS=r"""<script>
+(function(){var d=document.documentElement;function pt(e){if(e.pointerType==="mouse"||e.pointerType==="pen")d.classList.remove("sem-rato");else if(e.pointerType==="touch")d.classList.add("sem-rato")}addEventListener("pointerdown",pt,{passive:true});addEventListener("pointermove",pt,{passive:true})})();
 (function(){
 var c=navigator.connection;if(c&&(c.saveData||/2g/.test(c.effectiveType||"")))c=null;else c=1;
 var done={};
@@ -500,7 +499,7 @@ gal_css="""
 .gal .gd{font-size:16px}
 .gal .gm,.gal .gc{color:var(--muted)}
 .gal .dl{align-self:flex-start;margin-top:10px;padding:9px 16px;border:2px solid var(--ink);border-radius:6px;font-weight:800;text-decoration:none}
-@media(hover:hover),(any-hover:hover),(any-pointer:fine){.gal .dl:hover{background:var(--ink);color:var(--paper)}}
+html:not(.sem-rato) .gal .dl:hover{background:var(--ink);color:var(--paper)}
 """
 GAL_BACK_JS=r'''<script>
 (function(){var a=document.getElementById("gal-back");if(!a)return;try{var r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname.replace(/\/$/,"")==="/imprensa"){a.href="/imprensa";a.textContent="← Imprensa"}}catch(e){}})();
@@ -657,7 +656,7 @@ h1+.press-sec{margin-top:0}
 .bio-short h3{margin:0 0 8px;font:800 18px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
 .bio-short p{margin:0 0 12px;font-size:20px;line-height:1.7}
 .copybtn{padding:9px 16px;border:2px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);font:700 15px Archivo,"Archivo Fallback",Arial,sans-serif;cursor:pointer}
-@media(hover:hover),(any-hover:hover),(any-pointer:fine){.copybtn:hover{background:var(--ink);color:var(--paper)}}
+html:not(.sem-rato) .copybtn:hover{background:var(--ink);color:var(--paper)}
 .press-btns{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 0}
 .press-btns .btn{margin:0}
 .article .articles{margin-top:6px}
