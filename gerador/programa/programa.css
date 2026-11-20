@@ -346,3 +346,6 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-prop .b{width:32px;height:32px;box-sizing:border-box;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;box-shadow:0 0 0 2px #141414;outline:2.5px dashed #c2570c;outline-offset:3px}
 .sq-prop .b svg{width:17px;height:17px}
 .sq-prop i{position:absolute;right:-8px;top:-8px;width:18px;height:18px;border-radius:50%;background:#c2570c;border:2px solid #fff;box-shadow:0 0 0 1.5px #141414;color:#fff;display:flex;align-items:center;justify-content:center;font:800 14px/1 Arial,sans-serif;font-style:normal}
+
+/* sem intervalo entre o programa completo e o contacto: a margem do último elemento fica dentro da secção */
+.sq-completo{display:flow-root}
