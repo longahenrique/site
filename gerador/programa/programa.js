@@ -552,9 +552,8 @@ var ILU = (function () {
         if (SEMVOO) { map.setView(o.i.p, 15, { animate: false }); ver(); } else { map.once('moveend', ver); map.flyTo(o.i.p, 15, { duration: 0.6 }); }
       });
     });
-    (DADOS.localidades || []).forEach(function (l) {
-      if (IDX.some(function (x) { return x.g === 0 && x.n === norm(l.nome); })) return;
-      add(0, 'Localidade', l.nome, '', function () {
+    // Sem cartão: mostra-se no mapa o que está previsto à volta de um ponto (localidade ou rua)
+    var localSem = function (l) {
         // Sem cartão: mostra-se no mapa o que está previsto à volta (ciclovias, linhas, hubs, equipamentos novos)
         escolher(null, 'vazio');
         var b = L.latLng(l.p).toBounds(3000), perto = [];
@@ -572,8 +571,28 @@ var ILU = (function () {
         var p = L.popup({ maxWidth: 260 }).setLatLng(l.p).setContent(txt);
         var abrir = function () { p.openOn(map); }, zm = perto.length ? 14 : 15;
         if (SEMVOO) { map.setView(l.p, zm, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, zm, { duration: 0.6 }); }
-      });
+    };
+    (DADOS.localidades || []).forEach(function (l) {
+      if (IDX.some(function (x) { return x.g === 0 && x.n === norm(l.nome); })) return;
+      add(0, 'Localidade', l.nome, '', function () { localSem(l); });
     });
+    // Ruas: o índice (programa-ruas.js) só se descarrega quando a pessoa começa a pesquisar. Rua dentro de uma localidade com cartão abre o cartão; nas outras mostra as propostas próximas
+    var ruasEstado = 0;
+    function carregarRuas() {
+      if (ruasEstado) return; ruasEstado = 1;
+      var s = document.createElement('script'); s.src = '/programa-mapa/programa-ruas.js?v=' + (window.RUAS_V || ''); s.async = true;
+      s.onload = function () {
+        var zn = DADOS.zonas.map(function (z) { return norm(z.nome); });
+        (window.RUAS || []).forEach(function (r) {
+          var n = norm(r[0]); if (zn.indexOf(n) >= 0 || zn.some(function (e) { return n.indexOf(e) === 0 && e.length > 8; })) return;
+          var pt = [r[1], r[2]], zid = r[3];
+          IDX.push({ g: 6, tipo: 'Rua', t: r[0] + (r[4] ? ' · ' + r[4] : ''), n: n, x: norm(r[4] || ''), a: function () { if (zid) escolher(zid, true); else localSem({ nome: r[0], p: pt }); } });
+        });
+        ruasEstado = 2; if (inp.value) procurar();
+      };
+      document.head.appendChild(s);
+    }
+    inp.addEventListener('focus', carregarRuas);
     // Sem repetições: se o resultado é uma estrada ou localidade que já tem cartão, só aparece o cartão (abre-o e leva o mapa até lá)
     (function () {
       var cartoes = IDX.filter(function (x) { return x.g === 0; }).map(function (x) { return x.n; });
@@ -590,7 +609,7 @@ var ILU = (function () {
         return true;
       });
     })();
-    var GRUPOS = ['Localidades', '', 'Propostas de serviços', 'Locais que já existem', 'Linhas e estações', 'Medidas'];
+    var GRUPOS = ['Localidades', '', 'Propostas de serviços', 'Locais que já existem', 'Linhas e estações', 'Medidas', 'Ruas'];
     var res = [], ativo = -1;
     function fechar() { lista.hidden = true; inp.setAttribute('aria-expanded', 'false'); inp.removeAttribute('aria-activedescendant'); ativo = -1; }
     function marcar(i) {

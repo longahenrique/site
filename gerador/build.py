@@ -744,6 +744,45 @@ if os.path.isdir('gerador/programa'):
     _D=_jj.load(open('gerador/programa/mapa.json',encoding='utf-8'))
     for _l in _D.get('linhas',[]): _l.pop('pontos',None)
     open('_site/programa-mapa/programa-dados.js','w',encoding='utf-8').write('/* Gerado a partir de gerador/programa/mapa.json (painel do mapa) */\nvar DADOS = '+_jj.dumps(_D,ensure_ascii=False,separators=(',',':'))+';\n')
+    # índice de ruas para a pesquisa: nome, ponto, cartão da localidade (se estiver dentro de uma) e nome da localidade
+    if os.path.isfile('gerador/programa/ruas.json'):
+        _R=_jj.load(open('gerador/programa/ruas.json',encoding='utf-8'))
+        _ZB=[(z['id'],z['nome'],z['limite']) for z in _D['zonas'] if z.get('camada')=='bairros' and z.get('limite')]
+        def _dentro(la,lo,anel):
+            c=False; j=len(anel)-1
+            for i in range(len(anel)):
+                yi,xi=anel[i]; yj,xj=anel[j]
+                if (xi>lo)!=(xj>lo) and la<(yj-yi)*(lo-xi)/(xj-xi)+yi: c=not c
+                j=i
+            return c
+        _LOC=[(l['nome'],l['p']) for l in _D.get('localidades',[])]
+        _EXC={'footway','steps','cycleway','path','track','bridleway','proposed','construction','service','corridor'}
+        _bb=[e['bounds'] for e in _jj.load(open('gerador/programa/limites.json',encoding='utf-8'))['elements'] if e.get('tags',{}).get('name')=='Sesimbra' and e['type']=='relation'][0]   # só ruas do concelho
+        _gr={}
+        for _e in _R.get('elements',[]):
+            _t=_e.get('tags',{}); _g=_e.get('geometry')
+            if not _t.get('name') or not _t.get('highway') or _t['highway'] in _EXC or not _g: continue
+            _m=_g[len(_g)//2]; _la,_lo=_m['lat'],_m['lon']
+            if not (_bb['minlat']<=_la<=_bb['maxlat'] and _bb['minlon']<=_lo<=_bb['maxlon']): continue
+            _k=(_t['name'],round(_la/0.012),round(_lo/0.015))
+            if _k not in _gr or len(_g)>_gr[_k][0]: _gr[_k]=(len(_g),_la,_lo)
+        _out=[]
+        for (_n,_,_),(_ln,_la,_lo) in _gr.items():
+            _zid='';_loc=''
+            for _id,_nm,_lim in _ZB:
+                if any(_dentro(_la,_lo,_a) for _a in _lim): _zid=_id;_loc=_nm;break
+            if not _zid and _LOC:
+                _d,_nn=min(((( _la-p[0])**2+((_lo-p[1])*0.78)**2),n) for n,p in _LOC)
+                if _d<0.02**2: _loc=_nn
+            _out.append([_n,round(_la,5),round(_lo,5),_zid,_loc])
+        _v=set(); _o2=[]
+        for _r in _out:
+            _kk=(_r[0],_r[3] or _r[4] or (_r[1],_r[2]))
+            if _kk in _v: continue
+            _v.add(_kk); _o2.append(_r)
+        _out=_o2
+        _out.sort(key=lambda r:r[0])
+        open('_site/programa-mapa/programa-ruas.js','w',encoding='utf-8').write('/* Ruas (© colaboradores do OpenStreetMap, ODbL) para a pesquisa do mapa */\nvar RUAS = '+_jj.dumps(_out,ensure_ascii=False,separators=(',',':'))+';\n')
     # dados abertos: GeoJSON e CSV gerados a partir do mesmo ficheiro do mapa
     import csv as _csv, io as _io
     _CAT={'parque':'Parque ou jardim','escola':'Escola','saude':'Saúde','farmacia':'Farmácia','estacionamento':'Estacionamento','bombeiros':'Bombeiros','policia':'Polícia','igreja':'Igreja ou capela','cultura':'Biblioteca, auditório, cultura','servicos':'Serviços públicos','mercado':'Mercado e supermercado','desporto':'Desporto','social':'Apoio social e comunitário','obra':'Proposta no mapa','transporte':'Estação ou terminal'}
