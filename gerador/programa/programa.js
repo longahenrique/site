@@ -524,6 +524,7 @@ var ILU = (function () {
   // ===== Pesquisa =====
   (function () {
     var inp = document.getElementById('sq-q'), lista = document.getElementById('sq-res'), nlive = document.getElementById('sq-res-n'); if (!inp || !lista) return;
+    function telemovel() { return !!(window.matchMedia && matchMedia('(max-width: 600px)').matches); }   // no telemóvel a pesquisa não abre o balão (ocupa muito espaço); no computador abre
     function norm(t) { return String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
     var IDX = [];
     function add(grupo, tipo, titulo, extra, acao) { IDX.push({ g: grupo, tipo: tipo, t: titulo, n: norm(titulo), x: norm(extra || ''), a: acao }); }
@@ -552,7 +553,7 @@ var ILU = (function () {
         if (r.cat === 'obra') definir('obra', true);
         forcado = r.m; var g = gPontos[r.cat]; if (!g.hasLayer(r.m)) g.addLayer(r.m);
         visibilidade();
-        var abrir = function () { r.m.openPopup(); };
+        var abrir = function () { if (!telemovel()) r.m.openPopup(); };
         if (SEMVOO) { map.setView(r.p, 16, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(r.p, 16, { duration: 0.6 }); }
       });
       if (r.cat === 'obra' && r.local) IDX[IDX.length - 1].s = r.local;   // propostas com o mesmo nome distinguem-se pelo local
@@ -563,13 +564,13 @@ var ILU = (function () {
       add(4, tipo, o.l.nome, o.l.texto, function () {
         definir(uiId, true); var b = o.p.getBounds();
         if (SEMVOO) map.fitBounds(b, { padding: [60, 60], animate: false }); else map.flyToBounds(b, { padding: [60, 60], duration: 0.6 });
-        o.p.openPopup(b.getCenter());
+        if (!telemovel()) o.p.openPopup(b.getCenter());
       });
     });
     ifaceObj.forEach(function (o) {
       add(4, o.i.existe ? 'Estação (já existe)' : 'Novo hub', o.i.nome, o.i.texto, function () {
         if (!o.i.existe) definir('hubs', true);
-        var ver = function () { o.m.openPopup(); };
+        var ver = function () { if (!telemovel()) o.m.openPopup(); };
         if (SEMVOO) { map.setView(o.i.p, 15, { animate: false }); ver(); } else { map.once('moveend', ver); map.flyTo(o.i.p, 15, { duration: 0.6 }); }
       });
     });
@@ -590,7 +591,7 @@ var ILU = (function () {
         visibilidade();
         var txt = '<b>' + esc(l.nome) + '</b>';
         var p = L.popup({ maxWidth: 260 }).setLatLng(l.p).setContent(txt);
-        var abrir = function () { p.openOn(map); }, zm = perto.length ? 14 : 15;
+        var abrir = function () { if (!telemovel()) p.openOn(map); }, zm = perto.length ? 14 : 15;
         if (SEMVOO) { map.setView(l.p, zm, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(l.p, zm, { duration: 0.6 }); }
     };
     (DADOS.localidades || []).forEach(function (l) {
@@ -611,7 +612,7 @@ var ILU = (function () {
             if (!zid) { localSem({ nome: r[0], p: pt }); return; }
             // dentro de uma localidade com cartão: abre o cartão, mas o mapa aproxima-se da rua e não da localidade inteira
             escolher(zid, false);
-            var pop = L.popup({ maxWidth: 260 }).setLatLng(pt).setContent('<b>' + esc(r[0]) + '</b>'), abrirR = function () { pop.openOn(map); };
+            var pop = L.popup({ maxWidth: 260 }).setLatLng(pt).setContent('<b>' + esc(r[0]) + '</b>'), abrirR = function () { if (!telemovel()) pop.openOn(map); };
             if (SEMVOO) { map.setView(pt, 16, { animate: false }); abrirR(); } else { map.once('moveend', abrirR); map.flyTo(pt, 16, { duration: 0.6 }); }
           } });
         });
