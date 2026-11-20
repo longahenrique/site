@@ -1,7 +1,7 @@
 /* ===== Ilustrações ===== */
 var ILU = (function () {
-  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma', terra: 'terra batida', bermaerva: 'berma', bermaarv: 'berma', carrobus: 'estrada', estradacarro: 'estrada' };
-  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d', terra: '#b08d5b', bermaerva: '#cbbf9d', bermaarv: '#cbbf9d', carrobus: '#6b7078', estradacarro: '#6b7078' };
+  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma', terra: 'terra batida', bermaerva: 'berma', bermaarv: '', carrobus: 'estrada', estradacarro: 'estrada' };
+  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d', terra: '#b08d5b', bermaerva: '#cbbf9d', bermaarv: '#bcc08f', carrobus: '#6b7078', estradacarro: '#6b7078' };
   function espinha(x, y, s, c) {   // carro estacionado de lado (visto de perfil), a entrar na espinha
     var L = 2.1 * s;
     return '<path d="M' + (x - L) + ' ' + (y - 0.35 * s) + ' L' + (x - L) + ' ' + (y - 0.85 * s) + ' Q' + (x - L) + ' ' + (y - 1.05 * s) + ' ' + (x - 1.7 * s) + ' ' + (y - 1.05 * s) + ' L' + (x - 1.05 * s) + ' ' + (y - 1.1 * s) + ' L' + (x - 0.55 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 0.7 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 1.3 * s) + ' ' + (y - 1.1 * s) + ' L' + (x + 1.8 * s) + ' ' + (y - 1.02 * s) + ' Q' + (x + L) + ' ' + (y - 0.95 * s) + ' ' + (x + L) + ' ' + (y - 0.7 * s) + ' L' + (x + L) + ' ' + (y - 0.35 * s) + ' Z" fill="' + c + '"/>' +
@@ -30,17 +30,17 @@ var ILU = (function () {
       else if (tipo === 'bus') svg += autocarro(cx, chao, s);
       else if (tipo === 'carrobus') svg += autocarro(cx, chao, s * 0.8);
       else if (tipo === 'terra') svg += erva(x + w * 0.22, chao, s) + erva(x + w * 0.78, chao, s * 0.9);
-      else if (tipo === 'bermaarv') svg += arvore(cx, chao, Math.min(s * 0.9, 30));
+      else if (tipo === 'bermaarv') { var ta = Math.min(s * 0.9, 30); svg += arvore(x + w * 0.7, chao, ta * 0.62) + arvore(x + w * 0.3, chao, ta * 0.85); }   // mato com duas árvores, em vez de uma só ornamental
       else if (tipo === 'bermaerva') svg += erva(cx, chao, s * 0.8);
       else if (tipo === 'busciclo') svg += autocarro(x + w * 0.32, chao, s * 0.85) + bicicleta(x + w * 0.78, chao, s);
       else if (tipo === 'ciclovia') svg += bicicleta(cx, chao, s);
       else if (tipo === 'arvores') svg += arvore(cx, chao, Math.min(s, 30));
-      else if (tipo === 'areia') { svg += guarda(x + w * 0.3, chao, s) + pessoa(x + w * 0.65, chao, s * 0.9, CORES_P[n++ % 6]); }
-      else if (tipo === 'esplanada') { svg += guarda(x + w * 0.35, chao, s * 0.9) + pessoa(x + w * 0.7, chao, s * 0.85, CORES_P[n++ % 6]); }
+      else if (tipo === 'areia') { svg += guarda(x + w * 0.3, chao, s) + pessoa(x + w * 0.65, chao, s * 0.9, CORES_P[3]); }
+      else if (tipo === 'esplanada') { svg += guarda(x + w * 0.35, chao, s * 0.9) + pessoa(x + w * 0.7, chao, s * 0.85, CORES_P[0]); }
       else if (tipo === 'esplanada0') svg += guarda(cx, chao, s * 0.9);   // só esplanada, sem gente: o passeio é tão estreito que não passa ninguém
       else if (tipo === 'peoes') { for (var k = 0; k < 3; k++) svg += (k === 1 ? cadeira : pessoa)(x + w * (0.2 + k * 0.3), chao, s * (0.95 - k * 0.1), CORES_P[n++ % 6]); }   // um dos peões vai de cadeira de rodas
       else if (tipo === 'passeio') svg += pessoa(cx, chao, s, CORES_P[n++ % 6]);
-      if (w > 22 && nomesUs.indexOf(NOMES[tipo]) < 0) nomesUs.push(NOMES[tipo]);
+      if (w > 22 && NOMES[tipo] && nomesUs.indexOf(NOMES[tipo]) < 0) nomesUs.push(NOMES[tipo]);
       if (runs.length && runs[runs.length - 1].t === NOMES[tipo]) runs[runs.length - 1].w += w; else runs.push({ t: NOMES[tipo], x: x, w: w });
       x += w;
     });
