@@ -586,7 +586,13 @@ var ILU = (function () {
         (window.RUAS || []).forEach(function (r) {
           var n = norm(r[0]); if (zn.indexOf(n) >= 0 || zn.some(function (e) { return n.indexOf(e) === 0 && e.length > 8; })) return;
           var pt = [r[1], r[2]], zid = r[3];
-          IDX.push({ g: 6, tipo: 'Rua', t: r[0] + (r[4] ? ' · ' + r[4] : ''), n: n, x: norm(r[4] || ''), a: function () { if (zid) escolher(zid, true); else localSem({ nome: r[0], p: pt }); } });
+          IDX.push({ g: 6, tipo: 'Rua', t: r[0] + (r[4] ? ' · ' + r[4] : ''), n: n, x: norm(r[4] || ''), a: function () {
+            if (!zid) { localSem({ nome: r[0], p: pt }); return; }
+            // dentro de uma localidade com cartão: abre o cartão, mas o mapa aproxima-se da rua e não da localidade inteira
+            escolher(zid, false);
+            var pop = L.popup({ maxWidth: 260 }).setLatLng(pt).setContent('<b>' + esc(r[0]) + '</b>'), abrirR = function () { pop.openOn(map); };
+            if (SEMVOO) { map.setView(pt, 16, { animate: false }); abrirR(); } else { map.once('moveend', abrirR); map.flyTo(pt, 16, { duration: 0.6 }); }
+          } });
         });
         ruasEstado = 2; if (inp.value) procurar();
       };
