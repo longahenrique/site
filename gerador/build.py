@@ -574,7 +574,7 @@ priv=f"""<p>Esta página explica que dados pessoais este site trata e porquê. E
 <ul>
 <li>O site é alojado no GitHub Pages, um serviço da GitHub, Inc. Como em qualquer alojamento, este serviço pode registar dados técnicos do teu pedido, como o endereço IP, para fornecer o site e por razões de segurança. Estes dados são tratados pela GitHub, que pode tratá-los nos Estados Unidos, segundo a sua própria política de privacidade. Segundo a GitHub, as transferências de dados para fora do Espaço Económico Europeu assentam em cláusulas contratuais-tipo aprovadas pela Comissão Europeia e no Quadro de Privacidade de Dados UE–EUA (ver a <a href="https://docs.github.com/pt/site-policy/privacy-policies/github-general-privacy-statement" target="_blank" rel="noopener">política de privacidade da GitHub</a>).</li>
 <li>Os tipos de letra do site estão guardados no próprio site, por isso a tua visita não envia pedidos ao Google Fonts nem a serviços semelhantes.</li>
-<li>Na página do programa (/programa), o mapa vai buscar as imagens do mapa ao OpenStreetMap, um serviço da Fundação OpenStreetMap, que recebe o teu endereço IP e dados técnicos do teu navegador, como acontece com qualquer imagem de um site externo. O mapa não cria cookies e não envia para lado nenhum o que escolhes ou pesquisas nele. Mais informação na <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">política de privacidade da Fundação OpenStreetMap</a>.</li>
+<li>Na página do programa (/programa), o mapa vai buscar as imagens do mapa ao OpenStreetMap, um serviço da Fundação OpenStreetMap, que recebe o teu endereço IP e dados técnicos do teu navegador. O mapa não cria cookies e não envia para lado nenhum o que escolhes ou pesquisas nele. Mais informação na <a href="https://wiki.osmfoundation.org/wiki/Privacy_Policy" target="_blank" rel="noopener">política de privacidade da Fundação OpenStreetMap</a>.</li>
 <li>No computador, a página do programa tem a opção "Sugerir no mapa". O que desenhas e escreves fica só no teu navegador até clicares em "Enviar por email", que abre o teu programa de email com a sugestão escrita. O site não recebe nem guarda nada.</li>
 <li>Se usares o menu de acessibilidade (tamanho do texto, contraste e outras opções) ou fechares um aviso no topo do site, essa escolha fica guardada apenas no teu navegador, para a lembrar na visita seguinte. Não é enviada para lado nenhum.</li>
 </ul>
@@ -602,13 +602,13 @@ acc=f"""<p>Quero que este site possa ser usado por todas as pessoas. A referênc
 <li>Os resultados eleitorais são apresentados como uma lista de etiquetas e valores, que se adapta ao telemóvel sem deslizar para o lado e que os leitores de ecrã e os modos de leitura apresentam sem repetições.</li>
 <li>As ligações que abrem num separador novo avisam os leitores de ecrã disso. Os botões de descarregar fotografias dizem, para os leitores de ecrã, de que fotografia se trata, e as expressões em inglês estão marcadas com o idioma certo, para serem lidas com a pronúncia correta.</li>
 <li>Respeito pela definição do sistema “reduzir movimento”: quem a tiver ligada deixa de ver a página deslizar e as setas a rodar.</li>
-<li>Na página do programa, o mapa pode ser deslocado e aproximado com o teclado (setas para o deslocar, mais e menos para aproximar). Os pontos e as linhas do mapa só se abrem com o rato ou com o toque, por isso tudo o que está no mapa também está em texto: nos cartões por localidade, estrada e natureza, na pesquisa e no programa completo, que está na mesma página.</li>
+<li>Na página do programa, o mapa pode ser deslocado e aproximado com o teclado (setas para o deslocar, mais e menos para aproximar). Os pontos e as linhas do mapa só se abrem com o rato ou com o toque, por isso tudo o que está no mapa também está em texto.</li>
 <li>O idioma da página indicado (português de Portugal).</li>
 </ul>
 <h2>Limitações conhecidas</h2>
 <ul>
 <li>As descrições das fotografias são curtas e descrevem a cena de forma geral.</li>
-<li>O mapa do programa é visual por natureza: os pontos e as linhas não se podem selecionar com o teclado, os traçados e as localizações são indicativos e as ilustrações dos cartões são decorativas. Quem não o consiga usar encontra a mesma informação nos cartões, na pesquisa e no programa completo.</li>
+<li>O mapa do programa é visual por natureza. Os pontos e as linhas não se podem selecionar com o teclado, os traçados e as localizações são indicativos e as ilustrações dos cartões são decorativas.</li>
 <li>Em ecrãs de toque, as ligações do rodapé e do menu são pequenas, o que pode dificultar o toque.</li>
 <li>As ligações para sites de terceiros (jornais e redes sociais) levam a páginas cuja acessibilidade não controlo.</li>
 </ul>
@@ -706,10 +706,10 @@ def prog_page():
 <section class="sq">
 <div class="wrap">
 <h1>Programa para Sesimbra</h1>
-<p class="sq-lead">Sesimbra tem tudo para valorizar as suas raízes, respeitar o ambiente e preparar o futuro. Bairros, transportes, habitação acessível e espaços verdes, onde se vive em comunidade. Escolhe o teu e vê como pode ficar.</p>
+<p class="sq-lead">Sesimbra tem tudo para valorizar as suas raízes, respeitar o ambiente e preparar o futuro. Bairros, transportes, habitação acessível e espaços verdes, onde se vive em comunidade.</p>
 <a class="skip" href="#programa-completo">Saltar o mapa e ir para o programa completo</a>
 <h2 class="sr">Mapa do programa</h2>
-<div class="sq-busca" role="search"><label for="sq-q">Procurar no mapa</label><div class="sq-busca-c"><input type="search" id="sq-q" role="combobox" aria-expanded="false" aria-controls="sq-res" aria-autocomplete="list" autocomplete="off" placeholder="Localidade, serviço, linha de autocarro…"><ul id="sq-res" role="listbox" aria-label="Resultados da pesquisa" hidden></ul></div><p class="sr" id="sq-res-n" aria-live="polite"></p></div>
+<div class="sq-busca" role="search"><label for="sq-q">Procurar no mapa</label><div class="sq-busca-c"><input type="search" id="sq-q" role="combobox" aria-expanded="false" aria-controls="sq-res" aria-autocomplete="list" autocomplete="off" placeholder="Localidade, serviço, rua…"><ul id="sq-res" role="listbox" aria-label="Resultados da pesquisa" hidden></ul></div><p class="sr" id="sq-res-n" aria-live="polite"></p></div>
 <div class="sq-corpo">
 <div class="sq-col-mapa">
 <div class="sq-mapa" id="sq-mapa" role="region" aria-label="Mapa do programa para o concelho de Sesimbra"></div>
@@ -720,7 +720,7 @@ def prog_page():
 <article class="sq-postal" id="sq-postal" aria-label="Cartão da localidade"></article>
 </div>
 </div>
-<p class="sq-aviso sq-vivo"><strong>Um programa vivo.</strong> Este mapa reúne ideias e propostas para Sesimbra, que vão sendo atualizadas e discutidas. Os traçados e as localizações são indicativos e ficam sujeitos a estudo e a decisão pública.</p>
+<p class="sq-aviso sq-vivo"><strong>Um programa vivo.</strong> Este mapa reúne ideias e propostas para Sesimbra, que vão sendo atualizadas e discutidas. Os traçados e as localizações são indicativos.</p>
 <p class="sq-dados sq-sug-txt">Para sugerir alterações, abre o mapa em ecrã inteiro e usa “Sugerir no mapa”.</p>
 <p class="sq-dados sq-sug-mail">Para sugerir alterações, envia email para <a href="mailto:geral@henriquelonga.pt">geral@henriquelonga.pt</a>.</p>
 <p class="sq-dados">Dados do mapa abertos para descarregar: <a href="/programa-mapa/dados/programa-sesimbra.geojson" download>GeoJSON</a> e <a href="/programa-mapa/dados/programa-sesimbra.csv" download>CSV</a>.</p>

@@ -17,6 +17,7 @@ var ILU = (function () {
   function bicicleta(x, y, s) { return '<circle cx="' + x + '" cy="' + (y - 0.35 * s) + '" r="' + (0.33 * s) + '" fill="none" stroke="#1b1d22" stroke-width="' + (0.07 * s) + '"/>' + pessoa(x, y - 0.55 * s, s * 0.8, '#f2a33a'); }
   function guarda(x, y, s) { return '<line x1="' + (x - 0.6 * s) + '" y1="' + (y - 2.2 * s) + '" x2="' + x + '" y2="' + (y - 2.6 * s) + '" stroke="#e05a47" stroke-width="' + (0.5 * s) + '" stroke-linecap="round"/><line x1="' + x + '" y1="' + (y - 2.6 * s) + '" x2="' + (x + 0.6 * s) + '" y2="' + (y - 2.2 * s) + '" stroke="#f7c948" stroke-width="' + (0.5 * s) + '" stroke-linecap="round"/><line x1="' + x + '" y1="' + (y - 2.5 * s) + '" x2="' + x + '" y2="' + y + '" stroke="#6d5a43" stroke-width="' + (0.08 * s) + '"/>'; }
   var CORES_P = ['#3a6ea5', '#c0504d', '#7a5ca8', '#2e8b57', '#d98a1c', '#4a4f57'];
+  function cadeira(x, y, s, c) { return '<circle cx="' + x + '" cy="' + (y - 0.5 * s) + '" r="' + (0.5 * s) + '" fill="none" stroke="#2b3128" stroke-width="' + (0.07 * s) + '"/><circle cx="' + x + '" cy="' + (y - 1.38 * s) + '" r="' + (0.13 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.17 * s) + '" y="' + (y - 1.24 * s) + '" width="' + (0.32 * s) + '" height="' + (0.78 * s) + '" rx="' + (0.12 * s) + '" fill="' + c + '"/><rect x="' + (x - 0.05 * s) + '" y="' + (y - 0.58 * s) + '" width="' + (0.5 * s) + '" height="' + (0.14 * s) + '" rx="' + (0.06 * s) + '" fill="' + c + '"/>'; }
   function perfil(bandas, nome) {
     var W = 640, H = 250, chao = 205, total = bandas.reduce(function (a, b) { return a + b[1]; }, 0);
     var s = (W - 20) / total, x = 10, svg = '', etiquetas = '', n = 0, nomesUs = [], runs = [];
@@ -37,7 +38,7 @@ var ILU = (function () {
       else if (tipo === 'areia') { svg += guarda(x + w * 0.3, chao, s) + pessoa(x + w * 0.65, chao, s * 0.9, CORES_P[n++ % 6]); }
       else if (tipo === 'esplanada') { svg += guarda(x + w * 0.35, chao, s * 0.9) + pessoa(x + w * 0.7, chao, s * 0.85, CORES_P[n++ % 6]); }
       else if (tipo === 'esplanada0') svg += guarda(cx, chao, s * 0.9);   // só esplanada, sem gente: o passeio é tão estreito que não passa ninguém
-      else if (tipo === 'peoes') { for (var k = 0; k < 3; k++) svg += pessoa(x + w * (0.2 + k * 0.3), chao, s * (0.95 - k * 0.1), CORES_P[n++ % 6]); }
+      else if (tipo === 'peoes') { for (var k = 0; k < 3; k++) svg += (k === 1 ? cadeira : pessoa)(x + w * (0.2 + k * 0.3), chao, s * (0.95 - k * 0.1), CORES_P[n++ % 6]); }   // um dos peões vai de cadeira de rodas
       else if (tipo === 'passeio') svg += pessoa(cx, chao, s, CORES_P[n++ % 6]);
       if (w > 22 && nomesUs.indexOf(NOMES[tipo]) < 0) nomesUs.push(NOMES[tipo]);
       if (runs.length && runs[runs.length - 1].t === NOMES[tipo]) runs[runs.length - 1].w += w; else runs.push({ t: NOMES[tipo], x: x, w: w });
@@ -338,20 +339,22 @@ var ILU = (function () {
     var colC = document.querySelector('.sq-col-cartao'), alca = document.createElement('button'), ultimaAlt = null;
     alca.type = 'button'; alca.className = 'sq-alca'; alca.setAttribute('aria-label', 'Ajustar a altura dos cartões: arrasta, ou toca para esconder e mostrar'); alca.innerHTML = '<span aria-hidden="true"></span>';
     if (colC) colC.insertBefore(alca, colC.firstChild);
+    // altura mínima da folha: com o telemóvel em pé fica visível a alça e um pouco do cartão (não esconde mais, para não ficar junto da barra do telemóvel); de lado há mais folga, basta a alça
+    function minAlca() { return window.matchMedia && matchMedia('(orientation: portrait)').matches ? 84 : 46; }
     function altura(px) { corpo.style.setProperty('--cart', px == null ? '' : px + 'px'); }
     var arr = null;
     alca.addEventListener('pointerdown', function (e) { arr = { y: e.clientY, h: colC.getBoundingClientRect().height, mov: false }; alca.setPointerCapture(e.pointerId); });
     alca.addEventListener('pointermove', function (e) {
       if (!arr) return; var d = e.clientY - arr.y; if (Math.abs(d) > 5) arr.mov = true; if (!arr.mov) return;
-      altura(Math.max(46, Math.min(window.innerHeight - 110, arr.h - d))); map.invalidateSize();
+      altura(Math.max(minAlca(), Math.min(window.innerHeight - 110, arr.h - d))); map.invalidateSize();
     });
     function fim() {
       if (!arr) return; var m = arr.mov; arr = null;
-      if (!m) { var min = colC.getBoundingClientRect().height <= 60; if (min) altura(ultimaAlt); else { ultimaAlt = colC.getBoundingClientRect().height; altura(46); } }
+      if (!m) { var min = colC.getBoundingClientRect().height <= minAlca() + 14; if (min) altura(ultimaAlt); else { ultimaAlt = colC.getBoundingClientRect().height; altura(minAlca()); } }
       setTimeout(function () { map.invalidateSize(); }, 60);
     }
     alca.addEventListener('pointerup', fim); alca.addEventListener('pointercancel', fim);
-    alca.addEventListener('keydown', function (e) { if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); altura(Math.max(46, Math.min(window.innerHeight - 110, colC.getBoundingClientRect().height + (e.key === 'ArrowUp' ? 60 : -60)))); map.invalidateSize(); } });
+    alca.addEventListener('keydown', function (e) { if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); altura(Math.max(minAlca(), Math.min(window.innerHeight - 110, colC.getBoundingClientRect().height + (e.key === 'ArrowUp' ? 60 : -60)))); map.invalidateSize(); } });
     function cheio(on) {
       if (!on) { altura(null); ultimaAlt = null; }
       el.classList.toggle('sq-cheio', on); corpo.classList.toggle('sq-cheio-corpo', on); document.documentElement.classList.toggle('sq-trava', on);
@@ -443,6 +446,7 @@ var ILU = (function () {
     function lig(id) { uiOn[id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + id + '"]'); if (cx) cx.checked = true; }
     UI.forEach(function (u) { uiOn[u.id] = false; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = false; });
     if (z.id === 'espichel') { filtro = { solo: ['Ciclovia Zambujal–Cabo Espichel'] }; lig('ciclo'); return; }   // o Cabo mostra a ciclovia que lá chega
+    if (z.linhas) { filtro = { solo: z.linhas }; lig('ciclo'); return; }   // a zona mostra as linhas propostas que lhe pertencem (ex.: ciclovia da Mata)
     if (z.camada === 'natureza') { filtro = null; return; }   // áreas naturais: nada de camadas
     var solo = z.id === 'variante' ? [z.nome] : z.id === 'almocreves' ? ['Estrada dos Almocreves', 'Ciclovia da Estrada dos Almocreves'] : z.id === 'acessocoina' ? [z.nome] : null;   // mostram-se sozinhas
     if (solo) { filtro = { solo: solo }; lig('vias'); if (z.id === 'almocreves') lig('ciclo'); return; }
@@ -467,7 +471,8 @@ var ILU = (function () {
     visibilidade(); miniAtualizar(z, z.ilustracao);
     if (voar) {
       var bd = c.getBounds();
-      if (id === 'espichel') linhasObj.forEach(function (o) { if (o.l.nome === 'Ciclovia Zambujal–Cabo Espichel') bd = L.latLngBounds(bd.getSouthWest(), bd.getNorthEast()).extend(o.p.getBounds()); });   // inclui toda a ciclovia
+      var extra = id === 'espichel' ? ['Ciclovia Zambujal–Cabo Espichel'] : (z.linhas || []);
+      if (extra.length) linhasObj.forEach(function (o) { if (extra.indexOf(o.l.nome) >= 0) bd = L.latLngBounds(bd.getSouthWest(), bd.getNorthEast()).extend(o.p.getBounds()); });   // inclui toda a ciclovia
       if (z.vista) { if (SEMVOO) map.setView(z.vista.c, z.vista.z, { animate: false }); else map.flyTo(z.vista.c, z.vista.z, { duration: 0.6 }); }
       else {
         var sz = map.getSize(), pequeno = window.matchMedia && window.matchMedia('(max-width:979px)').matches;
@@ -707,5 +712,12 @@ var ILU = (function () {
     } };
   var mHash = /^#cartao-([\w-]+)$/.exec(decodeURIComponent(location.hash));   // ligação direta a um cartão (por exemplo, a prévia da página principal): /programa#cartao-vila
   cartao(null); visibilidade(); urlSync = true;
-  if (mHash && zonaDe(mHash[1])) setTimeout(function () { escolher(mHash[1], true); el.scrollIntoView({ behavior: 'auto', block: 'start' }); }, 120);
+  // ligação direta a um cartão: o Leaflet ignora o zoom enquanto a página ainda está a carregar (acontece no telemóvel), por isso tenta-se até o mapa realmente aproximar
+  if (mHash && zonaDe(mHash[1])) {
+    var aplica = function () { map.invalidateSize(); escolher(mHash[1], true); el.scrollIntoView({ behavior: 'auto', block: 'start' }); };
+    // no telemóvel há uma animação de zoom inicial que termina depois de a página carregar e desfaz a escolha: aplica-se de novo depois dela
+    var depois = function () { aplica(); setTimeout(aplica, 500); setTimeout(aplica, 1200); };
+    if (document.readyState === 'complete') setTimeout(depois, 300); else window.addEventListener('load', function () { setTimeout(depois, 300); });
+
+  }
 })();
