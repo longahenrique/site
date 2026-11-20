@@ -137,7 +137,7 @@ main:focus,.article:focus{outline:none}
 .share h2,.more-articles h2{margin:0 0 14px;font:800 22px/1.2 Archivo,"Helvetica Neue",Arial,sans-serif}
 .share ul{list-style:none;display:flex;flex-wrap:wrap;gap:10px;margin:0;padding:0}
 .share a,.share button{display:inline-block;padding:9px 16px;border:2px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);font:700 15px Archivo,"Helvetica Neue",Arial,sans-serif;text-decoration:none;cursor:pointer}
-html:not(.sem-rato) .share a:hover,html:not(.sem-rato) .share button:hover{background:var(--ink);color:var(--paper)}
+:where(html:not(.sem-rato)) .share a:hover,:where(html:not(.sem-rato)) .share button:hover{background:var(--ink);color:var(--paper)}
 .more-articles .articles{max-width:44em}
 .rss{margin:28px 0 0;font:600 16px Archivo,"Helvetica Neue",Arial,sans-serif}
 .rss a{text-underline-offset:5px}
@@ -499,7 +499,7 @@ gal_css="""
 .gal .gd{font-size:16px}
 .gal .gm,.gal .gc{color:var(--muted)}
 .gal .dl{align-self:flex-start;margin-top:10px;padding:9px 16px;border:2px solid var(--ink);border-radius:6px;font-weight:800;text-decoration:none}
-html:not(.sem-rato) .gal .dl:hover{background:var(--ink);color:var(--paper)}
+:where(html:not(.sem-rato)) .gal .dl:hover{background:var(--ink);color:var(--paper)}
 """
 GAL_BACK_JS=r'''<script>
 (function(){var a=document.getElementById("gal-back");if(!a)return;try{var r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname.replace(/\/$/,"")==="/imprensa"){a.href="/imprensa";a.textContent="← Imprensa"}}catch(e){}})();
@@ -656,7 +656,7 @@ h1+.press-sec{margin-top:0}
 .bio-short h3{margin:0 0 8px;font:800 18px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
 .bio-short p{margin:0 0 12px;font-size:20px;line-height:1.7}
 .copybtn{padding:9px 16px;border:2px solid var(--ink);border-radius:6px;background:transparent;color:var(--ink);font:700 15px Archivo,"Archivo Fallback",Arial,sans-serif;cursor:pointer}
-html:not(.sem-rato) .copybtn:hover{background:var(--ink);color:var(--paper)}
+:where(html:not(.sem-rato)) .copybtn:hover{background:var(--ink);color:var(--paper)}
 .press-btns{display:flex;flex-wrap:wrap;gap:12px;margin:14px 0 0}
 .press-btns .btn{margin:0}
 .article .articles{margin-top:6px}
