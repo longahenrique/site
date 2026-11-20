@@ -756,17 +756,40 @@ if os.path.isdir('gerador/programa'):
             return c
         _LOC=[(l['nome'],l['p']) for l in _D.get('localidades',[])]
         _EXC={'footway','steps','cycleway','path','track','bridleway','proposed','construction','service','corridor'}
-        _bb=[e['bounds'] for e in _jj.load(open('gerador/programa/limites.json',encoding='utf-8'))['elements'] if e.get('tags',{}).get('name')=='Sesimbra' and e['type']=='relation'][0]   # só ruas do concelho
+        # contorno do concelho de Sesimbra (anéis montados a partir dos troços 'outer' da relação), para não incluir ruas de concelhos vizinhos
+        _bb=[e['bounds'] for e in _jj.load(open('gerador/programa/limites.json',encoding='utf-8'))['elements'] if e.get('tags',{}).get('name')=='Sesimbra' and e['type']=='relation'][0]
+        _rel=[e for e in _jj.load(open('gerador/programa/limites.json',encoding='utf-8'))['elements'] if e.get('tags',{}).get('name')=='Sesimbra' and e['type']=='relation'][0]
+        _rest=[[(p['lat'],p['lon']) for p in m['geometry']] for m in _rel['members'] if m['role']=='outer' and m.get('geometry')]
+        _aneis=[]
+        while _rest:
+            _cur=_rest.pop(0)
+            while _cur[0]!=_cur[-1]:
+                for _i,_w in enumerate(_rest):
+                    if _w[0]==_cur[-1]: _cur=_cur+_w[1:]
+                    elif _w[-1]==_cur[-1]: _cur=_cur+_w[::-1][1:]
+                    elif _w[-1]==_cur[0]: _cur=_w+_cur[1:]
+                    elif _w[0]==_cur[0]: _cur=_w[::-1]+_cur[1:]
+                    else: continue
+                    _rest.pop(_i); break
+                else: break
+            _aneis.append(_cur)
+        def _noConcelho(la,lo): return any(_dentro(la,lo,a) for a in _aneis)
         _porNome={}
         for _e in _R.get('elements',[]):
             _t=_e.get('tags',{}); _g=_e.get('geometry')
             if not _t.get('name') or not _t.get('highway') or _t['highway'] in _EXC or not _g: continue
             _m=_g[len(_g)//2]
-            if not (_bb['minlat']<=_m['lat']<=_bb['maxlat'] and _bb['minlon']<=_m['lon']<=_bb['maxlon']): continue
-            _porNome.setdefault(_t['name'],[]).append(_g)
+            if not (_bb['minlat']-0.002<=_m['lat']<=_bb['maxlat']+0.002 and _bb['minlon']-0.002<=_m['lon']<=_bb['maxlon']+0.002) and not any(_bb['minlat']<=p['lat']<=_bb['maxlat'] and _bb['minlon']<=p['lon']<=_bb['maxlon'] for p in _g[::3]): continue
+            # entra se qualquer parte da rua estiver dentro do concelho; o ponto escolhido é um ponto dentro dele
+            _rep=None
+            for _p in [_m,_g[0],_g[-1]]+_g[::2]:
+                if _bb['minlat']<=_p['lat']<=_bb['maxlat'] and _bb['minlon']<=_p['lon']<=_bb['maxlon'] and _noConcelho(_p['lat'],_p['lon']): _rep=_p; break
+            if not _rep: continue
+            _porNome.setdefault(_t['name'],[]).append((_g,_rep))
         # troços do mesmo nome que se tocam (a menos de ~300 m) são a mesma rua: uma só entrada
         _gr={}
         for _n,_ways in _porNome.items():
+            _reps=[r for _,r in _ways]; _ways=[g for g,_ in _ways]
             _pai=list(range(len(_ways)))
             def _f(x):
                 while _pai[x]!=x: _pai[x]=_pai[_pai[x]]; x=_pai[x]
@@ -781,12 +804,12 @@ if os.path.isdir('gerador/programa'):
                                 _pai[_f(_i)]=_f(_k)
                     _cel.setdefault(_c,set()).add(_i)
             _cl={}
-            for _i,_w in enumerate(_ways): _cl.setdefault(_f(_i),[]).append(_w)
+            for _i,_w in enumerate(_ways): _cl.setdefault(_f(_i),[]).append((_w,_reps[_i]))
             for _k,_ws in _cl.items():
-                _pts=[p for w in _ws for p in w]
+                _pts=[r for _,r in _ws]; _tam=sum(len(w) for w,_ in _ws)
                 _cla=sum(p['lat'] for p in _pts)/len(_pts); _clo=sum(p['lon'] for p in _pts)/len(_pts)
                 _m=min(_pts,key=lambda p:(p['lat']-_cla)**2+(p['lon']-_clo)**2)   # ponto da rua mais perto do centro
-                _gr[(_n,_k)]=(len(_pts),_m['lat'],_m['lon'])
+                _gr[(_n,_k)]=(_tam,_m['lat'],_m['lon'])
         _out=[]
         _out_t=[]
         for (_n,_k2),(_ln,_la,_lo) in sorted(_gr.items(),key=lambda kv:-kv[1][0]):
