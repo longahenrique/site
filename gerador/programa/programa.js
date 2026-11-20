@@ -244,10 +244,15 @@ var ILU = (function () {
   (DADOS.pontos || []).concat(DADOS.manuais || []).forEach(function (p) {
     var c = catPorId[p.cat]; if (!c) return;
     var prop = p.cat === 'obra', ct = (prop && p.tipo && catPorId[p.tipo]) || c;   // o proposto mostra o símbolo do que vai ser, com anel tracejado e selo "+"
-    var glifo = p.icone === 'estacionar' ? P24('<path d="M9 18V6h4a3.5 3.5 0 0 1 0 7H9" stroke-width="2.6"/>') : ct.svg;
+    var ICONES = {   // símbolos especiais, para exceções às categorias (campo "icone" do ponto)
+      estacionar: P24('<path d="M9 18V6h4a3.5 3.5 0 0 1 0 7H9" stroke-width="2.6"/>'),
+      'painel-solar': P24('<path d="M5 15 8 6h12l-3 9z"/><path d="M6.5 10.5h12M14 6l-3 9M11 15v4M8 19h6"/>')
+    };
+    var glifo = ICONES[p.icone] || ct.svg;
+    var corFundo = p.cor || (prop ? ct.cor : c.cor), claro = /^#[0-9a-f]{6}$/i.test(corFundo) && (parseInt(corFundo.slice(1, 3), 16) * 299 + parseInt(corFundo.slice(3, 5), 16) * 587 + parseInt(corFundo.slice(5, 7), 16) * 114) / 1000 > 160, estiloGlifo = claro ? 'color:#141414;' : '';   // fundo claro (amarelo, por exemplo): símbolo escuro, para ler bem
     var ic = prop
-      ? L.divIcon({ className: 'sq-ico', html: '<div class="sq-prop"><div class="b" style="background:' + (p.cor || ct.cor) + '">' + glifo + '</div><i aria-hidden="true">+</i></div>', iconSize: [32, 32], iconAnchor: [16, 16] })
-      : L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="background:' + (p.cor || c.cor) + '">' + glifo + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
+      ? L.divIcon({ className: 'sq-ico', html: '<div class="sq-prop"><div class="b" style="' + estiloGlifo + 'background:' + corFundo + '">' + glifo + '</div><i aria-hidden="true">+</i></div>', iconSize: [32, 32], iconAnchor: [16, 16] })
+      : L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="' + estiloGlifo + 'background:' + corFundo + '">' + glifo + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false, zIndexOffset: prop ? 500 : 0 });
     m.bindTooltip(esc(p.nome), { direction: 'top', offset: [0, prop ? -17 : -12], permanent: false, className: 'sq-nome-ponto' });
     m.bindPopup('<b>' + esc(p.nome) + '</b>' + (p.cat === 'estacionamento' ? '' : '<br>' + esc(p.etiqueta || c.nome)), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
