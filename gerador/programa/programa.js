@@ -522,6 +522,18 @@ var ILU = (function () {
     function norm(t) { return String(t || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase(); }
     var IDX = [];
     function add(grupo, tipo, titulo, extra, acao) { IDX.push({ g: grupo, tipo: tipo, t: titulo, n: norm(titulo), x: norm(extra || ''), a: acao }); }
+    function zonaDoPonto(pt) {   // localidade com cartão que contém este ponto
+      var la = pt[0], lo = pt[1], achada = '';
+      DADOS.zonas.forEach(function (z) {
+        if (achada || z.camada !== 'bairros' || !z.limite) return;
+        z.limite.forEach(function (an) {
+          if (achada) return; var c = false, j = an.length - 1;
+          for (var i = 0; i < an.length; j = i++) { var yi = an[i][0], xi = an[i][1], yj = an[j][0], xj = an[j][1]; if ((xi > lo) !== (xj > lo) && la < (yj - yi) * (lo - xi) / (xj - xi) + yi) c = !c; }
+          if (c) achada = z.id;
+        });
+      });
+      return achada;
+    }
     DADOS.zonas.forEach(function (z) {
       var tipo = z.etiqueta || nomeCamada[z.camada] || 'Zona';
       add(0, tipo, z.nome, z.frase, function () { escolher(z.id, true); });
@@ -530,8 +542,11 @@ var ILU = (function () {
     rotPontos.forEach(function (r) {
       var c = catPorId[r.cat];
       add(r.cat === 'obra' ? 2 : 3, r.cat === 'obra' ? 'Proposta de serviço' + (r.local ? ' em ' + r.local : '') : (c ? c.nome : 'Local'), r.nome, r.texto, function () {
+        // um local (já existente ou proposta) dentro de uma localidade com cartão: abre o cartão (com as propostas à volta) e aproxima o mapa a esse local
+        var zid = zonaDoPonto(r.p); if (zid) escolher(zid, false);
         if (r.cat === 'obra') definir('obra', true);
         forcado = r.m; var g = gPontos[r.cat]; if (!g.hasLayer(r.m)) g.addLayer(r.m);
+        visibilidade();
         var abrir = function () { r.m.openPopup(); };
         if (SEMVOO) { map.setView(r.p, 16, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(r.p, 16, { duration: 0.6 }); }
       });
