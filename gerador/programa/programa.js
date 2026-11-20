@@ -546,7 +546,7 @@ var ILU = (function () {
     });
     rotPontos.forEach(function (r) {
       var c = catPorId[r.cat];
-      add(r.cat === 'obra' ? 2 : 3, r.cat === 'obra' ? 'Proposta de serviço' + (r.local ? ' em ' + r.local : '') : (c ? c.nome : 'Local'), r.nome, r.texto, function () {
+      add(r.cat === 'obra' ? 2 : 3, r.cat === 'obra' ? 'Proposta de serviço' + (r.local ? ' em ' + r.local : '') : (c ? c.nome : 'Local'), r.nome, (r.texto || '') + (r.local ? ' ' + r.local : ''), function () {
         // um local (já existente ou proposta) dentro de uma localidade com cartão: abre o cartão (com as propostas à volta) e aproxima o mapa a esse local
         var zid = zonaDoPonto(r.p); if (zid) escolher(zid, false);
         if (r.cat === 'obra') definir('obra', true);
@@ -555,6 +555,7 @@ var ILU = (function () {
         var abrir = function () { r.m.openPopup(); };
         if (SEMVOO) { map.setView(r.p, 16, { animate: false }); abrir(); } else { map.once('moveend', abrir); map.flyTo(r.p, 16, { duration: 0.6 }); }
       });
+      if (r.cat === 'obra' && r.local) IDX[IDX.length - 1].s = r.local;   // propostas com o mesmo nome distinguem-se pelo local
     });
     linhasObj.forEach(function (o) {
       var uiId = o.l.camada === 'ativos' ? 'ciclo' : o.l.nome === 'Faixa BUS' ? 'faixa' : (o.l.camada === 'autocarro' || o.l.nome === 'Linha Azul') ? 'bus' : 'vias';
@@ -645,16 +646,20 @@ var ILU = (function () {
     function escolhe(i) { var r = res[i]; if (!r) return; fechar(); inp.value = ''; filtro = null; r.a(); nlive.textContent = r.t + ': aberto no mapa.'; }
     function procurar() {
       var q = norm(inp.value).trim(); if (q.length < 2) { res = []; fechar(); nlive.textContent = ''; return; }
-      var tk = q.split(/\s+/);
+      var tk = q.replace(/[.,]/g, ' ').trim().split(/\s+/);
+      // abreviaturas: "D. Manuel" encontra "Dom Manuel", "Av." encontra "Avenida", etc. (aplica-se ao que se escreve e ao que está no mapa)
+      var AB = { d: ['dom', 'dona'], dr: ['doutor'], dra: ['doutora'], av: ['avenida'], r: ['rua'], tv: ['travessa'], lg: ['largo'], pc: ['praca'], pr: ['praca'], est: ['estrada'], sr: ['senhor'], sra: ['senhora'], sta: ['santa'], sto: ['santo'], s: ['sao'], eng: ['engenheiro'], prof: ['professor'], gen: ['general'], cap: ['capitao'], pe: ['padre'] };
+      var expande = function (t) { var w = t.replace(/[.,]/g, ' ').split(/\s+/); return w.map(function (x) { return AB[x] ? x + ' ' + AB[x].join(' ') : x; }).join(' '); };
+      var casa = function (t, h) { return AB[t] ? AB[t].concat([t]).some(function (a) { return (' ' + h).indexOf(' ' + a) >= 0; }) : h.indexOf(t) >= 0; };
       res = IDX.map(function (it) {
-        var h = it.n + ' ' + it.x; if (!tk.every(function (t) { return h.indexOf(t) >= 0; })) return null;
-        var sc = it.n.indexOf(q) === 0 ? 0 : it.n.indexOf(q) > 0 ? 1 : tk.every(function (t) { return it.n.indexOf(t) >= 0; }) ? 2 : 3;
+        var hn = expande(it.n), h = hn + ' ' + it.x; if (!tk.every(function (t) { return casa(t, h); })) return null;
+        var sc = it.n.indexOf(q) === 0 ? 0 : it.n.indexOf(q) > 0 ? 1 : tk.every(function (t) { return casa(t, hn); }) ? 2 : 3;
         return { it: it, sc: sc };
       }).filter(Boolean).sort(function (a, b) { return (a.sc > 2) - (b.sc > 2) || a.it.g - b.it.g || a.sc - b.sc || a.it.n.length - b.it.n.length; }).slice(0, 10).map(function (r) { return r.it; });
       var h = '', ult = -1;
       res.forEach(function (r, i) {
         if (r.g !== ult) { h += '<li role="presentation" class="grp">' + GRUPOS[r.g] + '</li>'; ult = r.g; }
-        h += '<li role="option" id="sq-res-' + i + '" aria-selected="false" data-i="' + i + '"><span class="t">' + esc(r.t.length > 90 ? r.t.slice(0, 88) + '…' : r.t) + '</span></li>';
+        h += '<li role="option" id="sq-res-' + i + '" aria-selected="false" data-i="' + i + '"><span class="t">' + esc(r.t.length > 90 ? r.t.slice(0, 88) + '…' : r.t) + '</span>' + (r.s ? '<span class="d"> · ' + esc(r.s) + '</span>' : '') + '</li>';
       });
       lista.innerHTML = h || '<li role="presentation" class="vazio">Nada encontrado. Experimenta outra palavra.</li>';
       lista.hidden = false; inp.setAttribute('aria-expanded', 'true'); ativo = -1;
