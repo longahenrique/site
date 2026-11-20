@@ -854,6 +854,11 @@ if os.path.isdir('gerador/programa'):
     _o=_io.StringIO(); _w=_csv.writer(_o,lineterminator='\n'); _w.writerow(['tipo','categoria','nome','descricao','latitude','longitude']); _w.writerows(_rows)
     open('_site/programa-mapa/dados/programa-sesimbra.csv','w',encoding='utf-8-sig',newline='').write(_o.getvalue())
     open('_site/programa.html','w',encoding='utf-8').write(prog_page())
+    # página de teste do mapa (fora do menu e do sitemap)
+    os.makedirs('_site/teste-mapa',exist_ok=True)
+    for _f in ('programa-sesimbra-livre.geojson','programa-sesimbra-livre.csv'):
+        shutil.copy('gerador/teste-mapa/'+_f,'_site/teste-mapa/'+_f)
+    shutil.copy('gerador/teste-mapa/pagina.html','_site/teste-mapa.html')
 urls=['/','/biografia','/programa','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
 def _sm(u):
     img=''.join('<image:image><image:loc>%s/fotos/%s</image:loc></image:image>'%(SITE,ph['file']) for ph in PHOTOS) if u=='/galeria' else ''

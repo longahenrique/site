@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Teste do mapa · Programa para Sesimbra</title>
+<link rel="stylesheet" href="/programa-mapa/leaflet.css">
+<style>
+:root{--ink:#141414;--bg:#fff;--line:#d9d9d9}
+@media(prefers-color-scheme:dark){:root{--ink:#f2f2f2;--bg:#161616;--line:#3a3a3a}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font:16px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:var(--ink);background:var(--bg);display:flex;flex-direction:column}
+header{padding:10px 16px;border-bottom:1px solid var(--line)}
+h1{font-size:1.1rem;margin:0}
+header p{margin:2px 0 0;font-size:.9rem;opacity:.8}
+header a{color:inherit}
+#corpo{flex:1;display:flex;min-height:0}
+#mapa{flex:1;min-height:320px}
+aside{width:290px;overflow:auto;padding:12px 16px;border-left:1px solid var(--line)}
+aside h2{font-size:.95rem;margin:14px 0 6px}aside h2:first-child{margin-top:0}
+label{display:flex;gap:8px;align-items:center;margin:4px 0;cursor:pointer}
+.sw{width:14px;height:14px;border-radius:50%;border:2px solid #141414;flex:none}
+.leaflet-popup-content{color:#141414;font-size:14px;line-height:1.4}
+.leaflet-popup-content .t{font-weight:700}
+.leaflet-popup-content .k{opacity:.7;font-size:12px;margin-bottom:4px}
+.leaflet-popup-content .v{margin-top:6px;font-size:13px}
+@media(max-width:720px){#corpo{flex-direction:column}aside{width:auto;max-height:36%;border-left:0;border-top:1px solid var(--line)}}
+</style>
+</head>
+<body>
+<header>
+<h1>Teste do mapa</h1>
+<p>Programa para Sesimbra, revisão LIVRE. Página de teste, fora do site principal. Dados: <a href="/teste-mapa/programa-sesimbra-livre.geojson">GeoJSON</a> · <a href="/teste-mapa/programa-sesimbra-livre.csv">CSV</a>.</p>
+</header>
+<div id="corpo">
+<div id="mapa" role="application" aria-label="Mapa do programa para Sesimbra"></div>
+<aside id="leg" aria-label="Filtros"></aside>
+</div>
+<script src="/programa-mapa/leaflet.js"></script>
+<script>
+(function(){
+var COR={'existente':'#6b7280','em curso':'#d98a1c','proposta':'#d6246e','proposta alterada':'#7a3fd1','proposta LIVRE':'#2f8f5b'};
+var map=L.map('mapa',{zoomControl:true}).setView([38.49,-9.1],11);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
+function esc(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+var grupos={},contagem={};
+function pop(p){return '<div class="t">'+esc(p.nome)+'</div><div class="k">'+esc(p.tipo)+' · '+esc(p.categoria)+'</div>'+(p.descricao?'<div>'+esc(p.descricao)+'</div>':'')+(p.viabilidade?'<div class="v"><b>Viabilidade:</b> '+esc(p.viabilidade)+'</div>':'')+(p.analise?'<div class="v">'+esc(p.analise)+'</div>':'')}
+fetch('/teste-mapa/programa-sesimbra-livre.geojson').then(function(r){return r.json()}).then(function(g){
+ g.features.forEach(function(f){var t=f.properties.tipo,c=COR[t]||'#555';(grupos[t]=grupos[t]||L.layerGroup()).addLayer(
+  L.geoJSON(f,{pointToLayer:function(ft,ll){return L.circleMarker(ll,{radius:t==='existente'?5:8,color:'#141414',weight:1.5,fillColor:c,fillOpacity:t==='existente'?.8:1})},style:function(){return {color:c,weight:4,opacity:.9,fillOpacity:.15,dashArray:f.geometry.type==='LineString'?'2 7':null}}}).bindPopup(pop(f.properties),{maxWidth:300}));contagem[t]=(contagem[t]||0)+1});
+ var h='<h2>O que mostrar</h2>';
+ Object.keys(COR).forEach(function(t){if(!grupos[t])return;grupos[t].addTo(map);h+='<label><input type="checkbox" checked data-t="'+esc(t)+'"><span class="sw" style="background:'+COR[t]+'"></span>'+esc(t)+' ('+contagem[t]+')</label>'});
+ document.getElementById('leg').innerHTML=h;
+ document.getElementById('leg').addEventListener('change',function(e){var t=e.target.getAttribute('data-t');if(!t)return;if(e.target.checked)grupos[t].addTo(map);else map.removeLayer(grupos[t])});
+ var b=L.geoJSON(g).getBounds();if(b.isValid())map.fitBounds(b,{padding:[20,20]});
+});
+})();
+</script>
+</body>
+</html>

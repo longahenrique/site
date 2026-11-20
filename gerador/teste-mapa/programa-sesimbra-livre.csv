@@ -1,0 +1,211 @@
+tipo,categoria,nome,descricao,viabilidade,analise,geometria,latitude,longitude
+existente,"Biblioteca, auditório, cultura",Cine-Teatro João Mota,,,,Point,38.44513,-9.1008
+existente,Escola,Escola das Pedreiras (Antiga),,,,Point,38.46226,-9.07756
+existente,"Biblioteca, auditório, cultura",Auditório Conde Ferreira,,,,Point,38.44411,-9.10134
+existente,Mercado e supermercado,Pingo Doce,,,,Point,38.46459,-9.09745
+existente,Serviços públicos,Loja CTT Santana (Sesimbra),,,,Point,38.46095,-9.10417
+existente,Desporto,Estádio da ACRUTZ,,,,Point,38.45083,-9.11761
+existente,Serviços públicos,Junta de Freguesia de Santiago,,,,Point,38.44309,-9.10205
+existente,Mercado e supermercado,Meu Super,,,,Point,38.44401,-9.10295
+existente,Escola,Escola Profissional Agostinho Roseta,,,,Point,38.4595,-9.10658
+existente,Parque ou jardim,Parque Ecológico da Várzea da Quinta do Conde,,,,Point,38.56768,-9.03403
+existente,Polícia,GNR - Posto Territorial de Alfarim,,,,Point,38.47418,-9.15487
+existente,Igreja ou capela,Igreja Evangélica,,,,Point,38.5571,-9.04212
+existente,Serviços públicos,Junta de Freguesia do Castelo,,,,Point,38.46046,-9.10487
+existente,Escola,Universidade Sénior de Rotary Sesimbra,,,,Point,38.4638,-9.10003
+existente,Serviços públicos,CTT Distribuição,,,,Point,38.46284,-9.10796
+existente,Serviços públicos,Junta de Freguesia do Castelo - Serviços Urbanos,,,,Point,38.45744,-9.12516
+existente,Escola,Nautilus Escola de Mergulho,,,,Point,38.43782,-9.11558
+existente,"Biblioteca, auditório, cultura",Centro Cultural Costeiro Sesimbra,,,,Point,38.44387,-9.1012
+existente,Serviços públicos,Balcão Único de Serviços (Cotovia),,,,Point,38.46759,-9.10001
+existente,Mercado e supermercado,Pingo Doce,,,,Point,38.4434,-9.10559
+existente,Igreja ou capela,Igreja Evangélica Acção Biblica,,,,Point,38.44873,-9.10236
+existente,Igreja ou capela,Igreja de Nossa Senhora do Cabo,,,,Point,38.4201,-9.21557
+existente,Mercado e supermercado,Continente Modelo,,,,Point,38.56289,-9.03694
+existente,Polícia,Polícia Marítima de Sesimbra,,,,Point,38.4401,-9.11039
+existente,Bombeiros,Bombeiros Voluntários de Sesimbra,,,,Point,38.44634,-9.10217
+existente,Desporto,Pavilhão Gimno Desportivo do Grupo Desportivo de Sesimbra,,,,Point,38.44692,-9.10044
+existente,"Biblioteca, auditório, cultura",Biblioteca Municipal,,,,Point,38.44508,-9.10062
+existente,Escola,Escola Básica Navegador Rodrigues Soromenho,,,,Point,38.44863,-9.10379
+existente,Estação ou terminal,Terminal Rodoviário de Sesimbra,,,,Point,38.44589,-9.09978
+existente,Igreja ou capela,Igreja de Santiago,,,,Point,38.44462,-9.10232
+existente,Igreja ou capela,Capela de São Sebastião,,,,Point,38.44544,-9.10253
+existente,Mercado e supermercado,Mercado Municipal de Sesimbra,,,,Point,38.44342,-9.10011
+existente,Igreja ou capela,Capela Mortuária,,,,Point,38.4583,-9.10669
+existente,Igreja ou capela,Igreja da Corredoura,,,,Point,38.45829,-9.10645
+existente,Igreja ou capela,Capela da Misericórdia,,,,Point,38.44426,-9.10062
+existente,Escola,Escola Básica de Sesimbra,,,,Point,38.44566,-9.10056
+existente,Serviços públicos,Câmara Municipal de Sesimbra,,,,Point,38.44374,-9.09982
+existente,Parque ou jardim,Parque Augusto Pólvora,,,,Point,38.4726,-9.08557
+existente,Escola,Colégio Educa a Brincar,,,,Point,38.47498,-9.09011
+existente,Escola,Escola Básica n.º 3 da Quinta do Conde,,,,Point,38.57259,-9.04967
+existente,Escola,Escola Básica Pinhal do General,,,,Point,38.56283,-9.05379
+existente,Mercado e supermercado,Pingo Doce,,,,Point,38.5653,-9.03786
+existente,Mercado e supermercado,Pingo Doce,,,,Point,38.5743,-9.0373
+existente,Mercado e supermercado,Lidl,,,,Point,38.56614,-9.0382
+existente,Mercado e supermercado,Mercado Municipal da Quinta do Conde,,,,Point,38.55839,-9.04588
+existente,Parque ou jardim,Parque dos Sobreiros,,,,Point,38.47279,-9.10615
+existente,Mercado e supermercado,Continente Modelo,,,,Point,38.48158,-9.10471
+existente,Mercado e supermercado,Lidl,,,,Point,38.48496,-9.10414
+existente,Igreja ou capela,Igreja de Alfarim,,,,Point,38.47697,-9.16049
+existente,Escola,Escola Básica de Alfarim,,,,Point,38.47509,-9.15579
+existente,Parque ou jardim,Parque dos Pecaninos,,,,Point,38.48119,-9.09955
+existente,Parque ou jardim,Sesimbra Natura Park,,,,Point,38.52756,-9.08485
+existente,Serviços públicos,CTT,,,,Point,38.56944,-9.0384
+existente,Escola,Escola Básica e Secundária Michel Giacometti,,,,Point,38.56905,-9.04084
+existente,Escola,Escola Básica Maria do Carmo Serrote,,,,Point,38.56073,-9.04536
+existente,Parque ou jardim,Parque da Ribeira,,,,Point,38.57387,-9.03581
+existente,Parque ou jardim,Parque da Vila,,,,Point,38.56545,-9.03677
+existente,Escola,Escola Básica do Castelo,,,,Point,38.47412,-9.09234
+existente,Escola,Escola Secundária de Sampaio,,,,Point,38.47264,-9.0946
+existente,Mercado e supermercado,Pingo Doce,,,,Point,38.48902,-9.10639
+existente,Polícia,GNR - Posto Territorial de Sesimbra,,,,Point,38.44455,-9.11025
+existente,Desporto,Complexo Desportivo Municipal da Maçã,,,,Point,38.47125,-9.07465
+existente,Desporto,Campo de Futebol da Maçã,,,,Point,38.47105,-9.0745
+existente,Desporto,Piscinas Grupo Desportivo de Sesimbra,,,,Point,38.44724,-9.10043
+existente,Mercado e supermercado,Aldi,,,,Point,38.46497,-9.09836
+existente,Desporto,Pavilhão Gimnodesportivo Municipal de Sampaio,,,,Point,38.47507,-9.09286
+existente,Escola,Escola Básica da Boa Água,,,,Point,38.55468,-9.0505
+existente,Igreja ou capela,Igreja de Nossa Senhora do Castelo,,,,Point,38.45145,-9.10764
+existente,Polícia,GNR - Posto Territorial da Quinta do Conde,,,,Point,38.57809,-9.04041
+existente,Parque ou jardim,Parque de Merendas João David,,,,Point,38.45461,-9.10592
+existente,Desporto,Estádio Multiusos de Areia da Quinta do Conde,,,,Point,38.55347,-9.05678
+existente,Parque ou jardim,Entre Mar e Mar,,,,Point,38.44956,-9.18883
+existente,Escola,Escola Básica n.º 1 do Zambujal,,,,Point,38.45242,-9.12799
+existente,Parque ou jardim,Jardim de Sesimbra,,,,Point,38.44413,-9.10085
+existente,Parque ou jardim,Parque 25 de Abril,,,,Point,38.45912,-9.10627
+existente,Serviços públicos,Junta de Freguesia da Quinta do Conde,,,,Point,38.56568,-9.04183
+existente,Mercado e supermercado,Mercado Municipal,,,,Point,38.49425,-9.16117
+existente,Mercado e supermercado,Intermarché,,,,Point,38.46418,-9.09866
+existente,Igreja ou capela,Igreja da Quinta do Conde,,,,Point,38.56521,-9.05235
+existente,Escola,Escola Básica de Sampaio,,,,Point,38.47473,-9.09146
+existente,Igreja ou capela,Ermida da Memória,,,,Point,38.42073,-9.21632
+existente,Bombeiros,Bombeiros Voluntários de Sesimbra - Destacamento da Quinta do Conde,,,,Point,38.56767,-9.05318
+existente,Escola,Escola Básica da Cotovia,,,,Point,38.47066,-9.10191
+existente,Escola,Escola Básica n.º 2 da Quinta do Conde,,,,Point,38.55283,-9.04919
+existente,Escola,Escola Básica nº 2,,,,Point,38.56132,-9.03794
+existente,Igreja ou capela,Igreja Paroquial de Nossa Senhora da Boa Água,,,,Point,38.55526,-9.04453
+existente,Mercado e supermercado,Aldi,,,,Point,38.56153,-9.07672
+existente,Parque ou jardim,Parque de Merendas,,,,Point,38.48895,-9.10711
+existente,Igreja ou capela,Igreja de São Pedro,,,,Point,38.49707,-9.17087
+existente,Parque ou jardim,Parque da Amizade,,,,Point,38.50003,-9.16967
+existente,Escola,Escola Básica de Aiana de Cima,,,,Point,38.47416,-9.14107
+existente,Escola,Escola Básica de Aldeia do Meco,,,,Point,38.47114,-9.16977
+existente,Escola,"Escola Básica de Azoia, Sesimbra",,,,Point,38.43013,-9.18951
+existente,Escola,Escola Básica do Casal do Sapo,,,,Point,38.55347,-9.08139
+existente,Parque ou jardim,Parque da Vila Amália,,,,Point,38.44696,-9.10108
+existente,Escola,Apis - Escola Waldorf Sesimbra,,,,Point,38.47208,-9.10991
+existente,Desporto,Campo de Jogos,,,,Point,38.44305,-9.10804
+existente,Igreja ou capela,Igreja Paroquial de Nossa Senhora da Esperança,,,,Point,38.57748,-9.04536
+existente,Saúde,UCSP Quinta do Conde,No mesmo local: USF Conde Saúde; URAP Arrábida - Polo Quinta do Conde,,,Point,38.55798,-9.04699
+existente,Saúde,USF Castelo,,,,Point,38.46109,-9.10509
+existente,Saúde,Unidade de Saúde Familiar (USF) de Sesimbra,,,,Point,38.44374,-9.0966
+existente,"Biblioteca, auditório, cultura",Espaço Multiusos,,,,Point,38.47191,-9.08682
+existente,Apoio social e comunitário,Centro Comunitário da Quinta do Conde,,,,Point,38.56167,-9.04657
+existente,Apoio social e comunitário,ABAS - Centro de Convívio,,,,Point,38.44272,-9.0971
+existente,Apoio social e comunitário,Cotovia Sénior,,,,Point,38.48831,-9.11128
+existente,Apoio social e comunitário,Cercizimbra,,,,Point,38.4727,-9.0907
+existente,Apoio social e comunitário,APPDA Quinta do Conde,,,,Point,38.56636,-9.03937
+existente,Apoio social e comunitário,CPCJ Sesimbra,,,,Point,38.47242,-9.0896
+existente,Apoio social e comunitário,Lar Costa Azul,,,,Point,38.48731,-9.10473
+existente,Apoio social e comunitário,Residência Sénior Egas Moniz,,,,Point,38.47155,-9.08862
+existente,Apoio social e comunitário,As Tias,,,,Point,38.46906,-9.10605
+existente,Apoio social e comunitário,C.A.S.C.U.Z.,,,,Point,38.45132,-9.12907
+existente,Apoio social e comunitário,Centro de Estudos Culturais e de Acção Social Raio de Luz,,,,Point,38.47234,-9.08969
+existente,Apoio social e comunitário,Sociedade Santanense de Instrução e Recreio,,,,Point,38.46213,-9.10242
+existente,Serviços públicos,Balcão Único de Serviços (Quinta do Conde),,,,Point,38.55858,-9.04565
+existente,Serviços públicos,Balcão Único de Serviços (Alfarim),,,,Point,38.4801,-9.1602
+existente,Farmácia,Farmácia Sofárida Sesimbra,,,,Point,38.44351,-9.10027
+existente,Farmácia,Farmácia Sofárida Santana,,,,Point,38.46123,-9.10339
+existente,Farmácia,Farmácia da Cotovia,,,,Point,38.47017,-9.10061
+existente,Farmácia,Farmácia Quinta do Conde,,,,Point,38.55675,-9.04651
+existente,Farmácia,Farmácia Liz,,,,Point,38.47303,-9.15427
+existente,Farmácia,Bio Latina,,,,Point,38.56446,-9.05236
+existente,Farmácia,Farmácia,,,,Point,38.57182,-9.0381
+existente,Estacionamento,Estacionamento Estádio da Vila Amália,,,,Point,38.44736,-9.09978
+existente,Farmácia,Farmácia Sofárida Quinta do Conde,,,,Point,38.56445,-9.03728
+existente,Estacionamento,Estacionamento - Parque Amarelo,,,,Point,38.48882,-9.18092
+existente,Estacionamento,Estacionamento - Parque do Avô,,,,Point,38.48805,-9.18165
+existente,Estacionamento,Estacionamento - Parque das Videiras,,,,Point,38.48719,-9.18079
+existente,Estacionamento,Estacionamento,,,,Point,38.44349,-9.09686
+existente,Estacionamento,Estacionamento - Lagoa de Albufeira,,,,Point,38.50743,-9.17828
+existente,Estacionamento,Estacionamento,,,,Point,38.5638,-9.03691
+existente,Estacionamento,Estacionamento,,,,Point,38.57368,-9.03719
+existente,Estacionamento,Estacionamento,,,,Point,38.55879,-9.04592
+existente,Estacionamento,Estacionamento,,,,Point,38.41967,-9.21344
+existente,Estacionamento,Estacionamento,,,,Point,38.47154,-9.12834
+existente,Estacionamento,Estacionamento Fertagus - Coina,,,,Point,38.58541,-9.05088
+existente,Estacionamento,Estacionamento Fertagus - Fogueteiro,,,,Point,38.60992,-9.10115
+existente,Estacionamento,Estacionamento Empark - Heliodoro Salgado,,,,Point,38.44235,-9.09624
+existente,Estacionamento,Estacionamento Telpark - Praia do Ouro,,,,Point,38.44329,-9.10546
+existente,Estacionamento,Estacionamento,,,,Point,38.45256,-9.199
+existente,Estacionamento,Estacionamento - Castelo,,,,Point,38.45116,-9.10835
+existente,Estacionamento,Estacionamento,,,,Point,38.4493,-9.10057
+existente,Estacionamento,Estacionamento - Terminal,,,,Point,38.44614,-9.09986
+existente,Estacionamento,Estacionamento - Infante,,,,Point,38.44401,-9.10551
+existente,Estacionamento,Estacionamento - Palames,,,,Point,38.44351,-9.10993
+existente,Estacionamento,Estacionamento - Doca Pesca,,,,Point,38.44128,-9.1129
+existente,Estacionamento,Estacionamento - Porto de Abrigo,,,,Point,38.4365,-9.11572
+existente,Estacionamento,Estacionamento Telpark - Praia da Califórnia,,,,Point,38.44284,-9.0954
+existente,Estacionamento,Estacionamento,,,,Point,38.56598,-9.03792
+existente,Estacionamento,Estacionamento,,,,Point,38.56495,-9.03778
+existente,Estacionamento,Estacionamento - Moagem,,,,Point,38.46514,-9.09794
+existente,"Biblioteca, auditório, cultura",Moagem de Sampaio,,,,Point,38.46629,-9.097
+existente,"Biblioteca, auditório, cultura",Polo de Leitura,,,,Point,38.56518,-9.03738
+em curso,Proposta no mapa,Biblioteca Municipal da Quinta do Conde,,em curso,"Já em construção pela Câmara junto ao recinto da Feira Festa (boletim municipal, jan. 2025). Papel do LIVRE: acompanhar prazos e garantir horário alargado e programação. Não reclamar como proposta nova.",Point,38.56584,-9.04582
+em curso,Proposta no mapa,Palácio da Justiça de Sesimbra,,em curso,"A construção do novo tribunal já é anunciada pela Câmara (revista municipal, jul. 2025). O tribunal atual está na vila; confirmar se a localização em Santana tem boa ligação de autocarro.",Point,38.46596,-9.09679
+em curso,Proposta no mapa,Loja do Cidadão da Quinta do Conde,,em curso,"Concurso público autorizado (boletim municipal, jan. 2026). Papel do LIVRE: fiscalizar a execução e exigir serviços da AT, Segurança Social e AIMA no mesmo espaço.",Point,38.5585,-9.0457
+proposta,Proposta no mapa,Novo quartel da GNR da Quinta do Conde,,média,A obra é do Ministério da Administração Interna; à Câmara cabe ceder o terreno e pressionar. Viável se houver terreno municipal disponível. Juntar habitação para os agentes deslocados (medida H3).,Point,38.5469,-9.0511
+proposta,Proposta no mapa,Auditório Municipal da Quinta do Conde,,média,Competência e financiamento municipais. Partilhar o edifício com a biblioteca em obra reduz custos de construção e de funcionamento. Prioridade inferior à habitação e às creches.,Point,38.56537,-9.04787
+proposta,Proposta no mapa,Hub de Santana,,média,"Conceito por definir. Proposta: interface de autocarros (Linha Azul e Circular do Castelo), parque dissuasor e Gabinete Municipal de Habitação no mesmo local.",Point,38.46377,-9.0982
+existente,Serviços públicos,Tribunal de Sesimbra,,,,Point,38.44132,-9.09188
+proposta,Proposta no mapa,Spot Jovem,,alta,Custo baixo se instalado num edifício municipal existente. Pode arrancar já com associações juvenis.,Point,38.56657,-9.03695
+em curso,Proposta no mapa,Nova Escola Secundária da Quinta do Conde,,em curso,"Projeto de arquitetura apresentado (revista municipal, jul. 2025). Papel do LIVRE: garantir acessos a pé, de bicicleta e de autocarro desde o primeiro dia (rua escolar) e cantina com produção local.",Point,38.5482,-9.043
+proposta,Proposta no mapa,Parque dissuasor,,alta,Só funciona com autocarro frequente à porta. Requer terreno municipal ou cedido; custo baixo (pavimento permeável e sombra).,Point,38.46355,-9.09775
+proposta,Proposta no mapa,Parque dissuasor,,alta,Só funciona com autocarro frequente à porta. Requer terreno municipal ou cedido; custo baixo (pavimento permeável e sombra).,Point,38.47719,-9.16093
+existente,Estação ou hub,Estação do Fogueteiro,Comboio para Lisboa e fim da Linha Azul: 30 min desde a vila.,,,Point,38.60959,-9.10023
+existente,Estação ou hub,Estação de Coina,"Comboio para Lisboa, com mais 400 lugares de estacionamento e autocarro à hora de cada comboio.",,,Point,38.58507,-9.05129
+proposta,Estradas,Faixa BUS,"Av. João Paulo II, entre a Av. Sérgio Vieira de Melo e a Venda Nova.",média,"Via municipal: a decisão é da Câmara. Confirmar no terreno se há 2 vias por sentido. Se houver, converte-se uma em faixa BUS; se não, aplica-se prioridade semafórica e na aproximação às rotundas.",LineString,38.46491,-9.0976
+proposta alterada,Estradas,Prioridade BUS Marco do Grilo–Fogueteiro,"Em vez de 8 km de faixa BUS contínua, prioridade nos pontos críticos: faixas curtas de acesso às rotundas, semáforos com prioridade e paragens em plena via.",baixa (contínua) / média (pontual),"A EN378 em Fernão Ferro fica no concelho do Seixal e é da IP, que tem em curso uma requalificação de cerca de 15–20 M€ entre o Seixal e Fernão Ferro. A estrada tem frentes de casas e comércio dos dois lados e, em geral, uma via por sentido: uma faixa BUS contínua obrigaria a expropriações. Proposta: pedir à IP e ao Seixal que a obra em curso já inclua prioridade ao autocarro nas rotundas novas.",LineString,38.55032,-9.1004
+proposta,Estradas,Faixa BUS,"Na EN10, nos dois sentidos, desde a estação de Coina até ao fim da EN10 urbana, com prioridade nas rotundas. É no troço até ao Posto da EN10 que se perdem 8 dos 10 min de atraso na hora de ponta.",condicionada,"A EN10 é da IP. Na hora de ponta passam cerca de 1.450 veículos por hora entre o nó de Coina e a EN379 (mapa de ruído da IP). Se o perfil tiver 2 vias por sentido, converter uma em faixa BUS é viável. Se tiver só uma, a faixa BUS só cabe com a transformação da EN10 em avenida urbana (abaixo), que redesenha o perfil todo. Primeiro passo: levantamento do perfil transversal troço a troço.",LineString,38.58507,-9.05143
+proposta,Estradas,Variante ao Porto de Abrigo,"Liga o Porto de Abrigo à zona industrial do Zambujal e tira os pesados da vila. Começa pela plataforma que já existe a noroeste do porto e termina na interseção com a Avenida dos Náufragos. Traçado a estudar; a pedir ao Estado, ≈15 M€.",média (prioritária),"Ganhou urgência em 2026: o acesso pela EN378 fechou por deslizamento de terras e depois por providência cautelar, travando a descarga de pescado e o abastecimento de combustível. É o 1.º porto de pesca do país em volume. Competência do Estado (IP e porto) e Avaliação de Impacte Ambiental obrigatória (Parque Natural da Arrábida). LIVRE: apoiar um traçado curto até ao Zambujal, com Avaliação de Impacte Ambiental e sem urbanização associada, e entretanto estabilizar a encosta.",LineString,38.4393,-9.11598
+proposta,Estradas,EN10 urbana na Quinta do Conde,"≈3 km transformados em avenida, com travessias, ciclovia, paragens e o Parque Linear da Ribeira.",média (longo prazo),"Exige que a IP transfira este troço para o município, como o Governo aceitou para troços urbanos da EN2. Custo estimado em 10–15 M€ (ordem de grandeza, a confirmar), acima dos 3,4 M€ do Portugal 2030 para mobilidade em Sesimbra. É aqui que a faixa BUS e a ciclovia cabem de facto.",LineString,38.58133,-9.04397
+proposta,Autocarro,Circular do Castelo,"Santana, Almoinha, Pinhal de Cima, Fonte de Sesimbra, Quintinha e Sampaio, nos dois sentidos, a cada 30 min. Junta as linhas 3213 e 3214.",alta,A rede de autocarros é da TML/Carris Metropolitana: a Câmara propõe e pode cofinanciar. Juntar as linhas 3213 e 3214 tem custo moderado. A linha 3213 já tem queixas de supressões de carreiras.,LineString,38.46229,-9.1023
+proposta alterada,Autocarro,Linha Azul,"Autocarro elétrico rápido entre a vila de Sesimbra e a estação do Fogueteiro: 21,7 km e 16 paragens, com faixa BUS onde há filas e prioridade nos cruzamentos. Meta realista: 35–40 min, contra cerca de 48 min hoje na carreira 3536.",média,"Os 30 min do mapa original implicam uma média de 43 km/h com 16 paragens, o que é irrealista em meio urbano. A carreira 3536 demora hoje cerca de 48 min do Fogueteiro ao terminal de Sesimbra. Sem faixa BUS contínua na EN378 (ver acima), 35–40 min é uma meta defensável. Competência da TML; os autocarros elétricos da Carris Metropolitana nesta área têm 300–350 km de autonomia, o que chega para o serviço.",LineString,38.44579,-9.10019
+proposta alterada,Ciclovias e a pé,Ciclovia da Avenida Principal (Quinta do Conde),"Parte da rede ciclável, pela Avenida Principal e pela EN10 urbana. As bicicletas partilhadas elétricas começam aqui e entre Santana e a vila.",média,"Renomeada: o mapa original tinha duas ciclovias com o mesmo nome. As ruas da Quinta do Conde têm 9,5–12 m de largura (Plano de Mobilidade Urbana Sustentável): uma ciclovia segregada obriga a retirar estacionamento de um dos lados. Nas ruas locais basta coexistência a 20–30 km/h.",LineString,38.57241,-9.03739
+proposta,Ciclovias e a pé,Ciclovia Santana–Sampaio–Cotovia,"Liga Santana às escolas de Sampaio e à Cotovia, já no planalto. Na vila, com declive forte e ruas estreitas, não se propõe ciclovia: a ligação faz-se com bicicletas partilhadas com assistência elétrica.",alta,"No planalto, com declive suave. Liga as escolas de Sampaio.",LineString,38.46221,-9.10225
+proposta,Ciclovias e a pé,Ciclovia Santana–Corredoura–Zambujal,Parte da rede ciclável de 40 km.,média,Algumas ruas estreitas: há troços em coexistência.,LineString,38.46229,-9.1023
+proposta,Ciclovias e a pé,Ciclovia Alfarim–Meco–Lagoa,"Para ir às praias sem carro, a partir do parque de Alfarim.",média,"Estradas estreitas, dentro de áreas da Rede Natura. Usar a estrada existente com acalmia de tráfego e evitar abrir caminhos novos na mata. Procura sobretudo no verão.",LineString,38.4717,-9.16962
+proposta,Ciclovias e a pé,Ciclovia Sampaio–Azeitão,"Pela EN379, em direção a Azeitão.",baixa,"A EN379 é da IP, estreita e com muitos camiões das pedreiras, e parte do percurso fica no concelho de Setúbal. Só é segura em caminho segregado ao lado da estrada; fica para uma fase posterior.",LineString,38.47113,-9.08629
+proposta,Ciclovias e a pé,Marginal de Sesimbra,"Pedonalização progressiva: a frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.",alta,"Rua municipal. Os parques do Infante, de Palames e do Porto de Abrigo absorvem o estacionamento. Exige vaivém todo o ano e acesso garantido para cargas e descargas, moradores e pessoas com mobilidade reduzida.",LineString,38.44294,-9.11013
+proposta,Autocarro,Autocarro Casal do Sapo–Coina,"Percurso de transporte coletivo entre o Casal do Sapo e a interface de Coina, previsto no Plano de Mobilidade Urbana Sustentável da Quinta do Conde. Traçado aproximado.",alta,"Previsto no Plano de Mobilidade Urbana Sustentável da Quinta do Conde: hoje nenhuma linha liga Quinta do Conde, Casal do Sapo e Coina. Exige acordo com a TML; a viabilidade é alta.",LineString,38.55197,-9.08046
+proposta,Estradas,Acesso Coina–Quinta do Conde,"Novo acesso da rotunda a seguir à estação de Coina até à Rua Luís de Camões, na Quinta do Conde, para ligar o bairro à estação sem passar pela EN10. Traçado indicativo, a estudar: ainda não há projeto nem traçado aprovados.",baixa,"Coina pertence ao Barreiro e a ligação cruza terrenos junto à via férrea e à A2: precisa de três entidades (Barreiro, IP e operadores da ferrovia). Alternativa mais barata e rápida: ponte pedonal e ciclável, já prevista no Plano de Mobilidade da Quinta do Conde.",LineString,38.58341,-9.04847
+proposta,Estradas,Estrada dos Almocreves,"Caminho de terra batida entre a Quinta do Conde e Sampaio que passa a estrada partilhada e calma, com ciclovia. Ver o cartão da Estrada dos Almocreves.",alta,"Caminho municipal, sem casas encostadas: há espaço para estrada calma com ciclovia ao lado. É a ligação Quinta do Conde–Sampaio mais barata de fazer.",LineString,38.5406,-9.06698
+proposta,Ciclovias e a pé,Ciclovia da Estrada dos Almocreves,Parte da rede ciclável de 40 km: liga a Quinta do Conde a Sampaio em ciclovia ao lado da Estrada dos Almocreves.,alta,Faz-se na mesma obra da estrada.,LineString,38.5406,-9.06698
+proposta,Ciclovias e a pé,Ciclovia Zambujal–Cabo Espichel,"Pela EM569, do Zambujal ao Cabo Espichel.",média,"Planalto sem declives fortes, mas atravessa o Parque Natural da Arrábida. Uso sobretudo turístico.",LineString,38.4536,-9.1198
+proposta,Ciclovias e a pé,Ciclovia Quinta do Conde–Coina,"Ciclovia ao longo da EN10 requalificada, da Quinta do Conde à estação de Coina.",média,Depende da requalificação da EN10 (IP).,LineString,38.57195,-9.03717
+proposta LIVRE,Habitação,H1 · Casas devolutas da vila para arrendamento acessível,"Programa municipal de reabilitação de devolutos no centro histórico, em arrendamento acessível e com prioridade a jovens e famílias da vila.",média,Santiago perdeu cerca de 30% da população entre 2001 e 2021 (de 5.793 para 4.083 habitantes) e 38% dos residentes têm 65 anos ou mais. A Câmara pode tomar posse administrativa de imóveis devolutos e majorar o seu IMI. Financiamento: 1.º Direito e Arrendamento Acessível (o PRR está a terminar). Risco: imóveis com proprietários incertos ou heranças indivisas.,Point,38.4447,-9.103
+proposta LIVRE,Habitação,H2 · Área de contenção de Alojamento Local (vila),"Sem novos registos de Alojamento Local enquanto o rácio Alojamento Local/habitação permanente exceder um limite a fixar no regulamento. Limite indicativo, a fixar após estudo.",alta,O DL 76/2024 devolveu aos municípios o poder de regulamentar o Alojamento Local e criar áreas de contenção. O concelho tinha 756 registos no fim de 2024 (projeto de regulamento da taxa turística). Custo baixo: é um regulamento.,Polygon,38.4485,-9.1125
+proposta LIVRE,Habitação,"H3 · Casas para profissionais deslocados (médicos, professores, GNR)","Habitação municipal de renda condicionada, com contratos ligados à função, junto à USF Castelo e à Corredoura.",média,Responde à dificuldade em fixar médicos de família: cerca de 10 mil utentes sem médico no concelho. Pode ser feita por aquisição ou construção em terreno municipal; parceria possível com a ULS.,Point,38.459,-9.1075
+proposta LIVRE,Habitação,H4 · Bairro de habitação acessível e cooperativa em Sampaio,"Terreno municipal cedido em direito de superfície a cooperativas de habitação, com quota mínima de renda acessível e junto à ciclovia e às escolas.",média,"O direito de superfície mantém o solo público e baixa o preço final. Exige identificar terreno municipal urbanizável, eventualmente na revisão do PDM. Prazo de 4–6 anos.",Point,38.474,-9.0975
+proposta LIVRE,Habitação,H5 · Cooperativa de habitação da Quinta do Conde,"Segundo projeto cooperativo, perto do Centro Comunitário e do mercado municipal.",média,A Quinta do Conde quase duplicou a população em 20 anos (de 16.567 para 28.089 habitantes entre 2001 e 2021). Terrenos: ver o acordo recente entre a Câmara e os herdeiros de António Xavier de Lima.,Point,38.5605,-9.052
+proposta LIVRE,Habitação,H6 · Habitação jovem de Alfarim,"Pequeno conjunto em arrendamento acessível para jovens, junto ao parque dissuasor e à carreira a pedido.",média,Escala pequena (20–40 fogos) para não pressionar a zona rural envolvente.,Point,38.4785,-9.1585
+proposta LIVRE,Habitação,H7 · Gabinete Municipal de Habitação e Cooperativismo,"Balcão único: candidaturas, mediação de conflitos de arrendamento, apoio a cooperativas e observatório de preços e devolutos com dados abertos.",alta,Custo baixo: reafetação de técnicos municipais. Pode funcionar no Hub de Santana.,Point,38.4636,-9.0985
+proposta LIVRE,Habitação,H8 · Acelerar a reconversão das áreas urbanas de génese ilegal (AUGI),"Equipa dedicada às áreas urbanas de génese ilegal ainda por reconverter (Pinhal do General, Fontainhas, Lagoa de Albufeira…), com prazos públicos.",média,Processos longos que dependem das assembleias de proprietários. Uma equipa municipal de apoio jurídico e técnico encurta os prazos. Desbloqueia habitação já construída sem consumir solo novo.,Point,38.5628,-9.0538
+proposta LIVRE,Mobilidade,M1 · Vaivém da vila todo o ano,"Miniautocarro elétrico a cada 15–20 min: Terminal, Câmara, Praia do Ouro, Palames, Porto de Abrigo, Castelo, Terminal.",alta,"Já existe no verão. Alargá-lo ao ano inteiro custa cerca de 150–250 mil €/ano (estimativa, a confirmar com a TML). É a condição para pedonalizar a Marginal.",LineString,38.44589,-9.09978
+proposta LIVRE,Mobilidade,M2 · Carreira a pedido do litoral e das aldeias,"Transporte a pedido (reserva por telefone ou app): Cabo Espichel, Azoia, Aldeia do Meco, Alfarim, Aiana, Zambujal, Santana.",alta,Zonas de baixa densidade onde uma carreira fixa sai cara e anda vazia. A TML já admite transporte flexível; custo moderado com veículos pequenos.,LineString,38.4201,-9.21557
+proposta LIVRE,Mobilidade,M3 · Lançadeira de praia (verão),"Do parque dissuasor de Alfarim às praias do Meco e à Lagoa de Albufeira, a cada 20 min de junho a setembro.",alta,Reduz o estacionamento selvagem na mata. Pode ser paga pela taxa turística.,LineString,38.47719,-9.16093
+proposta LIVRE,Mobilidade,M4 · Rua escolar: EB Navegador Rodrigues Soromenho,"Rua fechada ao trânsito à entrada e saída das aulas, com zona 20 em volta.",alta,Custo baixo: sinalização e pilaretes. Testar primeiro com o fecho temporário da rua.,Point,38.44863,-9.10379
+proposta LIVRE,Mobilidade,M4 · Rua escolar: Escolas de Sampaio,Zona 20 e acessos seguros a pé e de bicicleta para a EB e a Escola Secundária de Sampaio.,alta,Liga à ciclovia Santana–Sampaio–Cotovia.,Point,38.47264,-9.0946
+proposta LIVRE,Mobilidade,M4 · Rua escolar: EB/S Michel Giacometti,Rua escolar prevista no Plano de Mobilidade Urbana Sustentável da Quinta do Conde.,alta,Já está no plano municipal: falta executar.,Point,38.56905,-9.04084
+proposta LIVRE,Mobilidade,M5 · Interface Cotovia (Linha Azul e Circular do Castelo),"Paragem de correspondência coberta, com bicicletas partilhadas e informação em tempo real.",alta,Custo baixo. A Carris Metropolitana já integra dados em tempo real.,Point,38.4702,-9.1012
+proposta LIVRE,Mobilidade,M6 · Estação de bicicletas partilhadas elétricas (vila),"Primeira estação do sistema, no Terminal. Seguem-se Santana, Sampaio, Quinta do Conde e Coina.",média,"A assistência elétrica resolve o declive da vila. Custo de 3–5 mil € por bicicleta e 30–60 mil € por estação (ordem de grandeza). Melhor integrado num sistema metropolitano, como propõe o Plano de Mobilidade da Quinta do Conde.",Point,38.44614,-9.09986
+proposta LIVRE,Serviços,S1 · Nova Unidade de Saúde Familiar em Sampaio/Cotovia,"USF para o planalto do Castelo, que tem mais de 20 mil habitantes e uma só USF, em Santana.",média,"O edifício pode ser municipal (como o Centro de Saúde da Quinta do Conde, de 1,4 M€), mas os médicos dependem da ULS e do SNS. Sem habitação e incentivos (H3) arrisca ficar vazia. Calendário de 3–5 anos.",Point,38.473,-9.0965
+proposta LIVRE,Serviços,S2 · Polo de saúde de proximidade e unidade móvel (Alfarim),Consultas regulares de enfermagem e medicina geral e uma unidade móvel semanal para as aldeias do litoral.,alta,"Custo baixo e arranque rápido, em parceria com a ULS e a Junta de Freguesia do Castelo.",Point,38.4755,-9.1575
+proposta LIVRE,Serviços,S3 · Creche pública da Quinta do Conde,"Creche municipal ou em parceria com IPSS, com 80–100 lugares.",média,"16,5% da população da freguesia tem menos de 15 anos, a maior proporção do concelho. A creche é gratuita por lei (programa Creche Feliz), mas faltam lugares; o PRR financiou creches, mas está a terminar.",Point,38.556,-9.044
+proposta LIVRE,Serviços,S3 · Creche pública de Sampaio,"Segunda creche pública, junto às escolas de Sampaio.",média,Mesma lógica: procura alta no planalto do Castelo.,Point,38.4755,-9.0905
+proposta LIVRE,Serviços,S4 · Casa Intergeracional da vila,"Centro de dia, apoio domiciliário, Gabinete do Cuidador Informal e atividades com escolas.",alta,Santiago tem 38% da população com 65 anos ou mais. Pode instalar-se num edifício municipal ou num devoluto reabilitado (H1).,Point,38.4452,-9.104
+proposta LIVRE,Serviços,S5 · Casa do Associativismo,"Sede partilhada, salas e apoio administrativo às coletividades do concelho.",alta,Custo baixo se for num edifício existente. Faz parte do programa do LIVRE.,Point,38.462,-9.103
+proposta LIVRE,Ambiente e economia,A1 · Comunidade de energia renovável (escolas da Quinta do Conde),"Painéis solares nas coberturas das escolas, com a energia partilhada com as famílias vizinhas em carência energética.",média,O enquadramento legal existe (autoconsumo coletivo). Exige um estudo estrutural das coberturas e uma entidade gestora; o investimento paga-se com a poupança.,Point,38.56905,-9.04084
+proposta LIVRE,Ambiente e economia,A2 · Centro do Mar e da Pesca (Porto de Abrigo),"Formação profissional, transformação de pescado e literacia do oceano, com a Docapesca, escolas e associações de pescadores.",média,Sesimbra é o 1.º porto de pesca do país em volume. Fundos europeus das pescas (Mar 2030) são o financiamento natural. Depende de resolver o acesso ao porto.,Point,38.438,-9.114
+proposta LIVRE,Ambiente e economia,A3 · Moratória a grandes empreendimentos turísticos (Mata de Sesimbra e Meco),Suspender novos licenciamentos turísticos de grande escala até à revisão do PDM. Área indicativa.,média,"Instrumento legal: medidas preventivas ou suspensão parcial do PDM, com prazo máximo legal. Risco: pedidos de indemnização por direitos já adquiridos. Exige parecer jurídico prévio.",Polygon,38.535,-9.175
