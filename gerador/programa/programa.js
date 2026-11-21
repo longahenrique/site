@@ -153,7 +153,7 @@ var ILU = (function () {
     var lin = L.polyline(l.coords, { color: l.cor, weight: Math.min(l.peso, 12), opacity: l.opacidade === undefined ? 0.9 : l.opacidade, dashArray: l.tracejado || null, lineCap: 'round', lineJoin: 'round', pane: 'pLinhas', renderer: rLinhas })
       .addTo(g);
     var uiId = l.camada === 'ativos' ? 'ciclo' : l.nome === 'Faixa BUS' ? 'faixa' : (l.camada === 'autocarro' || l.nome === 'Linha Azul') ? 'bus' : 'vias';
-    lin.bindPopup('<b>' + esc(l.nome) + '</b>' + (l.balao && l.texto ? '<br>' + esc(l.texto) : '') + (l.cartao ? '<span class="sq-pop-w"><br><button type="button" class="sq-pop-cartao" data-cartao="' + esc(l.cartao) + '">Ver cartão</button></span>' : ''), { maxWidth: 260 });   // só o nome; a descrição só nas linhas com "balao" (a Linha Azul)
+    lin.bindPopup('<b>' + esc(l.nome) + '</b>' + (l.balao && l.texto ? '<span class="sq-pop-d">' + esc(l.texto) + '</span>' : '') + (l.cartao ? '<span class="sq-pop-w"><br><button type="button" class="sq-pop-cartao" data-cartao="' + esc(l.cartao) + '">Ver cartão</button></span>' : ''), { maxWidth: 260 });   // só o nome; a descrição só nas linhas com "balao" (a Linha Azul)
     linhasObj.push({ l: l, c: cas, p: lin, w: Math.min(l.peso, 12), o: l.opacidade === undefined ? 0.9 : l.opacidade });
   });
   var gFixos = L.featureGroup().addTo(map);   // estações que já existem: marcadas desde o início
@@ -255,7 +255,7 @@ var ILU = (function () {
       : L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="' + estiloGlifo + 'background:' + corFundo + '">' + glifo + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false, zIndexOffset: prop ? 500 : 0 });
     m.bindTooltip(esc(p.titulo || p.nome), { direction: 'top', offset: [0, prop ? -17 : -12], permanent: false, className: 'sq-nome-ponto' });
-    m.bindPopup('<b>' + esc(p.titulo || p.nome) + '</b>' + (p.cat === 'estacionamento' ? '' : '<br>' + esc(p.etiqueta || c.nome) + (p.balao && p.texto ? '<br>' + esc(p.texto) : '')), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
+    m.bindPopup('<b>' + esc(p.titulo || p.nome) + '</b>' + (p.cat === 'estacionamento' ? '' : '<br>' + esc(p.etiqueta || c.nome) + (p.balao && p.texto ? '<span class="sq-pop-d">' + esc(p.texto) + '</span>' : '')), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
     rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto, local: p.local });
   });
   var MINZ = { obra: 0, transporte: 14, saude: 14.5, farmacia: 14.5, estacionamento: 14.5, bombeiros: 14.5, policia: 14.5, escola: 14.5, parque: 14.5, servicos: 14.5, cultura: 14.5, social: 14.5, igreja: 14.5, mercado: 14.5, desporto: 14.5 };   // tudo o que já existe aparece ao mesmo tempo que os parques

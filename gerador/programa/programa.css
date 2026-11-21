@@ -349,3 +349,5 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 
 /* sem intervalo entre o programa completo e o contacto: a margem do último elemento fica dentro da secção */
 .sq-completo{display:flow-root}
+
+.sq-pop-d{display:block;margin-top:8px}

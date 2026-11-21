@@ -733,7 +733,7 @@ def prog_page():
 </section>
 </main>"""
     ex='<script src="/programa-mapa/leaflet.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa-dados.js?v='+_V+'"></script>\n<script src="/programa-mapa/programa.js?v='+_V+'"></script>\n<script src="/programa-mapa/sugestao.js?v='+_V+'"></script>\n'
-    h=head('/programa','Programa para Sesimbra','Programa para Sesimbra: mapa com as propostas para cada localidade, estradas e natureza, e o programa completo por áreas.',css+'\n'+article_css,'website',None,'<link rel="stylesheet" href="/programa-mapa/leaflet.css?v='+_V+'">\n<link rel="stylesheet" href="/programa-mapa/programa.css?v='+_V+'">')
+    h=head('/programa','Programa para Sesimbra','Programa de Henrique Longa para Sesimbra. Mapa com as propostas para cada localidade, estradas e natureza, e o programa completo por áreas.',css+'\n'+article_css,'website',None,'<link rel="stylesheet" href="/programa-mapa/leaflet.css?v='+_V+'">\n<link rel="stylesheet" href="/programa-mapa/programa.css?v='+_V+'">')
     return h+body(header.replace('<a href="/programa">','<a href="/programa" aria-current="page">'),main,ex)
 if os.path.isdir('gerador/programa'):
     os.makedirs('_site/programa-mapa',exist_ok=True)
