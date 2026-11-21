@@ -1,0 +1,353 @@
+/* Página "Programa para Sesimbra": usa as cores, letras e modos de contraste do site (variáveis --paper, --ink, --muted, --line, --sea, --accent). */
+.prog .sq-kicker{margin:0 0 10px;font:600 15px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted)}
+.prog{background:var(--paper)}
+.prog h1{font-size:clamp(34px,6.2vw,66px);line-height:1.06;margin:0 0 18px;max-width:14em}
+.prog .sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+.prog .sq-lead{margin:0;font-size:20px;line-height:1.7;color:var(--muted);max-width:40em}
+.prog .sq-aviso{margin:22px 0 0;padding:12px 16px;border:2px dashed var(--ink);border-radius:8px;font:600 15px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;max-width:46em}
+.sq-camadas{display:flex;flex-wrap:wrap;gap:10px;margin:28px 0 14px;padding:0;border:0;min-width:0}
+.sq-camadas legend{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.sq-chip{position:relative;display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 16px;border:2px solid var(--ink);border-radius:8px;background:var(--paper);font:700 15px/1.2 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink);cursor:pointer;user-select:none}
+.sq-chip input{position:absolute;opacity:0;width:1px;height:1px}
+.sq-chip .cor{width:16px;height:16px;border-radius:4px;flex:none;border:2px solid var(--ink)}
+.sq-chip::after{content:"";flex:none;width:.5em;height:.9em;border-right:3px solid transparent;border-bottom:3px solid transparent;transform:rotate(40deg) translate(-.1em,-.12em);margin-left:2px}
+.sq-chip:has(input:checked)::after{border-color:transparent currentColor currentColor transparent}
+.sq-chip:has(input:not(:checked)){border-style:dashed;border-color:var(--muted);color:var(--muted)}
+.sq-chip:has(input:not(:checked)) .cor{background:transparent!important;border-color:var(--muted)}
+.sq-chip:has(input:focus-visible){outline:3px solid var(--accent);outline-offset:3px}
+.sq-corpo{display:grid;gap:24px}
+@media(min-width:980px){.sq-corpo{grid-template-columns:minmax(0,1fr) 420px;align-items:start}.sq-ver-mapa{display:none}}
+.sq-mapa{position:relative;z-index:0;isolation:isolate;height:560px;border:2px solid var(--ink);border-radius:10px;overflow:hidden;background:var(--sea)}
+@media(max-width:640px){.sq-mapa{height:56vh;min-height:360px}}
+.sq-osm{filter:grayscale(1) sepia(.12) brightness(1.06) contrast(.88)}
+.sq .leaflet-container{font-family:Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+.sq .leaflet-container:focus:not(:focus-visible){outline:none}
+.sq .leaflet-container:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.sq .leaflet-tooltip.sq-rotulo{background:#fff;color:#141414;border:2px solid #141414;border-radius:999px;padding:3px 10px;font:700 13px/1.25 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;box-shadow:none;cursor:pointer}
+.sq .leaflet-tooltip.sq-rotulo::before{display:none}
+.sq .leaflet-tooltip.sq-rotulo.ativo{background:#141414;color:#fff}
+.sq-vertudo{background:#fff;color:#141414;border:2px solid #141414;border-radius:6px;padding:7px 12px;font:700 13px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;cursor:pointer}
+.sq-lugares{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0 0}
+.sq-lugares button,.sq-alternar button{min-height:44px;padding:0 16px;border:2px solid var(--ink);border-radius:8px;background:var(--paper);font:700 15px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink);cursor:pointer}
+.sq-lugares button[aria-current="true"],.sq-alternar button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+/* Postal */
+.sq-postal{background:var(--paper);border:2px solid var(--ink);border-radius:10px;overflow:hidden}
+.sq-postal .ilustra{background:#eef3ea;border-bottom:2px solid var(--ink)}
+.sq-postal .ilustra svg{display:block;width:100%;height:auto}
+.sq-alternar{display:flex;gap:8px;padding:12px 14px 0}
+.sq-alternar button{flex:1}
+.sq-postal .conteudo{padding:18px 20px 22px}
+.sq-postal .camada{font:700 13px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted);margin:0 0 6px;letter-spacing:.02em}
+.sq-postal h3{margin:0;font-weight:800;font-size:28px;line-height:1.15}
+.sq-postal .frase{margin:10px 0 16px;font-size:19px;line-height:1.55}
+.sq-postal .nota-ilu{margin:8px 14px 12px;font:500 13px/1.4 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted)}
+.sq-medidas{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.sq-medidas li{font-size:17px;line-height:1.5;padding-left:14px;border-left:4px solid var(--accent)}
+.sq-fontes{display:inline-flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.sq-fonte{font:700 12px/1.4 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;padding:2px 9px;border-radius:999px;border:2px solid var(--ink);white-space:nowrap}
+.sq-fonte.H{background:var(--ink);color:var(--paper)}
+.sq-fonte.L{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.sq-fonte.M{background:var(--sea);color:var(--on-sea,var(--ink))}
+.sq-fonte.I{background:transparent;color:var(--ink);border-style:dashed}
+/* Em todos os bairros */
+.sq-bairros{margin:56px 0 0}
+.sq-bairros h2{margin:0 0 6px;font-size:clamp(24px,3.4vw,30px);line-height:1.2}
+.sq-bairros>p{margin:0 0 20px;font-size:19px;color:var(--muted)}
+.sq-grelha{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(260px,100%),1fr));gap:14px;list-style:none;margin:0;padding:0}
+.sq-grelha li{background:var(--paper);border:2px solid var(--line);border-radius:10px;padding:16px 18px;font-size:17px;line-height:1.5}
+.sq-grelha b{display:block;font:800 18px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;margin-bottom:4px}
+.sq-legenda{margin:28px 0 0;display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center;font:500 14px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted)}
+.sq-nota{margin:12px 0 0;font:500 14px/1.6 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted);max-width:50em}
+/* Programa completo */
+.sq-completo h2{font-size:clamp(24px,3.4vw,30px);line-height:1.2;margin:0 0 10px}
+.sq-completo .intro{margin:0 0 8px;font-size:20px;line-height:1.7;max-width:40em}
+.sq-ver{display:inline;margin-top:6px;background:none;border:0;padding:0;font:700 15px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:inherit;text-decoration:underline;text-underline-offset:4px;cursor:pointer}
+.sq-onde{display:block;margin:6px 0 .35em;font:600 15px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+.sq-onde:empty{display:none}
+.sq-semjs{margin:18px 0 0;font-size:18px}
+.sq .leaflet-control-attribution{font:500 12px/1.4 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+.sq .leaflet-control-attribution a:focus-visible,.sq .leaflet-bar a:focus-visible,.sq-vertudo:focus-visible{outline-offset:-3px}
+
+.sq-dica{margin:10px 0 0;font:500 14px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted)}
+
+/* Programa completo: acordeão no telemóvel, como em #programa */
+.acc-btn{font:inherit;color:inherit;letter-spacing:inherit;background:none;border:0;padding:0;margin:0;text-align:left;cursor:default}
+.acc-btn::after{content:"";display:none;width:.38em;height:.38em;margin-left:.6em;border-right:2.5px solid currentColor;border-bottom:2.5px solid currentColor;transform:translateY(-.18em) rotate(45deg);transition:transform .15s}
+.acc-btn[aria-expanded="true"]::after{transform:translateY(.05em) rotate(225deg)}
+@media(max-width:600px){.sq-completo{padding:44px 0}.sq-completo h2{margin-bottom:18px}.sq-completo .area{padding:0}.sq-completo .area h3{margin:0}.sq-completo .acc-btn{display:flex;justify-content:space-between;align-items:center;width:100%;padding:14px 0;cursor:pointer}.sq-completo .acc-btn::after{display:inline-block;margin-right:6px}.sq-completo .acc-btn:focus-visible{outline:3px solid var(--accent);outline-offset:2px}.sq-completo .acc-body{padding-bottom:14px}}
+
+/* Ícones e legenda do mapa */
+.sq .sq-ico span,.sq-ico-l{display:flex;align-items:center;justify-content:center;color:#fff;border:2px solid #fff;box-shadow:0 0 0 1.5px #141414}
+.sq .sq-ico span{width:26px;height:26px;border-radius:50%}
+.sq-ico-l{width:22px;height:22px;border-radius:50%;flex:none}
+.sq-ico-l svg{width:14px;height:14px}
+.sq .leaflet-tooltip.sq-nome-ponto{background:#fff;color:#141414;border:1.5px solid #141414;border-radius:6px;padding:1px 7px;font:700 12px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;box-shadow:none}
+.sq .leaflet-tooltip.sq-nome-ponto::before{display:none}
+.sq-leg{max-width:min(300px,calc(100vw - 80px));background:#fff;border:2px solid #141414;border-radius:8px;font:500 13px/1.35 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:#141414}
+.sq-leg-btn{display:block;width:100%;font:700 13px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;padding:8px 12px;border:0;background:#141414;color:#fff;border-radius:5px;cursor:pointer;text-align:left}
+.sq-leg-btn:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.sq-leg-corpo{padding:8px 12px 10px;max-height:min(34vh,220px);overflow:auto}
+.sq-leg-t{margin:6px 0 4px;font-weight:800}
+.sq-leg-l{list-style:none;margin:0;padding:0}
+.sq-leg-l li{display:flex;align-items:center;gap:8px;margin:3px 0}
+.sq-leg-l label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.sq-leg-l input{margin:0;width:16px;height:16px;accent-color:var(--accent)}
+.sq-leg-l .l{display:inline-block;width:26px;height:4px;border-radius:2px;flex:none}
+.sq-leg-l .d{display:inline-block;width:12px;height:12px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px #141414;flex:none;margin:0 7px}
+.sq-leg-l .q{display:inline-block;width:22px;height:14px;border:2px solid;border-radius:3px;flex:none}
+@media(max-width:640px){.sq-leg-corpo{max-height:34vh}}
+
+
+.prog .sq{padding-top:56px}
+.prog h1{text-wrap:balance}
+@media(max-width:600px){.prog .sq{padding-top:36px}}
+.sq-completo{padding-bottom:0!important}
+.sq-completo .area:last-child{margin-bottom:10px}
+
+/* Mapa em ecrã inteiro */
+.sq-cheio-btn{margin-top:6px}
+.sq-mapa.sq-cheio{height:100%!important;min-height:0!important;border:0;border-radius:0}
+.sq-corpo.sq-cheio-corpo{position:fixed;inset:0;z-index:10000;height:100vh;height:100dvh;gap:0;background:var(--paper);grid-template-columns:minmax(0,1fr) 420px;align-items:stretch;overflow:hidden}
+.sq-cheio-corpo .sq-col-mapa{min-height:0;display:flex;flex-direction:column}
+.sq-cheio-corpo .sq-col-mapa .sq-mapa{flex:1}
+.sq-cheio-corpo .sq-dica,.sq-cheio-corpo .sq-notas{display:none}
+.sq-cheio-corpo .sq-col-cartao{min-height:0;overflow:auto;padding:12px;border-left:2px solid var(--ink)}
+.sq-cheio-corpo .sq-ver-mapa{display:none}
+@media(max-width:979px){.sq-corpo.sq-cheio-corpo{grid-template-columns:minmax(0,1fr);grid-template-rows:44% minmax(0,1fr)}.sq-cheio-corpo .sq-col-cartao{border-left:0;border-top:2px solid var(--ink)}}
+.sq-trava{overflow:hidden}
+.sq-ctl{display:flex;flex-direction:column;gap:6px;border:0!important;box-shadow:none!important;background:none!important}
+.sq-ctl .sq-cheio-btn{margin-top:0}
+
+.sq-modo{display:grid;gap:3px;margin:0 0 6px}
+.sq-modo label{display:flex;align-items:center;gap:8px;cursor:pointer}
+.sq-modo input{margin:0;width:16px;height:16px;accent-color:var(--accent)}
+.sq-mini{display:none;position:absolute;right:10px;bottom:28px;z-index:1000;width:min(280px,calc(100% - 190px));max-height:46%;overflow:auto;background:#fff;border:2px solid #141414;border-radius:10px;padding:8px 10px 10px;font:500 13px/1.4 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:#141414}
+.sq-cheio .sq-mini{display:none!important}
+.sq-mini-nav{display:flex;align-items:center;gap:6px;margin:6px 0 4px}.sq-mini-nav h3{margin:0;flex:1;text-align:center}.sq-mini-nav button{flex:none;width:32px;height:32px;border:2px solid #141414;border-radius:50%;background:#fff;color:#141414;font:700 20px/1 Archivo,Arial,sans-serif;cursor:pointer;padding:0}.sq-mini-nav button:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+.sq-mini h3{margin:6px 0 4px;font:800 15px/1.25 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+.sq-mini ul{margin:0;padding-left:1.1em}.sq-mini li{margin:0 0 3px}
+.sq-mini-ilu svg{display:block;width:100%;height:auto;max-height:96px;border-radius:6px;background:#eef3ea}
+.sq-mini-x{position:absolute;top:4px;right:4px;z-index:2;width:28px;height:28px;border-radius:50%;border:2px solid #141414;background:#fff;color:#141414;font:700 18px/1 Archivo,Arial,sans-serif;cursor:pointer;padding:0}
+.sq-mini-x:focus-visible{outline:3px solid var(--accent);outline-offset:1px}
+@media(max-width:640px){.sq-mini{width:calc(100% - 170px)}.sq-mini-ilu svg{max-height:64px}}
+
+.sq .leaflet-tooltip.sq-loc{background:transparent;border:0;box-shadow:none;color:#3c4338;font:italic 600 12px/1.2 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;text-shadow:0 0 3px #fff,0 0 3px #fff,0 0 3px #fff;padding:0;pointer-events:none}
+.sq .leaflet-tooltip.sq-loc::before{display:none}
+
+/* ícone de obra/proposta com contorno tracejado */
+.sq .sq-ico span.tr{box-shadow:0 0 0 1.5px #141414,0 0 0 4px #fff,0 0 0 5.5px #c2570c}
+.sq-lista{margin:14px 0 0;font:500 15px/1.5 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+.sq-lista summary{cursor:pointer;font-weight:700;min-height:44px;display:flex;align-items:center}
+.sq-lista summary:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.sq-lista h3{margin:14px 0 4px;font:800 15px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+.sq-lista ul{margin:0;padding-left:1.1em}
+@media(max-width:640px){
+  .sq-mapa{height:52vh;min-height:340px}
+  .sq-lugares{flex-wrap:nowrap;overflow-x:auto;scroll-snap-type:x proximity;padding-bottom:8px}
+  .sq-lugares button{flex:none;scroll-snap-align:start}
+  .sq-mini{display:none!important}
+}
+.sq-corpo>*{min-width:0}
+
+.sq-mapa{scroll-margin-top:96px}
+.sq-ver{display:inline-block;min-height:24px;padding-top:1px;padding-bottom:1px}
+.sq-mapa .leaflet-container:focus-visible,.sq-mapa.leaflet-container:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+
+.sq-leg-perfil{margin:0;padding:8px 14px 10px;font:600 .8rem/1.35 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:#3c4338;background:#f3efe6}
+.sq-mini .sq-leg-perfil{display:none}
+.sq-leg-perfil::first-letter{text-transform:uppercase}
+.sq-tema-faixa{height:84px}
+.sq-lugares button.sq-tema{border-left-width:8px}
+.sq-sel{display:none;width:100%;min-height:44px;margin:16px 0 0;padding:0 12px;border:2px solid var(--ink);border-radius:8px;background:var(--paper);font:700 15px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+@media (max-width:640px){.sq-sel{display:block}.sq-lugares{display:none}}
+
+.sq-todos{min-height:44px;padding:0 14px;border:2px solid var(--ink);border-radius:8px;background:transparent;font:700 15px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink);cursor:pointer}
+.sq-todos:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.sq-vazio{position:absolute;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;pointer-events:none;background:rgba(250,246,234,.55)}
+.sq-vazio[hidden]{display:none}
+.sq-vazio p{margin:0 20px;padding:12px 18px;background:#fff;border:2px solid #141414;border-radius:8px;font:700 16px/1.4 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;text-align:center}
+.sq-notas{margin:12px 0 0}
+.sq-notas p{margin:0 0 8px;padding:6px 0 6px 12px;border-left:6px solid #999;font-size:.95rem;line-height:1.5}
+.sq-h2{margin:34px 0 12px;font-size:1.5rem;font-weight:800}
+.sq-nav{display:flex;align-items:center;gap:12px;margin:0 0 14px}
+.sq-conta{flex:1;margin:0;text-align:center;font:800 1.05rem/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+.sq-seta{flex:none;width:48px;height:48px;display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--ink);border-radius:50%;background:var(--paper);color:var(--ink);cursor:pointer;padding:0}
+.sq-seta:hover{background:var(--ink);color:var(--paper)}
+.sq-seta:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.sq-ver-mapa{margin:16px 0 0;min-height:44px;padding:0 18px;border:2px solid var(--ink);border-radius:8px;background:var(--ink);color:var(--paper);font:700 15px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;cursor:pointer}
+.sq-ver-mapa:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media(max-width:640px){.sq-camadas{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:20px 0 12px}.sq-chip{padding:4px 10px;gap:8px;font-size:14px;line-height:1.2}.sq-chip .cor{width:14px;height:14px}.sq-todos{padding:0 8px;font-size:14px}}
+
+.sq-nav{justify-content:space-between}
+.sq-col-cartao .sq-nav{margin-top:0}
+
+.sq-notas p{transition:background .3s}
+.sq-cnav{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:4px 6px;border-bottom:2px solid var(--ink);background:var(--paper)}
+.sq-cnav .sq-seta{width:48px;height:44px;border:0;border-radius:6px;background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;padding:0;cursor:pointer}
+.sq-cnav .sq-seta:hover{background:rgba(20,20,20,.08)}
+.sq-cnav .sq-seta:focus-visible{outline:3px solid var(--accent);outline-offset:-3px}
+.sq-dots{display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+.sq-dots i{width:8px;height:8px;border-radius:50%;background:#c9c4b4}
+.sq-dots i.on{background:var(--ink)}
+.sq-intro h3{margin:0}
+.sq-escolhas{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.sq-escolhas button{min-height:44px;padding:0 14px;border:2px solid var(--ink);border-radius:8px;background:var(--paper);font:700 15px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink);cursor:pointer}
+.sq-escolhas button:hover{background:var(--ink);color:var(--paper)}
+.sq-escolhas button:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+
+.sq-pop-ir{margin:6px 0 0;padding:6px 10px;min-height:32px;border:2px solid #141414;border-radius:6px;background:#fff;color:#141414;font:700 13px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-pop-ir:focus-visible{outline:3px solid #1857d6;outline-offset:2px}
+
+.sq-busca{margin:24px 0 0;max-width:44em}
+.sq-busca label{display:block;margin:0 0 6px;font:600 15px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink)}
+.sq-busca-c{position:relative}
+.sq-busca input{box-sizing:border-box;width:100%;min-width:0;padding:12px 14px;font:500 17px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink);background:var(--paper);border:2px solid var(--ink);border-radius:6px}
+.sq-busca input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+#sq-res{position:absolute;z-index:1200;left:0;right:0;top:calc(100% + 4px);margin:0;padding:4px 0;list-style:none;max-height:340px;overflow:auto;background:var(--paper);border:2px solid var(--ink);border-radius:8px;box-shadow:0 8px 24px rgba(0,0,0,.18)}
+#sq-res[hidden]{display:none}
+#sq-res li{margin:0;padding:10px 14px;font:500 16px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
+#sq-res .grp{padding:8px 14px 4px;font:700 12px/1.2 Archivo,Arial,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#4b5347}
+#sq-res [role=option]{display:flex;flex-direction:column;align-items:flex-start;gap:2px;cursor:pointer;min-height:44px;box-sizing:border-box;justify-content:center}   /* texto em cima, a indicação (Medida em…, tipo) por baixo: não fica espremido em larguras pequenas */
+#sq-res [role=option] .k{font-size:13px;font-weight:600;color:#4b5347}
+#sq-res [role=option].on,#sq-res [role=option]:hover{background:var(--ink);color:var(--paper)}
+#sq-res [role=option].on .k,#sq-res [role=option]:hover .k{color:var(--paper)}
+#sq-res .vazio{color:#4b5347}
+@media(prefers-reduced-motion:reduce){#sq-res{box-shadow:none}}
+
+@media(min-width:980px){.sq-col-cartao .sq-busca{margin:0 0 12px;max-width:none}.sq-col-cartao .sq-busca label{font-size:14px;margin-bottom:4px}.sq-col-cartao .sq-busca input{font-size:16px;padding:10px 12px;min-height:44px}.sq-col-cartao .sq-busca #sq-res li{font-size:15px}}
+@media(min-width:980px){.sq-col-cartao .sq-busca #sq-res .grp{font-size:12px}}
+
+.sq-grupos{display:flex;gap:6px;padding:8px 8px 0;background:var(--paper)}
+.sq-grupos button{flex:1;min-height:44px;padding:0 6px;border:2px solid var(--ink);border-radius:8px;background:var(--paper);font:700 14px Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--ink);cursor:pointer}
+.sq-grupos button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+.sq-grupos button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.sq-chips{padding:8px 10px;margin:0;border-bottom:2px solid var(--ink);background:var(--paper)}
+.sq-chips button{min-height:44px;padding:0 10px;font-size:14px}
+.sq-chips button[aria-current="true"]{background:var(--ink);color:var(--paper)}
+
+.sq-postal .sq-intro h3.sq-intro-t{margin:18px 0 6px;font:700 13px/1.2 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#4a4a42}
+.sq-postal .sq-intro h3.sq-intro-t:first-child{margin-top:4px}
+
+.prog .sq-lead{margin:0 0 32px}
+.sq-corpo + .sq-camadas{margin-top:28px}
+
+.sq-grupos-intro{flex-direction:column;padding:0;gap:10px;background:none}
+.sq-grupos-intro button{flex:none;min-height:56px;font-size:17px}
+
+/* Telemóvel: mapa, depois cartões, depois as descrições das camadas */
+@media(max-width:979px){
+  .sq-corpo:not(.sq-cheio-corpo) .sq-col-mapa{display:contents}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-mapa{order:1}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-dica{order:4;margin:16px 0 0}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-col-cartao{order:3}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-notas{order:5}
+  .sq-busca{margin-bottom:16px}
+}
+
+.sq-alca{display:none}
+@media(max-width:979px){
+  .sq-corpo.sq-cheio-corpo{grid-template-rows:minmax(0,1fr) var(--cart,56%)}
+  .sq-cheio-corpo .sq-alca{display:flex;align-items:center;justify-content:center;position:sticky;top:-12px;z-index:3;width:100%;min-height:44px;margin:-12px 0 10px;padding:0;border:0;border-bottom:2px solid var(--ink);background:var(--paper);cursor:grab;touch-action:none}
+  .sq-alca span{display:block;width:56px;height:6px;border-radius:3px;background:var(--ink)}
+  .sq-cheio-corpo .sq-busca{display:none}
+}
+.sq-cheio .sq-pop-ir{display:none}
+
+/* A busca alinha com o topo do mapa: a etiqueta fica só para leitores de ecrã */
+@media(min-width:980px){.sq-col-cartao .sq-busca label{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}}
+
+/* Frase de ajuda: uma versão para computador, outra (mais curta) para telemóvel; sem espaços vazios */
+.sq-dica-tel{display:none}
+.sq-notas:empty{display:none}
+@media(max-width:979px){
+  .sq-dica-pc{display:none}.sq-dica-tel{display:inline}
+  .sq-corpo{gap:16px}
+  .sq-corpo:not(.sq-cheio-corpo) .sq-dica{margin:0}
+  .sq-dica{font-size:14px;line-height:1.45}
+}
+
+/* Reserva sempre o espaço da barra de rolagem: sem ela os cartões curtos (ex.: Aldeia do Meco) ficavam mais largos que os longos */
+html{scrollbar-gutter:stable}
+
+/* Cruz de limpar a pesquisa: verde, como na pesquisa de artigos */
+.sq-busca input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none;appearance:none;width:20px;height:20px;cursor:pointer;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 4l12 12M16 4L4 16' stroke='%234a6a45' stroke-width='2.6' stroke-linecap='round'/%3E%3C/svg%3E") center/contain no-repeat}
+
+.sq-pop-cartao{margin:6px 0 0;padding:6px 10px;min-height:32px;border:2px solid #141414;border-radius:6px;background:#141414;color:#fff;font:700 13px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-pop-cartao:focus-visible{outline:3px solid #1857d6;outline-offset:2px}
+
+/* Nota 'programa vivo': depois do mapa e dos cartões, discreta */
+.prog .sq-vivo{margin:28px 0 0;padding:0;border:0;border-top:2px solid var(--ink);border-radius:0;padding-top:14px;font:500 14px/1.55 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted);max-width:46em}
+.prog .sq{padding-bottom:22px}
+.prog .sq-vivo{margin-top:48px}
+
+/* ecrã inteiro com o texto aumentado ou diminuído no menu de acessibilidade (zoom da página): compensa o tamanho para ocupar sempre o ecrã todo */
+.sq-corpo.sq-cheio-corpo{inset:0 auto auto 0;width:calc((100vw - var(--sbw,0px)) / var(--az,1));height:calc(100vh / var(--az,1));height:calc(100dvh / var(--az,1))}
+.sq-trava{scrollbar-gutter:auto}
+html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela própria (Esc sai); o menu de acessibilidade volta ao sair */
+
+/* ligações da atribuição do mapa com contraste AAA (7:1) */
+.leaflet-container .leaflet-control-attribution{background:#fff;color:#1a1a1a}
+.leaflet-container .leaflet-control-attribution a{color:#00425c}
+
+
+/* o cartão está sempre ao lado do mapa: o botão "Ver cartão" do balão só faz sentido quando o cartão fica por baixo (telemóvel e tablet) */
+@media(min-width:980px){.sq-pop-w{display:none}}
+
+.sq-dados{margin:14px 0 0;font-size:14px;line-height:1.55;color:#4b5347}
+.sq-sug-txt~.sq-dados:not(.sq-sug-mail){margin-top:0}   /* as duas últimas frases ficam à distância de linhas do mesmo parágrafo, como no aviso */
+.sq-dados a{color:inherit;text-decoration:underline}
+
+/* Sugerir no mapa */
+.sq-sug button:focus-visible,.sq-sug select:focus-visible,.sq-sug textarea:focus-visible,.sq-sug input:focus-visible{outline:3px solid #1857d6;outline-offset:2px}
+.sq-sug{margin:14px 0 0;padding:16px;border:2px solid var(--ink);border-radius:12px;background:var(--paper)}
+.sq-sug[hidden]{display:none}
+.sq-sug-cab{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.sq-sug h3{margin:0;font-size:20px}
+.sq-sug-x{width:44px;height:44px;border:2px solid var(--ink);border-radius:8px;background:#fff;font:700 24px/1 Archivo,Arial,sans-serif;cursor:pointer}
+.sq-sug fieldset{margin:12px 0 0;padding:0;border:0}
+.sq-sug legend{padding:0;font:700 15px Archivo,Arial,sans-serif}
+.sq-sug-tipos label{display:flex;gap:10px;align-items:flex-start;padding:8px 0;font-size:15px;line-height:1.35;cursor:pointer}
+.sq-sug-tipos input{margin-top:3px;width:18px;height:18px;flex:none}
+.sq-sug-ajuda,.sq-sug-estado,.sq-sug-nota{margin:10px 0 0;font-size:14px;line-height:1.45;color:#2d332a}
+.sq-sug-estado{font-weight:700}
+.sq-sug-ferr,.sq-sug-acoes{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.sq-sug-ferr button,.sq-sug-canc,.sq-sug-cop{padding:8px 12px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:600 14px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-sug-env{padding:8px 16px;min-height:44px;border:2px solid var(--ink);border-radius:8px;background:var(--ink);color:#fff;font:700 15px Archivo,Arial,sans-serif;cursor:pointer}
+.sq-sug-campo{margin-top:12px}
+.sq-sug-campo[hidden]{display:none}
+.sq-sug-campo label{display:block;margin-bottom:4px;font:700 14px Archivo,Arial,sans-serif}
+.sq-sug select,.sq-sug textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:16px Archivo,Arial,sans-serif}
+.sq-sug-modo{cursor:crosshair}
+.sq-sug-modo .leaflet-interactive{cursor:crosshair}
+.sq-sug,.sq-sug p,.sq-sug label{font-family:Archivo,Arial,sans-serif}
+.sq-sug-nota a{color:inherit;text-decoration:underline}
+
+.sq-col-cartao.sq-sug-on>*:not(.sq-sug){display:none!important}
+.sq-col-cartao .sq-sug{margin:0;border:0;padding:4px 2px}
+.sq-sug-txt{display:none}
+@media(min-width:980px){.sq-sug-txt{display:block}}
+
+/* a desenhar uma sugestão: o que já está no mapa fica mais discreto e deixa passar os cliques */
+.sq-sug-modo .leaflet-pLinhas-pane,.sq-sug-modo .leaflet-pZonas-pane{opacity:.5}
+.sq-sug-modo .leaflet-marker-pane{opacity:.6}
+.sq-sug-modo .leaflet-marker-pane .leaflet-marker-icon{pointer-events:none}
+.sq-cheio-corpo .sq-col-cartao{scrollbar-gutter:stable}   /* o cartão tem sempre a mesma largura, haja ou não barra para descer */
+
+/* modo leve (nível 3): sem transições nem esmaecidos */
+.sq-leve3 *,.sq-leve3.leaflet-container *{transition:none!important;animation:none!important}
+.sq-leve3.sq-sug-modo .leaflet-pLinhas-pane,.sq-leve3.sq-sug-modo .leaflet-pZonas-pane,.sq-leve3.sq-sug-modo .leaflet-marker-pane{opacity:1}
+
+/* frase de sugestão: no computador, o ecrã inteiro; no telemóvel, o email */
+.sq-sug-mail{display:block}
+@media(min-width:980px){.sq-sug-mail{display:none}}
+
+/* pinos propostos: o símbolo do que vai ser, anel tracejado e selo "+" */
+.sq-prop{position:relative;width:32px;height:32px}
+.sq-prop .b{width:32px;height:32px;box-sizing:border-box;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;border:3px solid #fff;box-shadow:0 0 0 2px #141414;outline:2.5px dashed #c2570c;outline-offset:3px}
+.sq-prop .b svg{width:17px;height:17px}
+.sq-prop i{position:absolute;right:-8px;top:-8px;width:18px;height:18px;border-radius:50%;background:#c2570c;border:2px solid #fff;box-shadow:0 0 0 1.5px #141414;color:#fff;display:flex;align-items:center;justify-content:center;font:800 14px/1 Arial,sans-serif;font-style:normal}
+
+/* sem intervalo entre o programa completo e o contacto: a margem do último elemento fica dentro da secção */
+.sq-completo{display:flow-root}
+
+.sq-pop-d{display:block;margin-top:8px}
