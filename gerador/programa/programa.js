@@ -443,6 +443,7 @@ var ILU = (function () {
     UI.forEach(function (u) { uiOn[u.id] = false; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = false; });
     if (z.id === 'espichel') { filtro = { solo: ['Ciclovia Zambujal–Cabo Espichel'] }; lig('ciclo'); return; }   // o Cabo mostra a ciclovia que lá chega
     if (z.linhas) { filtro = { solo: z.linhas }; lig('ciclo'); return; }   // a zona mostra as linhas propostas que lhe pertencem (ex.: ciclovia da Mata)
+    if (z.id === 'parqueurbano') { filtro = { b: (c instanceof L.Circle ? c.getLatLng().toBounds(c.getRadius() * 2) : c.getBounds()).pad(0.03) }; lig('obra'); return; }   // o parque novo mostra o seu ponto no mapa
     if (z.camada === 'natureza') { filtro = null; return; }   // áreas naturais: nada de camadas
     var solo = z.id === 'variante' ? [z.nome] : z.id === 'almocreves' ? ['Estrada dos Almocreves', 'Ciclovia da Estrada dos Almocreves'] : z.id === 'acessocoina' ? [z.nome] : null;   // mostram-se sozinhas
     if (solo) { filtro = { solo: solo }; lig('vias'); if (z.id === 'almocreves') lig('ciclo'); return; }
