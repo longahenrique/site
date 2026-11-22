@@ -173,6 +173,7 @@ var ILU = (function () {
     { id: 'mercado', nome: 'Mercado e supermercado', cor: '#a8650d', svg: P24('<path d="M3 4h2l2 11h11l2-8H6"/><circle cx="9" cy="19" r="1.5"/><circle cx="17" cy="19" r="1.5"/>') },
     { id: 'desporto', nome: 'Desporto', cor: '#1e7a8c', svg: P24('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/>') },
     { id: 'social', nome: 'Apoio social e comunitário', cor: '#0f766e', svg: P24('<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>') },
+    { id: 'habitacao', nome: 'Habitação pública', cor: '#7a4fa3', svg: P24('<path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/>') },
     { id: 'obra', nome: 'Em obra ou planeado', cor: '#c2570c', svg: P24('<path d="M3 21h18M5 21v-3a7 7 0 0 1 14 0v3M12 8v4M9 11l1.5 2M15 11l-1.5 2"/>'), tracejado: true },
     { id: 'transporte', nome: 'Estação ou terminal', cor: '#1857d6', svg: P24('<rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14M8 21l2-4M16 21l-2-4"/><circle cx="9" cy="14" r=".6" fill="currentColor"/><circle cx="15" cy="14" r=".6" fill="currentColor"/>') }
   ];
@@ -246,11 +247,11 @@ var ILU = (function () {
       : L.divIcon({ className: 'sq-ico', html: '<span class="' + (c.tracejado ? 'tr' : '') + '" style="' + estiloGlifo + 'background:' + corFundo + '">' + glifo + '</span>', iconSize: [26, 26], iconAnchor: [13, 13] });
     var m = L.marker(p.p, { icon: ic, title: p.nome, alt: p.nome, riseOnHover: true, keyboard: false, zIndexOffset: prop ? 500 : 0 });
     m.bindTooltip(esc(p.titulo || p.nome), { direction: 'top', offset: [0, prop ? -17 : -12], permanent: false, className: 'sq-nome-ponto' });
-    m.bindPopup('<b>' + esc(p.titulo || p.nome) + '</b>' + (p.cat === 'estacionamento' ? '' : '<br>' + esc(p.etiqueta || c.nome) + (p.balao && p.texto ? '<span class="sq-pop-d">' + esc(p.texto) + '</span>' : '')), { maxWidth: 240 });   // o que é proposto mostra só o nome, sem descrição
+    m.bindPopup(function () { return '<b>' + esc(p.titulo || p.nome) + '</b>' + (p.cat === 'estacionamento' ? '' : '<br>' + esc(p.etiqueta || c.nome) + (p.balao && p.texto ? '<span class="sq-pop-d">' + esc(p.texto) + '</span>' : '')) + (p.cartao && atual !== p.cartao ? '<span class="sq-pop-w"><br><button type="button" class="sq-pop-cartao" data-cartao="' + esc(p.cartao) + '">Ver cartão</button></span>' : ''); }, { maxWidth: 240 });   // o que é proposto; com cartão próprio, o botão leva a ele (menos quando já está aberto)   // o que é proposto mostra só o nome, sem descrição
     rotPontos.push({ m: m, cat: p.cat, nome: p.nome, p: p.p, texto: p.texto, local: p.local });
   });
-  var MINZ = { obra: 0, transporte: 14, saude: 14.5, farmacia: 14.5, estacionamento: 14.5, bombeiros: 14.5, policia: 14.5, escola: 14.5, parque: 14.5, servicos: 14.5, cultura: 14.5, social: 14.5, igreja: 14.5, mercado: 14.5, desporto: 14.5 };   // tudo o que já existe aparece ao mesmo tempo que os parques
-  var PRIO = ['obra', 'saude', 'farmacia', 'estacionamento', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'social', 'igreja', 'mercado', 'desporto'], DIST = 38;
+  var MINZ = { obra: 0, transporte: 14, saude: 14.5, farmacia: 14.5, estacionamento: 14.5, bombeiros: 14.5, policia: 14.5, escola: 14.5, parque: 14.5, servicos: 14.5, cultura: 14.5, social: 14.5, habitacao: 14.5, igreja: 14.5, mercado: 14.5, desporto: 14.5 };   // tudo o que já existe aparece ao mesmo tempo que os parques
+  var PRIO = ['obra', 'saude', 'farmacia', 'estacionamento', 'bombeiros', 'policia', 'transporte', 'escola', 'parque', 'servicos', 'cultura', 'social', 'habitacao', 'igreja', 'mercado', 'desporto'], DIST = 38;
   var filtro = null;   // com um cartão escolhido, só se mostra o que é dessa zona: {b: limites} ou {solo: nome da linha}
   function nofiltro(r) { return !filtro || (!filtro.solo && !filtro.semObra && filtro.b.contains(r.p)); }
   var forcado = null;   // marcador aberto pela pesquisa: não é escondido pelo desaglomerar
