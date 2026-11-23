@@ -3520,191 +3520,8 @@
   },
   {
    "ilustracao": {
-    "tipo": "perfil",
-    "hoje": [
-     [
-      "rail",
-      0.3
-     ],
-     [
-      "berma",
-      2.85
-     ],
-     [
-      "carro",
-      3.3
-     ],
-     [
-      "separador",
-      0.6
-     ],
-     [
-      "carro",
-      3.3
-     ],
-     [
-      "berma",
-      2.85
-     ],
-     [
-      "rail",
-      0.3
-     ]
-    ],
-    "amanha": [
-     [
-      "rail",
-      0.3
-     ],
-     [
-      "ciclovia",
-      2.85
-     ],
-     [
-      "carro",
-      3.3
-     ],
-     [
-      "separador",
-      0.6
-     ],
-     [
-      "carro",
-      3.3
-     ],
-     [
-      "ciclovia",
-      2.85
-     ],
-     [
-      "rail",
-      0.3
-     ]
-    ],
-    "trocos": [
-     {
-      "nome": "Troço principal",
-      "perfilNome": "EN10, troço principal",
-      "hoje": [
-       [
-        "rail",
-        0.3
-       ],
-       [
-        "berma",
-        2.85
-       ],
-       [
-        "carro",
-        3.3
-       ],
-       [
-        "separador",
-        0.6
-       ],
-       [
-        "carro",
-        3.3
-       ],
-       [
-        "berma",
-        2.85
-       ],
-       [
-        "rail",
-        0.3
-       ]
-      ],
-      "amanha": [
-       [
-        "rail",
-        0.3
-       ],
-       [
-        "ciclovia",
-        2.85
-       ],
-       [
-        "carro",
-        3.3
-       ],
-       [
-        "separador",
-        0.6
-       ],
-       [
-        "carro",
-        3.3
-       ],
-       [
-        "ciclovia",
-        2.85
-       ],
-       [
-        "rail",
-        0.3
-       ]
-      ],
-      "frase": "No troço longo da EN10, as bermas passam a ciclovia, ligando Coina à Quinta do Conde sem alargar a estrada.",
-      "medidas": [
-       {
-        "t": "As bermas passam a ciclovia dos dois lados, entre a rail e a faixa de rodagem."
-       },
-       {
-        "t": "A estrada e a barreira central mantêm-se como estão."
-       }
-      ]
-     },
-     {
-      "nome": "Troço urbano",
-      "perfilNome": "EN10 urbana",
-      "hoje": [
-       [
-        "passeio",
-        2.0
-       ],
-       [
-        "carro",
-        3.3
-       ],
-       [
-        "berma",
-        4.9
-       ],
-       [
-        "carro",
-        3.3
-       ]
-      ],
-      "amanha": [
-       [
-        "passeio",
-        2.0
-       ],
-       [
-        "carro",
-        3.3
-       ],
-       [
-        "canteiro",
-        4.9
-       ],
-       [
-        "carro",
-        3.3
-       ]
-      ],
-      "frase": "Cerca de 3 km da EN10, na Quinta do Conde, passam de estrada a avenida. Árvores, paragens e travessias seguras.",
-      "medidas": [
-       {
-        "t": "Árvores e sombra nos passeios, para uma avenida mais fresca e agradável."
-       },
-       {
-        "t": "Parque Linear da Ribeira, a ligar a Várzea e a Ribeira da Quinta do Conde."
-       }
-      ]
-     }
-    ]
+    "tipo": "paisagem",
+    "variante": "en10"
    },
    "id": "en10",
    "nome": "Estrada Nacional 10",
@@ -3884,19 +3701,16 @@
     -9.03716
    ],
    "direcao": "right",
-   "frase": "A EN10 muda consoante o troço: ao longo da estrada, as bermas passam a ciclovia; na Quinta do Conde, a estrada passa a avenida, com árvores, paragens e travessias seguras.",
+   "frase": "A nacional passa a ser uma estrada mais segura e agradável para todos: melhores travessias, mais sombra e paragens, e ciclovia onde faz sentido.",
    "medidas": [
     {
-     "t": "As bermas passam a ciclovia dos dois lados, entre a rail e a faixa de rodagem."
+     "t": "Travessias mais seguras e passeios mais confortáveis para quem anda a pé."
     },
     {
-     "t": "A estrada e a barreira central mantêm-se como estão."
+     "t": "Mais árvores e sombra, para uma estrada mais fresca e agradável."
     },
     {
-     "t": "Árvores e sombra nos passeios, para uma avenida mais fresca e agradável."
-    },
-    {
-     "t": "Parque Linear da Ribeira, a ligar a Várzea e a Ribeira da Quinta do Conde."
+     "t": "Paragens de autocarro e ciclovia onde faz sentido, a ligar as duas margens da Quinta do Conde."
     }
    ]
   },
@@ -55445,68 +55259,68 @@
      -9.039
     ],
     [
-     38.57589,
-     -9.0389
+     38.57598,
+     -9.03906
     ],
     [
-     38.57572,
-     -9.03891
+     38.57578,
+     -9.03895
     ],
     [
-     38.57554,
-     -9.03881
+     38.57558,
+     -9.03885
     ],
     [
-     38.57533,
-     -9.03872
+     38.57538,
+     -9.03876
     ],
     [
-     38.57525,
-     -9.0387
+     38.57518,
+     -9.03868
     ],
     [
-     38.57495,
-     -9.0386
+     38.57498,
+     -9.03861
     ],
     [
-     38.57474,
-     -9.03858
+     38.57478,
+     -9.03852
     ],
     [
-     38.57445,
-     -9.03849
+     38.57458,
+     -9.03845
     ],
     [
-     38.57422,
-     -9.03834
+     38.57438,
+     -9.03839
     ],
     [
-     38.57404,
-     -9.03826
+     38.57417,
+     -9.03833
     ],
     [
-     38.57389,
-     -9.0381
+     38.57397,
+     -9.03824
     ],
     [
-     38.57369,
+     38.57377,
+     -9.03814
+    ],
+    [
+     38.57357,
      -9.03804
     ],
     [
-     38.57345,
-     -9.03792
+     38.57337,
+     -9.03794
     ],
     [
-     38.57327,
-     -9.03785
+     38.57317,
+     -9.03784
     ],
     [
-     38.57316,
-     -9.03781
-    ],
-    [
-     38.57291,
-     -9.0378
+     38.57297,
+     -9.03775
     ],
     [
      38.57286,
@@ -56195,68 +56009,68 @@
      -9.039
     ],
     [
-     38.57589,
-     -9.0389
+     38.57598,
+     -9.03906
     ],
     [
-     38.57572,
-     -9.03891
+     38.57578,
+     -9.03895
     ],
     [
-     38.57554,
-     -9.03881
+     38.57558,
+     -9.03885
     ],
     [
-     38.57533,
-     -9.03872
+     38.57538,
+     -9.03876
     ],
     [
-     38.57525,
-     -9.0387
+     38.57518,
+     -9.03868
     ],
     [
-     38.57495,
-     -9.0386
+     38.57498,
+     -9.03861
     ],
     [
-     38.57474,
-     -9.03858
+     38.57478,
+     -9.03852
     ],
     [
-     38.57445,
-     -9.03849
+     38.57458,
+     -9.03845
     ],
     [
-     38.57422,
-     -9.03834
+     38.57438,
+     -9.03839
     ],
     [
-     38.57404,
-     -9.03826
+     38.57417,
+     -9.03833
     ],
     [
-     38.57389,
-     -9.0381
+     38.57397,
+     -9.03824
     ],
     [
-     38.57369,
+     38.57377,
+     -9.03814
+    ],
+    [
+     38.57357,
      -9.03804
     ],
     [
-     38.57345,
-     -9.03792
+     38.57337,
+     -9.03794
     ],
     [
-     38.57327,
-     -9.03785
+     38.57317,
+     -9.03784
     ],
     [
-     38.57316,
-     -9.03781
-    ],
-    [
-     38.57291,
-     -9.0378
+     38.57297,
+     -9.03775
     ],
     [
      38.57286,
@@ -56571,14 +56385,70 @@
   },
   {
    "camada": "ativos",
-   "nome": "Ciclovia pela Rua Luís de Camões",
+   "nome": "Ciclovia da estação de Coina pela Rua Luís de Camões",
    "estado": "proposta",
    "cor": "#d6246e",
    "peso": 3,
    "tracejado": "2 7",
-   "texto": "Ramal da ciclovia Quinta do Conde–Coina pela Rua Luís de Camões, a usar o novo acesso proposto entre a estação de Coina e a Quinta do Conde. Traçado indicativo, a estudar.",
+   "texto": "Liga a estação de Coina ao centro da Quinta do Conde, a usar o novo acesso proposto e a Rua Luís de Camões. Traçado indicativo, a estudar.",
    "semSnap": true,
    "coords": [
+    [
+     38.58517,
+     -9.05144
+    ],
+    [
+     38.58492,
+     -9.05117
+    ],
+    [
+     38.58463,
+     -9.05073
+    ],
+    [
+     38.58446,
+     -9.05037
+    ],
+    [
+     38.58435,
+     -9.05011
+    ],
+    [
+     38.58421,
+     -9.04996
+    ],
+    [
+     38.58403,
+     -9.04957
+    ],
+    [
+     38.58389,
+     -9.0492
+    ],
+    [
+     38.58384,
+     -9.04888
+    ],
+    [
+     38.58375,
+     -9.04865
+    ],
+    [
+     38.58359,
+     -9.04856
+    ],
+    [
+     38.58341,
+     -9.04847
+    ],
+    [
+     38.5822,
+     -9.0482
+    ],
+    [
+     38.5805,
+     -9.0476
+    ],
     [
      38.5781,
      -9.047
@@ -56633,6 +56503,62 @@
     ]
    ],
    "pontos": [
+    [
+     38.58517,
+     -9.05144
+    ],
+    [
+     38.58492,
+     -9.05117
+    ],
+    [
+     38.58463,
+     -9.05073
+    ],
+    [
+     38.58446,
+     -9.05037
+    ],
+    [
+     38.58435,
+     -9.05011
+    ],
+    [
+     38.58421,
+     -9.04996
+    ],
+    [
+     38.58403,
+     -9.04957
+    ],
+    [
+     38.58389,
+     -9.0492
+    ],
+    [
+     38.58384,
+     -9.04888
+    ],
+    [
+     38.58375,
+     -9.04865
+    ],
+    [
+     38.58359,
+     -9.04856
+    ],
+    [
+     38.58341,
+     -9.04847
+    ],
+    [
+     38.5822,
+     -9.0482
+    ],
+    [
+     38.5805,
+     -9.0476
+    ],
     [
      38.5781,
      -9.047
@@ -60663,8 +60589,8 @@
    "cat": "obra",
    "nome": "Nova Escola Secundária da Quinta do Conde",
    "p": [
-    38.5482,
-    -9.043
+    38.54852,
+    -9.04319
    ],
    "tipo": "escola"
   },
