@@ -1,7 +1,7 @@
 /* ===== Ilustrações ===== */
 var ILU = (function () {
-  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma', terra: 'terra batida', bermaerva: 'berma', bermaarv: '', carrobus: 'estrada', estradacarro: 'estrada' };
-  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d', terra: '#b08d5b', bermaerva: '#cbbf9d', bermaarv: '#bcc08f', carrobus: '#6b7078', estradacarro: '#6b7078' };
+  var NOMES = { passeio: 'passeio', estac: 'estacionamento', carro: 'carros', areia: 'praia', esplanada: 'esplanada', esplanada0: 'esplanada', arvores: 'árvores', peoes: 'passeio', ciclovia: 'ciclovia', bus: 'autocarro', busciclo: 'autocarro e bicicletas', berma: 'berma', separador: 'separador', rail: 'rail', terra: 'terra batida', bermaerva: 'berma', bermaarv: '', carrobus: 'estrada', estradacarro: 'estrada' };
+  var CHAO = { passeio: '#d9d5cc', estac: '#7d828a', carro: '#6b7078', areia: '#efd9a7', esplanada: '#e3ddd0', esplanada0: '#e3ddd0', arvores: '#9cc58a', peoes: '#e8e1d1', ciclovia: '#2f9e66', bus: '#c4473a', busciclo: '#c4473a', berma: '#cbbf9d', separador: '#6b7078', rail: '#cbbf9d', terra: '#b08d5b', bermaerva: '#cbbf9d', bermaarv: '#bcc08f', carrobus: '#6b7078', estradacarro: '#6b7078' };
   function espinha(x, y, s, c) {   // carro estacionado de lado (visto de perfil), a entrar na espinha
     var L = 2.1 * s;
     return '<path d="M' + (x - L) + ' ' + (y - 0.35 * s) + ' L' + (x - L) + ' ' + (y - 0.85 * s) + ' Q' + (x - L) + ' ' + (y - 1.05 * s) + ' ' + (x - 1.7 * s) + ' ' + (y - 1.05 * s) + ' L' + (x - 1.05 * s) + ' ' + (y - 1.1 * s) + ' L' + (x - 0.55 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 0.7 * s) + ' ' + (y - 1.65 * s) + ' L' + (x + 1.3 * s) + ' ' + (y - 1.1 * s) + ' L' + (x + 1.8 * s) + ' ' + (y - 1.02 * s) + ' Q' + (x + L) + ' ' + (y - 0.95 * s) + ' ' + (x + L) + ' ' + (y - 0.7 * s) + ' L' + (x + L) + ' ' + (y - 0.35 * s) + ' Z" fill="' + c + '"/>' +
@@ -34,6 +34,8 @@ var ILU = (function () {
       else if (tipo === 'bermaarv') { var ta = Math.min(s * 0.9, 30); svg += arvore(x + w * 0.7, chao, ta * 0.62) + arvore(x + w * 0.3, chao, ta * 0.85); }   // mato com duas árvores, em vez de uma só ornamental
       else if (tipo === 'bermaerva') svg += erva(cx, chao, s * 0.8);
       else if (tipo === 'busciclo') svg += autocarro(x + w * 0.32, chao, s * 0.85) + bicicletaF(x + w * 0.78, chao, s);
+      else if (tipo === 'separador') svg += '<path d="M' + (cx - w * 0.46) + ' ' + chao + ' L' + (cx - w * 0.2) + ' ' + (chao - 0.85 * s) + ' L' + (cx + w * 0.2) + ' ' + (chao - 0.85 * s) + ' L' + (cx + w * 0.46) + ' ' + chao + 'Z" fill="#c9ccd1" stroke="#8d949e" stroke-width="1.5" stroke-linejoin="round"/>';   // barreira de betão entre sentidos
+      else if (tipo === 'rail') svg += '<rect x="' + (cx - 0.04 * s) + '" y="' + (chao - 0.78 * s) + '" width="' + (0.08 * s) + '" height="' + (0.78 * s) + '" fill="#8d949e"/><rect x="' + (cx - 0.09 * s) + '" y="' + (chao - 0.78 * s) + '" width="' + (0.18 * s) + '" height="' + (0.32 * s) + '" rx="2" fill="#b9bec5" stroke="#8d949e" stroke-width="1"/>';   // rail de proteção
       else if (tipo === 'ciclovia') svg += bicicletaF(cx, chao, s);
       else if (tipo === 'arvores') svg += arvore(cx, chao, Math.min(s, 30));
       else if (tipo === 'areia') { svg += guarda(x + w * 0.3, chao, s) + pessoa(x + w * 0.65, chao, s * 0.9, CORES_P[3]); }
