@@ -62840,16 +62840,6 @@
     },
     {
       "cat": "obra",
-      "nome": "Construção de habitação pública na Rua Conselheiro Ramada Curto",
-      "tipo": "habitacao",
-      "p": [
-        38.4473,
-        -9.1029
-      ],
-      "etiqueta": "Proposta"
-    },
-    {
-      "cat": "obra",
       "nome": "Requalificação do Bairro dos Pescadores",
       "tipo": "habitacao",
       "p": [
@@ -62863,8 +62853,8 @@
       "nome": "Construção de habitação pública na Ribeira do Marchante",
       "tipo": "habitacao",
       "p": [
-        38.5461,
-        -9.0457
+        38.54723,
+        -9.04685
       ],
       "etiqueta": "Proposta"
     },
