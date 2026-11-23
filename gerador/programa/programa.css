@@ -318,6 +318,8 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-sug-campo[hidden]{display:none}
 .sq-sug-campo label{display:block;margin-bottom:4px;font:700 14px Archivo,Arial,sans-serif}
 .sq-sug select,.sq-sug textarea{width:100%;box-sizing:border-box;padding:10px 12px;border:2px solid var(--ink);border-radius:8px;background:#fff;color:var(--ink);font:16px Archivo,Arial,sans-serif}
+/* a tela onde se desenha a sugestão nunca apanha toques: senão, depois de marcar um ponto, ficava por cima do mapa e deixava de ser possível abrir os balões */
+.leaflet-pSug-pane,.leaflet-pSug-pane canvas{pointer-events:none}
 .sq-sug-modo{cursor:crosshair}
 .sq-sug-modo .leaflet-interactive{cursor:crosshair}
 .sq-sug,.sq-sug p,.sq-sug label{font-family:Archivo,Arial,sans-serif}
