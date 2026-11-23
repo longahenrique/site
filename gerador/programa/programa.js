@@ -316,7 +316,8 @@ var ILU = (function () {
   DADOS.zonas.forEach(function (z) {
     var cor = z.cor || corCamada[z.camada], camada, estilo = { color: cor, weight: 3, opacity: 0.95, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas, interactive: false };
     if (z.camada === 'natureza') { estilo.weight = 1; estilo.opacity = 0.7; estilo.fillOpacity = 0.4; }   // áreas, não contornos
-    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.bindPopup('<b>' + esc(z.nome) + '</b><span class="sq-pop-w"><br><button type="button" class="sq-pop-cartao" data-cartao="marginal">Ver cartão</button></span>', { maxWidth: 260 }); }
+    // a Marginal clica-se: fica na mesma tela das outras linhas (duas telas sobrepostas só deixam clicar na de cima)
+    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: z.id === 'marginal' ? 'pLinhas' : 'pZonas', renderer: z.id === 'marginal' ? rLinhas : rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.bindPopup('<b>' + esc(z.nome) + '</b><span class="sq-pop-w"><br><button type="button" class="sq-pop-cartao" data-cartao="marginal">Ver cartão</button></span>', { maxWidth: 260 }); }
     else if (z.limite) camada = L.polygon(z.limite, estilo);
     else if (z.retangulo) camada = L.rectangle(z.retangulo, estilo);
     else if (z.poligono) camada = L.polygon(z.poligono, estilo);
