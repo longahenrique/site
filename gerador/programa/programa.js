@@ -125,7 +125,9 @@ var ILU = (function () {
     }, { passive: false, capture: true });   // em captura: o Leaflet pára a roda dentro do balão e ela nunca chegaria cá em bolha
   }
   map.on('popupopen', function (e) { rodaParaMapa(e.popup && e.popup._container); });
-  if (L.Browser.mobile) map.dragging.disable();   // no telemóvel o mapa só se arrasta em ecrã inteiro; com um dedo a página desliza
+  // fora do ecrã inteiro o mapa fica fixo (sem arrastar nem zoom): a página desliza à vontade e as pessoas usam os botões e os cartões, que já mostram os sítios certos; cliques, balões e pinos continuam a funcionar. Para explorar, abre-se o ecrã inteiro
+  function mexer(on) { ['dragging', 'touchZoom', 'scrollWheelZoom', 'doubleClickZoom', 'boxZoom', 'keyboard'].forEach(function (h) { if (map[h]) map[h][on ? 'enable' : 'disable'](); }); }
+  mexer(false);
   var camadaOSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 4, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
   // a roda do rato aproxima e afasta o mapa quando o cursor está sobre ele (a página rola fora do mapa)
@@ -362,7 +364,7 @@ var ILU = (function () {
       if (on) { corpo.setAttribute('role', 'dialog'); corpo.setAttribute('aria-modal', 'true'); corpo.setAttribute('aria-label', 'Mapa e cartões em ecrã inteiro'); } else { corpo.removeAttribute('role'); corpo.removeAttribute('aria-modal'); corpo.removeAttribute('aria-label'); }
       // o resto da página fica inerte (leitores de ecrã e teclado ficam só no mapa)
       var no = corpo; while (no && no !== document.body) { var pai = no.parentElement; if (pai) [].forEach.call(pai.children, function (irmao) { if (irmao !== no) { if (on) irmao.setAttribute('inert', ''); else irmao.removeAttribute('inert'); } }); no = pai; }
-      if (L.Browser.mobile) { if (on) map.dragging.enable(); else map.dragging.disable(); }
+      mexer(on);
       legRender(); setTimeout(function () { map.invalidateSize(); if (atual) escolher(atual, true); else verTudo(); }, 60); f.focus();
     }
     L.DomEvent.on(f, 'click', function () { cheio(!el.classList.contains('sq-cheio')); });
@@ -420,7 +422,7 @@ var ILU = (function () {
     idx = id ? grupoAtual.ids.indexOf(id) : -1; var z = id ? zonaDe(id) : null;
     if (!z) {
       live.textContent = 'Nenhum cartão escolhido';
-      postal.innerHTML = '<div class="conteudo sq-intro"><h3 class="sr">Escolhe o que queres ver</h3><div class="sq-grupos sq-grupos-intro" role="group" aria-label="Tipo de cartão">' + GRUPOS_C.filter(function (g) { return g.ids.length; }).map(function (g) { return '<button type="button" data-g="' + g.id + '">' + g.nome + '</button>'; }).join('') + '</div></div>';
+      postal.innerHTML = '<div class="conteudo sq-intro"><h3 class="sr">Escolhe o que queres ver</h3><p class="sq-intro-p">O que queres ver no mapa?</p><div class="sq-grupos sq-grupos-intro" role="group" aria-label="Tipo de cartão">' + GRUPOS_C.filter(function (g) { return g.ids.length; }).map(function (g) { return '<button type="button" data-g="' + g.id + '">' + g.nome + '</button>'; }).join('') + '</div></div>';
       return null;
     }
     live.textContent = z.nome + ', ' + (idx + 1) + ' de ' + grupoAtual.ids.length;

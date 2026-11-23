@@ -354,3 +354,7 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 .sq-completo{display:flow-root}
 
 .sq-pop-d{display:block;margin-top:8px}
+
+/* o + e − do mapa só em ecrã inteiro (fora dele o mapa não se mexe) */
+.sq-mapa:not(.sq-cheio) .leaflet-control-zoom{display:none}
+.sq-intro-p{margin:4px 0 12px;font:600 16px/1.35 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:#141414}

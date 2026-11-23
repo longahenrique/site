@@ -99,7 +99,7 @@
     if (!map.hasLayer(g)) g.addTo(map); desenha(); texto(); var r = $('input[type=radio]:checked'); if (r) r.focus({ preventScroll: true });
   }
   function fechar(limpa) {
-    aberto = false; coluna.classList.remove('sq-sug-on'); painel.hidden = true; map.doubleClickZoom.enable(); map.getContainer().classList.remove('sq-sug-modo');
+    aberto = false; coluna.classList.remove('sq-sug-on'); painel.hidden = true; if (corpoMapa.classList.contains('sq-cheio-corpo')) map.doubleClickZoom.enable(); map.getContainer().classList.remove('sq-sug-modo');
     if (limpa) { pts = []; g.clearLayers(); desc.value = ''; }
     if (!abrir.hidden) abrir.focus();
   }
@@ -112,7 +112,7 @@
     abrir.hidden = !pc;
     if (!pc) {
       if (aberto || pts.length || desc.value.trim()) guardado = true;
-      if (aberto) { aberto = false; coluna.classList.remove('sq-sug-on'); painel.hidden = true; map.doubleClickZoom.enable(); map.getContainer().classList.remove('sq-sug-modo'); }
+      if (aberto) { aberto = false; coluna.classList.remove('sq-sug-on'); painel.hidden = true; if (corpoMapa.classList.contains('sq-cheio-corpo')) map.doubleClickZoom.enable(); map.getContainer().classList.remove('sq-sug-modo'); }
       if (map.hasLayer(g)) map.removeLayer(g);
     } else if (guardado) { guardado = false; abrirPainel(); }
   }
