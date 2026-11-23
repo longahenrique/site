@@ -187,7 +187,6 @@ var ILU = (function () {
   // Camadas que a pessoa liga e desliga (o mapa abre vazio)
   var UI = [
     { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'Cerca de 40 km de ciclovias que ligam as localidades entre si e às paragens de transporte, com bicicletas e trotinetes partilhadas.' },
-    { id: 'faixa', nome: 'Faixa BUS', cor: '#b87a00', nota: 'Faixas reservadas ao autocarro nos troços com mais trânsito, para os autocarros não ficarem presos nas filas.' },
     { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Mais autocarros, mais frequentes e a ligar melhor o concelho: a Linha Azul, a circular do Castelo e novas ligações. As linhas que já existem não estão desenhadas.' },
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'Estradas novas ou requalificadas, para tirar trânsito das zonas mais sensíveis e ligar melhor o concelho.' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'A frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
