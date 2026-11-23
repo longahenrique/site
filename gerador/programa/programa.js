@@ -190,7 +190,6 @@ var ILU = (function () {
   // Camadas que a pessoa liga e desliga (o mapa abre vazio)
   var UI = [
     { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'Cerca de 40 km de ciclovias que ligam as localidades entre si e às paragens de transporte, com bicicletas e trotinetes partilhadas.' },
-    { id: 'bus', nome: 'Autocarros', cor: '#1857d6', nota: 'Mais autocarros, mais frequentes e a ligar melhor o concelho: a Linha Azul, a circular do Castelo e novas ligações. As linhas que já existem não estão desenhadas.' },
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'Estradas novas ou requalificadas, para tirar trânsito das zonas mais sensíveis e ligar melhor o concelho.' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'A frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
     { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Pontos onde se juntam vários meios de transporte, como o hub de Santana e as estações de Coina e do Fogueteiro, que já existem.' },
@@ -480,7 +479,7 @@ var ILU = (function () {
     atual = id || null;
     if (!z) { filtro = null; mini.hidden = true; if (voar) UI.forEach(function (u) { uiOn[u.id] = voar !== 'vazio'; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = voar !== 'vazio'; }); visibilidade(); if (voar) verTudo(); return; }
     var c = camadasZona[id];
-    if (CONTORNO || (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
+    if (CONTORNO || (id !== 'en10' && (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo)) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
     ligarDaZona(c, z);
     visibilidade(); miniAtualizar(z, z.ilustracao);
     if (voar) {
