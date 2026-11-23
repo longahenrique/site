@@ -134,7 +134,7 @@ var ILU = (function () {
   map.on('popupopen', function (e) { var c = e.popup && e.popup.getElement && e.popup.getElement(); if (c) L.DomEvent.disableScrollPropagation(c); });
 
   map.createPane('pZonas').style.zIndex = 410; map.createPane('pLinhas').style.zIndex = 430;
-  var rZonas = L.canvas({ pane: 'pZonas', padding: 0.5, tolerance: 4 }), rLinhas = L.canvas({ pane: 'pLinhas', padding: 0.5, tolerance: 10 });
+  var rZonas = L.canvas({ pane: 'pZonas', padding: 0.5, tolerance: 10 }), rLinhas = L.canvas({ pane: 'pLinhas', padding: 0.5, tolerance: 10 });
   var GR = { ciclo: L.featureGroup(), faixa: L.featureGroup(), bus: L.featureGroup(), vias: L.featureGroup(), hubs: L.featureGroup() };
 
   // Linhas de mobilidade (do mapa da mobilidade)
@@ -316,7 +316,7 @@ var ILU = (function () {
   DADOS.zonas.forEach(function (z) {
     var cor = z.cor || corCamada[z.camada], camada, estilo = { color: cor, weight: 3, opacity: 0.95, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas, interactive: false };
     if (z.camada === 'natureza') { estilo.weight = 1; estilo.opacity = 0.7; estilo.fillOpacity = 0.4; }   // áreas, não contornos
-    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.bindPopup('<b>' + esc(z.nome) + '</b>', { maxWidth: 260 }); }
+    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.bindPopup('<b>' + esc(z.nome) + '</b><span class="sq-pop-w"><br><button type="button" class="sq-pop-cartao" data-cartao="marginal">Ver cartão</button></span>', { maxWidth: 260 }); }
     else if (z.limite) camada = L.polygon(z.limite, estilo);
     else if (z.retangulo) camada = L.rectangle(z.retangulo, estilo);
     else if (z.poligono) camada = L.polygon(z.poligono, estilo);
