@@ -36,6 +36,7 @@
 .sq-postal .ilustra svg{display:block;width:100%;height:auto}
 .sq-alternar{display:flex;gap:8px;padding:12px 14px 0}
 .sq-alternar button{flex:1}
+.sq-trocos+.sq-alternar{padding-top:8px}
 .sq-postal .conteudo{padding:18px 20px 22px}
 .sq-postal .camada{font:700 13px/1.3 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:var(--muted);margin:0 0 6px;letter-spacing:.02em}
 .sq-postal h3{margin:0;font-weight:800;font-size:28px;line-height:1.15}
