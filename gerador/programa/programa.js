@@ -192,7 +192,6 @@ var ILU = (function () {
     { id: 'ciclo', nome: 'Rede ciclável', cor: '#d6246e', nota: 'Cerca de 40 km de ciclovias que ligam as localidades entre si e às paragens de transporte, com bicicletas e trotinetes partilhadas.' },
     { id: 'vias', nome: 'Novos acessos', cor: '#6d4bc2', nota: 'Estradas novas ou requalificadas, para tirar trânsito das zonas mais sensíveis e ligar melhor o concelho.' },
     { id: 'marginal', nome: 'Marginal', cor: '#0e7c7b', nota: 'A frente de mar volta às pessoas, com menos ruído e poluição e mais vida no comércio e na restauração.' },
-    { id: 'hubs', nome: 'Estações e hubs', cor: '#1b1d22', nota: 'Pontos onde se juntam vários meios de transporte, como o hub de Santana e as estações de Coina e do Fogueteiro, que já existem.' },
     { id: 'obra', nome: 'Serviços e outros', cor: '#c2570c', nota: 'Equipamentos e serviços novos, propostos ou em curso, como escola, biblioteca, auditório e serviços públicos.' }
   ];
   UI.forEach(function (u) { uiOn[u.id] = false; }); uiOn.existe = true;   // o que já existe está sempre no mapa
@@ -317,7 +316,7 @@ var ILU = (function () {
   DADOS.zonas.forEach(function (z) {
     var cor = z.cor || corCamada[z.camada], camada, estilo = { color: cor, weight: 3, opacity: 0.95, fillColor: cor, fillOpacity: 0.16, pane: 'pZonas', renderer: rZonas, interactive: false };
     if (z.camada === 'natureza') { estilo.weight = 1; estilo.opacity = 0.7; estilo.fillOpacity = 0.4; }   // áreas, não contornos
-    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.bindPopup('<b>' + esc(z.nome) + '</b><br>' + esc(z.frase) + ligNota('marginal'), { maxWidth: 260 }); }
+    if (z.geo && z.geo.linha) { camada = L.polyline(z.geo.linha, { color: cor, weight: 10, opacity: 0.85, lineCap: 'round', pane: 'pZonas', renderer: rZonas, interactive: z.id === 'marginal' }); if (z.id === 'marginal') camada.bindPopup('<b>' + esc(z.nome) + '</b>', { maxWidth: 260 }); }
     else if (z.limite) camada = L.polygon(z.limite, estilo);
     else if (z.retangulo) camada = L.rectangle(z.retangulo, estilo);
     else if (z.poligono) camada = L.polygon(z.poligono, estilo);

@@ -49960,26 +49960,7 @@
    "manual": true
   }
  ],
- "interfaces": [
-  {
-   "nome": "Estação do Fogueteiro",
-   "p": [
-    38.60959,
-    -9.10023
-   ],
-   "texto": "Comboio para Lisboa e fim da Linha Azul: 40 min desde a vila.",
-   "existe": true
-  },
-  {
-   "nome": "Estação de Coina",
-   "p": [
-    38.58507,
-    -9.05129
-   ],
-   "texto": "Comboio para Lisboa, com mais 400 lugares de estacionamento e autocarro à hora de cada comboio.",
-   "existe": true
-  }
- ],
+ "interfaces": [],
  "linhas": [
   {
    "camada": "vias",
@@ -53386,16 +53367,6 @@
    "p": [
     38.4787,
     -9.11276
-   ],
-   "etiqueta": "Proposta"
-  },
-  {
-   "cat": "obra",
-   "nome": "Aquisição de habitação pública na Cotovia",
-   "tipo": "habitacao",
-   "p": [
-    38.46814,
-    -9.09759
    ],
    "etiqueta": "Proposta"
   }
