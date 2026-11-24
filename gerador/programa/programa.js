@@ -131,6 +131,12 @@ var ILU = (function () {
   function mexer(on) { ['dragging', 'touchZoom', 'scrollWheelZoom', 'doubleClickZoom', 'boxZoom', 'keyboard'].forEach(function (h) { if (map[h]) map[h][on ? 'enable' : 'disable'](); }); }
   mexer(false);
   var camadaOSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 4, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
+  // um quadrado do mapa que falha a carregar (rede lenta, limite do servidor) ficava vazio para sempre, porque fora do ecrã inteiro o mapa não se mexe para o recarregar: volta-se a pedir até 4 vezes
+  camadaOSM.on('tileerror', function (e) {
+    var t = e.tile, n = t._tentativas || 0; if (n >= 4 || !t.src) return;
+    t._tentativas = n + 1; var base = t.src.split('?')[0];
+    setTimeout(function () { if (t.parentNode) t.src = base + '?r=' + (n + 1); }, 700 * (n + 1));
+  });
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
   // a roda do rato aproxima e afasta o mapa quando o cursor está sobre ele (a página rola fora do mapa)
 
@@ -491,11 +497,11 @@ var ILU = (function () {
     atual = id || null;
     if (!z) { filtro = null; mini.hidden = true; if (voar) UI.forEach(function (u) { uiOn[u.id] = voar !== 'vazio'; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = voar !== 'vazio'; }); visibilidade(); if (voar) verTudo(); return; }
     var c = camadasZona[id];
-    if (CONTORNO || (id !== 'en10' && (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo)) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
+    if (CONTORNO || (['en10', 'variante', 'almocreves', 'acessocoina'].indexOf(id) < 0 && (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo)) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
     ligarDaZona(c, z);
     visibilidade(); miniAtualizar(z, z.ilustracao);
     if (voar) {
-      var bd = c.getBounds();
+      var bd = z.enquadra ? L.latLngBounds(z.enquadra) : c.getBounds();   // 'enquadra': a vista do cartão pode ser mais apertada do que o contorno todo (Quinta do Conde)
       var extra = id === 'espichel' ? ['Ciclovia Zambujal–Cabo Espichel'] : (z.linhas || []);
       if (extra.length) linhasObj.forEach(function (o) { if (extra.indexOf(o.l.nome) >= 0) bd = L.latLngBounds(bd.getSouthWest(), bd.getNorthEast()).extend(o.p.getBounds()); });   // inclui toda a ciclovia
       if (z.vista) { if (SEMVOO) map.setView(z.vista.c, z.vista.z, { animate: false }); else map.flyTo(z.vista.c, z.vista.z, { duration: 0.6 }); }
