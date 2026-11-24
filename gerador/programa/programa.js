@@ -141,18 +141,33 @@ var ILU = (function () {
         var c = new L.Point(x, y); c.z = tz; if (!camadaOSM._isValidTile(c)) continue;
         var t = camadaOSM._tiles[camadaOSM._tileCoordsToKey(c)];
         if (!t) { falta = true; continue; }
-        var im = t.el; if (im && im.tagName === 'IMG' && (!im.complete || im.naturalWidth === 0) && im.src) im.src = im.src.split('?')[0] + '?r=' + Date.now();
+        var im = t.el; if (im && im.tagName === 'IMG' && !im._compos && (!im.complete || im.naturalWidth === 0) && im.src) im.src = im.src.split('?')[0] + '?r=' + Date.now();
       }
       if (falta) camadaOSM._update();
     } catch (er) { /* sem efeito */ }
   }
   var tRepara; function agendaRepara() { clearTimeout(tRepara); tRepara = setTimeout(function () { reparaMosaicos(); tRepara = setTimeout(reparaMosaicos, 3500); }, 1500); }
   map.on('moveend zoomend resize', agendaRepara); agendaRepara();
+  // se o servidor não tem mesmo um quadrado (devolve 404: acontece, por exemplo, com o 13/3889/3142 a oeste da Coina), monta-se esse quadrado a partir dos 4 quadrados mais detalhados que o cobrem
+  function montaDosFilhos(t, base) {
+    var m = /\/(\d+)\/(\d+)\/(\d+)\.png$/.exec(base); if (!m) return;
+    var z = +m[1], x = +m[2], y = +m[3], cv = document.createElement('canvas'), ctx = cv.getContext('2d'), falta = 4, bom = 0;
+    cv.width = cv.height = 512; t._compos = true;
+    [[0, 0], [1, 0], [0, 1], [1, 1]].forEach(function (d) {
+      var im = new Image(); im.crossOrigin = 'anonymous';
+      im.onload = function () { ctx.drawImage(im, d[0] * 256, d[1] * 256, 256, 256); bom++; if (--falta === 0 && bom) { try { t.src = cv.toDataURL('image/png'); } catch (er) { /* sem efeito */ } } };
+      im.onerror = function () { if (--falta === 0 && bom) { try { t.src = cv.toDataURL('image/png'); } catch (er) { /* sem efeito */ } } };
+      im.src = 'https://tile.openstreetmap.org/' + (z + 1) + '/' + (2 * x + d[0]) + '/' + (2 * y + d[1]) + '.png';
+    });
+  }
   camadaOSM.on('tileerror', function (e) {
-    var t = e.tile, n = t._tentativas || 0; if (n >= 4 || !t.src) return;
-    t._tentativas = n + 1; var base = t.src.split('?')[0];
-    setTimeout(function () { if (t.parentNode) t.src = base + '?r=' + (n + 1); }, 700 * (n + 1));
+    var t = e.tile, n = t._tentativas || 0; if (t._compos || !t.src || /^data:/.test(t.src)) return;
+    var base = t.src.split('?')[0];
+    if (n >= 1) { montaDosFilhos(t, base); return; }   // falhou duas vezes: monta-se dos filhos
+    t._tentativas = n + 1;
+    setTimeout(function () { if (t.parentNode) t.src = base + '?r=' + (n + 1); }, 700);
   });
+
   // A roda normal desloca a página; pinça no touchpad e Ctrl/Cmd + roda aproximam o mapa.
   // a roda do rato aproxima e afasta o mapa quando o cursor está sobre ele (a página rola fora do mapa)
 
