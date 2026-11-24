@@ -284,13 +284,14 @@ var ILU = (function () {
   }
   // Moldura: fora do ecrã inteiro o mapa não se mexe e o balão abre para cima. Os pontos de "Já existe" cujo balão não cabia inteiro (perto do topo) não aparecem; os propostos ('obra') aparecem sempre
   var verAtual = new Map();
+  var mqTel = window.matchMedia('(max-width:600px)'); if (mqTel.addEventListener) mqTel.addEventListener('change', function () { moldura(); }); else mqTel.addListener(function () { moldura(); });
   function moldura() {
     var cheioAgora = el.classList.contains('sq-cheio'), tam = map.getSize(), TOPO = 120, LADO = 12, BAIXO = 12;
     rotPontos.forEach(function (r) {
       var g = gPontos[r.cat], v = r.m === forcado || verAtual.get(r) === true;
       if (v && r.cat !== 'obra' && !cheioAgora && r.m !== forcado && !r.m.isPopupOpen()) {
-        var q = map.latLngToContainerPoint(r.m.getLatLng());
-        if (q.y < TOPO || q.x < LADO || q.x > tam.x - LADO || q.y > tam.y - BAIXO) v = false;
+        if (mqTel.matches) v = false;   // no telemóvel, sem ecrã inteiro, nunca aparece o que já existe: só as propostas (os pinos juntos e pequenos dificultam o toque certo)
+        else { var q = map.latLngToContainerPoint(r.m.getLatLng()); if (q.y < TOPO || q.x < LADO || q.x > tam.x - LADO || q.y > tam.y - BAIXO) v = false; }
       }
       if (v && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!v && g.hasLayer(r.m)) g.removeLayer(r.m);
     });
