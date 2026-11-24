@@ -539,6 +539,7 @@ var ILU = (function () {
       else {
         var sz = map.getSize(), pequeno = window.matchMedia && window.matchMedia('(max-width:979px)').matches;
         var pd = pequeno ? Math.max(14, Math.min(40, Math.round(Math.min(sz.x, sz.y) * 0.06))) : 90;   // no telemóvel o mapa é baixo: margem pequena, para a zona ocupar o ecrã
+        if (z.enquadra) pd = Math.min(pd, 36);   // vista apertada ao conteúdo: margem pequena, para caber a um zoom que usa os mosaicos mais detalhados
         var op = { padding: [pd, pd], maxZoom: pequeno ? 16 : 15 };
         if (SEMVOO) map.fitBounds(bd, Object.assign({ animate: false }, op)); else map.flyToBounds(bd, Object.assign({ duration: 0.6 }, op));
       }
