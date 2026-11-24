@@ -126,6 +126,8 @@ var ILU = (function () {
   }
   map.on('popupopen', function (e) { rodaParaMapa(e.popup && e.popup._container); });
   // fora do ecrã inteiro o mapa fica fixo (sem arrastar nem zoom): a página desliza à vontade e as pessoas usam os botões e os cartões, que já mostram os sítios certos; cliques, balões e pinos continuam a funcionar. Para explorar, abre-se o ecrã inteiro
+  // por defeito o Leaflet desloca o mapa para o balão caber (pinos na ponta): fora do ecrã inteiro o mapa não anda
+  (function () { var ajusta = L.Popup.prototype._adjustPan; L.Popup.include({ _adjustPan: function () { if (!el.classList.contains('sq-cheio')) return; return ajusta.apply(this, arguments); } }); })();
   function mexer(on) { ['dragging', 'touchZoom', 'scrollWheelZoom', 'doubleClickZoom', 'boxZoom', 'keyboard'].forEach(function (h) { if (map[h]) map[h][on ? 'enable' : 'disable'](); }); }
   mexer(false);
   var camadaOSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 4, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
