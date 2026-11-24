@@ -358,3 +358,7 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 /* o + e − do mapa só em ecrã inteiro (fora dele o mapa não se mexe) */
 .sq-mapa:not(.sq-cheio) .leaflet-control-zoom{display:none}
 .sq-intro-p{margin:4px 0 12px;font:600 16px/1.35 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif;color:#141414}
+
+/* fora do ecrã inteiro só há propostas nos cartões: a legenda só aparece em ecrã inteiro */
+.sq-leg{display:none}
+.sq-cheio .sq-leg{display:block}

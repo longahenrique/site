@@ -242,7 +242,8 @@ var ILU = (function () {
   }
   function ligNota(id) { return '<br><button type="button" class="sq-pop-ir" data-ui="' + id + '">Saber mais</button>'; }
   document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-pop-ir'); if (b) irNota(b.getAttribute('data-ui')); });
-  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-pop-cartao'); if (b) { map.closePopup(); escolher(b.getAttribute('data-cartao'), true); } });   // do balão de uma estrada para o respetivo cartão
+  document.addEventListener('click', function (e) { var b = e.target.closest && e.target.closest('.sq-pop-cartao'); if (b) { map.closePopup(); escolher(b.getAttribute('data-cartao'), true);
+    if (!el.classList.contains('sq-cheio')) postal.scrollIntoView({ behavior: RM ? 'auto' : 'smooth', block: 'start' }); } });   // do balão de uma estrada para o respetivo cartão
   function ligar(g, q) { if (q && !map.hasLayer(g)) map.addLayer(g); else if (!q && map.hasLayer(g)) map.removeLayer(g); }
   function aplicarFiltro() {
     linhasObj.forEach(function (o) {
