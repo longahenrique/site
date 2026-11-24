@@ -280,11 +280,22 @@ var ILU = (function () {
       });
     });
     var ver = new Map(); act.forEach(function (r, i) { ver.set(r, !!mostra[i]); });
+    verAtual = ver; moldura();
+  }
+  // Moldura: fora do ecrã inteiro o mapa não se mexe e o balão abre para cima. Os pontos de "Já existe" cujo balão não cabia inteiro (perto do topo) não aparecem; os propostos ('obra') aparecem sempre
+  var verAtual = new Map();
+  function moldura() {
+    var cheioAgora = el.classList.contains('sq-cheio'), tam = map.getSize(), TOPO = 120, LADO = 12, BAIXO = 12;
     rotPontos.forEach(function (r) {
-      var g = gPontos[r.cat], v = r.m === forcado || ver.get(r) === true;
+      var g = gPontos[r.cat], v = r.m === forcado || verAtual.get(r) === true;
+      if (v && r.cat !== 'obra' && !cheioAgora && r.m !== forcado && !r.m.isPopupOpen()) {
+        var q = map.latLngToContainerPoint(r.m.getLatLng());
+        if (q.y < TOPO || q.x < LADO || q.x > tam.x - LADO || q.y > tam.y - BAIXO) v = false;
+      }
       if (v && !g.hasLayer(r.m)) g.addLayer(r.m); else if (!v && g.hasLayer(r.m)) g.removeLayer(r.m);
     });
   }
+  map.on('moveend resize', moldura);
   map.on('zoomend', function () { nomesParques(); ligar(gFixos, map.getZoom() >= 13); }); nomesParques();
 
 
@@ -367,7 +378,7 @@ var ILU = (function () {
       // o resto da página fica inerte (leitores de ecrã e teclado ficam só no mapa)
       var no = corpo; while (no && no !== document.body) { var pai = no.parentElement; if (pai) [].forEach.call(pai.children, function (irmao) { if (irmao !== no) { if (on) irmao.setAttribute('inert', ''); else irmao.removeAttribute('inert'); } }); no = pai; }
       mexer(on);
-      legRender(); setTimeout(function () { map.invalidateSize(); if (atual) escolher(atual, true); else verTudo(); }, 60); f.focus();
+      legRender(); moldura(); setTimeout(function () { map.invalidateSize(); if (atual) escolher(atual, true); else verTudo(); moldura(); }, 60); f.focus();
     }
     L.DomEvent.on(f, 'click', function () { cheio(!el.classList.contains('sq-cheio')); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('sq-cheio')) cheio(false); });
