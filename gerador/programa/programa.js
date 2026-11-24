@@ -132,6 +132,22 @@ var ILU = (function () {
   mexer(false);
   var camadaOSM = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, updateWhenIdle: true, updateWhenZooming: false, keepBuffer: 4, className: 'sq-osm', attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>' }).addTo(map);
   // um quadrado do mapa que falha a carregar (rede lenta, limite do servidor) ficava vazio para sempre, porque fora do ecrã inteiro o mapa não se mexe para o recarregar: volta-se a pedir até 4 vezes
+  // verificação final: 1,5 s e 5 s depois de o mapa assentar, qualquer quadrado que falte ou esteja vazio volta a ser pedido (o mapa não se mexe fora do ecrã inteiro, por isso não se corrigia sozinho)
+  function reparaMosaicos() {
+    try {
+      var tz = camadaOSM._tileZoom; if (tz == null || !map._loaded) return;
+      var r = camadaOSM._pxBoundsToTileRange(camadaOSM._getTiledPixelBounds(map.getCenter())), falta = false, x, y;
+      for (x = r.min.x; x <= r.max.x; x++) for (y = r.min.y; y <= r.max.y; y++) {
+        var c = new L.Point(x, y); c.z = tz; if (!camadaOSM._isValidTile(c)) continue;
+        var t = camadaOSM._tiles[camadaOSM._tileCoordsToKey(c)];
+        if (!t) { falta = true; continue; }
+        var im = t.el; if (im && im.tagName === 'IMG' && (!im.complete || im.naturalWidth === 0) && im.src) im.src = im.src.split('?')[0] + '?r=' + Date.now();
+      }
+      if (falta) camadaOSM._update();
+    } catch (er) { /* sem efeito */ }
+  }
+  var tRepara; function agendaRepara() { clearTimeout(tRepara); tRepara = setTimeout(function () { reparaMosaicos(); tRepara = setTimeout(reparaMosaicos, 3500); }, 1500); }
+  map.on('moveend zoomend resize', agendaRepara); agendaRepara();
   camadaOSM.on('tileerror', function (e) {
     var t = e.tile, n = t._tentativas || 0; if (n >= 4 || !t.src) return;
     t._tentativas = n + 1; var base = t.src.split('?')[0];
