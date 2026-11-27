@@ -403,6 +403,7 @@ var ILU = (function () {
     }
     alca.addEventListener('pointerup', fim); alca.addEventListener('pointercancel', fim);
     alca.addEventListener('keydown', function (e) { if (e.key === 'ArrowUp' || e.key === 'ArrowDown') { e.preventDefault(); altura(Math.max(minAlca(), Math.min(window.innerHeight - 110, colC.getBoundingClientRect().height + (e.key === 'ArrowUp' ? 60 : -60)))); map.invalidateSize(); } });
+    var antesCheio = null;
     function cheio(on) {
       if (!on) { altura(null); ultimaAlt = null; }
       el.classList.toggle('sq-cheio', on); corpo.classList.toggle('sq-cheio-corpo', on); document.documentElement.classList.toggle('sq-trava', on);
@@ -413,7 +414,9 @@ var ILU = (function () {
       // o resto da página fica inerte (leitores de ecrã e teclado ficam só no mapa)
       var no = corpo; while (no && no !== document.body) { var pai = no.parentElement; if (pai) [].forEach.call(pai.children, function (irmao) { if (irmao !== no) { if (on) irmao.setAttribute('inert', ''); else irmao.removeAttribute('inert'); } }); no = pai; }
       mexer(on);
+      if (on) antesCheio = { ui: JSON.parse(JSON.stringify(uiOn)), cat: JSON.parse(JSON.stringify(catOn)), f: filtro };   // estado de antes do ecrã inteiro, para voltar a ele ao sair
       legRender(); moldura(); setTimeout(function () { map.invalidateSize(); if (atual) escolher(atual, true); else verTudo();
+        if (!on && antesCheio && !atual) { uiOn = antesCheio.ui; catOn = antesCheio.cat; filtro = antesCheio.f; UI.forEach(function (u) { var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = !!uiOn[u.id]; }); visibilidade(); legRender(); }   // ao sair, volta tudo ao que estava antes
         if (on) { filtro = null; UI.forEach(function (u) { uiOn[u.id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = true; }); if (nivelLeve() < 1) CATS.forEach(function (c) { catOn[c.id] = true; }); visibilidade(); legRender(); }   // ao entrar em ecrã inteiro, tudo na legenda vem marcado e aparece no mapa (menos "Já existe" se o modo leve estiver ativo)
         moldura(); }, 60); f.focus();
     }
