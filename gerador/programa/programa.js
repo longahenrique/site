@@ -413,7 +413,9 @@ var ILU = (function () {
       // o resto da página fica inerte (leitores de ecrã e teclado ficam só no mapa)
       var no = corpo; while (no && no !== document.body) { var pai = no.parentElement; if (pai) [].forEach.call(pai.children, function (irmao) { if (irmao !== no) { if (on) irmao.setAttribute('inert', ''); else irmao.removeAttribute('inert'); } }); no = pai; }
       mexer(on);
-      legRender(); moldura(); setTimeout(function () { map.invalidateSize(); if (atual) escolher(atual, true); else verTudo(); moldura(); }, 60); f.focus();
+      legRender(); moldura(); setTimeout(function () { map.invalidateSize(); if (atual) escolher(atual, true); else verTudo();
+        if (on) { filtro = null; UI.forEach(function (u) { uiOn[u.id] = true; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = true; }); if (nivelLeve() < 1) CATS.forEach(function (c) { catOn[c.id] = true; }); visibilidade(); legRender(); }   // ao entrar em ecrã inteiro, tudo na legenda vem marcado e aparece no mapa (menos "Já existe" se o modo leve estiver ativo)
+        moldura(); }, 60); f.focus();
     }
     L.DomEvent.on(f, 'click', function () { cheio(!el.classList.contains('sq-cheio')); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && el.classList.contains('sq-cheio')) cheio(false); });

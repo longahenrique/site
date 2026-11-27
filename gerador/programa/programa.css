@@ -292,7 +292,7 @@ html.sq-trava .a11y{display:none}   /* em ecrã inteiro o mapa é uma janela pr�
 
 
 /* o cartão está sempre ao lado do mapa: o botão "Ver cartão" do balão só faz sentido quando o cartão fica por baixo (telemóvel e tablet) */
-@media(min-width:980px){.sq-pop-w{display:none}}
+@media(min-width:980px){.sq-pop-w{display:none}.sq-cheio .sq-pop-w{display:inline}}   /* no computador o botão "Ver cartão" só aparece em ecrã inteiro (o cartão abre ao lado) */
 
 .sq-dados{margin:14px 0 0;font-size:14px;line-height:1.55;color:#4b5347}
 .sq-sug-txt~.sq-dados:not(.sq-sug-mail){margin-top:0}   /* as duas últimas frases ficam à distância de linhas do mesmo parágrafo, como no aviso */

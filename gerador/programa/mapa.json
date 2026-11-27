@@ -53165,7 +53165,7 @@
  "manuais": [
   {
    "cat": "cultura",
-   "nome": "Polo de Leitura",
+   "nome": "Pólo de Leitura da Quinta do Conde",
    "p": [
     38.56518,
     -9.03738
@@ -53253,7 +53253,8 @@
     38.54852,
     -9.04319
    ],
-   "tipo": "escola"
+   "tipo": "escola",
+   "etiqueta": "Proposta"
   },
   {
    "cat": "obra",
