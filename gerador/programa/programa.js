@@ -535,7 +535,7 @@ var ILU = (function () {
     if (!z) { filtro = null; mini.hidden = true; if (voar) UI.forEach(function (u) { uiOn[u.id] = voar !== 'vazio'; var cx = document.querySelector('#sq-camadas input[data-ui="' + u.id + '"]'); if (cx) cx.checked = voar !== 'vazio'; }); visibilidade(); if (voar) verTudo(); return; }
     var c = camadasZona[id];
     if (CONTORNO || (['en10', 'variante', 'almocreves', 'acessocoina'].indexOf(id) < 0 && (DADOS.zonas.filter(function (q) { return q.id === id; })[0] || {}).geo)) gZona.addLayer(c);   // sem contorno: só zoom e foco (a Marginal é uma linha e mantém-se)
-    ligarDaZona(c, z);
+    if (el.classList.contains('sq-cheio')) filtro = null; else ligarDaZona(c, z);   // em ecrã inteiro o cartão só leva o mapa ao sítio: a legenda fica como está
     visibilidade(); miniAtualizar(z, z.ilustracao);
     if (voar) {
       var bd = z.enquadra ? L.latLngBounds(z.enquadra) : c.getBounds();   // 'enquadra': a vista do cartão pode ser mais apertada do que o contorno todo (Quinta do Conde)
