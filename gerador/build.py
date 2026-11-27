@@ -279,7 +279,7 @@ enc=lambda t:urllib.parse.quote(t,safe='')
 from PIL import Image, ImageDraw, ImageFont
 _FD='gerador/fonts-og/'
 os.makedirs('_site/og',exist_ok=True)
-def og_image(slug,title,line):
+def og_image(slug,title,line,kicker='Artigo de opinião'):
     W,H=1200,630; im=Image.new('RGB',(W,H),(0xb4,0xca,0xad))
     cut=Image.open('gerador/retrato-recortado.png').convert('RGBA'); ph=int(H*0.98); pw=int(cut.width*ph/cut.height)
     pc=cut.resize((pw,ph),Image.LANCZOS); im.paste(pc,(W-pw-40,H-ph),pc)
@@ -300,7 +300,7 @@ def og_image(slug,title,line):
             ls=wrap(' '.join(words)+'…',f)
             if len(ls)*size*1.13<=330 and max(f.getlength(x) for x in ls)<=colw: break
             words.pop()
-    d.text((70,60),'Artigo de opinião',font=ImageFont.truetype(_FD+'Inter-SemiBold.otf',30),fill=INK)
+    d.text((70,60),kicker,font=ImageFont.truetype(_FD+'Inter-SemiBold.otf',30),fill=INK)
     y=125
     for x in ls: d.text((70,y),x,font=f,fill=INK); y+=int(size*1.13)
     d.text((70,H-118),line,font=ImageFont.truetype(_FD+'Inter-SemiBold.otf',30),fill=INK)
@@ -344,6 +344,45 @@ for slug,d in arts.items():
     bc={"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Opinião","item":SITE+"/opiniao/"},{"@type":"ListItem","position":3,"name":re.sub('<[^>]+>','',d['title'])}]}
     ld=[ld,bc]
     open(f'_site/opiniao/{slug}.html','w',encoding='utf-8').write(head(f'/opiniao/{slug}',d['title'],d['desc'],css+'\n'+article_css,'article',ld,f'<meta property="article:published_time" content="{iso}">\n<meta property="article:author" content="{SITE}/biografia">\n<meta property="article:section" content="Opinião">\n<meta property="og:image:alt" content="{esc(tt)}, artigo de opinião de Henrique Longa">\n',ogimg)+body(art_header,main))
+# ---------- entrevista (O Sesimbrense, edição em papel) ----------
+ENT_TITLE='Henrique Longa: LIVRE quer “Sesimbra de 15 minutos” e “Plano de ação climática”'
+ENT_LINE='O Sesimbrense, 31 de agosto de 2025'
+def _inl2(t): return re.sub(r'\*([^*\n]+)\*',r'<em>\1</em>',re.sub(r'\*\*([^*\n]+)\*\*',r'<strong>\1</strong>',esc(t)))
+_ent=[x.strip().replace('\n',' ') for x in re.split(r'\n\s*\n',open('gerador/entrevista.md',encoding='utf-8').read().strip()) if x.strip()]
+ent_text=''.join('<p>%s</p>\n'%_inl2(x) for x in _ent)
+ENT_SLUG='livre-quer-sesimbra-de-15-minutos-e-plano-de-acao-climatica'
+ent_url=SITE+'/entrevista/'+ENT_SLUG
+os.makedirs('_site/entrevista',exist_ok=True)
+og_image('entrevista-'+ENT_SLUG,ENT_TITLE,ENT_LINE,'Entrevista')
+ent_share=f'''<div class="share">
+<h2>Partilhar</h2>
+<ul>
+<li><button type="button" data-copy>Copiar ligação</button></li>
+<li><a href="https://wa.me/?text={enc(ENT_TITLE+chr(10)+chr(10)+ent_url)}" target="_blank" rel="noopener">WhatsApp</a></li>
+<li><a href="https://x.com/intent/post?url={enc(ent_url)}&amp;text={enc(ENT_TITLE)}" target="_blank" rel="noopener">X</a></li>
+<li><a href="https://www.facebook.com/sharer/sharer.php?u={enc(ent_url)}" target="_blank" rel="noopener">Facebook</a></li>
+<li><a href="https://www.linkedin.com/sharing/share-offsite/?url={enc(ent_url)}" target="_blank" rel="noopener">LinkedIn</a></li>
+<li><a href="mailto:?subject={enc(ENT_TITLE)}&amp;body={enc(ent_url)}">Email</a></li>
+</ul>
+</div>
+'''
+ent_main=f'''<main class="article" id="conteudo" tabindex="-1">
+<div class="wrap">
+<p class="crumb"><a href="/imprensa">← Imprensa</a></p>
+<h1>{esc(ENT_TITLE)}</h1>
+<p class="meta">Entrevista a <em>O Sesimbrense</em>, <time datetime="2025-08-31">31 de agosto de 2025</time>. Texto de João Pinhal.</p>
+<div class="text">
+{ent_text}</div>
+<div class="after">
+<a href="/imprensa">Imprensa</a>
+<a href="/opiniao">Artigos de opinião</a>
+</div>
+{ent_share}</div>
+</main>'''
+ent_desc='Entrevista de Henrique Longa a O Sesimbrense, publicada em papel a 31 de agosto de 2025, sobre a Sesimbra de 15 minutos, o plano de ação climática, a habitação e a cultura.'
+ent_ld=[{"@context":"https://schema.org","@type":"NewsArticle","headline":ENT_TITLE,"description":ent_desc,"inLanguage":"pt-PT","datePublished":"2025-08-31","url":ent_url,"mainEntityOfPage":ent_url,"image":SITE+'/og/entrevista-'+ENT_SLUG+'.jpg',"author":{"@type":"Person","name":"João Pinhal"},"about":{"@id":SITE+"/#pessoa"},"publisher":{"@type":"Organization","name":"O Sesimbrense"}},
+ {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Início","item":SITE+"/"},{"@type":"ListItem","position":2,"name":"Imprensa","item":SITE+"/imprensa"},{"@type":"ListItem","position":3,"name":ENT_TITLE}]}]
+open('_site/entrevista/%s.html'%ENT_SLUG,'w',encoding='utf-8').write(head('/entrevista/'+ENT_SLUG,esc(ENT_TITLE),ent_desc,css+'\n'+article_css,'article',ent_ld,'<meta property="article:published_time" content="2025-08-31">\n<meta property="og:image:alt" content="Entrevista de Henrique Longa a O Sesimbrense, 31 de agosto de 2025">\n',SITE+'/og/entrevista-'+ENT_SLUG+'.jpg')+body(header,ent_main))
 # biography page
 bio_paras=['Henrique José Longa Correia, nascido a 1 de abril de 2005 em Lisboa e natural de Sesimbra, é um estudante e ativista cívico associado ao partido LIVRE.',
 'Henrique Longa é aluno na Faculdade de Ciências e Tecnologia da Universidade NOVA de Lisboa, onde realiza a Licenciatura em Química Aplicada. No seu percurso académico, focou a sua investigação no âmbito da Síntese Orgânica.',
@@ -642,10 +681,11 @@ def EN(t): return t.replace('Fridays for Future','<span lang="en">Fridays for Fu
 MEDIA=[
  ('Declarações na manifestação pela habitação','Canal NOW, 27 de outubro de 2026 (Instagram)','https://www.instagram.com/p/DfCm8RLIo3c'),
  ('Autárquicas 2025: debate para a Assembleia Municipal de Sesimbra','Vídeo no YouTube, 30 de setembro de 2025','https://youtu.be/upJXiGhW1j8'),
+ ('Henrique Longa: LIVRE quer “Sesimbra de 15 minutos” e “Plano de ação climática”','O Sesimbrense, entrevista, 31 de agosto de 2025','/entrevista/livre-quer-sesimbra-de-15-minutos-e-plano-de-acao-climatica'),
  ('LIVRE avança com Carina Calisto à Câmara de Sesimbra e Henrique Longa para a Assembleia Municipal','O Setubalense, notícia, 31 de julho de 2025','https://osetubalense.com/local/sesimbra/livre-avanca-com-carina-calisto-a-camara-de-sesimbra-e-henrique-longa-para-a-assembleia-municipal'),
  ('Apresentação de Henrique Longa – Sesimbra | Primárias do LIVRE','Vídeo no YouTube, 6 de julho de 2025','https://youtu.be/HQIG6Ry5ZEo'),
 ]
-media_li=''.join('<li><a href="%s" target="_blank" rel="noopener"><span class="t">%s</span><span class="s">%s</span></a></li>\n'%(u,esc(t),esc(m)) for t,m,u in MEDIA)
+media_li=''.join('<li><a href="%s"%s><span class="t">%s</span><span class="s">%s</span></a></li>\n'%(u,'' if u.startswith('/') else ' target="_blank" rel="noopener"',esc(t),esc(m)) for t,m,u in MEDIA)
 op_li=''.join('<li><a href="/opiniao/%s"><span class="t">%s</span><span class="s">%s, %s</span></a></li>\n'%(k,arts[k]['title'],OUT[k],re.search(r'<time[^>]*>(.*?)</time>',arts[k]['meta']).group(1)) for k in ORDER[:3])
 press_css="""
 .press-sec{margin:2em 0 .5em;font:800 clamp(24px,3.4vw,30px)/1.2 Archivo,"Archivo Fallback","Helvetica Neue",Arial,sans-serif}
@@ -854,7 +894,7 @@ if os.path.isdir('gerador/programa'):
     _o=_io.StringIO(); _w=_csv.writer(_o,lineterminator='\n'); _w.writerow(['tipo','categoria','nome','descricao','latitude','longitude']); _w.writerows(_rows)
     open('_site/programa-mapa/dados/programa-sesimbra.csv','w',encoding='utf-8-sig',newline='').write(_o.getvalue())
     open('_site/programa.html','w',encoding='utf-8').write(prog_page())
-urls=['/','/biografia','/programa','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/galeria','/privacidade','/acessibilidade']
+urls=['/','/biografia','/programa','/opiniao/']+['/opiniao/'+r[1] for r in rows]+['/imprensa','/entrevista/livre-quer-sesimbra-de-15-minutos-e-plano-de-acao-climatica','/galeria','/privacidade','/acessibilidade']
 def _sm(u):
     img=''.join('<image:image><image:loc>%s/fotos/%s</image:loc></image:image>'%(SITE,ph['file']) for ph in PHOTOS) if u=='/galeria' else ''
     lm=('<lastmod>%s</lastmod>'%LASTMOD[u]) if u in LASTMOD else ''
