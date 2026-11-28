@@ -370,7 +370,7 @@ ent_main=f'''<main class="article" id="conteudo" tabindex="-1">
 <div class="wrap">
 <p class="crumb"><a href="/imprensa">← Imprensa</a></p>
 <h1>{esc(ENT_TITLE)}</h1>
-<p class="meta">Entrevista a <em>O Sesimbrense</em>, <time datetime="2025-08-31">31 de agosto de 2025</time>. Texto de João Pinhal.</p>
+<p class="meta">Entrevista a O Sesimbrense, <time datetime="2025-08-31">31 de agosto de 2025</time>. Texto de João Pinhal.</p>
 <div class="text">
 {ent_text}</div>
 <div class="after">
